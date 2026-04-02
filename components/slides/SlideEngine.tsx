@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Maximize, Minimize, Home, ChevronLeft, ChevronRight, Presentation } from "lucide-react";
+import { ArrowLeft, ArrowRight, Maximize, Minimize, Home, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Presentation } from "lucide-react";
 import React, { useState, useEffect, useCallback, ReactNode } from "react";
 
 interface SlideProps {
@@ -34,6 +34,7 @@ export function SlideEngine({
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [direction, setDirection] = useState(0);
+  const [isDockVisible, setIsDockVisible] = useState(true);
   const total = slides.length;
 
   const goTo = useCallback(
@@ -122,9 +123,23 @@ export function SlideEngine({
         </motion.div>
       </AnimatePresence>
 
+      {/* 控制栏展开/折叠热区及按钮 */}
+      <motion.button
+        onClick={() => setIsDockVisible(!isDockVisible)}
+        animate={{ bottom: isDockVisible ? "76px" : "0px" }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="fixed left-1/2 -translate-x-1/2 z-[60] bg-[rgba(255,255,255,0.88)] backdrop-blur-md px-6 py-1 rounded-t-xl border border-b-0 border-[#E5E1D8] text-[var(--text-muted)] hover:text-[#2D2A26] transition-colors"
+        title={isDockVisible ? "隐藏控制栏" : "显示控制栏"}
+      >
+        {isDockVisible ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
+      </motion.button>
+
       {/* 底栏控制器 */}
-      <div
-        className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-10 md:px-16 py-5 transition-opacity"
+      <motion.div
+        initial={false}
+        animate={{ y: isDockVisible ? 0 : "100%" }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-10 md:px-16 py-5"
         style={{
           background: "rgba(255,255,255,0.88)",
           backdropFilter: "blur(12px)",
@@ -193,7 +208,7 @@ export function SlideEngine({
             {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* 左右点击翻页热区 */}
       <div
