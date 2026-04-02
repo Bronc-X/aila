@@ -159,6 +159,7 @@ export default function AcquisitionPage() {
   const [posterLoading, setPosterLoading] = useState(false);
   const [selectedPoster, setSelectedPoster] = useState<number | null>(null);
   const [posterOverlayText, setPosterOverlayText] = useState("");
+  const [posterStyles, setPosterStyles] = useState(POSTER_STYLES);
 
   // ── 短视频 state ──
   const [videoTopic, setVideoTopic] = useState("");
@@ -228,10 +229,33 @@ export default function AcquisitionPage() {
 
   // ── 海报生成 ──
   const handleGeneratePoster = async () => {
+    if (!posterName.trim()) return;
     setPosterLoading(true);
-    await new Promise(r => setTimeout(r, 1800));
-    setPosterGenerated(true);
-    setPosterLoading(false);
+    try {
+      const res = await fetch("/api/ai/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `设计一张极简高级的营销海报背景，主题：${posterName}。要求：无需文字，背景纯净，符合${industries.find(i => i.id === selectedIndustry)?.label || '电商'}行业，采用高饱和度主色调，体现专业和现代感。`
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        setPosterStyles(prev => [
+          { name: "AI定制主海报", src: data.url, size: posterSelectedSize },
+          ...prev.slice(1)
+        ]);
+        setPosterGenerated(true);
+        setSelectedPoster(0);
+      } else {
+        alert("海报生成失败: " + (data.error || "未知错误"));
+      }
+    } catch (e: any) {
+      console.error(e);
+      alert("海报生成出错: " + e.message);
+    } finally {
+      setPosterLoading(false);
+    }
   };
 
   // ── 短视频脚本生成 ──
@@ -533,7 +557,7 @@ export default function AcquisitionPage() {
 
             {/* 海报预览 — 真实图片 */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-              {POSTER_STYLES.map((poster, i) => (
+              {posterStyles.map((poster, i) => (
                 <motion.div key={poster.name}
                   initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: posterGenerated ? 1 : 0.4, scale: 1 }} transition={{ delay: i * 0.1 }}
                   onClick={() => posterGenerated && setSelectedPoster(selectedPoster === i ? null : i)}
@@ -560,7 +584,7 @@ export default function AcquisitionPage() {
               {selectedPoster !== null && (
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="border border-[#E5E1D8] bg-white p-12">
-                  <h3 className="text-sm font-bold text-[#2D2A26] mb-4">文字叠加编辑 — {POSTER_STYLES[selectedPoster].name}</h3>
+                  <h3 className="text-sm font-bold text-[#2D2A26] mb-4">文字叠加编辑 — {posterStyles[selectedPoster].name}</h3>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       <label className="block text-xs text-[#9E9B96] mb-1">叠加文字</label>
@@ -571,7 +595,7 @@ export default function AcquisitionPage() {
                       <span className="text-xs text-[#9E9B96]">预览效果</span>
                       <div className="relative w-32 h-32 border border-[#E5E1D8] overflow-hidden">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={POSTER_STYLES[selectedPoster].src} alt="preview" className="w-full h-full object-cover" />
+                        <img src={posterStyles[selectedPoster].src} alt="preview" className="w-full h-full object-cover" />
                         {posterOverlayText && (
                           <div className="absolute inset-0 flex items-center justify-center bg-[#FAF9F6]/40 p-2">
                             <span className="text-[#2D2A26] text-[10px] font-bold text-center leading-tight">{posterOverlayText}</span>

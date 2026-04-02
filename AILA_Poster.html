@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI赋能：企业主2天密集转型特训 - 长图海报</title>
+    <!-- Include Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Include html2canvas for poster export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d97706",
+                        "secondary": "#805533",
+                        "surface": "#f9f9f9",
+                        "on-surface": "#1a1c1c",
+                        "outline": "#8c7264",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    fontFamily: {
+                        "sans": ["Plus Jakarta Sans", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #2f3131; /* Dark background outside the poster */
+            display: flex;
+            justify-content: center;
+            padding: 40px 0;
+            margin: 0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .solar-flare-gradient {
+            background: linear-gradient(135deg, #f27300 0%, #994700 100%);
+        }
+        /* Mobile-friendly fixed width for the poster canvas */
+        .poster-canvas {
+            width: 1080px; 
+            background: #FAF9F6; /* Claude style 暖白底色 */
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        
+        .floating-action {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 9999;
+        }
+
+        /* Force anti-aliasing for high quality render */
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating button to export to image -->
+    <div class="floating-action">
+        <button onclick="exportPoster()" class="solar-flare-gradient text-white px-8 py-4 rounded-xl font-bold shadow-2xl hover:scale-105 transition-transform flex items-center gap-2 text-lg">
+            <span class="material-symbols-outlined">download</span>
+            导出高清海报
+        </button>
+    </div>
+
+    <!-- THE POSTER CANVAS (Fixed 1080px width) -->
+    <div id="poster" class="poster-canvas font-['Plus_Jakarta_Sans'] text-on-surface">
+        
+        <!-- Header Strip -->
+        <div class="w-full px-16 py-8 flex justify-between items-center border-b border-[#E5E1D8] bg-white/70 backdrop-blur-md">
+            <div class="text-2xl font-bold text-zinc-900 tracking-wider">
+                认知编辑部 | AILA造浪营
+            </div>
+            <div class="text-lg font-bold text-primary tracking-widest uppercase">
+                企业主专属班
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="relative pt-24 pb-20 px-16 overflow-hidden">
+            <div class="w-full grid grid-cols-12 gap-12 items-center">
+                <div class="col-span-7 z-10 relative">
+                    <span class="text-xl font-bold uppercase tracking-[0.2em] text-primary mb-6 block border-l-4 border-primary pl-4">AILA · 第二期席位开启</span>
+                    <h1 class="text-[5rem] font-black text-on-surface leading-[1.1] tracking-tighter mb-8">
+                        赋能企业业务<br/>
+                        AI<span class="text-transparent bg-clip-text solar-flare-gradient">造浪</span>大航海
+                    </h1>
+                    <p class="text-2xl text-secondary leading-relaxed mb-12 font-medium">
+                        针对企业决策者设计的两日高压沉浸式转型特训。打破团队数字鸿沟，掌控现代商业运营的终极智能基座。
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="solar-flare-gradient text-white px-10 py-5 rounded-2xl font-bold text-xl shadow-xl">
+                            仅限 24 席
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm uppercase tracking-widest text-[#888]">The Implementation</span>
+                            <span class="text-xl font-bold text-on-surface">即将开启 · 接受报名</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-span-5 relative mt-8">
+                    <div class="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl relative border-4 border-white">
+                        <img class="w-full h-full object-cover" 
+                             alt="Hero image" 
+                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu19Z0fO7-adblXplbZNrhIGM3pgCD-_Dx0QHFs3EFPckCxP3jxHpQpsenSa_Kfwap0T_QrFp9Qfwd6lRTixdK-5Zm6biQKhbXVMQA-63iZWHppl1Ul5Fy39Zmp77OeHd5ZmTWPP8lJISLT6DrIif0SAUozJzfg0SZ4IzKJMmjpuDdMvH0eqgJKiJOHhbmBolJdfT164dsMb9QMf6PSe5SGBOg924gyrk1stQPzP8vUOgeL5bYbDiditfbf7JrO0HJBVVgyKquMACp"
+                             crossorigin="anonymous"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    </div>
+                    
+                    <div class="absolute -bottom-8 -left-8 p-8 rounded-2xl bg-white shadow-[0_12px_40px_rgba(139,94,60,0.15)] border border-[#E5E1D8] max-w-[340px]">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-primary text-3xl" data-weight="fill">verified</span>
+                            <span class="text-xl font-bold">沉浸式私董会模式</span>
+                        </div>
+                        <p class="text-base text-secondary leading-relaxed">定向邀请。强高压、重产出，确保您的企业痛点在现场得被深度定制跑通。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Curriculum Section (Condensed 1080px layout) -->
+        <div class="py-20 px-16 bg-[#F3F1ED]">
+            <div class="flex items-end justify-between mb-16 gap-8">
+                <div>
+                    <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-primary mb-4">The Curriculum</h2>
+                    <p class="text-[3rem] font-black text-on-surface tracking-tight leading-tight">两日战略级<br/>商业基因进化</p>
+                </div>
+                <p class="text-xl text-secondary max-w-sm font-medium leading-relaxed pb-2">
+                    从建立紧迫感到实战演练，两天内击穿从营销到运营的 AI 全链路。
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-12 gap-8">
+                <!-- Day 1 -->
+                <div class="col-span-5 flex flex-col gap-6">
+                    <div class="p-10 rounded-3xl bg-white shadow-sm h-full border border-[#E5E1D8]">
+                        <div class="flex justify-between items-start mb-10">
+                            <span class="text-6xl font-black text-[#E5E1D8] tracking-tighter">01</span>
+                            <div class="p-4 bg-orange-50 rounded-xl">
+                                <span class="material-symbols-outlined text-primary text-4xl">psychology</span>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 text-[#111]">第一天：认知破局</h3>
+                        <p class="text-lg text-[#666] mb-8 leading-relaxed font-medium">打碎现有认知壁垒，剖析出利用AI带来的“弯道超车”跨越机遇。</p>
+                        
+                        <div class="w-full h-px bg-[#E5E1D8] mb-8"></div>
+
+                        <ul class="space-y-8">
+                            <li class="flex gap-4">
+                                <span class="h-2 w-2 rounded-full bg-primary mt-2.5 flex-shrink-0"></span>
+                                <div>
+                                    <span class="font-bold block text-xl mb-2 text-[#111]">通识大爆炸</span>
+                                    <span class="text-base text-[#666] leading-relaxed block">“2026年AI为何到了这样？” 洞悉缘何企业主有心拥抱而员工无力跟进。</span>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="h-2 w-2 rounded-full bg-primary mt-2.5 flex-shrink-0"></span>
+                                <div>
+                                    <span class="font-bold block text-xl mb-2 text-[#111]">全行业沙盘推演</span>
+                                    <span class="text-base text-[#666] leading-relaxed block">贯穿电商、出海、制造等全行业。现场点将，即刻规划企业专属AI工具栈通关路径。</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="col-span-7">
+                    <div class="p-10 rounded-3xl bg-white shadow-sm h-full border-l-[6px] border-l-primary border border-y-[#E5E1D8] border-r-[#E5E1D8] relative">
+                        <div class="flex justify-between items-start mb-10">
+                            <span class="text-6xl font-black text-[#E5E1D8] tracking-tighter">02</span>
+                            <div class="p-4 bg-orange-50 rounded-xl">
+                                <span class="material-symbols-outlined text-primary text-4xl">precision_manufacturing</span>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 text-[#111]">第二天：业务落地实操</h3>
+                        <p class="text-lg text-[#666] mb-10 leading-relaxed font-medium">让理论回归利润表。搭建能够接管复杂决策并显著拉升ROI的工具矩阵。</p>
+                        
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="p-6 rounded-2xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-3">auto_awesome</span>
+                                <h4 class="text-xl font-bold text-[#111] mb-2">获客营销赋能</h4>
+                                <p class="text-base text-[#666] leading-relaxed">批量生图、短视频与裂变爆款文案生成流水线。</p>
+                            </div>
+                            <div class="p-6 rounded-2xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-3">record_voice_over</span>
+                                <h4 class="text-xl font-bold text-[#111] mb-2">智能销售与转化</h4>
+                                <p class="text-base text-[#666] leading-relaxed">对接实时ASR监听提取访谈核心，秒级推荐攻单话术。</p>
+                            </div>
+                            <div class="p-6 rounded-2xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-3">account_tree</span>
+                                <h4 class="text-xl font-bold text-[#111] mb-2">数字资产研发</h4>
+                                <p class="text-base text-[#666] leading-relaxed">辅助研发做极速原型推演，将企业流失经验变成智能常识库。</p>
+                            </div>
+                            <div class="p-6 rounded-2xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                                <span class="material-symbols-outlined text-primary text-3xl mb-3">bolt</span>
+                                <h4 class="text-xl font-bold text-[#111] mb-2">全效自动化行政</h4>
+                                <p class="text-base text-[#666] leading-relaxed">管理数字流化，用模型接管员工排表、日报及意向追踪统计。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits & ROI -->
+        <div class="py-24 px-16 bg-white">
+            <div class="text-center mb-20">
+                <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-primary mb-4">Core Competency Reimagined</h2>
+                <p class="text-[3rem] font-black text-on-surface tracking-tight line-height-[1.2]">数字资产的断层式碾压</p>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-6">
+                <!-- 1 -->
+                <div class="p-8 rounded-3xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-100 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-orange-600 text-3xl">campaign</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#111] mb-4">前端发声</h3>
+                    <p class="text-base text-[#666] leading-relaxed">大规模个性化生成物料库，突破产出瓶颈。</p>
+                </div>
+                <!-- 2 -->
+                <div class="p-8 rounded-3xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-100 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-orange-600 text-3xl">payments</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#111] mb-4">业绩转化</h3>
+                    <p class="text-base text-[#666] leading-relaxed">武装至牙齿的金牌对话框，随时纠偏跟单情绪。</p>
+                </div>
+                <!-- 3 -->
+                <div class="p-8 rounded-3xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-100 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-orange-600 text-3xl">settings_suggest</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#111] mb-4">中台验证</h3>
+                    <p class="text-base text-[#666] leading-relaxed">以算力替代时间成本，百倍加速新品试错迭代。</p>
+                </div>
+                <!-- 4 -->
+                <div class="p-8 rounded-3xl bg-[#FAF9F6] border border-[#E5E1D8]">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-100 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-orange-600 text-3xl">admin_panel_settings</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#111] mb-4">行政收束</h3>
+                    <p class="text-base text-[#666] leading-relaxed">秒除汇报内耗，一机流转全司数字统计流。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Hook / Quote (Matches user 橙白灰 feel entirely) -->
+        <div class="h-[400px] relative overflow-hidden bg-zinc-900 border-y border-[#333]">
+            <img class="w-full h-full object-cover opacity-60 mix-blend-overlay" 
+                 alt="Background" 
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIs-zniznP0CY5i1FM9x9AORbkxfQeumESy4_aU1eYSLlGDsaX_Q3NpSl8HtmqGM4Za_-QVE58gJwpCxkKVM0C86_GLTs23wA0sxdQSZG6qY62EMRqiHPznDdKO3cNokfhgyCAp7oy5ToruXVxO622GFHoeFFJIUrHpDkAj8V7RQ5puGczgir7ojOsVl9LMkqPZWE0fTqYBj3nkmVSnbHO31CJMyF21GA0QQ3_1IWx6m4Q9LA3wsyr6OO0c5u7LqFlQDi3s0SibFHM"
+                 crossorigin="anonymous"/>
+            
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-16">
+                <blockquote class="text-[2.2rem] font-normal italic max-w-4xl tracking-wide leading-relaxed text-white">
+                    <span class="text-primary text-5xl leading-none mr-2">"</span> AI从不打算取代有智慧的人，<br/>它淘汰的是依然沉湎于传统体力杠杆的对手。<span class="text-primary text-5xl leading-none ml-2">"</span>
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- Footer / Registration CTA -->
+        <div class="py-24 px-16 bg-[#F3F1ED] text-center border-b-8 border-primary relative">
+            <div class="w-[800px] mx-auto p-16 rounded-[2.5rem] bg-white border border-[#E5E1D8] shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-80 h-80 solar-flare-gradient opacity-10 blur-[100px] -mr-40 -mt-40"></div>
+                
+                <h2 class="text-[2.5rem] font-black text-[#111] mb-6 relative z-10 tracking-tight leading-tight">
+                    抢占 24 席私董通道
+                </h2>
+                <p class="text-xl text-[#666] mb-12 max-w-2xl mx-auto relative z-10 leading-relaxed font-medium">
+                    仅限企业主/高管同盟。为保证产出落地的强高压质量，名额招满即止，不可退让扩招。
+                </p>
+                
+                <div class="inline-block solar-flare-gradient text-white px-16 py-6 rounded-2xl font-bold text-2xl shadow-lg">
+                    向助教申请名额
+                </div>
+                
+                <div class="mt-10 pt-8 border-t border-[#E5E1D8] flex items-center justify-center gap-4 text-secondary/60 text-sm font-bold uppercase tracking-widest">
+                    <span>© 2026 AILA 认知编辑部</span>
+                    <span>·</span>
+                    <span>智能涌现大航海</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Use html2canvas to convert the 1080px div to an image download
+        async function exportPoster() {
+            const btn = document.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 生成中...';
+            
+            try {
+                const element = document.getElementById('poster');
+                // Use scale: 2 for a crisp Retina-quality export (2160px width)
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: "#FAF9F6"
+                });
+                
+                // Create download link
+                const dataUrl = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'AILA_造浪营海报.png';
+                link.href = dataUrl;
+                link.click();
+            } catch (err) {
+                console.error("生成海报失败", err);
+                alert("生成失败，请确保开启了网络环境。");
+            } finally {
+                btn.innerHTML = originalText;
+            }
+        }
+    </script>
+</body>
+</html>

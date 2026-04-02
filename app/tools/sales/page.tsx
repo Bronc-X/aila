@@ -106,6 +106,12 @@ export default function SalesPage() {
   const [activeTab, setActiveTab] = useState<"realtime" | "followup" | "insights">("realtime");
   const conversationEndRef = useRef<HTMLDivElement>(null);
 
+  // ── ASR 语音识别 ──
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [currentSpeaker, setCurrentSpeaker] = useState<"客户" | "销售">("销售");
+  const [interimText, setInterimText] = useState("");
+  const entryCounterRef = useRef(0);
+
   // ── 回访 ──
   const [customerName, setCustomerName] = useState("");
   const [customerContext, setCustomerContext] = useState("");
@@ -137,6 +143,137 @@ export default function SalesPage() {
     { id: "followup" as const, label: "智能回访", icon: Phone },
     { id: "insights" as const, label: "灵感追问", icon: Lightbulb },
   ];
+
+  // ── ASR 真实录音 ──────────────────────────────
+  const handleStartRecording = useCallback(() => {
+    const SpeechRecognitionAPI = (window as unknown as { SpeechRecognition?: typeof SpeechRecognition; webkitSpeechRecognition?: typeof SpeechRecognition }).SpeechRecognition
+      || (window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition }).webkitSpeechRecognition;
+    if (!SpeechRecognitionAPI) {
+      alert("当前浏览器不支持语音识别，请使用 Chrome 或 Edge 浏览器");
+      return;
+    }
+    const recognition = new SpeechRecognitionAPI();
+    recognition.lang = "zh-CN";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let interim = "";
+      let finalTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interim += transcript;
+        }
+      }
+      setInterimText(interim);
+      if (finalTranscript.trim()) {
+        entryCounterRef.current += 1;
+        const now = new Date();
+        const ts = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+        const newEntry: ConversationEntry = {
+          id: `asr-${entryCounterRef.current}`,
+          speaker: currentSpeaker,
+          text: finalTranscript.trim(),
+          timestamp: ts,
+          keywords: HIGHLIGHT_KEYWORDS.filter(kw => finalTranscript.includes(kw)),
+        };
+        setConversation(prev => [...prev, newEntry]);
+        setInterimText("");
+
+        // 实时分析交由大模型 useEffect 监听处理
+      }
+    };
+
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      if (event.error !== "no-speech") {
+        console.error("ASR Error:", event.error);
+      }
+    };
+
+    recognition.onend = () => {
+      // 如果还在录音状态但引擎停了（Chrome 有 60 秒自动断开），自动重启
+      if (recognitionRef.current) {
+        try { recognitionRef.current.start(); } catch { /* 忽略重复启动 */ }
+      }
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsRecording(true);
+  }, [currentSpeaker]);
+
+  const handleStopRecording = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.onend = null; // 防止自动重启
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+    setIsRecording(false);
+    setInterimText("");
+  }, []);
+
+  // 组件卸载时清理
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.onend = null;
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
+  // ── 实时大模型分析 (取代 Demo 数据) ──
+  useEffect(() => {
+    // 只有在录音状态下，并且达到一定的对话轮次才触发（避免频繁请求）
+    if (!isRecording || conversation.length < 3) return;
+    // 每累积新增一定的话语，或达到偶数轮次
+    if (conversation.length % 2 !== 0) return;
+    if (conversation[conversation.length - 1].id.startsWith("demo-")) return; // 排除 demo 数据
+
+    const analyzeConversation = async () => {
+      try {
+        const textLog = conversation.map(c => `${c.speaker === "销售" ? "我方销售" : "客户"}: ${c.text}`).join("\n");
+        const res = await fetch("/api/ai/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [
+              { 
+                role: "system", 
+                content: "你是一个顶级的B2B销售总监监听助手。请分析以下最新对话日志，预测客户异议并给出我方下一步的应答建议。\n请务必返回严格的JSON格式数据，结构如下：\n{\"suggestions\": [{\"type\": \"objection\" 或 \"pricing\" 或 \"next_step\" 或 \"competitor\", \"content\": \"建议销售说的话术\", \"reason\": \"原因分析\"}], \"summary\": {\"painPoints\": [\"痛点1\"], \"objections\": [\"异议1\"], \"actionItems\": [\"下一步动作\"]}}\n直接输出JSON，不要任何包裹符号和解释。" 
+              },
+              { role: "user", content: textLog },
+            ],
+            temperature: 0.7,
+          }),
+        });
+        const data = await res.json();
+        const content = data.choices?.[0]?.message?.content || "";
+        const parsed = JSON.parse(content.replace(/```json\n?|\n?```/g, '').trim());
+        
+        if (parsed.suggestions && Array.isArray(parsed.suggestions)) {
+           setSuggestions(parsed.suggestions.map((s: any, i: number) => ({
+             id: `live-sugg-${Date.now()}-${i}`,
+             type: s.type || "next_step",
+             title: s.type === "objection" ? "发现异议阻力" : s.type === "pricing" ? "价格谈判信号" : s.type === "competitor" ? "竞对干预" : "跟进建议",
+             content: s.content,
+             reason: s.reason
+           })));
+        }
+        if (parsed.summary && conversation.length >= 6) {
+           setSummary(parsed.summary);
+        }
+      } catch (e) {
+         console.error("AI 分析错误 (由于是静默后台轮询，忽略此错):", e);
+      }
+    };
+    
+    analyzeConversation();
+  }, [conversation, isRecording]);
 
   // ── Demo 模式 ──────────────────────────────
   const handleStartDemo = () => {
@@ -282,15 +419,24 @@ export default function SalesPage() {
                       </button>
                     )}
                     {!isRecording && (
-                      <button onClick={() => setIsRecording(true)}
-                        className="bg-white text-[#6B6660] border border-[#E5E1D8] font-bold uppercase tracking-wide hover:border-[#D97706] hover:text-[#D97706] transition-colors !py-2 !px-4 text-sm flex items-center gap-1.5 rounded-lg shadow-sm">
-                        <Mic size={14} /> 开始录音
-                      </button>
+                      <>
+                        <select
+                          value={currentSpeaker}
+                          onChange={(e) => setCurrentSpeaker(e.target.value as "客户" | "销售")}
+                          className="text-xs border border-[#E5E1D8] text-[#6B6660] bg-white px-2 py-2 rounded-lg focus:outline-none focus:border-[#D97706]">
+                          <option value="销售">我是销售</option>
+                          <option value="客户">我是客户</option>
+                        </select>
+                        <button onClick={handleStartRecording}
+                          className="bg-white text-[#6B6660] border border-[#E5E1D8] font-bold uppercase tracking-wide hover:border-[#D97706] hover:text-[#D97706] transition-colors !py-2 !px-4 text-sm flex items-center gap-1.5 rounded-lg shadow-sm">
+                          <Mic size={14} /> 开始录音
+                        </button>
+                      </>
                     )}
                     {isRecording && (
-                      <button onClick={() => setIsRecording(false)}
-                        className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-all">
-                        <Square size={12} /> 停止
+                      <button onClick={handleStopRecording}
+                        className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-all rounded-lg">
+                        <Square size={12} /> 停止录音
                       </button>
                     )}
                   </div>
@@ -313,11 +459,12 @@ export default function SalesPage() {
                 )}
 
                 <div className="flex-1 overflow-y-auto space-y-4 pr-2 mt-4">
-                  {conversation.length === 0 ? (
+                  {conversation.length === 0 && !interimText ? (
                     <div className="flex flex-col items-center justify-center h-full text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                       <Mic size={32} className="text-[#A3A3A3] mb-3" />
-                      <p className="text-[#6B6660] font-medium mb-1">点击&ldquo;演示模式&rdquo;查看效果</p>
-                      <p className="text-sm text-[#9E9B96]">AI 将实时转写对话逻辑并提取异议痛点</p>
+                      <p className="text-[#6B6660] font-medium mb-1">点击&ldquo;开始录音&rdquo;进行实时语音转写</p>
+                      <p className="text-sm text-[#9E9B96]">AI 将实时转写对话并提取关键异议与痛点</p>
+                      <p className="text-xs text-[#A3A3A3] mt-2">也可点击&ldquo;演示模式&rdquo;查看预设效果</p>
                     </div>
                   ) : (
                     <AnimatePresence>
@@ -353,6 +500,23 @@ export default function SalesPage() {
                         );
                       })}
                     </AnimatePresence>
+                  )}
+                  {/* ASR 实时转写气泡 */}
+                  {interimText && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                      className="flex gap-3">
+                      <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-xs font-bold rounded-lg bg-[#D97706]/10 text-[#D97706]">
+                        <Mic size={14} />
+                      </div>
+                      <div className="max-w-[80%] px-4 py-3 text-[15px] leading-relaxed rounded-2xl bg-[#FEF3C7] border border-[#D97706]/20 text-[#92400E] rounded-tl-sm">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-semibold text-[#D97706]">正在听...</span>
+                          <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1.2 }}
+                            className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
+                        </div>
+                        {interimText}
+                      </div>
+                    </motion.div>
                   )}
                   <div ref={conversationEndRef} />
                 </div>

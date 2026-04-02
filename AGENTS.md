@@ -105,7 +105,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ### 设计质量检查清单
 
-- [ ] **Jobsian 一致性** — OLED 黑 `#000` + 边框 `#111` + 文字层级 `#FFF/#888/#555/#333`
+- [ ] **Claude 风格一致性** — 暖白/白昼灰底色 + 边框灰 + 琥珀橙高亮 + 文字层级深灰/中灰
 - [ ] **动效克制** — 只用 Framer Motion 的 `opacity`/`y`/`x` + spring，无花哨特效
 - [ ] **响应式** — 所有 grid 布局在窄屏下优雅降级
 - [ ] **可访问性** — 所有交互元素有 hover 状态和 focus 样式
@@ -149,12 +149,12 @@ run_command: killall node 2>/dev/null; rm -rf .next && npm run dev
 - localStorage（轻量持久化）
 
 ### 设计语言
-- 背景: `#000`（OLED 纯黑）
-- 主边框: `border-[#111]`，hover: `border-[#333]`
-- 文字层级: `#FFF` > `#888` > `#555` > `#333`
-- 按钮主态: `bg-white text-black` + `font-bold uppercase tracking-widest`
-- 按钮次态: `bg-black text-[#CCC] border-[#333]`
-- 卡片: 无圆角（或极小），无阴影，靠边框区分层级
+- 背景: 暖白/纯白（如 `#FAF9F6` 或 `bg-white`）
+- 主边框: `border-[#E5E1D8]`，hover: `border-[#D97706]`
+- 文字层级: `#111` > `#444` > `#666` > `#888`
+- 品牌高亮/按钮主态: `#D97706`（琥珀橙），用于突出CTA
+- 按钮次态: `bg-[#F3F1ED] text-[#444] border-[#E5E1D8]`
+- 卡片: `bg-[#F3F1ED]` 或纯白，保持空间呼吸感，绝不使用纯黑
 
 ### AI 引擎
 - 所有 AI 交互走 `/api/ai/chat/route.ts` 的 Mock 引擎
