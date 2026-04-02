@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     setTimeout(() => {
       setLoading(false);
-      if (inviteCode !== "2016") {
+      if (inviteCode !== "2026") {
         setError("授权凭证无效 / AUTHORIZATION FAILED");
         return;
       }

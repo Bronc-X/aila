@@ -14,7 +14,12 @@ export async function POST(req: NextRequest) {
     if (!apiKey) {
       // 开发模式无密钥时，返回 Mock 占位图
       return NextResponse.json({
-        url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop"
+        urls: [
+          "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop"
+        ]
       });
     }
 
@@ -32,7 +37,7 @@ export async function POST(req: NextRequest) {
         parameters: { 
           style: "<auto>", 
           size: "1024*1024", 
-          n: 1 
+          n: 4 
         }
       })
     });
@@ -55,8 +60,8 @@ export async function POST(req: NextRequest) {
       const pollData = await pollRes.json();
 
       if (pollData.output?.task_status === "SUCCEEDED") {
-        const imageUrl = pollData.output.results[0]?.url;
-        return NextResponse.json({ url: imageUrl });
+        const imageUrls = pollData.output.results.map((r: any) => r.url);
+        return NextResponse.json({ urls: imageUrls });
       }
 
       if (pollData.output?.task_status === "FAILED") {

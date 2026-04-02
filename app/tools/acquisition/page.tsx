@@ -240,10 +240,12 @@ export default function AcquisitionPage() {
         }),
       });
       const data = await res.json();
-      if (data.url) {
+      if (data.urls && data.urls.length > 0) {
         setPosterStyles(prev => [
-          { name: "AI定制主海报", src: data.url, size: posterSelectedSize },
-          ...prev.slice(1)
+          { name: "风格一：极简科技", src: data.urls[0] || prev[0].src, size: posterSelectedSize },
+          { name: "风格二：暗黑高端", src: data.urls[1] || prev[1].src, size: posterSelectedSize },
+          { name: "风格三：活力橙色", src: data.urls[2] || prev[2].src, size: posterSelectedSize },
+          { name: "风格四：商务蓝灰", src: data.urls[3] || prev[3].src, size: posterSelectedSize }
         ]);
         setPosterGenerated(true);
         setSelectedPoster(0);
@@ -360,7 +362,7 @@ export default function AcquisitionPage() {
       {/* 顶栏 */}
       <header className="sticky top-0 z-40 border-b border-[#E5E1D8]"
         style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid #E5E1D8" }}>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex items-end justify-between mb-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 md:px-24 lg:px-32 flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
           <Link href="/tools" className="flex items-center gap-1.5 text-sm text-[#9E9B96] hover:text-[#2D2A26] transition-colors">
             <ArrowLeft size={16} /> 返回
           </Link>
@@ -372,7 +374,7 @@ export default function AcquisitionPage() {
             <span className="font-semibold text-sm">获客中心</span>
           </div>
         </div>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 md:px-24 lg:px-32 flex flex-wrap gap-4 md:gap-12 -mb-px mt-2 overflow-x-auto">
           {subTools.map((tool) => (
             <button key={tool.id} onClick={() => setActiveSubTool(tool.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
@@ -384,13 +386,13 @@ export default function AcquisitionPage() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-8 md:px-24 lg:px-32 py-8">
 
         {/* ═══════════════ 文案矩阵 (Jasper 式) ═══════════════ */}
         {activeSubTool === "copywriting" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 md:p-12 space-y-5">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
                   <Wand2 size={18} className="text-[#D97706]" /> 文案矩阵生成器
                 </h2>
@@ -445,7 +447,7 @@ export default function AcquisitionPage() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[600px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 md:p-12 min-h-[600px]">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-bold text-[#2D2A26]">生成结果</h2>
                   {result && (
@@ -533,7 +535,7 @@ export default function AcquisitionPage() {
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-8 mb-8">
               <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">AI 批量海报生成</h2>
               <p className="text-[#666] mb-8">输入产品信息，AI 自动生成多风格商用级海报模板</p>
-              <div className="grid md:grid-cols-2 gap-12 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mb-8">
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品/活动名称 *</label>
                   <input type="text" value={posterName} onChange={e => setPosterName(e.target.value)}
@@ -556,7 +558,7 @@ export default function AcquisitionPage() {
             </div>
 
             {/* 海报预览 — 真实图片 */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-8">
               {posterStyles.map((poster, i) => (
                 <motion.div key={poster.name}
                   initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: posterGenerated ? 1 : 0.4, scale: 1 }} transition={{ delay: i * 0.1 }}
@@ -583,7 +585,7 @@ export default function AcquisitionPage() {
             <AnimatePresence>
               {selectedPoster !== null && (
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                  className="border border-[#E5E1D8] bg-white p-12">
+                  className="border border-[#E5E1D8] bg-white p-6 md:p-12">
                   <h3 className="text-sm font-bold text-[#2D2A26] mb-4">文字叠加编辑 — {posterStyles[selectedPoster].name}</h3>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
@@ -616,7 +618,7 @@ export default function AcquisitionPage() {
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-8 mb-8">
               <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">AI 短视频脚本 + 分镜</h2>
               <p className="text-[#666] mb-8">描述产品卖点，AI 生成完整分镜表，每行可编辑拖拽排序</p>
-              <div className="grid md:grid-cols-2 gap-12 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mb-8">
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">视频主题 *</label>
                   <input type="text" value={videoTopic} onChange={e => setVideoTopic(e.target.value)}
@@ -700,7 +702,7 @@ export default function AcquisitionPage() {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleFileDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed p-12 text-center transition-all cursor-pointer ${isDragging ? "border-[#D97706] bg-[#F3F1ED] scale-[1.01]" : "border-[#E5E1D8] hover:border-[#555]"}`}>
+                className={`border-2 border-dashed p-6 md:p-12 text-center transition-all cursor-pointer ${isDragging ? "border-[#D97706] bg-[#F3F1ED] scale-[1.01]" : "border-[#E5E1D8] hover:border-[#555]"}`}>
                 <input ref={fileInputRef} type="file" multiple accept="image/*" className="hidden" onChange={handleFileSelect} />
                 <motion.div animate={isDragging ? { scale: 1.1 } : { scale: 1 }}>
                   <Upload size={40} className={`mx-auto mb-4 ${isDragging ? "text-[#2D2A26]" : "text-[#A3A3A3]"}`} />
@@ -712,7 +714,7 @@ export default function AcquisitionPage() {
 
             {/* 已上传文件列表 */}
             {uploadedFiles.length > 0 && (
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 md:p-12">
                 <h3 className="text-sm font-bold text-[#2D2A26] mb-4">已上传文件 ({uploadedFiles.length})</h3>
                 <div className="space-y-3">
                   {uploadedFiles.map(file => (
