@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="app/icon.svg" width="128" height="128" alt="AILA Logo" />
+  <h1>AILA / Toni OS</h1>
+  <p><strong>Enterprise-Grade AI Infrastructure & Immersive Presentation Engine</strong></p>
+</div>
 
-## Getting Started
+---
 
-First, run the development server:
+## ✦ Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**AILA (AI Camp 2026)** is the master orchestration platform designed for elite AI training and live demonstration. It breaks the boundaries of traditional Keynote/PPT presentations by wrapping an enterprise-grade AI tool suite inside an immersive, Silicon Valley-tier ultra-minimalist UI.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Built on Next.js 16 (App Router) and reacting seamlessly with Framer Motion, it connects in real-time with **Alibaba Cloud DashScope (Qwen-Plus & Wanx-v1)** to render real-world business scenarios within milliseconds—live on stage.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✦ Core Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **100% Immersive Slide Engine**: A highly tailored presentation engine built from scratch. Bypasses PowerPoint limitations entirely. Supports fullscreen mode, immersive scroll, keyboard hotkeys, and features a frictionless, auto-hiding "stealth dock" for zero-distraction stage mastery.
+- **Enterprise Authenticator**: A fortified checkpoint gateway (`app/login`), ensuring absolute data security through an encrypted prototype initialization wall (Current Auth Code: `2026`).
+- **Real-Time Live Coding Interface**: A custom-designed `24rem` massive countdown module built for high-stakes 45-minute live development sessions. No artificial keypads, completely stealth-triggered via hidden click states.
+- **Acquisition Tool Array (Image Synthesis)**: Integrates directly with Alibaba's newest `Wanx-v1` AI architecture, generating quadruple, commercial-grade advertising matrices asynchronously with multi-task polling routines.
+- **Dynamic Responsive DNA**: Absolute UI consistency from an iPhone screen up to an 8k theater projector. Employs meticulous typography, deep OLED-blacks (`#111111`), and luxury metadata optimization.
 
-## Learn More
+## ✦ Architecture Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: `Next.js 16.2` (React 19, Turbopack)
+- **Styling**: `Tailwind CSS 3.4` (Minimalist YC/Stripe aesthetic)
+- **Animation**: `Framer Motion` (Spring-based physics interactions)
+- **Icons**: `Lucide React`
+- **Model Engine**: Aliyun DashScope APIs (Qwen-Plus, Wanx-v1)
+- **Deployment OS**: Vercel Serverless Edge
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✦ Configuration & Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Ensure environment variables are loaded (`.env.local`):
+   ```env
+   # 语言模型接口
+   GPT_API_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
+   GPT_API_KEY="sk-**************"
+   GPT_MODEL="qwen-plus"
+   
+   # 万相生图接口
+   IMAGE_API_BASE_URL="https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis"
+   IMAGE_API_KEY="sk-**************"
+   IMAGE_MODEL="wanx-v1"
+   ```
 
-## Deploy on Vercel
+2. Initialization:
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Cloud Production Deployment**:  
+   Code is optimized for zero-config deployment on Vercel. Global DNS routed optimally via `cname-china.vercel-dns.com` for China-Mainland unthrottled access.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Developed with supreme aesthetic precision by Toni.*
