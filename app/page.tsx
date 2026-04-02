@@ -125,7 +125,7 @@ export default function Home() {
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 md:px-24 lg:px-32 py-6"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-8 lg:px-16 xl:px-32 py-4 md:py-6 gap-4"
         style={{
           background: scrollY > 50 ? "rgba(255,255,255,0.92)" : "transparent",
           backdropFilter: scrollY > 50 ? "blur(20px)" : "none",
@@ -133,29 +133,29 @@ export default function Home() {
           transition: "all 0.3s ease",
         }}
       >
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0">
           <div className="w-10 h-10 flex items-center justify-center text-xl font-black bg-[#D97706] text-white rounded-xl">
             A
           </div>
-          <span className="text-xl font-bold tracking-normal text-[#2D2A26] uppercase hidden md:block">
+          <span className="text-xl font-bold tracking-normal text-[#2D2A26] uppercase hidden lg:block whitespace-nowrap">
             AI Camp 2026
           </span>
         </div>
-        <div className="hidden md:flex items-center gap-10 text-sm font-medium tracking-wide uppercase text-[#9E9B96]">
-          <a href="#schedule" className="hover:text-[#2D2A26] transition-colors">日程剖析</a>
-          <a href="#tools" className="hover:text-[#2D2A26] transition-colors">工具解密</a>
-          <a href="#about" className="hover:text-[#2D2A26] transition-colors">关于峰会</a>
+        <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-medium tracking-wide uppercase text-[#9E9B96] whitespace-nowrap overflow-hidden">
+          <a href="#schedule" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">日程剖析</a>
+          <a href="#tools" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">工具解密</a>
+          <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0">
           <Link
             href="/slides"
-            className="text-[#2D2A26] border border-[#E5E1D8] bg-transparent text-sm font-bold tracking-wide uppercase py-3 px-12 hover:bg-[#2D2A26] hover:text-white hover:border-[#2D2A26] transition-colors rounded-xl hidden sm:block"
+            className="text-[#2D2A26] border border-[#E5E1D8] bg-transparent text-sm font-bold tracking-wide uppercase py-3 px-6 lg:px-10 hover:bg-[#2D2A26] hover:text-white hover:border-[#2D2A26] transition-colors rounded-xl hidden sm:block whitespace-nowrap text-center"
           >
             进入讲演模式
           </Link>
           <Link
             href="/login"
-            className="bg-[#D97706] text-white text-sm font-bold tracking-wide uppercase py-3 px-16 hover:bg-[#B45309] transition-colors rounded-xl"
+            className="bg-[#D97706] text-white text-sm font-bold tracking-wide uppercase py-3 px-8 lg:px-12 hover:bg-[#B45309] transition-colors rounded-xl whitespace-nowrap text-center"
           >
             系统授权接口
           </Link>
@@ -163,7 +163,7 @@ export default function Home() {
       </motion.nav>
 
       {/* 极简风 Hero 区域 */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-12 md:px-24 lg:px-32 pt-24">
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-12 lg:px-32 pt-32 pb-16">
         <motion.div
           initial="initial"
           animate="animate"
