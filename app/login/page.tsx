@@ -31,9 +31,12 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    // 体验交互极简化：纯延迟演示
     setTimeout(() => {
       setLoading(false);
+      if (inviteCode !== "2016") {
+        setError("授权凭证无效 / AUTHORIZATION FAILED");
+        return;
+      }
       setStep("info");
     }, 800);
   }
