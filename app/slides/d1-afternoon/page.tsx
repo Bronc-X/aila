@@ -47,23 +47,31 @@ function TimerSlide({ setModalContent }: { setModalContent: (content: React.Reac
   const s = (timeLeft % 60).toString().padStart(2, "0");
 
   return (
-    <Slide key="timer">
-      <motion.div {...fadeUp} className="text-center max-w-5xl mx-auto">
-        <h2 
-          className="text-[12rem] md:text-[18rem] font-black text-gradient leading-tight tracking-normal mb-8 font-mono cursor-pointer hover:scale-105 transition-transform duration-500"
-          onClick={() => setModalContent(caseDetails["live-coding"])}
-        >
-          {m}:{s}
-        </h2>
-        <div 
-          onClick={toggleTimer}
-          className="flex justify-center items-center gap-8 text-[var(--text-secondary)] hover:text-[#2D2A26] transition-colors duration-500 cursor-pointer p-8 rounded-xl border border-transparent hover:border-[var(--brand-primary)] hover:bg-[rgba(255,255,255,0.03)] w-max mx-auto group"
-        >
-          {isRunning ? <PauseCircle size={28} className="text-red-400 group-hover:text-red-300" /> : <PlayCircle size={28} className="text-green-400 group-hover:text-green-300" />}
-          <span className="text-2xl font-bold tracking-wide uppercase">
-            {isRunning ? "PAUSING" : "PRESS TO DEPLOY (45 MINS)"}
-          </span>
+    <Slide key="timer" bg="#FAF9F6">
+      {/* 极简无实体按键倒计时界面 */}
+      <motion.div 
+        {...fadeUp} 
+        className="flex flex-col items-center justify-center w-full h-full max-w-7xl mx-auto relative group pt-20"
+      >
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 text-2xl text-[#9E9B96] font-bold tracking-[0.5em] uppercase opacity-40">
+           LIVE CODING DEPLOYMENT
         </div>
+
+        <h2 
+          className={`text-[12rem] md:text-[24rem] font-black leading-none tracking-tighter font-mono cursor-pointer select-none transition-all duration-700 ease-in-out ${isRunning ? 'text-[#D97706] scale-100' : 'text-[#2D2A26] opacity-30 scale-95 hover:scale-100 hover:opacity-80'}`}
+          onClick={toggleTimer}
+          onDoubleClick={(e) => {
+             e.stopPropagation();
+             setModalContent(caseDetails["live-coding"]);
+          }}
+          title="单击启动/暂停 · 双击查看架构图"
+        >
+          {m}<span className={isRunning ? 'animate-pulse opacity-50' : 'opacity-100'}>:</span>{s}
+        </h2>
+
+        <p className={`text-2xl font-medium tracking-[0.3em] uppercase mt-12 transition-all duration-1000 ${isRunning ? 'text-[#D97706] opacity-60' : 'text-[#9E9B96] opacity-0 group-hover:opacity-60'}`}>
+           {isRunning ? 'SYSTEM DEPLOYING IN PROGRESS...' : 'CLICK COUNTER TO INITIALIZE'}
+        </p>
       </motion.div>
     </Slide>
   );
