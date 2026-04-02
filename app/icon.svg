@@ -1,47 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
   <defs>
-    <!-- 极简科技的高亮渐变 (纯黑到深灰深邃背景) -->
+    <!-- 深邃极简的黑曜石背景 -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2D2A26" />
-      <stop offset="100%" stop-color="#0a0a0a" />
+      <stop offset="0%" stop-color="#1A1816" />
+      <stop offset="100%" stop-color="#050505" />
     </linearGradient>
     
-    <!-- 品牌金属质感琥珀渐变 -->
-    <linearGradient id="metalOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- 飘逸的极光般琥珀/橘金渐变 -->
+    <linearGradient id="auroraGlow" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#FCD34D" />
       <stop offset="50%" stop-color="#D97706" />
-      <stop offset="100%" stop-color="#B45309" />
+      <stop offset="100%" stop-color="#9A3412" />
     </linearGradient>
 
-    <!-- 科技荧光外发光滤镜 -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="6" result="blur" />
+    <!-- 柔和细腻的飘逸辉光 -->
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
 
-  <!-- 高级圆角异形背景容器 -->
-  <rect width="256" height="256" rx="60" fill="url(#bgGrad)"/>
+  <!-- 浑圆高级的物理质感边界 -->
+  <rect width="256" height="256" rx="64" fill="url(#bgGrad)"/>
   
-  <!-- 科技感光束线条 (点缀) -->
-  <path d="M 40 216 L 216 40" stroke="#D97706" stroke-width="2" opacity="0.1" />
-  <path d="M 60 216 L 216 60" stroke="#D97706" stroke-width="1" opacity="0.05" />
+  <!-- 飘逸的优雅流线 (极简的贝塞尔曲线) -->
+  <path d="M 0 160 Q 128 200 256 120" stroke="url(#auroraGlow)" stroke-width="1.5" fill="none" opacity="0.4" filter="url(#softGlow)"/>
+  <path d="M 0 180 Q 128 230 256 140" stroke="url(#auroraGlow)" stroke-width="0.5" fill="none" opacity="0.15"/>
 
-  <!-- Toni 斜体无衬线核心文字 -->
-  <!-- 使用极简的系统级无衬线体, 强调斜体的速度感和力量感 -->
+  <!-- 飘逸的极细斜体无衬线字体 (Toni) -->
   <text 
-    x="125" y="152" 
+    x="132" y="154" 
     font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" 
-    font-size="80" 
+    font-size="76" 
     font-style="italic" 
-    font-weight="900" 
-    fill="url(#metalOrange)" 
+    font-weight="200" 
+    fill="url(#auroraGlow)" 
     text-anchor="middle" 
-    letter-spacing="-1"
-    filter="url(#glow)">
+    letter-spacing="6"
+    filter="url(#softGlow)">
     Toni
   </text>
   
-  <!-- 底部能量指示灯 -->
-  <circle cx="125" cy="190" r="4" fill="#FCD34D" filter="url(#glow)" />
 </svg>
