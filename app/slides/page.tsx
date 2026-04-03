@@ -9,21 +9,21 @@ const sessions = [
   {
     day: "DAY 1",
     date: "2026.04.18",
-    title: "认知破界 / 案例震慑",
+    title: "破局：利润下滑不是终点，是换引擎的信号",
     blocks: [
       {
         id: "d1-morning",
         time: "09:00",
-        title: "AI发展全景 + FOMO激活",
-        desc: "大语言模型发展通识、中美企业AI差距实录、组织转型关键卡点剖析。",
+        title: "看清残局：您的利润正在被谁吞掉？",
+        desc: "AI 能力边界全景扫描、同行用 AI 降本增效的残酷数据对比、中小企业引入 AI 的三大致命深坑。",
         slides: 27,
         ready: true,
       },
       {
         id: "d1-afternoon",
         time: "13:30",
-        title: "行业深钻 + Live Coding",
-        desc: "五大行业底层再造逻辑分解、全案控制台实战推演（45 Min）。",
+        title: "对号入座：您的行业，AI 正在颠覆哪个环节？",
+        desc: "五大行业真实利润翻倍案例拆解、现场企业痛点诊断、45 分钟从零搭建全自动获客→成交流水线。",
         slides: 8,
         ready: true,
       },
@@ -32,21 +32,21 @@ const sessions = [
   {
     day: "DAY 2",
     date: "2026.04.19",
-    title: "全景铺盘 / 落地归因",
+    title: "上手：不再观望，今天就让 AI 替您干活",
     blocks: [
       {
         id: "d2-morning",
         time: "09:00",
-        title: "大航海武器库",
-        desc: "大模型企业应用全景地图、营销/销售/运营/客服四端全链路核心工具库下水。",
+        title: "工具实训：零基础也能即学即用的杀手级武器",
+        desc: "最适合中小企业的 12 个杀手级 AI 应用、Dify/Coze 智能获客系统搭建、10 秒 AI 报表实操。",
         slides: 6,
         ready: true,
       },
       {
         id: "d2-afternoon",
         time: "13:30",
-        title: "闭门工作坊 + 结营终局",
-        desc: "企业痛点对齐与 ROI 推演公式、AI 转型 1v1 方案定制及全营归心结幕。",
+        title: "定制交付：带走属于您企业的 AI 作战地图",
+        desc: "企业 AI 改造蓝图工作坊、ROI 人力成本精算、1v1 专家诊断定制落地时间表。",
         slides: 5,
         ready: true,
       },

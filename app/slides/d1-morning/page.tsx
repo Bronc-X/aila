@@ -53,16 +53,72 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       </motion.div>
     </Slide>,
 
-    // S2: 开场提问
+    // [新增] S1_philosophy: 命名哲学
+    <Slide key="s1_philosophy" bg="white">
+      <motion.div {...fadeUp} className="text-center max-w-5xl mx-auto pl-8">
+        <h2 className="text-5xl md:text-7xl font-black text-[#6B6660] leading-tight mb-8 tracking-normal text-left">
+          为什么叫
+        </h2>
+        <p className="text-6xl md:text-[6.5rem] text-[#2D2A26] font-black tracking-normal text-left leading-[1.1] mt-4 mb-16">
+          <span className="text-[#D97706]">“造浪营”</span>？
+        </p>
+        <div className="text-left max-w-4xl border-l-[6px] border-[#D97706] pl-8">
+          <p className="text-2xl text-[var(--text-secondary)] leading-loose mb-6">
+            因为在 2026 年的 AI 时代，我们面临的不是一次普通的科技迭代。<br />
+            这是一场足以摧毁旧有商业秩序的<strong className="text-[#2D2A26]">滔天巨浪</strong>。
+          </p>
+          <p className="text-2xl text-[var(--text-secondary)] leading-loose">
+            面对巨浪，如果你只在岸边观望，最终只会被它吞噬。<br />
+            我们不要“被培训”，我们要在这里 <strong className="text-[#D97706]">下场、踩板、成为造浪者</strong>。<br />
+            去掀翻行业里的那些老旧、冗余、低效的利润侵蚀者。
+          </p>
+        </div>
+      </motion.div>
+    </Slide>,
+
+    // [新增] S1_team_intro: 团队介绍
+    <Slide key="s1_team_intro" bg="#FAF9F6">
+      <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
+        <h2 className="text-4xl md:text-5xl font-black text-[#2D2A26] mb-16 text-center">
+          谁在为您<span className="text-gradient">护航</span>？
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8 text-left">
+          <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm hover:shadow-md hover:border-[#D97706] transition-all">
+            <div className="w-16 h-16 bg-[#2D2A26] text-white rounded-full flex items-center justify-center font-bold text-2xl mb-6">IDE</div>
+            <h3 className="text-2xl font-black text-[#2D2A26] mb-4">硅基基建架构师</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed">
+              来自全球顶级全栈开发与AI工具原生化团队。不讲空泛理论，只讲怎么把大模型通过 API 抽成血脉，注入您的业务中台。
+            </p>
+          </div>
+          <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm hover:shadow-md hover:border-[#D97706] transition-all relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#D97706] opacity-[0.03] rounded-full blur-2xl group-hover:opacity-[0.1] transition-opacity"></div>
+            <div className="w-16 h-16 bg-[#D97706] text-white rounded-full flex items-center justify-center font-bold text-2xl mb-6">BIZ</div>
+            <h3 className="text-2xl font-black text-[#2D2A26] mb-4">商业变现精算师</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed">
+              具备麦肯锡等顶级战略咨询经验，深谙企业成本结构。我们将抛开花哨功能，帮您直接算出每一行代码能省下几名碳基员工。
+            </p>
+          </div>
+          <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm hover:shadow-md hover:border-[#D97706] transition-all">
+            <div className="w-16 h-16 bg-[#9E9B96] text-white rounded-full flex items-center justify-center font-bold text-2xl mb-6">OPS</div>
+            <h3 className="text-2xl font-black text-[#2D2A26] mb-4">智能体部署专家</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed">
+              操盘过数家千万级独角兽企业的 Agent 集群化改造。让 7x24 小时运行的数字兵团，稳健无痛地与您原有的飞书、钉钉彻底焊死。
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </Slide>,
+
+    // S2: 开场提问 - 切入企业AI渗透率
     <Slide key="s2">
       <motion.div {...fadeUp} className="text-center max-w-5xl mx-auto">
-        <p className="text-2xl text-[var(--brand-glow)] mb-12 font-medium tracking-wide">先问在座各位一个问题 —</p>
+        <p className="text-2xl text-[var(--brand-glow)] mb-12 font-medium tracking-wide">先问在座各位一个问题 ——</p>
         <h2 className="text-6xl md:text-[5.5rem] font-black text-[#2D2A26] leading-[1.1] tracking-normal mb-16">
-          你上一次<br /><span className="text-gradient">被AI彻底震撼到</span><br />是什么时候？
+          你的企业里，<br /><span className="text-gradient">AI 的渗透率</span><br />有多少？
         </h2>
         <motion.p {...d(0.5)} className="text-2xl text-[var(--text-secondary)] leading-loose">
-          如果你的回答是“很久了”或者“好像还没有”<br />
-          那这两天的内容，可能会<span className="text-[var(--text-primary)] font-semibold">重新校准你的世界观</span>。
+          在座各位可能都用过 ChatGPT、文心一言、通义千问——<br />
+          但问题是：<span className="text-[var(--text-primary)] font-semibold">你公司的获客、销售、运营、客服，有几个环节真正跑通了 AI？</span>
         </motion.p>
       </motion.div>
     </Slide>,
@@ -75,7 +131,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         </h2>
         <p className="text-center text-xl text-[var(--text-muted)] mb-14">不要把它当成搜索工具，它是一个“认知引擎”</p>
         <div className="grid md:grid-cols-2 gap-10">
-          <motion.div {...d(0.2)} className="glass-card !p-10 flex flex-col justify-center">
+          <motion.div {...d(0.2)} className="glass-card flex flex-col justify-center">
             <h3 className="text-2xl font-bold text-[#2D2A26] mb-6 flex items-center gap-3">
               <Sprout className="text-[var(--brand-glow)]" size={32} /> 本质：概率预测与涌现
             </h3>
@@ -84,7 +140,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               但是，当模型参数跨过百亿门槛时，量变引发了质变——<b>涌现能力</b>诞生了。它突然学会了逻辑、推理和归纳。
             </p>
           </motion.div>
-          <motion.div {...d(0.4)} className="glass-card !p-10 flex flex-col justify-center">
+          <motion.div {...d(0.4)} className="glass-card flex flex-col justify-center">
             <h3 className="text-2xl font-bold text-[#2D2A26] mb-6 flex items-center gap-3">
               <Brain className="text-green-400" size={32} /> 弱 AI vs 强 AI 的区别
             </h3>
@@ -97,29 +153,162 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       </motion.div>
     </Slide>,
 
-    // [新增] S4: 科技进化史
-    <Slide key="s_history" bg="linear-gradient(135deg, #1C1917 0%, #292420 40%, #1A1612 100%)">
+    // [新增] S_llm_dev: LLM发展历程 - 十大关键节点
+    <Slide key="s_llm_dev">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
-        <h2 className="text-4xl md:text-6xl font-black text-[#2D2A26] mb-16 text-center tracking-normal">
-          科技革命图谱：<span className="text-gradient">这次为何不同</span>？
+        <h2 className="text-3xl md:text-4xl font-black text-[#2D2A26] mb-4 text-center">
+          大模型<span className="text-gradient">进化简史</span>：十大关键节点
         </h2>
-        <div className="flex flex-col md:flex-row gap-8 relative">
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--text-secondary)] to-transparent opacity-20 hidden md:block rounded-full -translate-y-1/2"></div>
-          {[
-            { tag: "蒸汽/电力", title: "动力革命", subtitle: "解放体力", year: "18-19世纪", desc: "把人从繁重的体力劳动中抽离" },
-            { tag: "PC/互联网", title: "信息革命", subtitle: "解放距离", year: "20世纪末", desc: "消灭信息交换的时间与空间壁垒" },
-            { tag: "大模型", title: "认知革命", subtitle: "释放智力", year: "2023 直至此时", desc: "历史第一次，机器承担了本属于人类的推理创作黑盒。", highlight: true },
-          ].map((item, i) => (
-            <motion.div key={item.title} {...d(0.2 + i * 0.15)} className={`flex-1 glass-card !p-12 relative z-10 ${item.highlight ? 'border-[var(--border-active)] shadow-glow bg-[#0A0A0A]' : ''}`}>
-              <div className="text-sm font-mono text-[var(--text-muted)] tracking-wide mb-6">{item.year}</div>
-              <h3 className={`text-3xl font-black mb-3 ${item.highlight ? 'text-[#2D2A26]' : 'text-gray-400'}`}>{item.title}</h3>
-              <p className={`text-2xl font-bold mb-8 ${item.highlight ? 'text-gradient' : 'text-[var(--text-muted)]'}`}>{item.subtitle}</p>
-              <p className="text-[var(--text-secondary)] leading-relaxed text-lg">{item.desc}</p>
-            </motion.div>
-          ))}
+        <p className="text-center text-[var(--text-muted)] mb-10">从最早的语言模型到具备自我操控能力的GPT-5.4，十次跨越重新定义"AI能做什么"</p>
+        <div className="overflow-hidden rounded-2xl border border-[#E5E1D8]">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="bg-[#F3F1ED]">
+                <th className="p-4 font-bold text-[#6B6660] uppercase tracking-wide w-[100px]">时间</th>
+                <th className="p-4 font-bold text-[#6B6660] uppercase tracking-wide">模型</th>
+                <th className="p-4 font-bold text-[#6B6660] uppercase tracking-wide">参数量</th>
+                <th className="p-4 font-bold text-[#6B6660] uppercase tracking-wide">关键突破</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-[#E5E1D8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2018</td>
+                <td className="p-4 font-bold text-[#2D2A26]">GPT-1</td>
+                <td className="p-4 text-[var(--text-secondary)]">1.17亿</td>
+                <td className="p-4 text-[var(--text-secondary)]">证明了"预训练+微调"的范式可行性</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8] bg-[#FAFAF8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2019</td>
+                <td className="p-4 font-bold text-[#2D2A26]">GPT-2</td>
+                <td className="p-4 text-[var(--text-secondary)]">15亿</td>
+                <td className="p-4 text-[var(--text-secondary)]">长篇生成引起关注，暂缓开源</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2020</td>
+                <td className="p-4 font-bold text-[#2D2A26]">GPT-3</td>
+                <td className="p-4 text-[var(--text-secondary)]">1750亿</td>
+                <td className="p-4 text-[var(--text-secondary)]">涌现能力爆发——零样本学习、代码生成</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8] bg-[#FAFAF8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2023.03</td>
+                <td className="p-4 font-bold text-[#D97706]">GPT-4</td>
+                <td className="p-4 text-[#D97706] font-bold">万亿级(估算)</td>
+                <td className="p-4 text-[#D97706] font-bold">多模态 + 超越90%人类考试成绩</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2024.06</td>
+                <td className="p-4 font-bold text-[#D97706]">Claude 3.5 Sonnet</td>
+                <td className="p-4 text-[#D97706] font-bold">~300B</td>
+                <td className="p-4 text-[#D97706] font-bold">编程能力领跑，全网全行业代码效率2倍进阶</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8] bg-[#FAFAF8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2024.12</td>
+                <td className="p-4 font-bold text-[#D97706]">Gemini 2.0</td>
+                <td className="p-4 text-[#D97706] font-bold">多模态</td>
+                <td className="p-4 text-[#D97706] font-bold">原生多模态实时交互革命</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2025.01</td>
+                <td className="p-4 font-bold text-[#D97706]">DeepSeek-R1</td>
+                <td className="p-4 text-[#D97706] font-bold">671B MoE</td>
+                <td className="p-4 text-[#D97706] font-bold">中国开源模型首在数学推理逼近GPT-4o</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8] bg-[#FAFAF8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2025.08</td>
+                <td className="p-4 font-bold text-[#D97706]">GPT-5</td>
+                <td className="p-4 text-[#D97706] font-bold">——</td>
+                <td className="p-4 text-[#D97706] font-bold">100万上下文 + 面向系统的自主决策Agent</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2026.01</td>
+                <td className="p-4 font-bold text-[#D97706]">Claude Agent Teams</td>
+                <td className="p-4 text-[#D97706] font-bold">——</td>
+                <td className="p-4 text-[#D97706] font-bold">机器首次实现复杂目标的自动任务分解联合作业</td>
+              </tr>
+              <tr className="border-t border-[#E5E1D8] bg-[#FAFAF8]">
+                <td className="p-4 text-[var(--text-muted)] font-mono">2026.03</td>
+                <td className="p-4 font-bold text-[#D97706]">GPT-5.4</td>
+                <td className="p-4 text-[#D97706] font-bold">——</td>
+                <td className="p-4 text-[#D97706] font-bold">全面操控电脑、各类OS、甚至现实机器，OSWorld 90%+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-center text-sm text-[var(--text-muted)] mt-6">
+          Scaling Law（规模定律）: 参数量每扩大10倍，模型能力发生 <span className="text-[#D97706] font-bold">质</span> 的跃迁，而非线性增长
+        </p>
+      </motion.div>
+    </Slide>,
+
+    // [新增] S4: 认知革命——超越信息革命的力量
+    <Slide key="s4">
+      <motion.div {...fadeUp} className="text-center max-w-5xl mx-auto w-full">
+        <h2 className="text-5xl md:text-6xl font-black text-[#D97706] mb-8">
+          认知<span className="text-gradient">革命</span>
+        </h2>
+        <p className="text-2xl text-[var(--text-secondary)] mb-12 max-w-4xl mx-auto leading-relaxed">
+          电的发现让人类实现<strong className="text-[#2D2A26]">能量的自由流动</strong>，开启了工业时代。<br/>
+          互联网的出现把信息变成可检索的资产，<strong className="text-[#2D2A26]">消灭了时间的空间壁垒</strong>。<br/>
+          而 AI 认知革命则是让<strong className="text-[#D97706]">思考和决策本身实现自动化</strong>，它的冲击力远超信息革命，甚至趋近于电的发现与使用！
+        </p>
+
+        {/* 横向时间轴对比三次革命 */}
+        <div className="flex flex-col gap-10">
+          <div className="relative h-20 md:h-24 px-4">
+            <div className="absolute left-0 top-0 w-1/3 text-center">
+              <div className="text-xl md:text-2xl font-black text-[#2D2A26]">动力革命 (19世纪)</div>
+              <div className="text-sm md:text-base text-[var(--text-muted)] mt-1">GDP 年均增速 <strong>+0.3%~0.6%</strong></div>
+              <div className="mt-3 h-2 w-16 md:w-24 bg-[#D97706] rounded-full mx-auto" style={{width: '30%'}}></div>
+            </div>
+            <div className="absolute left-1/3 top-0 w-1/3 text-center">
+              <div className="text-xl md:text-2xl font-black text-[#2D2A26]">信息革命 (1990s)</div>
+              <div className="text-sm md:text-base text-[var(--text-muted)] mt-1">GDP 年均增速 <strong>+0.4%~0.8%</strong></div>
+              <div className="mt-3 h-2 w-16 md:w-24 bg-[#D97706] rounded-full mx-auto" style={{width: '55%'}}></div>
+            </div>
+            <div className="absolute right-0 top-0 w-1/3 text-center">
+              <div className="text-xl md:text-2xl font-black text-[#D97706]">AI 认知革命 (现在)</div>
+              <div className="text-sm md:text-base text-[var(--text-muted)] mt-1">预估增速 <strong>+1.2%~1.5%</strong></div>
+              <div className="mt-3 h-2 w-16 md:w-24 bg-[#D97706] shadow-glow rounded-full mx-auto" style={{width: '90%'}}></div>
+            </div>
+          </div>
+
+          {/* 影响维度表格 */}
+          <div className="overflow-hidden rounded-2xl border border-[#E5E1D8]">
+            <table className="w-full text-left text-sm md:text-base">
+              <thead className="bg-[#F3F1ED]">
+                <tr>
+                  <th className="p-5 font-bold text-[#6B6660] uppercase tracking-wide border-b border-[#E5E1D8]">核心指标</th>
+                  <th className="p-5 font-bold text-[#6B6660] uppercase tracking-wide border-b border-[#E5E1D8]">动力 / 蒸汽电气</th>
+                  <th className="p-5 font-bold text-[#6B6660] uppercase tracking-wide border-b border-[#E5E1D8]">信息 / PC互联网</th>
+                  <th className="p-5 font-bold text-[#D97706] uppercase tracking-wide border-b border-[#E5E1D8]">认知 / 生成式AI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-[#E5E1D8]">
+                  <td className="p-5 font-bold text-[#2D2A26]">渗透速度</td>
+                  <td className="p-5 text-[var(--text-secondary)]">数十年</td>
+                  <td className="p-5 text-[var(--text-secondary)]">约 20 年</td>
+                  <td className="p-5 text-[#D97706] font-bold">18 个月窗口期</td>
+                </tr>
+                <tr className="border-t border-[#E5E1D8] bg-[#FAFAF8]">
+                  <td className="p-5 font-bold text-[#2D2A26]">本质影响</td>
+                  <td className="p-5 text-[var(--text-secondary)]">解放体力劳动</td>
+                  <td className="p-5 text-[var(--text-secondary)]">消灭信息差与距离</td>
+                  <td className="p-5 text-[#D97706] font-bold">认知自动化与自主决策</td>
+                </tr>
+                <tr className="border-t border-[#E5E1D8]">
+                  <td className="p-5 font-bold text-[#2D2A26]">商业增量</td>
+                  <td className="p-5 text-[var(--text-secondary)]">规模化制造</td>
+                  <td className="p-5 text-[var(--text-secondary)]">全球化协作、中介消亡</td>
+                  <td className="p-5 text-[#D97706] font-bold">年经济增量可达 2.6~4.4 万亿美元</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </motion.div>
     </Slide>,
+
 
     // S5: 两年前 vs 现在 — 让人坐不住的对比
     <Slide key="s3">
@@ -136,6 +325,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             { before: "客服7×24需要3班倒18人", after: "1个AI客服Bot + 2个人工值班 = 同样的服务质量", icon: Bot },
             { before: "做竞品分析要出差+调研1周", after: "AI Agent 30分钟跑完全网信息，生成报告", icon: Globe },
             { before: "新员工培训周期3个月", after: "AI知识库 + 实时导师，上岗时间缩短60%", icon: Users },
+            { before: "产品原型设计需要2周+外包", after: "AI生成原型草图+交互逻辑+代码框架，从想法到MVP仅需72小时", icon: Cpu },
+            { before: "获客渠道拓展靠人海战术", after: "AI分析渠道ROI → 自动优化投放 → 智能裂变分发，增量提升40%", icon: TrendingUp },
           ].map((item, i) => (
             <motion.div key={i} {...d(0.15 + i * 0.08)}
               className="flex gap-8 items-start py-4 border-b border-[var(--border-subtle)]">
@@ -156,7 +347,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s4" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center">
         
-        <h2 className="text-4xl md:text-5xl font-black text-[#2D2A26] leading-tight mb-6">
+        <h2 className="text-4xl md:text-5xl font-black text-[#FAF9F6] leading-tight mb-6">
           2026年的AI<br /><span className="text-gradient">居然发展到了这样</span>
         </h2>
         <p className="text-xl text-[var(--text-secondary)]">
@@ -171,14 +362,18 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         <h2 className="text-3xl font-black text-[#2D2A26] mb-10 text-center">AI能力跃迁时间线</h2>
         <div className="space-y-5">
           {[
-            { year: "2023.03", event: "GPT-4 发布 — 第一次让人感觉'AI好像真的能做事了'", icon: <Zap size={18} className="text-[var(--brand-glow)]" />, level: 25 },
-            { year: "2024.02", event: "Sora 发布 — AI开始生成逼真视频，创意行业开始紧张", icon: <Eye size={18} className="text-[var(--brand-glow)]" />, level: 35 },
-            { year: "2024.11", event: "多模态全面打通 — 图文音视频输入输出，一个模型搞定", icon: <Target size={18} className="text-[var(--brand-glow)]" />, level: 48 },
-            { year: "2025.06", event: "AI Agent 成熟 — AI不再只回答问题，开始自主执行复杂任务链", icon: <Bot size={18} className="text-[var(--brand-glow)]" />, level: 62 },
-            { year: "2025.08", event: "GPT-5 发布 — 100万token上下文，推理能力质的飞跃", icon: <Zap size={18} className="text-[var(--brand-glow)]" />, level: 75 },
-            { year: "2026.01", event: "Claude Agent Teams — AI可以拆分任务、分派子Agent协作完成", icon: <Brain size={18} className="text-[var(--brand-glow)]" />, level: 85 },
-            { year: "2026.03", event: "GPT-5.4 — AI可以操控电脑，超过人类专家水平（OSWorld基准）", icon: <Cpu size={18} className="text-[var(--brand-glow)]" />, level: 95 },
-            { year: "现在", event: "你坐在这里，这些能力你的企业用了多少？", icon: <ArrowRight size={18} className="text-[var(--brand-glow)]" />, level: 100 },
+            { year: "2023.03", event: "GPT-4 发布", icon: <Zap size={18} className="text-[var(--brand-glow)]" />, level: 20 },
+            { year: "2023.07", event: "Claude 2 + LLaMA 2开源", icon: <Brain size={18} className="text-[var(--brand-glow)]" />, level: 28 },
+            { year: "2024.02", event: "Sora 震撼发布", icon: <Eye size={18} className="text-[var(--brand-glow)]" />, level: 35 },
+            { year: "2024.06", event: "Claude 3.5 Sonnet — 编程之王", icon: <Cpu size={18} className="text-[var(--brand-glow)]" />, level: 42 },
+            { year: "2024.11", event: "多模态全面打通", icon: <Target size={18} className="text-[var(--brand-glow)]" />, level: 50 },
+            { year: "2024.12", event: "Gemini 2.0 + o3发布", icon: <Zap size={18} className="text-[var(--brand-glow)]" />, level: 55 },
+            { year: "2025.01", event: "DeepSeek-R1 开源震动全球", icon: <Brain size={18} className="text-[var(--brand-glow)]" />, level: 63 },
+            { year: "2025.06", event: "AI Agent 成熟 — 自主执行复杂任务", icon: <Bot size={18} className="text-[var(--brand-glow)]" />, level: 72 },
+            { year: "2025.08", event: "GPT-5 — 100万token + 推理飞跃", icon: <Zap size={18} className="text-[var(--brand-glow)]" />, level: 80 },
+            { year: "2026.01", event: "Claude Agent Teams — 多Agent协作", icon: <Brain size={18} className="text-[var(--brand-glow)]" />, level: 88 },
+            { year: "2026.03", event: "GPT-5.4 — 操控电脑，超越人类专家", icon: <Cpu size={18} className="text-[var(--brand-glow)]" />, level: 95 },
+            { year: "现在", event: "你的企业用了多少？", icon: <ArrowRight size={18} className="text-[var(--brand-glow)]" />, level: 100 },
           ].map((item, i) => (
             <motion.div key={item.year} {...d(0.15 + i * 0.08)}
               className="flex items-center gap-5">
@@ -220,7 +415,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             { title: "推理/执行", items: ["分析财务报表出经营建议", "自动操控电脑完成工作流", "多Agent协作完成复杂项目", "实时语音翻译（延迟不到1秒）", "代码编写 + 自动测试部署"], icon: Brain },
           ].map((cat, i) => (
             <motion.div key={cat.title} {...d(0.2 + i * 0.15)}
-              className="glass-card p-7">
+              className="glass-card">
               <cat.icon size={24} className="text-[var(--brand-glow)] mb-4" />
               <h3 className="text-lg font-bold text-[#2D2A26] mb-4">{cat.title}</h3>
               <ul className="space-y-3">
@@ -243,7 +438,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s7" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center">
         
-        <h2 className="text-4xl md:text-5xl font-black text-[#2D2A26] leading-tight mb-6">
+        <h2 className="text-4xl md:text-5xl font-black text-[#FAF9F6] leading-tight mb-6">
           几个<span className="text-gradient">让你坐不住</span>的数字
         </h2>
         <p className="text-xl text-[var(--text-secondary)]">数据来自 NVIDIA、KPMG、信通院最新报告</p>
@@ -261,7 +456,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             { num: "18月", desc: "留给未转型企业的窗口期", sub: "— 行业预估", key: "window", icon: AlertTriangle },
           ].map((item, i) => (
             <motion.div key={item.desc} {...d(0.2 + i * 0.12)}
-              className="glass-card p-8 text-center cursor-pointer border border-transparent hover:border-[var(--brand-primary)] transition-colors"
+              className="glass-card text-center cursor-pointer border border-transparent hover:border-[var(--brand-primary)] transition-colors"
               onClick={() => {
                 if (item.key && caseDetails[item.key]) setModalContent(caseDetails[item.key]);
               }}>
@@ -286,15 +481,22 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
           {[
             { company: "亚朵集团", scene: "非标作业处理", result: "节省 750万", metric: "年提效30万小时", tag: "服务" },
             { company: "四维图新", scene: "AI合规审核", result: "300小时/次", metric: "审核周期大幅缩短", tag: "科技" },
-            { company: "某跨境电商", scene: "生成矩阵", result: "销额 翻倍", metric: "人力成本直降70%", tag: "出海" },
+            { company: "百果园", scene: "AI会员运营", result: "复购 +35%", metric: "会员活跃度翻倍", tag: "零售" },
             { company: "宁德时代", scene: "工业大模型", result: "偏差 降50%", metric: "原型设计缩短50%", tag: "制造" },
             { company: "京东工业", scene: "供应链管理", result: "提速 30%", metric: "供应商成本降50%+", tag: "零售" },
           ].map((item, i) => (
             <motion.div key={item.company} {...d(0.15 + i * 0.08)}
               className="flex items-center justify-between border-b border-[#E5E1D8] pb-6 cursor-pointer hover:bg-[#FAF9F6] transition-colors -mx-8 px-16 rounded-xl group"
               onClick={() => {
-                if(item.company === "亚朵集团") setModalContent(caseDetails["atour"]);
-                if(item.company === "某跨境电商") setModalContent(caseDetails["cross-border"]);
+                const keyMap: Record<string, string> = {
+                  "亚朵集团": "atour",
+                  "四维图新": "siwei",
+                  "百果园": "baiguoyuan",
+                  "宁德时代": "catl",
+                  "京东工业": "jd",
+                };
+                const key = keyMap[item.company];
+                if(key && caseDetails[key]) setModalContent(caseDetails[key]);
               }}>
               <div className="flex items-center gap-8">
                 <span className="text-[var(--text-muted)] font-mono text-sm uppercase tracking-wide w-16">{item.tag}</span>
@@ -328,7 +530,13 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             <motion.div key={item.company} {...d(0.2 + i * 0.15)}
               className="flex-1 w-full text-center cursor-pointer group hover:scale-[1.02] transition-transform"
               onClick={() => {
-                if(item.company === "Salesforce") setModalContent(caseDetails["salesforce"]);
+                const keyMap: Record<string, string> = {
+                  "Salesforce": "salesforce",
+                  "Amazon": "amazon",
+                  "PepsiCo": "pepsico",
+                };
+                const key = keyMap[item.company];
+                if(key && caseDetails[key]) setModalContent(caseDetails[key]);
               }}>
               <item.icon size={36} className="text-[#9E9B96] group-hover:text-[var(--brand-glow)] transition-colors mx-auto mb-8" />
               <h3 className="text-xl font-bold text-[#9E9B96] mb-4 tracking-wide uppercase">{item.company}</h3>
@@ -345,7 +553,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     // S11: 章节页
     <Slide key="s11" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center w-full max-w-5xl mx-auto pl-12">
-        <h2 className="text-4xl md:text-6xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal text-left">
+        <h2 className="text-4xl md:text-6xl font-black text-[#FAF9F6] leading-tight mb-8 tracking-normal text-left">
           会用AI vs 不会用AI的企业：
         </h2>
         <p className="text-6xl md:text-[6.5rem] text-gradient font-black tracking-normal text-left leading-tight mt-4">
@@ -372,12 +580,12 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             { task: "设计新产品包装宣发图（10个版本）", old: "设计 5天", ai: "AI批量 2小时", ratio: "20x", key: "eff_5" },
           ].map((item, i) => (
             <motion.div key={item.task} {...d(0.1 + i * 0.08)}
-              className="grid grid-cols-[1fr_200px_200px_100px] gap-8 items-center cursor-pointer border border-transparent hover:border-[var(--border-active)] hover:bg-[#0A0A0A] p-12 -mx-6 rounded-xl transition-all group"
+              className="grid grid-cols-[1fr_200px_200px_100px] gap-8 items-center cursor-pointer border border-transparent hover:border-[var(--border-active)] hover:bg-[#F8F7F4] p-5 -mx-6 rounded-xl transition-all group"
               onClick={() => {
                 if (item.key && caseDetails[item.key]) setModalContent(caseDetails[item.key]);
               }}>
               <div className="text-xl md:text-2xl text-[#2D2A26] font-bold group-hover:text-[var(--brand-glow)] transition-colors">{item.task}</div>
-              <div className="text-lg text-red-500/60 line-through text-center font-mono">{item.old}</div>
+              <div className="text-lg text-[#D97706]/60 line-through text-center font-mono">{item.old}</div>
               <div className="text-lg text-green-400 font-bold text-center font-mono">{item.ai}</div>
               <div className="text-3xl font-black text-gradient text-center tracking-normal">{item.ratio}</div>
             </motion.div>
@@ -393,7 +601,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s13">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-10">
-          <motion.div {...d(0.2)} className="glass-card p-8" style={{ borderColor: "rgba(34,197,94,0.2)" }}>
+          <motion.div {...d(0.2)} className="glass-card" style={{ borderColor: "rgba(34,197,94,0.2)" }}>
             <h3 className="text-xl font-bold text-green-400 mb-6 flex items-center gap-3">
               <CheckCircle2 size={22} /> 拥抱AI的企业
             </h3>
@@ -413,8 +621,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               ))}
             </ul>
           </motion.div>
-          <motion.div {...d(0.4)} className="glass-card p-8" style={{ borderColor: "rgba(239,68,68,0.2)" }}>
-            <h3 className="text-xl font-bold text-red-400 mb-6 flex items-center gap-3">
+          <motion.div {...d(0.4)} className="glass-card" style={{ borderColor: "rgba(239,68,68,0.2)" }}>
+            <h3 className="text-xl font-bold text-[#D97706] mb-6 flex items-center gap-3">
               <XCircle size={22} /> 还在观望的企业
             </h3>
             <ul className="space-y-4">
@@ -428,7 +636,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                 "等你准备好的时候，市场已经不等你了",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-[var(--text-secondary)] leading-relaxed">
-                  <XCircle size={15} className="text-red-400 mt-0.5 flex-shrink-0" /> {item}
+                  <XCircle size={15} className="text-[#D97706] mt-0.5 flex-shrink-0" /> {item}
                 </li>
               ))}
             </ul>
@@ -443,15 +651,31 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         <h2 className="text-4xl font-black text-[#2D2A26] leading-tight mb-10">
           KPMG 的一个发现
         </h2>
-        <motion.div {...d(0.3)} className="glass-card p-10 inline-block">
+        <motion.div {...d(0.3)} className="glass-card inline-block">
           <p className="text-2xl text-[var(--text-secondary)] leading-relaxed mb-6">
-            重视AI人才储备的企业<br />
-            从AI获得商业价值的概率是——
+            重视AI人才储备的企业，从AI获得商业价值的概率是——
           </p>
-          <div className="text-8xl font-black text-gradient mb-6">4x</div>
-          <p className="text-lg text-[var(--text-muted)]">
-            77% vs 20% —— <span className="text-[#2D2A26] font-semibold">差距已经是代际级别的</span>
+          <div className="text-8xl font-black text-gradient mb-6">4.5x</div>
+          <p className="text-lg text-[var(--text-muted)] mb-8">
+            AI成熟度领先企业ROI <span className="text-[#D97706] font-bold">4.5倍</span> vs 行业平均2倍 —— KPMG 2026全球技术报告
           </p>
+          <div className="grid grid-cols-3 gap-6 text-left mt-6">
+            <div className="border border-[#E5E1D8] rounded-xl p-5">
+              <div className="text-sm text-[var(--text-muted)] mb-2">中小企业年均AI节省</div>
+              <div className="text-3xl font-black text-[#2D2A26]">¥35<span className="text-lg">万+</span></div>
+              <div className="text-xs text-[var(--text-muted)] mt-1">基于35万年外包/人力 × 65%AI替代比</div>
+            </div>
+            <div className="border border-[#E5E1D8] rounded-xl p-5">
+              <div className="text-sm text-[var(--text-muted)] mb-2">投入回报周期</div>
+              <div className="text-3xl font-black text-[#D97706]">30<span className="text-lg">天内</span></div>
+              <div className="text-xs text-[var(--text-muted)] mt-1">AI工具月成本 ≈ 一个实习生日薪</div>
+            </div>
+            <div className="border border-[#E5E1D8] rounded-xl p-5">
+              <div className="text-sm text-[var(--text-muted)] mb-2">不转型的隐性成本</div>
+              <div className="text-3xl font-black text-[#D97706]">↑40%</div>
+              <div className="text-xs text-[var(--text-muted)] mt-1">竞对降本后的定价优势将侵蚀你的利润</div>
+            </div>
+          </div>
         </motion.div>
       </motion.div>
     </Slide>,
@@ -461,8 +685,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     // S15: 章节页
     <Slide key="s15" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center w-full max-w-5xl mx-auto pl-12">
-        <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal text-left">
-          真正的<span className="text-red-500">卡点</span>在于：
+        <h2 className="text-5xl md:text-7xl font-black text-[#FAF9F6] leading-tight mb-8 tracking-normal text-left">
+          真正的<span className="text-[#D97706]">卡点</span>在于：
         </h2>
         <p className="text-6xl md:text-[6rem] text-gradient font-black tracking-normal text-left leading-tight mt-4">
           老板有意识，<br />员工没跟上。
@@ -499,7 +723,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               solution: "→ 需要：手把手的上手指导 + 现成模板",
             },
             {
-              icon: <Users size={36} className="text-red-400" />, title: "心理层：不愿意用",
+              icon: <Users size={36} className="text-[#D97706]" />, title: "心理层：不愿意用",
               points: [
                 "AI会取代我的岗位",
                 "用AI是因为公司不信任我",
@@ -509,7 +733,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               solution: "→ 需要：重新定义AI与人的关系",
             },
           ].map((item, i) => (
-            <motion.div key={item.title} {...d(0.2 + i * 0.15)} className="glass-card p-7">
+            <motion.div key={item.title} {...d(0.2 + i * 0.15)} className="glass-card">
               <div className="mb-5">{item.icon}</div>
               <h3 className="text-lg font-bold text-[#2D2A26] mb-5">{item.title}</h3>
               <ul className="space-y-3 mb-6">
@@ -543,10 +767,14 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             { wrong: "买个系统就行了", right: "AI不是买来的，是长出来的——需要和你的业务流程深度结合，需要培训团队使用" },
           ].map((item, i) => (
             <motion.div key={i} {...d(0.1 + i * 0.08)}>
-              <div className="glass-card p-12 grid md:grid-cols-2 gap-12 items-center">
+              <div className="glass-card grid md:grid-cols-2 gap-12 items-center cursor-pointer hover:border-[var(--brand-glow)] transition-colors"
+                onClick={() => {
+                  const mythKeys = ["myth_cost", "myth_unstable", "myth_replace", "myth_wait", "myth_buy"];
+                  if(caseDetails[mythKeys[i]]) setModalContent(caseDetails[mythKeys[i]]);
+                }}>
                 <div className="flex items-start gap-3">
-                  <XCircle size={18} className="text-red-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-base text-red-400/80 font-medium">{item.wrong}</p>
+                  <XCircle size={18} className="text-[#D97706] mt-0.5 flex-shrink-0" />
+                  <p className="text-base text-[#D97706]/80 font-medium">{item.wrong}</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 size={18} className="text-green-400 mt-0.5 flex-shrink-0" />
@@ -564,12 +792,12 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     // S18: 核心观念
     <Slide key="s18" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center max-w-5xl mx-auto w-full">
-        <h2 className="text-5xl md:text-[6rem] font-black text-[#2D2A26] leading-[1.1] mb-12 tracking-normal">
-          AI不是来<span className="text-red-500">替代</span>人的<br />
+        <h2 className="text-5xl md:text-[6rem] font-black text-[#FAF9F6] leading-[1.1] mb-12 tracking-normal">
+          AI不是来<span className="text-[#D97706]">替代</span>人的<br />
           而是来<span className="text-gradient">放大</span>人的
         </h2>
-        <motion.p {...d(0.5)} className="text-2xl md:text-3xl text-[var(--text-secondary)] leading-relaxed tracking-normal mt-8">
-          AI是每个员工的 <span className="text-[#2D2A26] font-bold">超级数字外骨骼</span>，<br />
+        <motion.p {...d(0.5)} className="text-2xl md:text-3xl text-gray-400 leading-relaxed tracking-normal mt-8">
+          AI是每个员工的 <span className="text-white font-bold">超级数字外骨骼</span>，<br />
           它只取代任务，<span className="text-[var(--brand-glow)]">绝不取代拥有好奇心的大脑。</span>
         </motion.p>
       </motion.div>
@@ -578,12 +806,12 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     // S19: 人+AI 新公式
     <Slide key="s19">
       <motion.div {...fadeUp} className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl font-black text-[#2D2A26] mb-12">新的工作公式</h2>
+        <h2 className="text-3xl font-black text-[#2D2A26] mb-12">碳基 × 硅基 = 超级个体</h2>
         <div className="flex md:flex-row flex-col justify-center items-center gap-12 mb-16">
           {[
-            { icon: <Users size={56} className="text-[#2D2A26] mb-6 mx-auto" />, label: "Human", desc: "创意 · 判断 · 战略 · 同理心" },
+            { icon: <Users size={56} className="text-[#2D2A26] mb-6 mx-auto" />, label: "碳基大脑", desc: "创意 · 判断 · 战略 · 同理心 · 行业经验" },
             { icon: <div className="text-5xl font-black text-[#9E9B96] hidden md:block px-4">×</div>, label: "Multiplier", desc: "" },
-            { icon: <Bot size={56} className="text-[var(--brand-glow)] mb-6 mx-auto" />, label: "AI Agent", desc: "速度 · 规模 · 一致性 · 7×24" },
+            { icon: <Bot size={56} className="text-[var(--brand-glow)] mb-6 mx-auto" />, label: "硅基算力", desc: "速度 · 规模 · 一致性 · 7×24 · 零疲劳" },
           ].map((item, i) => (
             <motion.div key={i} {...d(0.2 + i * 0.15)} className={item.desc ? "text-center w-full md:w-1/3" : "text-center w-auto"}>
               {item.desc ? (
@@ -599,8 +827,13 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
           ))}
         </div>
         <motion.div {...d(0.6)} className="inline-block border-t border-b border-[#E5E1D8] py-6 px-12">
-          <p className="text-4xl md:text-5xl font-black text-gradient tracking-normal">= 一个人活成一支队伍</p>
+          <p className="text-4xl md:text-5xl font-black text-gradient tracking-normal">= 超级个体 · Super Individual</p>
         </motion.div>
+        <motion.p {...d(0.8)} className="text-xl text-[var(--text-secondary)] leading-relaxed mt-8 max-w-3xl mx-auto text-center">
+          硅基算力负责所有可重复、可量化、可标准化的执行——数据分析、内容生成、客户响应、流程调度。<br />
+          碳基大脑专注于最高价值的不可替代工作——战略决策、客户关系、创新判断、品牌直觉。<br />
+          <span className="text-[var(--brand-glow)] font-bold">两者协同，一个5人中小团队可以释放出50人的产能。</span>
+        </motion.p>
       </motion.div>
     </Slide>,
 
@@ -608,20 +841,20 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s20">
       <motion.div {...fadeUp} className="max-w-4xl mx-auto">
         <h2 className="text-3xl font-black text-[#2D2A26] mb-4 text-center">
-          <span className="text-gradient">"一人公司"</span>现象正在爆发
+          <span className="text-gradient">5人干出50人的活</span>——已经在发生
         </h2>
         <p className="text-center text-[var(--text-secondary)] mb-10">
-          中国互联网上已经有大量不到5人的团队，年营收过千万
+          以下中小团队正在用 AI 实现远超传统规模的人均产出
         </p>
         <div className="grid md:grid-cols-2 gap-8">
           {[
-            { title: "1个人做跨境电商", desc: "AI写产品描述（6种语言）→ AI生成素材图 → AI自动投放广告 → AI客服处理询盘 → 1个人管全链路", result: "月均营收 ¥120万+", icon: Globe },
-            { title: "2个人做MCN", desc: "AI批量生成短视频脚本 → AI合成配音 → AI剪辑 → AI分析数据调优 → 2个人管100+账号", result: "全平台粉丝 500万+", icon: Eye },
-            { title: "3个人做SaaS", desc: "AI写代码 → AI做UI → AI写文档 → AI做客服 → 3个人从0到产品上线只用了6周", result: "已服务200+企业客户", icon: Cpu },
-            { title: "1个人做法律咨询", desc: "AI分析合同 → AI做判例检索 → AI起草法律意见 → 律师只做终审和客户沟通", result: "人效提升 8 倍", icon: Building2 },
+            { title: "5人跨境电商团队", desc: "AI写产品描述（6种语言）→ AI生成素材 → AI自动投放 → AI客服处理询盘 → 5人管8国站点", result: "年营收 ¥3,000万+ / 人均产值¥600万", icon: Globe },
+            { title: "8人内容营销团队", desc: "AI批量生成脚本 → AI合成配音剪辑 → AI做数据分析调优 → 8人管200+账号矩阵", result: "全平台月触达 5000万+ / 获客成本降70%", icon: Eye },
+            { title: "10人制造业企业", desc: "AI做质检视觉 → AI预测设备故障 → AI优化排产 → AI处理供应商报价 → 10人工厂产能翻倍", result: "年省 ¥150万人工 / 良品率↑12%", icon: Cpu },
+            { title: "15人专业服务公司", desc: "AI分析合同 → AI做判例/政策检索 → AI起草报告初稿 → 专家只做终审和客户沟通", result: "人均服务客户数 ×4 / 客户满意度↑25%", icon: Building2 },
           ].map((item, i) => (
             <motion.div key={item.title} {...d(0.2 + i * 0.1)}
-              className="glass-card p-7">
+              className="glass-card">
               <div className="flex items-center gap-3 mb-4">
                 <item.icon size={20} className="text-[var(--brand-glow)]" />
                 <h3 className="text-base font-bold text-[#2D2A26]">{item.title}</h3>
@@ -645,17 +878,17 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         <p className="text-center text-[var(--text-muted)] mb-12">从获客到售后——没有死角</p>
         <div className="flex flex-wrap items-center justify-center gap-5">
           {[
-            { icon: Target, label: "获客", desc: "AI海报 · 视频 · 文案矩阵", color: "#D97706" },
-            { icon: MessageSquare, label: "销售", desc: "实时话术 · 智能回访", color: "#EA580C" },
-            { icon: Brain, label: "研发", desc: "头脑风暴 · 快速原型", color: "#B45309" },
-            { icon: BarChart3, label: "运营", desc: "仪表盘 · AI报告", color: "#CA8A04" },
-            { icon: Building2, label: "行政", desc: "合同 · 纪要 · 排班", color: "#A16207" },
-            { icon: Headphones, label: "客服", desc: "智能客服 · 舆情", color: "#DC6843" },
+            { icon: Target, label: "获客", desc: "Coze矩阵 · MJ出图 · 成本降40%", color: "#D97706" },
+            { icon: MessageSquare, label: "销售", desc: "Einstein/飞书旁听 · 有效沟通↑130%", color: "#EA580C" },
+            { icon: Brain, label: "研发", desc: "Cursor原型 · Claude推理 · MVP快80%", color: "#B45309" },
+            { icon: BarChart3, label: "运营", desc: "Code Interpreter · 3秒出图表", color: "#CA8A04" },
+            { icon: Building2, label: "行政", desc: "Whisper纪要 · 审核↓95%工时", color: "#A16207" },
+            { icon: Headphones, label: "客服", desc: "RAG知识库 · 8人→1人", color: "#DC6843" },
           ].map((item, i) => (
             <motion.div key={item.label} {...d(0.15 + i * 0.08)}
               className="flex items-center gap-3">
               {i > 0 && <ArrowRight size={18} className="text-[var(--text-muted)]" />}
-              <div className="glass-card px-12 py-5 text-center min-w-[120px]">
+              <div className="glass-card text-center min-w-[120px]">
                 <item.icon size={22} style={{ color: item.color }} className="mx-auto mb-2" />
                 <div className="text-sm font-bold text-[#2D2A26] mb-1">{item.label}</div>
                 <div className="text-[11px] text-[var(--text-muted)] leading-snug">{item.desc}</div>
@@ -685,7 +918,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             { time: "D2 下午", title: "AI落地工作坊", desc: "你的企业问题→AI方案草图 + 1v1 答疑", tag: "", active: false },
           ].map((item, i) => (
             <motion.div key={item.time} {...d(0.2 + i * 0.1)}
-              className={`glass-card p-12 flex items-center gap-5 ${item.active ? "!border-[var(--brand-primary)]" : ""}`}>
+              className={`glass-card flex items-center gap-5 ${item.active ? "!border-[var(--brand-primary)]" : ""}`}>
               <span className="text-sm font-mono text-[var(--brand-glow)] w-[72px] flex-shrink-0">{item.time}</span>
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-1">
@@ -703,7 +936,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     // S23: 金句
     <Slide key="s23" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-black text-[#2D2A26] leading-[1.2] mb-10">
+        <h2 className="text-4xl md:text-5xl font-black text-[#FAF9F6] leading-[1.2] mb-10">
           "AI不会淘汰任何人——<br />
           但<span className="text-gradient">会用AI的人</span>，<br />
           会淘汰不会用的人"
@@ -735,8 +968,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     // S25: 转场
     <Slide key="s25" bg="linear-gradient(135deg, #292420 0%, #1C1917 100%)">
       <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto">
-        <p className="text-lg text-[var(--text-muted)] mb-8">D1 上午 · 认知重塑 · 完</p>
-        <h2 className="text-5xl font-black text-[#2D2A26] mb-8">下午见</h2>
+        <p className="text-lg text-gray-500 mb-8">D1 上午 · 认知重塑 · 完</p>
+        <h2 className="text-5xl font-black text-[#FAF9F6] mb-8">下午见</h2>
         <motion.p {...d(0.4)} className="text-xl text-[var(--text-secondary)] leading-relaxed mb-10">
           我们会现场选一位企业主<br />
           <span className="text-gradient font-bold">Live Coding 为你搭建一个AI工具</span><br />

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { SlideEngine, Slide } from "@/components/slides/SlideEngine";
 import { CaseModal } from "@/components/slides/CaseModal";
 import { caseDetails } from "./case-details";
-import { Factory, PackageOpen, Server, PlayCircle, PauseCircle, Film, Code2 } from "lucide-react";
+import { Factory, PackageOpen, Server, Film, Code2, Users, Database, MessageSquare, Map, BookOpen } from "lucide-react";
 
 /* ============================================
    动画工具
@@ -25,7 +25,7 @@ const d = (delay: number) => ({
    组件：动态时钟幻灯片
    ============================================ */
 function TimerSlide({ setModalContent }: { setModalContent: (content: React.ReactNode) => void }) {
-  const [timeLeft, setTimeLeft] = useState(45 * 60); // 45分钟
+  const [timeLeft, setTimeLeft] = useState(45 * 60);
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,6 @@ function TimerSlide({ setModalContent }: { setModalContent: (content: React.Reac
 
   return (
     <Slide key="timer" bg="#FAF9F6">
-      {/* 极简无实体按键倒计时界面 */}
       <motion.div 
         {...fadeUp} 
         className="flex flex-col items-center justify-center w-full h-full max-w-7xl mx-auto relative group pt-20"
@@ -100,7 +99,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s2">
       <motion.div {...fadeUp} className="text-center w-full max-w-5xl mx-auto pl-8">
         <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal text-left">
-          你以为AI还在“写文章”？
+          你以为AI还在"写文章"？
         </h2>
         <p className="text-6xl md:text-[6.5rem] text-[#D97706] font-black tracking-normal text-left leading-[1.1] mt-4">
           它已经真正潜入了<br />产业链的核心血管。
@@ -127,13 +126,13 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       </motion.div>
     </Slide>,
 
-    // S3: 工业制造 深钻
+    // ====== P4 (S3): 工业制造 —— 真实场景枚举 ======
     <Slide key="s3">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
         <div className="flex gap-8 items-center mb-8">
           <Factory size={56} className="text-[#9E9B96]" />
           <h2 className="text-4xl font-black text-[#666] tracking-wide uppercase">
-            <span className="text-[#2D2A26]">工业制造</span> / 绝密引擎
+            <span className="text-[#2D2A26]">工业制造</span> / 肉眼→算法
           </h2>
         </div>
         <div className="border-t border-[#E5E1D8] pt-12 grid grid-cols-1 md:grid-cols-2 gap-12 cursor-pointer group" onClick={() => setModalContent(caseDetails["manufacturing"])}>
@@ -141,20 +140,24 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               <img src="/cases/industry_manufacturing_1775101754129.png" alt="Industrial CV" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
               <div className="absolute bottom-6 left-6 right-6">
-                 <h4 className="text-2xl font-bold text-white mb-2 shadow-sm drop-shadow-md">大模型 + 工业机器视觉</h4>
-                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">0 情绪 | 24H 不停机 | 亚秒级判卷</p>
+                 <h4 className="text-2xl font-bold text-white mb-2 drop-shadow-md">老师傅请假 = 产线停摆？</h4>
+                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">AI 检测 · 零疲劳 · 零情绪 · 全年无休</p>
               </div>
            </div>
            <div className="flex flex-col justify-center">
-              <p className="text-[var(--text-secondary)] text-xl leading-relaxed mb-6">传统电池产线瑕疵检测极度依赖人眼，老手在 8 小时轮班后也会面临视疲劳。部署专用检测流后：</p>
-              <div className="bg-white border border-[#E5E1D8] p-12 rounded-xl shadow-sm space-y-4">
+              <div className="space-y-4 text-[var(--text-secondary)] text-lg leading-relaxed mb-6">
+                <p>🏭 <b className="text-[#2D2A26]">注塑/五金厂：</b>模具良品率全靠师傅肉眼挑，一个老师傅请假就出大批次质量事故</p>
+                <p>📦 <b className="text-[#2D2A26]">包装印刷厂：</b>色差比对靠人手举色卡，交期紧时老板自己上手都来不及</p>
+                <p>🔧 <b className="text-[#2D2A26]">机加工厂：</b>产能瓶颈不在CNC加工，而在人工量检——每件量3分钟，日产能卡死</p>
+              </div>
+              <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm space-y-4">
                 <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                  <span className="text-gray-500">检测准确率</span>
-                  <span className="text-2xl font-bold text-[#2D2A26]">99.8% <span className="text-sm text-green-600">↑3%</span></span>
+                  <span className="text-gray-500">某注塑厂 50人质检组</span>
+                  <span className="text-2xl font-bold text-[#2D2A26]">→ 仅留5人 <span className="text-sm text-green-600">↓90%</span></span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500">人力成本节省</span>
-                  <span className="text-3xl font-black text-[#D97706]">¥ 850,000 / 年</span>
+                  <span className="text-gray-500">年节省人力成本</span>
+                  <span className="text-3xl font-black text-[#D97706]">¥ 1,800,000+</span>
                 </div>
               </div>
            </div>
@@ -162,26 +165,30 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       </motion.div>
     </Slide>,
 
-    // S4: 跨境出海 深钻
+    // ====== P5 (S4): 跨境出海 —— 老板听得懂的语言 ======
     <Slide key="s4">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
         <div className="flex gap-8 items-center mb-8">
           <PackageOpen size={56} className="text-[#9E9B96]" />
           <h2 className="text-4xl font-black text-[#666] tracking-wide uppercase">
-            <span className="text-[#2D2A26]">跨境出海</span> / 无界分身
+            <span className="text-[#2D2A26]">跨境出海</span> / 一人舰队
           </h2>
         </div>
         <div className="border-t border-[#E5E1D8] pt-12 grid grid-cols-1 md:grid-cols-2 gap-12 cursor-pointer group" onClick={() => setModalContent(caseDetails["retail"])}>
            <div className="flex flex-col justify-center">
-              <p className="text-[var(--text-secondary)] text-xl leading-relaxed mb-6">从选品抓取、竞对打分，到英语/阿语商用级文案，再到平台自投。原先需要由 5 位高薪人才用两周磨出的业务闭环，现在只需一个 Agent。</p>
-              <div className="bg-white border border-[#E5E1D8] p-12 rounded-xl shadow-sm space-y-4">
+              <div className="space-y-4 text-[var(--text-secondary)] text-lg leading-relaxed mb-6">
+                <p>📱 <b className="text-[#2D2A26]">亚马逊/TikTok Shop：</b>开新品要翻6国语言+拍8组图+分平台上架，2周成本5万+ → Agent半天搞定</p>
+                <p>🌍 <b className="text-[#2D2A26]">外贸工厂：</b>阿里国际站询盘，2小时不回客户就流失 → AI 7×24秒级回复+自动出报价单</p>
+                <p>📊 <b className="text-[#2D2A26]">选品困局：</b>老板飞美国选品一趟花20万，回来还拿不准 → AI 10分钟出选品报告</p>
+              </div>
+              <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm space-y-4">
                 <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                  <span className="text-gray-500">新品全球开城周期</span>
-                  <span className="text-2xl font-bold text-[#2D2A26]">0.5 天 <span className="text-sm text-green-600">↓13.5天</span></span>
+                  <span className="text-gray-500">某深圳3C出海团队</span>
+                  <span className="text-2xl font-bold text-[#2D2A26]">外籍文案 3→0人</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500">外籍文案替换</span>
-                  <span className="text-3xl font-black text-[#D97706]">省下 3 个人头头数</span>
+                  <span className="text-gray-500">年节省人力成本</span>
+                  <span className="text-3xl font-black text-[#D97706]">¥ 450,000+</span>
                 </div>
               </div>
            </div>
@@ -189,38 +196,43 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               <img src="/cases/ecommerce_dashboard_1775101771068.png" alt="Ecommerce Analytics" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
               <div className="absolute bottom-6 left-6 right-6">
-                 <h4 className="text-2xl font-bold text-white mb-2 shadow-sm drop-shadow-md">多模态 Agent 工作流</h4>
-                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">选品 → 翻译 → 生成 → 投放全串联</p>
+                 <h4 className="text-2xl font-bold text-white mb-2 drop-shadow-md">询盘不过夜 · 选品不靠飞</h4>
+                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">翻译 → 文案 → 上架 → 投放全自动</p>
               </div>
            </div>
         </div>
       </motion.div>
     </Slide>,
 
-    // S5: 泛服务业 深钻
+    // ====== P6 (S5): 泛服务业 —— 经验不再被人带走 ======
     <Slide key="s5">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
         <div className="flex gap-8 items-center mb-8">
           <Server size={56} className="text-[#9E9B96]" />
           <h2 className="text-4xl font-black text-[#666] tracking-wide uppercase">
-            <span className="text-[#2D2A26]">泛服务业</span> / 知识平权
+            <span className="text-[#2D2A26]">泛服务业</span> / 经验不再被人带走
           </h2>
         </div>
         <div className="border-t border-[#E5E1D8] pt-12 grid grid-cols-1 md:grid-cols-2 gap-12 cursor-pointer group" onClick={() => setModalContent(caseDetails["service"])}>
            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 flex items-center justify-center">
-              <img src="/cases/service_knowledge_1775101783025.png" alt="Knowledge Base Assistant" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img src="/cases/service_knowledge_1775101783025.png" alt="Knowledge Base" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors"></div>
               <div className="absolute bottom-6 left-6 right-6">
-                 <h4 className="text-2xl font-bold text-white mb-2 shadow-sm drop-shadow-md">企业私有大脑 (RAG)</h4>
-                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">吸尽核心数据 | 无限分身解答</p>
+                 <h4 className="text-2xl font-bold text-white mb-2 drop-shadow-md">十年经验 · 一键继承</h4>
+                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">新人入职 = 拥有公司全部记忆</p>
               </div>
            </div>
            <div className="flex flex-col justify-center">
-              <p className="text-[var(--text-secondary)] text-xl leading-relaxed mb-6">律所、财税、售后支持常年困于“老骨干留不住，新兵教不会”。通过将 10 年业务档案全部喂给大模型构建的私域大脑，打破了能力垄断。</p>
-              <div className="bg-white border border-[#E5E1D8] p-12 rounded-xl shadow-sm space-y-4">
+              <div className="space-y-4 text-[var(--text-secondary)] text-lg leading-relaxed mb-6">
+                <p>⚖️ <b className="text-[#2D2A26]">律所/法务：</b>老合伙人带走客户，新律师不敢接复杂案件 → AI+十年卷宗秒级检索</p>
+                <p>📋 <b className="text-[#2D2A26]">财税/审计：</b>年政策变50+条，靠人记不靠谱，一个错判赔全年利润 → 政策库+智能审查</p>
+                <p>🏥 <b className="text-[#2D2A26]">医美/连锁：</b>好销售一走客户全丢，新人培训3月才独立 → 话术库+AI客户画像</p>
+                <p>🔨 <b className="text-[#2D2A26]">装修/建材：</b>设计师报价全凭感觉，换人差距30% → 项目知识库+AI自动估价</p>
+              </div>
+              <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm space-y-4">
                  <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                  <span className="text-gray-500">新人培养周期</span>
-                  <span className="text-2xl font-bold text-[#2D2A26]">3 天 <span className="text-sm text-green-600">↓ 原本3个月</span></span>
+                  <span className="text-gray-500">某连锁财税所 新人上岗周期</span>
+                  <span className="text-2xl font-bold text-[#2D2A26]">3个月→3天 <span className="text-sm text-green-600">↓97%</span></span>
                  </div>
                  <div className="flex justify-between items-center">
                   <span className="text-gray-500">客户承接力</span>
@@ -232,25 +244,30 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       </motion.div>
     </Slide>,
 
-    // S6: 娱乐传媒 深钻
+    // ====== P7 (S6): 内容传媒 —— 老板的变现语言 ======
     <Slide key="s6">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
         <div className="flex gap-8 items-center mb-8">
           <Film size={56} className="text-[#9E9B96]" />
           <h2 className="text-4xl font-black text-[#666] tracking-wide uppercase">
-            <span className="text-[#2D2A26]">内容传媒</span> / 工业流水线
+            <span className="text-[#2D2A26]">内容传媒</span> / 1人=10人矩阵团队
           </h2>
         </div>
         <div className="border-t border-[#E5E1D8] pt-12 grid grid-cols-1 md:grid-cols-2 gap-12 cursor-pointer group" onClick={() => setModalContent(caseDetails["media"])}>
            <div className="flex flex-col justify-center">
-              <p className="text-[var(--text-secondary)] text-xl leading-relaxed mb-6">长尾账号极耗资金，剪辑师、画手薪资见涨，稍不留神就被流量反噬。现在的打法是利用 AI 视频与生图，单日裂变千条符合平台算法的带货切片。</p>
-              <div className="bg-white border border-[#E5E1D8] p-12 rounded-xl shadow-sm space-y-4">
+              <div className="space-y-4 text-[var(--text-secondary)] text-lg leading-relaxed mb-6">
+                <p>📹 <b className="text-[#2D2A26]">短视频矩阵：</b>以前养10个号雇8人 → 现在AI一天批量200条不重复内容，自动分发</p>
+                <p>🛒 <b className="text-[#2D2A26]">直播切片：</b>老板播一场，AI自动切50条精华带货视频分发全平台</p>
+                <p>📝 <b className="text-[#2D2A26]">小红书/公众号：</b>运营发推文改8遍 → AI 3分钟采集、改写、配图、排版一条龙</p>
+                <p>🎤 <b className="text-[#2D2A26]">数字人IP：</b>老板录一段口播，AI生成多语言版，TikTok全球分发</p>
+              </div>
+              <div className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm space-y-4">
                  <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                  <span className="text-gray-500">外包摄制费用</span>
-                  <span className="text-2xl font-bold text-[#2D2A26]">¥ 0 <span className="text-sm text-green-600">彻底归零</span></span>
+                  <span className="text-gray-500">某餐饮品牌 外包摄影费</span>
+                  <span className="text-2xl font-bold text-[#2D2A26]">年15万→¥0 <span className="text-sm text-green-600">彻底归零</span></span>
                  </div>
                  <div className="flex justify-between items-center">
-                  <span className="text-gray-500">矩阵裂变基数</span>
+                  <span className="text-gray-500">抖音矩阵曝光量</span>
                   <span className="text-3xl font-black text-[#D97706]">100x 放大</span>
                  </div>
               </div>
@@ -259,31 +276,48 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               <img src="/cases/media_creator_1775101804245.png" alt="Media Factory" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
               <div className="absolute bottom-6 left-6 right-6">
-                 <h4 className="text-2xl font-bold text-white mb-2 shadow-sm drop-shadow-md">音视频工业流水线</h4>
-                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">克隆分身 | 批量搬运再创作</p>
+                 <h4 className="text-2xl font-bold text-white mb-2 drop-shadow-md">你播一场 · AI 裂变一千场</h4>
+                 <p className="text-[#D97706] font-mono tracking-wider drop-shadow-md font-bold">切片 → 配音 → 多平台 → 全自动</p>
               </div>
            </div>
         </div>
       </motion.div>
     </Slide>,
 
-    // S6.5: 击破技术恐惧
+    // ====== P8 (S6.5): 服务能力宣言 ======
     <Slide key="s6_5" bg="white">
-      <motion.div {...fadeUp} className="text-center w-full max-w-5xl mx-auto pl-8">
-        <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal">
-          “我不懂代码，是不是没戏了？”
-        </h2>
-        <p className="text-4xl text-[#D97706] font-bold tracking-wide mt-10">
-          这是 2026 年最大的谎言。
-        </p>
-        <p className="text-2xl text-[#6B6660] leading-relaxed mt-8 max-w-3xl mx-auto">
-          AI 工具早已完成了平民化革命。通过 Flow 和自然语言编排，
-          你不需要会写一行代码，只需要知道<span className="font-bold text-[#2D2A26]">“你的业务卡在哪里”</span>。这正是企业主最大的优势：懂业务。
+      <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
+        <div className="flex gap-6 items-center mb-4">
+          <div className="w-16 h-1 bg-[#D97706]"></div>
+          <h2 className="text-3xl font-black text-[#2D2A26] tracking-wide">
+            我们帮企业打造的 AI 基建
+          </h2>
+        </div>
+        <p className="text-lg text-[#9E9B96] mb-10">高价值服务 · 高交付标准 · 对得起你下单的每一分钱</p>
+        <div className="grid md:grid-cols-2 gap-8">
+          {[
+            { icon: <Code2 size={28} className="text-[#D97706]" />, tag: "01", title: "企业级 AI 工具定制开发", desc: "用 IDE + AI 编程，按你的业务逻辑、审批链条、数据口径量身打造自研工具。不是SaaS套模板，是你独有的数字武器。" },
+            { icon: <Users size={28} className="text-[#D97706]" />, tag: "02", title: "百位专家 Agent 矩阵", desc: "为企业打造100+个专家级AI Agent，覆盖销售/法务/采购/运营/客服全岗位。每个Agent吃透十年数据，7×24不休不走。" },
+            { icon: <Database size={28} className="text-[#D97706]" />, tag: "03", title: "企业数字资产 / 专家知识库", desc: "把散落在微信群、飞书文档、各人电脑里的知识全部汇入AI大脑。新人入职=十年老员工。数据不出企业围墙，私有部署。" },
+            { icon: <MessageSquare size={28} className="text-[#D97706]" />, tag: "04", title: "飞书 / 钉钉 / 企微 无痛接入", desc: "CLI一键集成，不换系统、不培训、不停工。现有审批流、日报、客服直接升维AI驱动。零学习成本，当天部署当天用。" },
+          ].map(item => (
+            <div key={item.tag} className="bg-[#F9F8F5] border border-[#E5E1D8] p-8 rounded-xl hover:border-[#D97706] transition-colors">
+              <div className="flex items-center gap-4 mb-4">
+                {item.icon}
+                <span className="text-xs font-bold text-[#D97706] tracking-wider">{item.tag}</span>
+              </div>
+              <h3 className="text-xl font-bold text-[#2D2A26] mb-3">{item.title}</h3>
+              <p className="text-[#6B6660] leading-relaxed text-sm">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-2xl font-bold text-[#2D2A26] mt-10 tracking-wide">
+          这不是卖你一个软件，是帮你的企业<span className="text-[#D97706]">装上 AI 引擎</span>
         </p>
       </motion.div>
     </Slide>,
 
-    // S6.8: 收获预期
+    // ====== P9 (S6.8): 收获预期（第三项已修改） ======
     <Slide key="s6_8">
       <motion.div {...fadeUp} className="max-w-4xl mx-auto w-full">
         <h2 className="text-4xl font-black text-[#2D2A26] tracking-wide mb-12 text-center">
@@ -292,8 +326,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         <div className="grid md:grid-cols-3 gap-12">
           {[
             { tag: "01 PLAN", title: "一份私有诊断", desc: "摸清你企业利润正在流失的三大出血点。" },
-            { tag: "02 TOOL", title: "一套现成工具库", desc: "6 套开箱即用的 AI 提效界面，直接拨给员工用。" },
-            { tag: "03 ACTION", title: "一个降本时间表", desc: "明确在接下来的 30 天内，要砍掉哪三个外包和岗位。" },
+            { tag: "02 TOOL", title: "一套现成工具库", desc: "6 套开箱即用的 AI 提效工具，直接给员工上手。" },
+            { tag: "03 MAP", title: "一份AI改造路线图", desc: "企业老板如何改造成新AI企业 + 全员AI工具使用白皮书。" },
           ].map(b => (
             <div key={b.tag} className="bg-white border border-[#E5E1D8] p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                <div className="text-sm font-bold text-[#D97706] mb-2">{b.tag}</div>
@@ -302,6 +336,131 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             </div>
           ))}
         </div>
+      </motion.div>
+    </Slide>,
+
+    // ====== P10: 诊断展开 —— 利润出血点 ======
+    <Slide key="p10" bg="white">
+      <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
+        <h2 className="text-4xl font-black text-[#2D2A26] tracking-wide mb-3 text-center">
+          你的企业，每月在为<span className="text-[#D97706]">无效人力</span>付多少钱？
+        </h2>
+        <p className="text-lg text-[#9E9B96] text-center mb-10">精准诊断你的利润出血点</p>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              tag: "出血点 ①", title: "信息传递消耗",
+              points: ["业务员每天40%时间在找资料、汇报、等审批", "这些时间不产生一分钱收入", "AI做到：信息秒检索、审批自动、日报自动生成"],
+              highlight: "月薪6000的员工，实际产出时间只值3600",
+            },
+            {
+              tag: "出血点 ②", title: "经验无法复制",
+              points: ["最怕的事：核心员工离职带走客户和know-how", "新人学3个月还犯低级错误，投诉率飙升", "AI做到：十年经验灌入知识库，新人即战力"],
+              highlight: "你花3年培养的总监，AI 3天复制80%能力",
+            },
+            {
+              tag: "出血点 ③", title: "决策靠拍脑袋",
+              points: ["补货多少？投哪个渠道？该不该接这单？全凭经验", "一个判断失误可能亏掉一整年利润", "AI做到：数据驱动决策、实时分析、竞品监控"],
+              highlight: "用数据赚钱，比用直觉赚钱安全10倍",
+            },
+          ].map(item => (
+            <div key={item.tag} className="bg-[#F9F8F5] border border-[#E5E1D8] p-8 rounded-xl flex flex-col">
+              <div className="text-xs font-bold text-red-500 tracking-wider mb-3">{item.tag}</div>
+              <h3 className="text-xl font-bold text-[#2D2A26] mb-5">{item.title}</h3>
+              <ul className="space-y-3 text-[#6B6660] text-sm leading-relaxed flex-1">
+                {item.points.map((p, i) => <li key={i} className="flex gap-2"><span className="text-[#D97706] shrink-0">›</span> {p}</li>)}
+              </ul>
+              <div className="mt-6 pt-4 border-t border-[#E5E1D8]">
+                <p className="text-sm font-bold text-[#D97706]">★ {item.highlight}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xl text-[#6B6660] mt-10">
+          诊断报告免费出 · <span className="font-bold text-[#2D2A26]">让数据告诉你，你的企业正在哪里漏钱</span>
+        </p>
+      </motion.div>
+    </Slide>,
+
+    // ====== P11: 工具库展开 ======
+    <Slide key="p11" bg="white">
+      <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
+        <h2 className="text-4xl font-black text-[#2D2A26] tracking-wide mb-3 text-center">
+          别人的员工已经<span className="text-[#D97706]">用上了</span>，你还在靠嘴喊
+        </h2>
+        <p className="text-lg text-[#9E9B96] text-center mb-10">6套AI工具已就位，给你的团队装上涡轮增压</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { icon: "🎯", title: "AI 获客引擎", desc: "自动生图、文案、多平台分发\n1人 = 5人营销团队" },
+            { icon: "💬", title: "AI 销售军师", desc: "实时话术提示、客户画像分析\n成交概率预测" },
+            { icon: "🎧", title: "AI 客服管家", desc: "7×24无休应答、投诉识别\n满意度追踪" },
+            { icon: "📊", title: "AI 运营看板", desc: "日报周报自动生成\n数据异常预警" },
+            { icon: "🛒", title: "AI 采购助手", desc: "比价系统、供应商评估\n库存智能预警" },
+            { icon: "📝", title: "AI 会议纪要", desc: "开完会自动出纪要\n分配任务、跟踪进度" },
+          ].map(t => (
+            <div key={t.title} className="bg-white border border-[#E5E1D8] p-6 rounded-xl hover:border-[#D97706] hover:shadow-md transition-all text-center">
+              <div className="text-4xl mb-4">{t.icon}</div>
+              <h3 className="text-lg font-bold text-[#2D2A26] mb-3">{t.title}</h3>
+              <p className="text-[#6B6660] text-sm leading-relaxed whitespace-pre-line">{t.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xl font-bold text-[#2D2A26] mt-10">
+          你的竞争对手正在悄悄上这些工具。<br />
+          <span className="text-[#D97706]">你每晚一天，就多付一天的无效人力成本。</span>
+        </p>
+      </motion.div>
+    </Slide>,
+
+    // ====== P12: AI改造路线图 ======
+    <Slide key="p12" bg="white">
+      <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
+        <h2 className="text-4xl font-black text-[#2D2A26] tracking-wide mb-3 text-center">
+          你不需要懂AI，你需要<span className="text-[#D97706]">一张路线图</span>
+        </h2>
+        <p className="text-lg text-[#9E9B96] text-center mb-10">企业老板 → 新AI企业 落地白皮书</p>
+        <div className="grid md:grid-cols-2 gap-10">
+          <div className="bg-[#F9F8F5] border border-[#E5E1D8] p-8 rounded-xl">
+            <h3 className="text-xl font-black text-[#2D2A26] mb-6 flex items-center gap-3">
+              <Map size={24} className="text-[#D97706]" /> 老板要做的 3 件事
+            </h3>
+            <div className="space-y-6">
+              {[
+                { week: "第一周", title: "诊断", desc: "我来帮你做一次企业AI体检，找出3个最值得AI改造的岗位" },
+                { week: "第二周", title: "试点", desc: "选一个岗位先上AI，让全公司看到ROI的真实数据" },
+                { week: "第三周", title: "推广", desc: "发布公司级AI使用规范，把工具权限发到每个人手里" },
+              ].map(step => (
+                <div key={step.week} className="flex gap-4">
+                  <div className="shrink-0 w-16 h-16 rounded-full bg-white border-2 border-[#D97706] flex items-center justify-center text-xs font-bold text-[#D97706]">{step.week}</div>
+                  <div>
+                    <h4 className="font-bold text-[#2D2A26] mb-1">{step.title}</h4>
+                    <p className="text-[#6B6660] text-sm leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-[#F9F8F5] border border-[#E5E1D8] p-8 rounded-xl">
+            <h3 className="text-xl font-black text-[#2D2A26] mb-6 flex items-center gap-3">
+              <BookOpen size={24} className="text-[#D97706]" /> 员工白皮书的核心
+            </h3>
+            <div className="space-y-5 text-[#6B6660] text-base leading-relaxed">
+              <p className="font-bold text-[#2D2A26] text-lg">不是让员工学编程，是教他们用自然语言指挥AI</p>
+              <div className="space-y-3 pt-4 border-t border-[#E5E1D8]">
+                <p>📖 <b className="text-[#2D2A26]">AI提问技巧：</b>怎么问，AI才能给出你要的答案</p>
+                <p>🎯 <b className="text-[#2D2A26]">业务场景模板：</b>开箱即用，覆盖90%日常工作</p>
+                <p>🚫 <b className="text-[#2D2A26]">安全红线：</b>哪些数据绝对不能喂给AI</p>
+              </div>
+              <div className="bg-white border border-[#E5E1D8] p-4 rounded-lg mt-4">
+                <p className="text-[#2D2A26] font-bold text-center">结果：每个员工变成<br /><span className="text-[#D97706] text-lg">{'"1人 + 1个AI助手"的战队'}</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-xl font-bold mt-10 text-[#2D2A26]">
+          2026年底还没完成AI改造的企业——<br />
+          <span className="text-[#D97706]">不是被AI淘汰，是被先改造完的同行淘汰。你敢赌吗？</span>
+        </p>
       </motion.div>
     </Slide>,
 
@@ -323,7 +482,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     </Slide>,
     
     // S8: 45分钟倒计时页
-    <TimerSlide key="timer_module" setModalContent={setModalContent} />
+    <TimerSlide key="timer_module" setModalContent={setModalContent} />,
   ];
 }
 

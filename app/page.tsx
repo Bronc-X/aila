@@ -15,9 +15,12 @@ import {
   Users,
   Sparkles,
   ChevronDown,
+  TrendingDown,
+  TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import TokenGate from "./components/TokenGate";
 
 // 动画配置
 const fadeInUp = {
@@ -64,25 +67,29 @@ const toolModules = [
   },
 ];
 
-// 两天流程
+// 两天流程 — 从中小企业主痛点出发重写
 const schedule = [
   {
     day: "DAY 1",
     date: "4月18日",
-    title: "认知重塑 · 案例震撼",
+    title: "破局：利润下滑不是终点，是您换引擎的信号",
     blocks: [
       {
         time: "上午 09:00",
-        label: "AI核心破局点",
-        items: ["2026 年生成式大模型边界扫描", "中美企业应用 AI 差距数据实录", "破除员工抗拒：组织转型三大致命卡点"],
+        label: "看清残局：您的利润正在被谁吞掉？",
+        items: [
+          "2026 年 AI 能力边界全景：哪些岗位正在被替代，哪些企业已经在翻倍增长",
+          "残酷数据对比：用了 AI 的同行，获客成本砍半、人效翻三倍的真实账本",
+          "中小企业引入 AI 最容易踩的三个致命深坑——以及怎么绕过去",
+        ],
       },
       {
         time: "下午 13:30",
-        label: "极限深钻",
+        label: "对号入座：您的行业，AI 正在颠覆哪个环节？",
         items: [
-          "多行业 AI 落地效果极致拆解 (含跨维打击逻辑)",
-          "随机抽取企业当下的痛点盲区诊断",
-          "🔥 Live Coding: 45 分钟屏息实战，构建您企业的全自动销售流",
+          "五大行业真实案例拆解：他们怎样用 AI 把利润率从 8% 拉到 23%",
+          "现场诊断：随机抽取在座企业，当场锁定 AI 可切入的利润增长点",
+          "🔥 45 分钟实战：从零搭建一套全自动获客→跟单→成交流水线",
         ],
       },
     ],
@@ -90,20 +97,24 @@ const schedule = [
   {
     day: "DAY 2",
     date: "4月19日",
-    title: "工具实操 · 方案带走",
+    title: "上手：不再观望，今天就让 AI 替您干活",
     blocks: [
       {
         time: "上午 09:00",
-        label: "无情操练",
-        items: ["展示当前世界最能变现的杀手级工具全景图", "Dify / Coze：手把手搭建获客与销售工作流", "Perplexity / Advanced Data：图鉴与报表 10 秒通杀体验"],
+        label: "工具实训：零基础也能即学即用的杀手级武器",
+        items: [
+          "从 100+ AI 工具中筛出最适合中小企业的 12 个杀手级应用",
+          "手把手教学：用 Dify / Coze 搭建您自己的智能获客+销售系统",
+          "10 秒出报表：用 AI 替代过去要花半天的数据分析工作",
+        ],
       },
       {
         time: "下午 13:30",
-        label: "终班闭门会",
+        label: "定制交付：带走属于您企业的 AI 作战地图",
         items: [
-          "业务级工作坊推演图：画出替代人工的 AI 业务管道",
-          "算清这笔恐怖的 ROI 溢价账簿",
-          "🔥 1v1 Q&A 专家问诊答疑，带走您的行动计划甘特图",
+          "工作坊：画出您企业的 AI 改造蓝图——哪些岗位换工具、哪些流程自动化",
+          "算一笔账：引入 AI 后，您每月能省多少人力成本、多接多少订单",
+          "🔥 1v1 专家诊断：针对您的企业定制 AI 落地时间表，离场即可执行",
         ],
       },
     ],
@@ -112,6 +123,7 @@ const schedule = [
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const [tokenGateOpen, setTokenGateOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -121,6 +133,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAF9F6] overflow-hidden font-sans">
+      {/* Token 验证 Modal */}
+      <TokenGate isOpen={tokenGateOpen} onClose={() => setTokenGateOpen(false)} />
+
       {/* 极简化导航栏 */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
@@ -147,22 +162,22 @@ export default function Home() {
           <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
         </div>
         <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0">
-          <Link
-            href="/slides"
-            className="text-[#2D2A26] border border-[#E5E1D8] bg-transparent text-sm font-bold tracking-wide uppercase py-3 px-6 lg:px-10 hover:bg-[#2D2A26] hover:text-white hover:border-[#2D2A26] transition-colors rounded-xl hidden sm:block whitespace-nowrap text-center"
+          <button
+            onClick={() => setTokenGateOpen(true)}
+            className="text-[#2D2A26] border border-[#E5E1D8] bg-transparent text-sm font-bold tracking-wide uppercase py-3 px-6 lg:px-10 hover:bg-[#2D2A26] hover:text-white hover:border-[#2D2A26] transition-colors rounded-xl hidden sm:block whitespace-nowrap text-center cursor-pointer"
           >
             进入讲演模式
-          </Link>
+          </button>
           <Link
             href="/login"
             className="bg-[#D97706] text-white text-sm font-bold tracking-wide uppercase py-3 px-8 lg:px-12 hover:bg-[#B45309] transition-colors rounded-xl whitespace-nowrap text-center"
           >
-            系统授权接口
+            输入邀请码
           </Link>
         </div>
       </motion.nav>
 
-      {/* 极简风 Hero 区域 */}
+      {/* Hero 区域 — 从痛点出发 */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-12 lg:px-32 pt-32 pb-16">
         <motion.div
           initial="initial"
@@ -185,7 +200,9 @@ export default function Home() {
             variants={fadeInUp}
             className="text-2xl md:text-3xl text-[#9E9B96] max-w-4xl leading-snug tracking-normal mb-16"
           >
-            这不是一次营销噱头。<br className="hidden md:block"/>这是两天的残酷内化。从认知剥离到核心流重建，让 AI 真正渗透进您的利润血管里。
+            订单下滑、利润缩水、团队疲于内卷——<br className="hidden md:block"/>
+            问题不在努力不够，而在<span className="text-[#2D2A26] font-bold">武器没升级</span>。<br className="hidden md:block"/>
+            两天时间，逐环节锁定 AI 的精确切入点，让每一分钱的成本都找到可量化的回报路径。
           </motion.p>
 
           <motion.div
@@ -206,13 +223,13 @@ export default function Home() {
             variants={fadeInUp}
             className="mt-16 flex flex-col sm:flex-row gap-8 justify-center"
           >
-            <Link
-              href="/slides"
-              className="bg-[#2D2A26] text-white font-bold tracking-wide uppercase py-5 px-12 hover:bg-black transition-colors rounded-2xl text-lg flex items-center justify-center gap-3"
+            <button
+              onClick={() => setTokenGateOpen(true)}
+              className="bg-[#2D2A26] text-white font-bold tracking-wide uppercase py-5 px-12 hover:bg-black transition-colors rounded-2xl text-lg flex items-center justify-center gap-3 cursor-pointer"
             >
               启动授课演示
               <ChevronDown size={20} className="-rotate-90" />
-            </Link>
+            </button>
           </motion.div>
 
         </motion.div>
@@ -227,7 +244,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* 极简风格日程 */}
+      {/* 日程区 — 从痛点出发的标题 */}
       <section id="schedule" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-[#FAF9F6] border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -237,10 +254,10 @@ export default function Home() {
             className="mb-28"
           >
             <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
-              极限两天。
+              两天，六大环节，逐个击破。
             </h2>
             <p className="text-xl md:text-2xl text-[#9E9B96] tracking-normal max-w-3xl">
-              拒绝只说不练。这里没有废话，只有干货研表与血淋淋的代码流展示。
+              不卖概念、不讲空话。每个模块都直接对应您企业的获客、销售、运营、行政、客服和研发环节，现场演练可直接复制到您公司的落地方案。
             </p>
           </motion.div>
 
@@ -259,7 +276,7 @@ export default function Home() {
                   <div className="md:w-1/3 shrink-0">
                     <div className="text-5xl font-black text-[#2D2A26] tracking-normal mb-3">{day.day}</div>
                     <div className="text-[#9E9B96] font-mono uppercase tracking-wide mb-8 text-base">{day.date}</div>
-                    <h3 className="text-2xl font-bold text-[#9E9B96] tracking-normal">{day.title}</h3>
+                    <h3 className="text-xl font-bold text-[#9E9B96] tracking-normal leading-relaxed">{day.title}</h3>
                   </div>
 
                   {/* 详细块列 */}
@@ -293,7 +310,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 极简风格全矩阵工具展示 */}
+      {/* 工具展示区 — 保留 The Arsenal + 卡片可点击跳转 login */}
       <section id="tools" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-white border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto relative z-10">
           <motion.div
@@ -303,38 +320,42 @@ export default function Home() {
             className="mb-28"
           >
             <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
-               全企业器官级覆盖。<br/>
-               The Arsenal.
+               您的企业，哪些环节<br className="hidden md:block"/>明天就能用 AI？<br/>
+               <span className="text-[#9E9B96]">The Arsenal.</span>
             </h2>
             <p className="text-xl md:text-2xl text-[#9E9B96] tracking-normal max-w-3xl">
-               我们不仅仅是讲一些理论框架。您的营员证绑定了六大职能方向的强力模型库实测权限，现场见证 ROI 的百倍跳跃。
+               从获客到售后，六大核心职能的 AI 实战工具已就绪。不是看演示——是您亲手操作，带走能直接落地的方案。
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {toolModules.map((tool, i) => (
-              <motion.div
-                key={tool.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="border border-[#E5E1D8] p-10 hover:border-[#D97706] cursor-pointer group transition-all bg-white rounded-2xl hover:shadow-lg"
-              >
-                <tool.icon size={48} className="text-[#9E9B96] group-hover:text-[#D97706] transition-colors mb-10" />
-                <h3 className="text-3xl font-bold text-[#2D2A26] mb-6 tracking-normal">
-                  {tool.title}
-                </h3>
-                <p className="text-lg text-[#9E9B96] leading-loose">
-                  {tool.desc}
-                </p>
-              </motion.div>
+              <Link key={tool.title} href="/login">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="border border-[#E5E1D8] p-10 hover:border-[#D97706] cursor-pointer group transition-all bg-white rounded-2xl hover:shadow-lg h-full"
+                >
+                  <tool.icon size={48} className="text-[#9E9B96] group-hover:text-[#D97706] transition-colors mb-10" />
+                  <h3 className="text-3xl font-bold text-[#2D2A26] mb-6 tracking-normal">
+                    {tool.title}
+                  </h3>
+                  <p className="text-lg text-[#9E9B96] leading-loose mb-6">
+                    {tool.desc}
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-sm font-bold text-[#D97706] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wide">
+                    输入邀请码体验 <ArrowRight size={16} />
+                  </span>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 极简脚尾声明 */}
+      {/* 脚尾 CTA — K型分化 + 痛点 */}
       <section id="about" className="relative py-36 md:py-48 px-12 md:px-24 lg:px-32 bg-[#FAF9F6] border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div
@@ -342,18 +363,35 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-6xl md:text-[6.5rem] font-black text-[#2D2A26] leading-tight tracking-normal mb-16">
-              要么重构引擎，<br />要么被大模型碾过。
+            {/* K型分化图示 */}
+            <div className="flex items-center justify-center gap-6 mb-12">
+              <div className="flex items-center gap-2 text-green-600">
+                <TrendingUp size={28} strokeWidth={3} />
+                <span className="text-sm font-mono uppercase tracking-wide">用 AI 的企业</span>
+              </div>
+              <div className="w-px h-10 bg-[#E5E1D8]"></div>
+              <div className="flex items-center gap-2 text-red-500">
+                <TrendingDown size={28} strokeWidth={3} />
+                <span className="text-sm font-mono uppercase tracking-wide">观望中的企业</span>
+              </div>
+            </div>
+
+            <h2 className="text-5xl md:text-[5.5rem] font-black text-[#2D2A26] leading-tight tracking-normal mb-10">
+              AI 时代的 K 型十字路口。<br />
+              <span className="text-[#9E9B96]">向上，或向下。没有中间地带。</span>
             </h2>
-            <p className="text-2xl text-[#9E9B96] leading-relaxed mb-20 tracking-normal max-w-3xl mx-auto">
-              你可以在互联网上无数次购买营销课、"认知课"，也可以亲手在这里把公司从旧世纪拉入 2026 年大航海时代。
-              这不是讲演，这是为您企业定制的外脑植入。
+            <p className="text-2xl text-[#9E9B96] leading-relaxed mb-8 tracking-normal max-w-3xl mx-auto">
+              同行已经在用 AI 接单、降本、提效——利润曲线正在急剧分化。您的窗口期，不会永远敞开。
+            </p>
+            <p className="text-xl text-[#6B6660] leading-relaxed mb-20 tracking-normal max-w-3xl mx-auto">
+              这不是又一堂"认知课"——这是为您企业量身定制的 AI 落地路线图。<br/>
+              两天后，您带走的不是笔记，是<span className="text-[#2D2A26] font-bold">能立刻执行的行动方案</span>。
             </p>
             <Link
               href="/login"
               className="inline-flex items-center text-xl font-bold uppercase tracking-wide text-white bg-[#D97706] px-14 py-6 hover:bg-[#B45309] transition-colors rounded-2xl gap-3"
             >
-              立刻启动控制台
+              立刻进入 AI 工具控制台
               <ArrowRight size={22} />
             </Link>
           </motion.div>

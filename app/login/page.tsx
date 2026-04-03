@@ -67,12 +67,12 @@ export default function LoginPage() {
       >
         <div className="mb-24">
           <h1 className="text-4xl md:text-6xl font-black text-[#2D2A26] tracking-normal leading-tight mb-6">
-            {step === "code" ? "权限核验。" : "定义您的身份。"}
+            {step === "code" ? "输入邀请码。" : "完善您的信息。"}
           </h1>
           <p className="text-xl text-[#9E9B96] tracking-normal">
             {step === "code"
-              ? "闭门实测接口 / 仅限持有凭证受邀名单。"
-              : "输入参数 / 获取针对贵公司模型方案的最佳预训练数据。"}
+              ? "本次闭门实训采用邀请制，请输入您收到的专属邀请码。"
+              : "帮助我们为您的企业定制最佳 AI 落地方案。"}
           </p>
         </div>
 

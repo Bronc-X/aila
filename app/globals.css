@@ -154,7 +154,7 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border-default); 
   border-radius: var(--radius-lg);
-  padding: 32px 0;
+  padding: 32px;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: var(--shadow-card);
 }
