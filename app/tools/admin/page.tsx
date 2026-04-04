@@ -302,7 +302,7 @@ export default function AdminPage() {
             <div className="w-8 h-8 flex items-center justify-center border border-[#E5E1D8] bg-[#FAF9F6]">
               <Building2 size={16} className="text-[#2D2A26]" />
             </div>
-            <span className="font-semibold text-sm">行政效率站</span>
+            <span className="font-semibold text-sm">行政效率</span>
           </div>
         </div>
         <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
@@ -321,7 +321,7 @@ export default function AdminPage() {
         {activeTab === "contract" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><FileSignature size={18} /> 合同文档助手</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">合同类型</label>
@@ -335,7 +335,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">关键信息</label>
                   <textarea value={contractInput} onChange={e => setContractInput(e.target.value)}
-                    placeholder="甲乙方、金额、期限等（不填使用模板）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
+                    placeholder="甲乙方、金额、期限等（不填使用模板）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
                 </div>
                 <button onClick={handleGenerateContract} disabled={loading}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
@@ -344,7 +344,7 @@ export default function AdminPage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[550px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">合同草稿 · 逐条编辑</h2>
                   {contractClauses.length > 0 && (
@@ -392,16 +392,16 @@ export default function AdminPage() {
         {activeTab === "minutes" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><BookOpen size={18} /> 智能会议纪要</h2>
-                <div className="border-2 border-dashed border-[#E5E1D8] p-12 text-center hover:border-[#555] transition-colors cursor-pointer">
+                <div className="border-2 border-dashed border-[#E5E1D8] p-6 text-center hover:border-[#D97706] transition-colors cursor-pointer rounded-xl">
                   <BookOpen size={28} className="text-[#A3A3A3] mx-auto mb-2" />
                   <p className="text-xs text-[#9E9B96]">上传录音 (MP3/WAV/M4A)</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">或粘贴文字记录</label>
                   <textarea value={meetingInput} onChange={e => setMeetingInput(e.target.value)}
-                    placeholder="粘贴会议记录..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[120px] resize-y" rows={4} />
+                    placeholder="粘贴会议记录..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[120px] resize-y" rows={4} />
                 </div>
                 <button onClick={handleGenerateMinutes} disabled={minutesLoading || !meetingInput.trim()}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
@@ -410,7 +410,7 @@ export default function AdminPage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[500px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-bold text-[#2D2A26]">结构化纪要 · 可编辑</h2>
                   <div className="flex gap-2">
@@ -465,11 +465,11 @@ export default function AdminPage() {
         {/* ═══════════════ 排班优化 (可交互排班表) ═══════════════ */}
         {activeTab === "schedule" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
-            <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-8 mb-8">
+            <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
               <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">AI 排班优化</h2>
               <p className="text-[#666] mb-6">点击班次循环切换 · 右键锁定 · 数据自动保存</p>
             </div>
-            <div className="border border-[#E5E1D8] bg-white p-12 mb-4">
+            <div className="border border-[#E5E1D8] bg-white p-6 mb-4 rounded-xl">
               <div className="grid grid-cols-8 gap-px text-xs text-center">
                 <div className="p-3 text-[#6B6660] font-semibold">员工</div>
                 {DAYS.map(d => <div key={d} className="p-3 text-[#9E9B96] font-semibold">{d}</div>)}
@@ -503,12 +503,12 @@ export default function AdminPage() {
         {activeTab === "process" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Workflow size={18} /> 流程自动化诊断</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">描述现有流程</label>
                   <textarea value={processInput} onChange={e => setProcessInput(e.target.value)}
-                    placeholder="客户下单 → 审核 → 仓库确认 → ..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
+                    placeholder="客户下单 → 审核 → 仓库确认 → ..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">痛点反馈</label>
@@ -525,7 +525,7 @@ export default function AdminPage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[500px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-bold text-[#2D2A26]">诊断报告 · 点击标记已优化</h2>
                   <button onClick={addProcessStep} className="text-xs text-[#6B6660] hover:text-[#2D2A26] flex items-center gap-1 transition-colors">
@@ -535,7 +535,7 @@ export default function AdminPage() {
                 <div className="space-y-3">
                   {processSteps.map((item, i) => (
                     <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                      className={`grid grid-cols-[120px_60px_80px_1fr_40px] gap-8 items-center p-8 border transition-colors group ${
+                      className={`grid grid-cols-[120px_60px_80px_1fr_40px] gap-4 items-center p-3 border transition-colors group ${
                         item.optimized ? "border-green-500/20 bg-green-500/5" : "border-[#E5E1D8] bg-white"
                       }`}>
                       <EditableCell value={item.step} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, step: v } : s))} className="text-sm text-[#2D2A26] font-medium" placeholder="步骤" />

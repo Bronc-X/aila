@@ -292,7 +292,48 @@ function generateMockResponse(messages: { role: string; content: string }[]): st
     ]);
   }
 
-  // 4. 运营驾驶舱 — AI 报告
+  // 4.1 运营驾驶舱大屏推演 (JSON 返回)
+  if (allText.includes("商业数据分析师(BI)") || allText.includes("极严格 JSON")) {
+    const industry = allText.match(/行业：【(.*?)】/)?.[1] || "教培行业";
+    const targetFull = allText.match(/本月目标设定：营收【(.*?)】/)?.[1] || "200万";
+    const priority = allText.match(/当期核心经营重心：【(.*?)】/)?.[1] || "获取新客";
+    
+    // 解析金额基数
+    let parsedAmount = parseFloat(targetFull.replace(/[^\d.]/g, '')) || 200;
+    const unit = targetFull.includes("千万") ? "千万" : "万";
+    if (unit === "千万") parsedAmount *= 1000;
+
+    return JSON.stringify({
+      kpis: [
+        { label: "本月预计营收", value: `¥${(parsedAmount * 1.05).toFixed(1)}万`, change: "+12.5%", trend: "up", detail: ["线上增量 42%", "线下存量 58%"] },
+        { label: "重心指标达成", value: "超额完成", change: "+3.2pp", trend: "up", detail: [`推进进度：${priority}`] },
+        { label: "新渠道转化率", value: "24.6%", change: "+5.1%", trend: "up", detail: ["自然留资 18%", "广告投放 32%"] },
+        { label: "平均客单价", value: `¥${(parsedAmount * 0.05).toFixed(1)}万`, change: "-1.4%", trend: "down", detail: ["大客占比 24%", "中长尾单 76%"] }
+      ],
+      pipeline: [
+        { stage: "官网访问", count: Math.floor(parsedAmount * 60), amount: "¥0" },
+        { stage: "留资注册", count: Math.floor(parsedAmount * 15), amount: `¥${Math.floor(parsedAmount * 8)}万` },
+        { stage: "初步接洽", count: Math.floor(parsedAmount * 4), amount: `¥${Math.floor(parsedAmount * 6)}万` },
+        { stage: "方案提报", count: Math.floor(parsedAmount * 1.5), amount: `¥${Math.floor(parsedAmount * 3)}万` },
+        { stage: "商务谈判", count: Math.floor(parsedAmount * 0.8), amount: `¥${Math.floor(parsedAmount * 1.5)}万` },
+        { stage: "签约成交", count: Math.floor(parsedAmount * 0.3), amount: `¥${(parsedAmount * 1.05).toFixed(1)}万` }
+      ],
+      insights: [
+        { type: "warning", title: "流量漏斗前端呈现行业流失", text: `分析显示，从「官网访问」到「留资」的阶段存在较大跳出，可能与${industry}当前的客户决策周期变长有关。`, detail: `建议操作：\n1. 重点检查基于“${priority}”重心布置的落地页\n2. 增加限时行业白皮书下载诱饵\n3. 优化 CTA 按钮链路` },
+        { type: "insight", title: "高净值线索集中在晚间", text: "数据表明晚上 20:00-22:00 提交的表单转化率是白天的 1.8 倍。", detail: "建议操作：\n1. 将晚间竞价系数提高 30%\n2. 安排值班客服优先响应\n3. 推送短视频深度解决方案" },
+        { type: "action", title: "沉睡客户激活有极大潜力", text: "历史库中有约 400 个「方案提报」后流失的机会提取。", detail: `建议操作：\n1. 发起【老客户召回专属】活动\n2. AI 智能一键生成跟进内容\n3. 将分配比例适当倾斜给核心销售` }
+      ],
+      deals: [
+        { client: `上海某知名${industry}企业`, date: "今日 14:20", amount: `¥${Math.floor(parsedAmount * 0.15)}万`, status: "signed" },
+        { client: `北京某头部${industry}平台`, date: "今日 11:30", amount: `¥${Math.floor(parsedAmount * 0.25)}万`, status: "approval" },
+        { client: `深圳某出海${industry}品牌`, date: "昨日 18:45", amount: `¥${Math.floor(parsedAmount * 0.08)}万`, status: "signed" },
+        { client: `杭州某${industry}初创团队`, date: "昨日 16:10", amount: `¥${Math.floor(parsedAmount * 0.05)}万`, status: "following" },
+        { client: `广州某区域${industry}领头羊`, date: "两日前", amount: `¥${Math.floor(parsedAmount * 0.45)}万`, status: "signed" }
+      ]
+    });
+  }
+
+  // 4.2 运营驾驶舱 — AI 报告
   if (allText.includes("周报") || allText.includes("日报") || allText.includes("月报") || allText.includes("运营总监")) {
     const isDaily = allText.includes("日报");
     const isMonthly = allText.includes("月报");

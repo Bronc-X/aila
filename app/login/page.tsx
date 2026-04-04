@@ -1,29 +1,80 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+
+// ── 行业选项（12个）──
+const industries = [
+  { value: "ecommerce", label: "电商出海", emoji: "🛒" },
+  { value: "manufacturing", label: "高端制造", emoji: "🏭" },
+  { value: "fmcg", label: "零售·快消", emoji: "🛍️" },
+  { value: "service", label: "泛服务业", emoji: "🤝" },
+  { value: "software", label: "软件SaaS", emoji: "💻" },
+  { value: "education", label: "教育培训", emoji: "📚" },
+  { value: "healthcare", label: "医疗健康", emoji: "🏥" },
+  { value: "agriculture", label: "农业科技", emoji: "🌾" },
+  { value: "finance", label: "金融保险", emoji: "💰" },
+  { value: "logistics", label: "物流供应链", emoji: "🚚" },
+  { value: "realestate", label: "房地产", emoji: "🏢" },
+  { value: "other", label: "其他行业", emoji: "🔮" },
+];
+
+// ── 公司规模 ──
+const companySizes = [
+  { value: "1-10", label: "1-10人" },
+  { value: "11-50", label: "11-50人" },
+  { value: "51-200", label: "51-200人" },
+  { value: "200-500", label: "200-500人" },
+  { value: "500+", label: "500+" },
+];
+
+// ── 核心痛点 ──
+const painPoints = [
+  { value: "acquisition_cost", label: "获客成本高", emoji: "💸" },
+  { value: "conversion_low", label: "转化率低", emoji: "📉" },
+  { value: "customer_churn", label: "客户流失严重", emoji: "🚪" },
+  { value: "low_efficiency", label: "人效不足", emoji: "⏳" },
+  { value: "data_scattered", label: "数据分散", emoji: "🗂️" },
+  { value: "collaboration", label: "内部协作差", emoji: "🔗" },
+  { value: "brand_weak", label: "品牌影响力弱", emoji: "📢" },
+  { value: "supply_chain", label: "供应链效率低", emoji: "⚙️" },
+  { value: "service_slow", label: "客服响应慢", emoji: "🐌" },
+  { value: "compliance", label: "合规风险", emoji: "⚖️" },
+  { value: "hiring", label: "招人难", emoji: "🧑‍💼" },
+  { value: "profit_decline", label: "利润下滑", emoji: "📊" },
+];
+
+// ── AI 使用经验 ──
+const aiExperience = [
+  { value: "none", label: "完全没用过", desc: "还没有接触过 AI 工具" },
+  { value: "tried", label: "试过 ChatGPT 等", desc: "用过通用 AI 聊天工具" },
+  { value: "simple", label: "已部署简单应用", desc: "在部分环节使用了 AI" },
+  { value: "deep", label: "已深度整合 AI", desc: "AI 已融入核心业务流程" },
+];
 
 export default function LoginPage() {
   const [inviteCode, setInviteCode] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [industry, setIndustry] = useState("");
+  const [companySize, setCompanySize] = useState("");
+  const [selectedPains, setSelectedPains] = useState<string[]>([]);
+  const [aiExp, setAiExp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState<"code" | "info">("code");
   const router = useRouter();
 
-  const industries = [
-    { value: "ecommerce", label: "电商出海" },
-    { value: "manufacturing", label: "高端制造" },
-    { value: "fmcg", label: "零售·快消" },
-    { value: "service", label: "泛服务业" },
-    { value: "software", label: "软件SaaS" },
-    { value: "other", label: "其他矩阵" },
-  ];
+  const togglePain = (val: string) => {
+    setSelectedPains((prev) => {
+      if (prev.includes(val)) return prev.filter((p) => p !== val);
+      if (prev.length >= 3) return prev;
+      return [...prev, val];
+    });
+  };
 
   async function handleCodeSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -47,132 +98,270 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
+    // 存储用户信息到 localStorage
+    const profile = {
+      name,
+      company,
+      industry,
+      industryLabel: industries.find((i) => i.value === industry)?.label || "",
+      companySize,
+      painPoints: selectedPains,
+      painPointLabels: selectedPains.map(
+        (p) => painPoints.find((pp) => pp.value === p)?.label || ""
+      ),
+      aiExperience: aiExp,
+      timestamp: new Date().toISOString(),
+    };
+    localStorage.setItem("aila-user-profile", JSON.stringify(profile));
+
     setTimeout(() => {
       setLoading(false);
       router.push("/tools");
     }, 1000);
   }
 
+  const canSubmitInfo = name.trim() && company.trim() && industry;
+
   return (
-    <div className="min-h-screen bg-[#FAF9F6] flex flex-col items-center justify-center px-12 md:px-24 lg:px-32 py-20 relative overflow-hidden font-sans">
-       <Link href="/" className="absolute top-12 left-12 md:left-16 lg:left-24 text-[#9E9B96] font-mono text-sm tracking-wide hover:text-[#D97706] transition-colors flex items-center gap-2 uppercase">
-          <ArrowLeft size={16} /> 返回首页
-       </Link>
+    <div className="min-h-screen bg-[#FAF9F6] flex flex-col items-center justify-center px-6 md:px-12 lg:px-24 py-12 relative overflow-hidden font-sans">
+      <Link
+        href="/"
+        className="absolute top-8 left-6 md:left-12 lg:left-24 text-[#9E9B96] font-mono text-sm tracking-wide hover:text-[#D97706] transition-colors flex items-center gap-2 uppercase"
+      >
+        <ArrowLeft size={16} /> 返回首页
+      </Link>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className="w-full max-w-2xl mx-auto"
+        className="w-full max-w-3xl mx-auto"
       >
-        <div className="mb-24">
-          <h1 className="text-4xl md:text-6xl font-black text-[#2D2A26] tracking-normal leading-tight mb-6">
+        <div className="mb-12">
+          <h1 className="text-4xl md:text-5xl font-black text-[#2D2A26] tracking-normal leading-tight mb-4">
             {step === "code" ? "输入邀请码。" : "完善您的信息。"}
           </h1>
-          <p className="text-xl text-[#9E9B96] tracking-normal">
+          <p className="text-lg text-[#9E9B96] tracking-normal">
             {step === "code"
               ? "本次闭门实训采用邀请制，请输入您收到的专属邀请码。"
               : "帮助我们为您的企业定制最佳 AI 落地方案。"}
           </p>
         </div>
 
-        {step === "code" ? (
-          <form onSubmit={handleCodeSubmit} className="space-y-20">
-            <div className="relative group">
-              <input
-                type="text"
-                value={inviteCode}
-                onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                placeholder="PROTOTYPE-CODE"
-                className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-4xl md:text-5xl font-mono text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors text-center tracking-[0.2em] md:tracking-[0.5em]"
-                maxLength={8}
-                autoFocus
-              />
-            </div>
-
-            {error && (
-              <p className="text-lg text-red-500 font-mono tracking-wide text-center">{error}</p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading || !inviteCode.trim()}
-              className="w-full sm:w-auto mx-auto flex items-center justify-center gap-8 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#D97706] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#D97706] rounded-2xl"
-            >
-               {loading ? "VERIFYING..." : "ENTER AUTH"}
-               {!loading && <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleInfoSubmit} className="space-y-20">
-            <motion.div
+        <AnimatePresence mode="wait">
+          {step === "code" ? (
+            <motion.form
+              key="code"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="space-y-16"
+              exit={{ opacity: 0, x: -50 }}
+              onSubmit={handleCodeSubmit}
+              className="space-y-12"
             >
-              <div className="grid md:grid-cols-2 gap-14">
-                 <div>
-                    <label className="block text-sm font-mono tracking-wide text-[#9E9B96] mb-5 uppercase">Commander</label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="真实姓名"
-                      className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-2xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors"
-                      autoFocus
-                    />
-                 </div>
-                 <div>
-                    <label className="block text-sm font-mono tracking-wide text-[#9E9B96] mb-5 uppercase">Vessel</label>
-                    <input
-                      type="text"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      placeholder="公司全称"
-                      className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-2xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors"
-                    />
-                 </div>
+              <div className="relative group">
+                <input
+                  type="text"
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                  placeholder="PROTOTYPE-CODE"
+                  className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-4xl md:text-5xl font-mono text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors text-center tracking-[0.2em] md:tracking-[0.5em]"
+                  maxLength={8}
+                  autoFocus
+                />
               </div>
-              
+
+              {error && (
+                <p className="text-lg text-red-500 font-mono tracking-wide text-center">
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading || !inviteCode.trim()}
+                className="w-full sm:w-auto mx-auto flex items-center justify-center gap-8 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#D97706] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#D97706] rounded-2xl"
+              >
+                {loading ? "VERIFYING..." : "ENTER AUTH"}
+                {!loading && (
+                  <ArrowRight
+                    size={24}
+                    className="group-hover:translate-x-2 transition-transform"
+                  />
+                )}
+              </button>
+            </motion.form>
+          ) : (
+            <motion.form
+              key="info"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              onSubmit={handleInfoSubmit}
+              className="space-y-10"
+            >
+              {/* ── 基本信息 ── */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-3 uppercase">
+                    Commander · 您的姓名
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="真实姓名"
+                    className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-3 text-xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors"
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-3 uppercase">
+                    Vessel · 公司名称
+                  </label>
+                  <input
+                    type="text"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    placeholder="公司全称"
+                    className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-3 text-xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* ── 行业选择 ── */}
               <div>
-                <label className="block text-sm font-mono tracking-wide text-[#9E9B96] mb-8 uppercase">Operating Domain</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
+                <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-4 uppercase">
+                  Operating Domain · 所属行业 <span className="text-red-400">*</span>
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                   {industries.map((ind) => (
                     <button
                       key={ind.value}
                       type="button"
                       onClick={() => setIndustry(ind.value)}
-                      className={`py-5 px-12 text-xl tracking-normal font-black transition-all rounded-2xl ${
+                      className={`py-3 px-2 text-sm font-bold tracking-normal transition-all rounded-xl flex flex-col items-center gap-1.5 ${
                         industry === ind.value
-                          ? "bg-[#D97706] text-white border-2 border-[#D97706] scale-[1.02] shadow-lg"
+                          ? "bg-[#D97706] text-white border-2 border-[#D97706] scale-[1.03] shadow-lg shadow-[#D97706]/20"
                           : "border-2 border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706] hover:text-[#D97706]"
                       }`}
                     >
+                      <span className="text-lg">{ind.emoji}</span>
                       {ind.label}
                     </button>
                   ))}
                 </div>
               </div>
-            </motion.div>
 
-            {error && (
-              <p className="text-lg text-red-500 font-mono tracking-wide">{error}</p>
-            )}
+              {/* ── 公司规模 ── */}
+              <div>
+                <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-4 uppercase">
+                  Scale · 公司规模
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  {companySizes.map((s) => (
+                    <button
+                      key={s.value}
+                      type="button"
+                      onClick={() => setCompanySize(s.value)}
+                      className={`py-2.5 px-5 text-sm font-bold transition-all rounded-xl border-2 ${
+                        companySize === s.value
+                          ? "border-[#D97706] bg-[#D97706]/10 text-[#D97706]"
+                          : "border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706]"
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading || !name.trim() || !company.trim() || !industry}
-              className="w-full flex items-center justify-center gap-8 py-6 bg-[#D97706] text-white hover:bg-[#B45309] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-2xl font-black uppercase tracking-normal rounded-2xl"
-            >
-              {loading ? "INITIALIZING..." : "LAUNCH CONTROL MODULE"}
-              {!loading && <ArrowRight size={28} className="group-hover:translate-x-2 transition-transform" />}
-            </button>
-          </form>
-        )}
+              {/* ── 核心痛点（多选，最多3个） ── */}
+              <div>
+                <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-2 uppercase">
+                  Pain Points · 最想解决的痛点{" "}
+                  <span className="text-[#D97706] normal-case">
+                    （可选 {selectedPains.length}/3）
+                  </span>
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {painPoints.map((p) => {
+                    const selected = selectedPains.includes(p.value);
+                    const disabled = !selected && selectedPains.length >= 3;
+                    return (
+                      <button
+                        key={p.value}
+                        type="button"
+                        onClick={() => togglePain(p.value)}
+                        disabled={disabled}
+                        className={`py-2.5 px-3 text-xs font-bold transition-all rounded-xl border-2 flex items-center gap-1.5 ${
+                          selected
+                            ? "border-[#D97706] bg-[#D97706]/10 text-[#D97706]"
+                            : disabled
+                            ? "border-[#E5E1D8] text-[#C5C0B8] opacity-40 cursor-not-allowed"
+                            : "border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706]"
+                        }`}
+                      >
+                        <span>{p.emoji}</span>
+                        {p.label}
+                        {selected && <Check size={12} className="ml-auto" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* ── AI 使用经验 ── */}
+              <div>
+                <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-4 uppercase">
+                  AI Readiness · AI 使用经验
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {aiExperience.map((exp) => (
+                    <button
+                      key={exp.value}
+                      type="button"
+                      onClick={() => setAiExp(exp.value)}
+                      className={`py-3 px-4 text-left transition-all rounded-xl border-2 ${
+                        aiExp === exp.value
+                          ? "border-[#D97706] bg-[#D97706]/10"
+                          : "border-[#E5E1D8] hover:border-[#D97706]"
+                      }`}
+                    >
+                      <div
+                        className={`text-sm font-bold ${
+                          aiExp === exp.value ? "text-[#D97706]" : "text-[#2D2A26]"
+                        }`}
+                      >
+                        {exp.label}
+                      </div>
+                      <div className="text-[11px] text-[#9E9B96] mt-0.5">{exp.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {error && (
+                <p className="text-lg text-red-500 font-mono tracking-wide">{error}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading || !canSubmitInfo}
+                className="w-full flex items-center justify-center gap-4 py-5 bg-[#D97706] text-white hover:bg-[#B45309] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-xl font-black uppercase tracking-normal rounded-2xl"
+              >
+                {loading ? "INITIALIZING..." : "LAUNCH CONTROL MODULE"}
+                {!loading && (
+                  <ArrowRight
+                    size={28}
+                    className="group-hover:translate-x-2 transition-transform"
+                  />
+                )}
+              </button>
+            </motion.form>
+          )}
+        </AnimatePresence>
       </motion.div>
 
-      <div className="absolute bottom-10 left-12 md:left-16 lg:left-24 text-[#C5C0B8] font-mono text-xs uppercase tracking-[0.3em]">
+      <div className="absolute bottom-8 left-6 md:left-12 lg:left-24 text-[#C5C0B8] font-mono text-xs uppercase tracking-[0.3em]">
         SESSION VER / 2026.04
       </div>
     </div>

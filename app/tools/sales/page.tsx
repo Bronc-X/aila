@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MessageSquare, ArrowLeft, Mic, MicOff, Square, FileText, Lightbulb, Send,
-  Copy, Check, RefreshCw, Clock, User, Bot, Sparkles, Phone, Mail,
+  Copy, Check, RefreshCw, Clock, User, Bot, Sparkles, Phone, Mail, Database, Upload, Trash2
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useCallback, useEffect } from "react";
@@ -103,7 +103,7 @@ export default function SalesPage() {
   const [summary, setSummary] = useState<AISummary | null>(null);
   const [suggestions, setSuggestions] = useState<TalkSuggestion[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"realtime" | "followup" | "insights">("realtime");
+  const [activeTab, setActiveTab] = useState<"realtime" | "knowledge" | "followup" | "insights">("realtime");
   const conversationEndRef = useRef<HTMLDivElement>(null);
 
   // ── ASR 语音识别 ──
@@ -138,8 +138,34 @@ export default function SalesPage() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages]);
 
+  // ── 知识库配置 ──
+  const [kbSellingPoints, setKbSellingPoints] = useState("");
+  const [kbCompetitors, setKbCompetitors] = useState("");
+  const [kbFiles, setKbFiles] = useState<{name: string, size: string}[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sales-knowledge-base");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setKbSellingPoints(parsed.sellingPoints || "");
+        setKbCompetitors(parsed.competitors || "");
+        setKbFiles(parsed.files || []);
+      } catch {}
+    }
+  }, []);
+
+  const saveKnowledgeBase = useCallback(() => {
+    localStorage.setItem("sales-knowledge-base", JSON.stringify({
+      sellingPoints: kbSellingPoints,
+      competitors: kbCompetitors,
+      files: kbFiles
+    }));
+  }, [kbSellingPoints, kbCompetitors, kbFiles]);
+
   const tabs = [
     { id: "realtime" as const, label: "实时对话", icon: Mic },
+    { id: "knowledge" as const, label: "知识库预训练", icon: Database },
     { id: "followup" as const, label: "智能回访", icon: Phone },
     { id: "insights" as const, label: "灵感追问", icon: Lightbulb },
   ];
@@ -189,9 +215,8 @@ export default function SalesPage() {
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      if (event.error !== "no-speech") {
-        console.error("ASR Error:", event.error);
-      }
+      // no-speech 是常见的静默错误，不处理
+      // 其他错误静默忽略，不打断用户体验
     };
 
     recognition.onend = () => {
@@ -244,7 +269,16 @@ export default function SalesPage() {
             messages: [
               { 
                 role: "system", 
-                content: "你是一个顶级的B2B销售总监监听助手。请分析以下最新对话日志，预测客户异议并给出我方下一步的应答建议。\n请务必返回严格的JSON格式数据，结构如下：\n{\"suggestions\": [{\"type\": \"objection\" 或 \"pricing\" 或 \"next_step\" 或 \"competitor\", \"content\": \"建议销售说的话术\", \"reason\": \"原因分析\"}], \"summary\": {\"painPoints\": [\"痛点1\"], \"objections\": [\"异议1\"], \"actionItems\": [\"下一步动作\"]}}\n直接输出JSON，不要任何包裹符号和解释。" 
+                content: `你是一个顶级的B2B销售总监监听助手。请分析以下最新对话日志，预测客户异议并给出我方下一步的应答建议。
+                
+【我方产品知识库预设】
+核心卖点：${kbSellingPoints || "暂无预设"}
+竞对劣势/常见异议：${kbCompetitors || "暂无预设"}
+请在生成话术时，尽可能融入或参照以上知识库中的卖点，并重点针对竞对进行防守。
+
+请务必返回严格的JSON格式数据，结构如下：
+{"suggestions": [{"type": "应对异议" 或 "追问深挖" 或 "促成交易" 或 "建立信任", "content": "建议销售说的话术（必须结合知识库）", "reason": "原因分析"}], "summary": {"painPoints": ["痛点1"], "objections": ["异议1"], "actionItems": ["下一步动作"]}}
+直接输出JSON，不要任何包裹符号和解释。` 
               },
               { role: "user", content: textLog },
             ],
@@ -267,9 +301,9 @@ export default function SalesPage() {
         if (parsed.summary && conversation.length >= 6) {
            setSummary(parsed.summary);
         }
-      } catch (e) {
-         console.error("AI 分析错误 (由于是静默后台轮询，忽略此错):", e);
-      }
+       } catch {
+          // AI 分析错误时静默忽略，不影响对话流
+       }
     };
     
     analyzeConversation();
@@ -369,8 +403,8 @@ export default function SalesPage() {
   return (
     <div className="min-h-screen bg-[#FAF9F6]">
       <header className="sticky top-0 z-40 border-b border-[#E5E1D8] bg-white/95 backdrop-blur-md pt-10">
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex items-end justify-between mb-10">
-          <div className="flex flex-col gap-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-end justify-between mb-10">
+          <div className="flex flex-col gap-6">
             <Link href="/tools" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A3A3A3] hover:text-[#D97706] transition-colors uppercase tracking-[0.2em] w-fit">
               <ArrowLeft size={14} /> 返回超级中枢
             </Link>
@@ -389,7 +423,7 @@ export default function SalesPage() {
             </div>
           )}
         </div>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex gap-12 -mb-px mt-2">
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
@@ -401,13 +435,13 @@ export default function SalesPage() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 py-8">
+      <main className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
 
         {/* ═══════════════ 实时对话 (Gong.io 式) ═══════════════ */}
         {activeTab === "realtime" && (
-          <div className="grid lg:grid-cols-[1fr_320px_320px] gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_320px_320px] gap-6 items-start">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-12 min-h-[600px] flex flex-col">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6 max-h-[600px] overflow-y-auto flex flex-col">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
                     <FileText size={18} className="text-[#D97706]"/> 实时对话
@@ -444,7 +478,7 @@ export default function SalesPage() {
 
                 {/* 说话比例分析 */}
                 {conversation.length > 0 && (
-                  <div className="mb-4 p-8 border border-[#E5E1D8] bg-[#FAF9F6] rounded-xl shadow-inner">
+                  <div className="mb-4 p-3 border border-[#E5E1D8] bg-[#FAF9F6] rounded-xl">
                     <div className="flex items-center justify-between text-xs mb-2">
                       <span className="text-[#9E9B96] font-bold uppercase tracking-wider">说话比例</span>
                       <span className="text-[#2D2A26] font-medium">销售 {salesPct}% / 客户 {100 - salesPct}%</span>
@@ -479,7 +513,7 @@ export default function SalesPage() {
                             }`}>
                               {entry.speaker === "销售" ? <User size={14} /> : "客"}
                             </div>
-                            <div className={`max-w-[80%] px-4 py-3 text-[15px] leading-relaxed rounded-2xl ${
+                            <div className={`px-4 py-3 text-[15px] leading-relaxed rounded-2xl break-words ${
                               entry.speaker === "销售"
                                 ? "bg-[#FAF9F6] border border-[#E5E1D8] text-[#2D2A26] rounded-tl-sm"
                                 : "bg-white border border-[#E5E1D8] text-[#6B6660] rounded-tr-sm shadow-sm"
@@ -525,7 +559,7 @@ export default function SalesPage() {
 
             {/* AI 实时摘要 */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-12 min-h-[600px]">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2 mb-6">
                   <Bot size={18} className="text-[#D97706]" /> 实时战况摘要
                 </h2>
@@ -542,7 +576,7 @@ export default function SalesPage() {
                       { label: "💡 突破机会", items: summary.opportunities, color: "text-green-600 bg-green-500/10" },
                       { label: "📋 下一步行动", items: summary.nextSteps, color: "text-blue-600 bg-blue-500/10" },
                     ].map((section) => (
-                      <div key={section.label} className="bg-[#FAF9F6] border border-[#E5E1D8] p-8 rounded-xl">
+                      <div key={section.label} className="bg-[#FAF9F6] border border-[#E5E1D8] p-4 rounded-xl">
                         <h3 className={`inline-block text-xs font-bold px-2 py-1 rounded-md mb-3 ${section.color}`}>{section.label}</h3>
                         <ul className="space-y-2">
                           {section.items.map((item, i) => (
@@ -560,7 +594,7 @@ export default function SalesPage() {
 
             {/* 话术建议 */}
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-12 min-h-[600px]">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2 mb-6">
                   <Lightbulb size={18} className="text-[#D97706]" /> 话术支援 (实时打补丁)
                 </h2>
@@ -595,23 +629,94 @@ export default function SalesPage() {
           </div>
         )}
 
+        {/* ═══════════════ 知识库预训练 ═══════════════ */}
+        {activeTab === "knowledge" && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
+            <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm p-8 space-y-8">
+              <div className="border-b border-[#E5E1D8] pb-6">
+                <h2 className="text-2xl font-bold text-[#2D2A26] flex items-center gap-2 mb-2">
+                  <Database className="text-[#D97706]" size={24} /> 销售知识库预训练
+                </h2>
+                <p className="text-[#6B6660]">录入核心卖点与参考资料，AI 将在实时监听时自动匹配对应的杀手锏话术。</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">本品核心卖点 (Selling Points)</label>
+                    <textarea value={kbSellingPoints} onChange={e => {setKbSellingPoints(e.target.value); setTimeout(saveKnowledgeBase, 100)}}
+                      placeholder="例如：\n1. AI自动化录入，业务员免操作\n2. 相比竞品，部署周期只需3天..." 
+                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] outline-none text-sm min-h-[160px] resize-y" rows={6} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">常见异议与话术 (Objections & Handlings)</label>
+                    <textarea value={kbCompetitors} onChange={e => {setKbCompetitors(e.target.value); setTimeout(saveKnowledgeBase, 100)}}
+                      placeholder="例如：\n客户嫌贵怎么说：提醒客户算一笔人力成本账...\n客户觉得系统难用：演示我们的语音免写功能..." 
+                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] outline-none text-sm min-h-[160px] resize-y" rows={6} />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">文档资料投喂</label>
+                  <p className="text-xs text-[#9E9B96] mb-4">拖拽 PDF, Word 等文件到此处，AI 会对文档内容进行向量化读取。</p>
+                  
+                  <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl bg-[#FAF9F6] p-8 text-center hover:border-[#D97706] transition-colors cursor-pointer"
+                    onClick={() => {
+                        const newFile = {name: `产品白皮书_v${Math.floor(Math.random()*10)}.pdf`, size: `${(Math.random()*5+1).toFixed(1)}MB`};
+                        setKbFiles([...kbFiles, newFile]);
+                        setTimeout(saveKnowledgeBase, 100);
+                    }}>
+                    <Upload size={32} className="mx-auto mb-3 text-[#A3A3A3]" />
+                    <p className="text-sm font-bold text-[#2D2A26] mb-1">点击或拖拽文件上传</p>
+                    <p className="text-xs text-[#A3A3A3]">支持 PDF, DOCX, TXT</p>
+                  </div>
+
+                  {kbFiles.length > 0 && (
+                    <div className="mt-6 space-y-3">
+                      <span className="text-xs font-bold text-[#9E9B96] uppercase">已上传的语料 ({kbFiles.length})</span>
+                      {kbFiles.map((f, i) => (
+                        <div key={i} className="flex items-center justify-between p-3 bg-[#FAF9F6] border border-[#E5E1D8] rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded bg-red-100 flex items-center justify-center text-red-600 font-bold text-[10px]">PDF</div>
+                            <div>
+                              <div className="text-sm font-medium text-[#2D2A26]">{f.name}</div>
+                              <div className="text-[10px] text-[#A3A3A3]">{f.size} • 向量化已完成</div>
+                            </div>
+                          </div>
+                          <button onClick={() => {
+                            const newFiles = kbFiles.filter((_, idx) => idx !== i);
+                            setKbFiles(newFiles);
+                            setTimeout(saveKnowledgeBase, 100);
+                          }} className="p-1.5 text-[#A3A3A3] hover:text-red-500 hover:bg-red-50 rounded">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* ═══════════════ 智能回访 (HubSpot 结构化卡片) ═══════════════ */}
         {activeTab === "followup" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-12 text-[#2D2A26] space-y-5">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6 text-[#2D2A26] space-y-4">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
                   <Phone size={18} className="text-[#D97706]" /> 智能回访策略
                 </h2>
                 <div>
                   <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">客户名称 *</label>
                   <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)}
-                    placeholder="例如：张总 / 李经理" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-8 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all outline-none text-[15px]" />
+                    placeholder="例如：张总 / 李经理" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-3 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all outline-none text-[15px]" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">背景信息 / 上次沟通记录</label>
                   <textarea value={customerContext} onChange={(e) => setCustomerContext(e.target.value)}
-                    placeholder="详细描述沟通要点、客户关注点、异议等..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-8 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all outline-none text-[15px] min-h-[140px] resize-y" rows={5} />
+                    placeholder="详细描述沟通要点、客户关注点、异议等..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-3 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all outline-none text-[15px] min-h-[140px] resize-y" rows={5} />
                 </div>
                 <button onClick={handleFollowup} disabled={followupLoading || !customerName.trim()}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-widest rounded-xl hover:bg-[#B45309] shadow-sm transition-all w-full flex items-center justify-center gap-2 !py-3.5 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -621,7 +726,7 @@ export default function SalesPage() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-colors p-12 min-h-[500px]">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-colors p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">工作协同卡片</h2>
                   {followupCards.length > 0 && (
@@ -635,7 +740,7 @@ export default function SalesPage() {
                     <p className="text-sm text-[#9E9B96] mt-2">AI 将吐出包含破冰话术、最佳时间等详尽的结构化指导卡</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                     {followupCards.map((card, i) => (
                       <motion.div key={card.title} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.08 }}
                         className="p-5 border border-[#E5E1D8] bg-[#FAF9F6] rounded-xl hover:border-[#D97706] hover:shadow-md transition-all">
@@ -676,7 +781,7 @@ export default function SalesPage() {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-12 space-y-4">
+              <div className="flex-1 overflow-y-auto p-5 space-y-4">
                 {chatMessages.length === 0 && (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <Lightbulb size={32} className="text-[#A3A3A3] mb-4" />

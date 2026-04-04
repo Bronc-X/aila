@@ -88,7 +88,7 @@ const PIPELINE: PipelineStage[] = [
   { stage: "签约", count: 8, amount: "¥520K" },
 ];
 
-const RECENT_DEALS: RecentDeal[] = [
+const INITIAL_DEALS = [
   { client: "深圳XX科技", amount: "¥85,000", status: "signed", date: "03-28" },
   { client: "杭州YY贸易", amount: "¥120,000", status: "signed", date: "03-27" },
   { client: "广州ZZ制造", amount: "¥230,000", status: "approval", date: "03-26" },
@@ -122,6 +122,19 @@ export default function OperationsPage() {
   const [viewMode, setViewMode] = useState<"table" | "kanban">("table");
   const [expandedInsight, setExpandedInsight] = useState<number | null>(null);
 
+  // ── AI 仪表盘状态 ──
+  const [dbConfig, setDbConfig] = useState({
+    industry: "教培行业",
+    target: "200",
+    unit: "万",
+    priority: "获取新客",
+    marketingBudget: "5",
+    customerProfile: "一二线城市宝妈",
+    teamSize: "15"
+  });
+  const [dbData, setDbData] = useState<{ kpis: KPI[], pipeline: PipelineStage[], insights: any[], deals: RecentDeal[] } | null>(null);
+  const [dbGenerating, setDbGenerating] = useState(false);
+
   // localStorage 持久化
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -140,10 +153,71 @@ export default function OperationsPage() {
 
   const subTabs = [
     { id: "dashboard" as const, label: "智能仪表盘", icon: BarChart3 },
+    { id: "analysis" as const, label: "成交分析", icon: TrendingUp },
     { id: "report" as const, label: "AI报告", icon: FileText },
     { id: "tracking" as const, label: "回访追踪", icon: CalendarDays },
-    { id: "analysis" as const, label: "成交分析", icon: TrendingUp },
   ];
+
+  // ── AI 大屏推演 ──────────────────────────────
+  const handleGenerateDashboard = async () => {
+    setDbGenerating(true);
+    try {
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [
+            { 
+              role: "system", 
+              content: `你是一个顶尖的商业数据分析师(BI)系统。请根据用户设定的基础条件，推演并模拟出一组极其逼真、符合该行业特征的运营数据大屏。
+请返回格式如下的极严格 JSON：
+{
+  "kpis": [
+    { "label": "指标名(例如本月成交额)", "value": "带真实货币符号或单位的数值", "change": "带符号的百分比", "trend": "up 或 down", "detail": ["细分维度1的名称和数据", "细分维度2..."] },
+    // 另外再生成三个KPI，禁止照搬本提示，数值必须依据行业、规模真实推演，具备随机波动性
+  ],
+  "pipeline": [
+    { "stage": "阶段名称(例如线索曝光)", "count": 整数人数, "amount": "带单位的预计金额" },
+    // 生成真实的漏斗阶段（4-5个），必须符合漏斗层层显著递减的逻辑
+  ],
+  "insights": [
+    { "type": "warning 或 insight 或 action", "title": "简短结论", "text": "洞察说明", "detail": "具体的分析原因..." }
+  ],
+  "deals": [
+    // 生成5条类似 { "client": "某某真实感行业公司名", "amount": "合理金额", "status": "signed 或 approval 或 following", "date": "XX-XX" }
+  ]
+}
+不要有任何多余的文本、解释或包裹的Markdown标识。` 
+            },
+            { role: "user", content: `背景信息：
+行业：【${dbConfig.industry}】
+目标客户画像：【${dbConfig.customerProfile}】
+销售团队规模：【${dbConfig.teamSize}人】
+月度营销预算：【${dbConfig.marketingBudget}${dbConfig.unit}】
+本月目标设定：营收【${dbConfig.target}${dbConfig.unit}】
+当期核心经营重心：【${dbConfig.priority}】
+
+请基于以上初始客观资源和设定，推演并合理分配各层漏斗及财务各项KPI，各数据必须符合逻辑及行业常识，不要太假。不要生成markdown代码块！` },
+          ],
+          temperature: 0.8,
+        }),
+      });
+      const data = await res.json();
+      const content = data.choices?.[0]?.message?.content || "";
+      const parsed = JSON.parse(content.replace(/```json\n?|\n?```/g, '').trim());
+      
+      // Map icon component refs safely
+      const iconMap = [DollarSign, Users, Target, TrendingUp];
+      if (parsed.kpis && Array.isArray(parsed.kpis)) {
+         parsed.kpis.forEach((k: any, i: number) => { k.icon = iconMap[i % iconMap.length]; });
+      }
+      setDbData(parsed);
+    } catch (e) {
+      alert("AI 生成全盘数据失败，请重试");
+    } finally {
+      setDbGenerating(false);
+    }
+  };
 
   // ── 报告生成 ──────────────────────────────
   const handleGenerateReport = async () => {
@@ -209,18 +283,13 @@ export default function OperationsPage() {
     return acc;
   }, {} as Record<string, number>);
 
-  // ── AI 洞察数据 ──────────────────────────────
-  const insights = [
-    { type: "warning", title: "注册→沟通转化率偏高", text: "38.4% 的注册用户进入了沟通阶段，说明留资质量好，但方案→签约环节（23.7%）存在瓶颈。建议优化方案模板和价格策略。", detail: "具体分析：\n1. 留资质量高说明获客渠道精准，建议加大当前渠道投放\n2. 方案→签约瓶颈可能原因：价格敏感、竞品对比、决策链过长\n3. 建议动作：\n   - 制作标准化方案模板，缩短出方案时间\n   - 推出限时优惠机制，加速决策\n   - 安排技术专家参与重点客户的方案沟通" },
-    { type: "insight", title: "Q3 增速放缓", text: "7-9月成交额环比增速从 37%→-14%→+28%，波动较大。建议排查是否与暑期客户决策周期有关，可提前布局Q3促销。", detail: "详细数据：\n- 7月：¥135万 (环比+37%)\n- 8月：¥98万 (环比-14%)\n- 9月：¥128万 (环比+28%)\n\n原因推测：\n1. 8月暑期大量企业进入休假周期\n2. 关键决策人无法到位\n\n建议：\n- 6月提前锁定 Q3 合同\n- 8月切换至线上轻量演示模式\n- 推出暑期签约早鸟优惠" },
-    { type: "action", title: "客单价优化机会", text: "客单价 ¥27,330 较行业中位数低 12%。前20%大单客户贡献了 58% 收入。建议推出高端套餐锁定大客户。", detail: "客户分层数据：\n- Top 20%（9笔大单）：贡献 ¥745K (58%)\n- Middle 50%（24笔中单）：贡献 ¥389K (30%)\n- Bottom 30%（14笔小单）：贡献 ¥150K (12%)\n\n建议：\n1. 高端套餐：推出 ¥50K+ 年度服务包\n2. 追加销售：现有大客户推荐增值模块\n3. 淘汰低效客户：<¥5K 单子考虑自助服务化" },
-  ];
+  const insights = dbData?.insights || [];
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] ">
       <header className="sticky top-0 z-40 border-b border-[#E5E1D8]"
         style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid #E5E1D8" }}>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex items-end justify-between mb-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-end justify-between mb-10">
           <Link href="/tools" className="flex items-center gap-1.5 text-sm text-[#9E9B96] hover:text-[#2D2A26] transition-colors">
             <ArrowLeft size={16} /> 返回
           </Link>
@@ -229,10 +298,10 @@ export default function OperationsPage() {
             <div className="w-8 h-8 flex items-center justify-center border border-[#E5E1D8] bg-[#FAF9F6]">
               <BarChart3 size={16} className="text-[#2D2A26]" />
             </div>
-            <span className="font-semibold text-sm">运营驾驶舱</span>
+            <span className="font-semibold text-sm">老板仪表盘</span>
           </div>
         </div>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex gap-12 -mb-px mt-2">
           {subTabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveSubTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
@@ -244,14 +313,99 @@ export default function OperationsPage() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 py-8">
+      <main className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
 
         {/* ═══════════════════ 仪表盘 ═══════════════════ */}
         {activeSubTab === "dashboard" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            {/* KPI 卡片 — 可点击展开详情 */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-              {INITIAL_KPIS.map((kpi, i) => (
+            {!dbData ? (
+              <div className="max-w-2xl mx-auto border border-[#E5E1D8] bg-white rounded-xl shadow-sm p-8 space-y-6 mt-10">
+                <div className="text-center mb-8">
+                  <div className="w-12 h-12 bg-[#D97706]/10 text-[#D97706] rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Sparkles size={24} />
+                  </div>
+                  <h2 className="text-2xl font-bold text-[#2D2A26]">初始化 AI 智能大屏</h2>
+                  <p className="text-[#6B6660] text-sm mt-2">填写您的业务规模与目标，AI 将为您推演并监控实时数据指标。</p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">所在行业</label>
+                      <input type="text" value={dbConfig.industry} onChange={e => setDbConfig({...dbConfig, industry: e.target.value})}
+                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">目标客户画像</label>
+                      <input type="text" value={dbConfig.customerProfile} onChange={e => setDbConfig({...dbConfig, customerProfile: e.target.value})}
+                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">本月营销预算</label>
+                      <div className="flex gap-2">
+                        <input type="number" value={dbConfig.marketingBudget} onChange={e => setDbConfig({...dbConfig, marketingBudget: e.target.value})}
+                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                        <span className="w-12 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">{dbConfig.unit}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">销售团队规模</label>
+                      <div className="flex gap-2">
+                        <input type="number" value={dbConfig.teamSize} onChange={e => setDbConfig({...dbConfig, teamSize: e.target.value})}
+                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                        <span className="w-12 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">人</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">月度营收总目标</label>
+                      <div className="flex gap-2">
+                         <input type="number" value={dbConfig.target} onChange={e => setDbConfig({...dbConfig, target: e.target.value})}
+                           className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                         <select value={dbConfig.unit} onChange={e => setDbConfig({...dbConfig, unit: e.target.value})}
+                           className="w-24 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg">
+                           <option value="万">万</option>
+                           <option value="千万">千万</option>
+                         </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">当期核心经营重心</label>
+                      <select value={dbConfig.priority} onChange={e => setDbConfig({...dbConfig, priority: e.target.value})}
+                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg">
+                        <option>获取新客 (扩大流量盘)</option>
+                        <option>提高转化率 (精细化运营)</option>
+                        <option>提升客单价 (大客户战略)</option>
+                        <option>老带新转介绍 (口碑运营)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <button onClick={handleGenerateDashboard} disabled={dbGenerating}
+                    className="w-full bg-[#D97706] text-white font-bold tracking-widest py-3.5 rounded-xl hover:bg-[#B45309] transition-all flex justify-center items-center gap-2 disabled:opacity-50">
+                    {dbGenerating ? <><RefreshCw size={18} className="animate-spin"/> AI 深度推演中...</> : <><BarChart3 size={18}/> 生成高维数据大屏</>}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* 重新生成按钮 */}
+                <div className="flex justify-end mb-4">
+                  <button onClick={() => setDbData(null)} className="text-sm text-[#9E9B96] hover:text-[#D97706] transition-colors flex items-center gap-1.5">
+                    <RefreshCw size={14} /> 重新推演
+                  </button>
+                </div>
+
+                {/* KPI 卡片 — 可点击展开详情 */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                  {dbData.kpis.map((kpi, i) => (
                 <motion.div key={kpi.label}
                   initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
                   onClick={() => setExpandedKPI(expandedKPI === i ? null : i)}
@@ -289,15 +443,19 @@ export default function OperationsPage() {
               ))}
             </div>
 
-            <div className="grid lg:grid-cols-[1fr_380px] gap-12">
+            <div className="grid lg:grid-cols-[1fr_380px] gap-6">
               {/* 销售漏斗 — hover 显示详情 */}
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <h3 className="text-base font-bold text-[#2D2A26] mb-5">销售漏斗</h3>
                 <div className="space-y-3">
-                  {PIPELINE.map((stage, i) => {
-                    const maxCount = PIPELINE[0].count;
-                    const width = (stage.count / maxCount) * 100;
-                    const convRate = i > 0 ? ((stage.count / PIPELINE[i - 1].count) * 100).toFixed(1) : "100";
+                  {dbData.pipeline.map((stage, i) => {
+                    const maxCount = dbData.pipeline[0]?.count || 1;
+                    let width = (stage.count / maxCount) * 100;
+                    // 增强漏斗的视觉效果，避免断崖式下跌导致后面的柱子细成一根针
+                    if (width < 5 && stage.count > 0) width = 5 + (width / 5) * 5; 
+                    if (stage.count === maxCount) width = 100;
+                    
+                    const convRate = i > 0 ? ((stage.count / dbData.pipeline[i - 1].count) * 100).toFixed(1) : "100";
                     return (
                       <motion.div key={stage.stage}
                         initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
@@ -332,10 +490,10 @@ export default function OperationsPage() {
               </div>
 
               {/* 最近成交 */}
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <h3 className="text-base font-bold text-[#2D2A26] mb-4">最近成交</h3>
                 <div className="space-y-3">
-                  {RECENT_DEALS.map((deal, i) => {
+                  {dbData.deals.map((deal, i) => {
                     const statusOpt = {
                       signed: { label: "已签约", color: "bg-green-500/10 text-green-400" },
                       approval: { label: "审批中", color: "bg-yellow-500/10 text-yellow-400" },
@@ -359,7 +517,9 @@ export default function OperationsPage() {
                   })}
                 </div>
               </div>
-            </div>
+              </div>
+            </>
+            )}
           </motion.div>
         )}
 
@@ -367,7 +527,7 @@ export default function OperationsPage() {
         {activeSubTab === "report" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
                   <FileText size={18} className="text-[#D97706]" /> AI 智能报告
                 </h2>
@@ -385,7 +545,7 @@ export default function OperationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">工作要点 / 数据</label>
                   <textarea value={reportInput} onChange={e => setReportInput(e.target.value)}
-                    placeholder="输入本期工作要点...（不填则使用示例数据）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[180px] resize-y" rows={7} />
+                    placeholder="输入本期工作要点...（不填则使用示例数据）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[180px] resize-y rounded-lg" rows={7} />
                 </div>
                 <button onClick={handleGenerateReport} disabled={reportLoading}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
@@ -395,7 +555,7 @@ export default function OperationsPage() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[500px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">生成结果</h2>
                   {reportResult && (
@@ -424,6 +584,47 @@ export default function OperationsPage() {
           </div>
         )}
 
+        {/* ═══════════════════ 成交分析 (AI 洞察) ═══════════════════ */}
+        {activeSubTab === "analysis" && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold text-[#2D2A26] mb-6">高维数据洞察与建议</h2>
+            {!dbData ? (
+              <div className="flex flex-col items-center justify-center h-[350px] text-center border-2 border-dashed border-[#E5E1D8] bg-[#FAF9F6] rounded-xl m-2">
+                <TrendingUp size={28} className="text-[#A3A3A3] mb-3" />
+                <p className="text-[#6B6660] font-medium">请先在【智能仪表盘】配置大盘数据</p>
+                <p className="text-sm text-[#9E9B96] mt-2">AI 将根据您的最新推演数据，深挖异动指标并提供决断建议</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {(dbData.insights || insights).map((item, i) => (
+                  <motion.div key={i}
+                    className={`p-8 border bg-white rounded-xl transition-colors cursor-pointer ${expandedInsight === i ? "border-[#A3A3A3]" : "border-[#E5E1D8] hover:border-[#A3A3A3]"}`}
+                    onClick={() => setExpandedInsight(expandedInsight === i ? null : i)}>
+                    <div className="flex items-start justify-between">
+                      <span className={`text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider mb-2 inline-block ${
+                        item.type === "warning" ? "bg-yellow-500/10 text-yellow-500" : item.type === "insight" ? "bg-blue-500/10 text-blue-500" : "bg-green-500/10 text-green-500"
+                      }`}>{item.type === "warning" ? "预警" : item.type === "insight" ? "洞察" : "建议"}</span>
+                      {expandedInsight === i ? <ChevronUp size={14} className="text-[#6B6660]" /> : <ChevronDown size={14} className="text-[#6B6660]" />}
+                    </div>
+                    <h4 className="text-lg font-semibold text-[#2D2A26] mb-2">{item.title}</h4>
+                    <p className="text-sm text-[#6B6660] leading-relaxed">{item.text}</p>
+                    
+                    <AnimatePresence>
+                      {expandedInsight === i && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                          <div className="mt-4 pt-4 border-t border-[#E5E1D8]">
+                            <p className="text-sm text-[#444] whitespace-pre-wrap leading-relaxed bg-[#FAF9F6] p-4 rounded-lg font-mono">{item.detail}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* ═══════════════════ 回访追踪 ═══════════════════ */}
         {activeSubTab === "tracking" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -444,9 +645,26 @@ export default function OperationsPage() {
                     <LayoutGrid size={14} />
                   </button>
                 </div>
-                <button onClick={addRow} className="px-4 py-2 border border-[#E5E1D8] text-[#666] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors flex items-center gap-1">
-                  <Plus size={14} /> 新建任务
-                </button>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => {
+                      if (!dbData) { alert("请先生成智能仪表盘数据"); return; }
+                      const newRows = (dbData.deals || []).map((deal: any, i: number) => ({
+                        id: `ai-${Date.now()}-${i}`,
+                        name: deal.client,
+                        status: deal.status === "signed" ? "completed" : "pending",
+                        priority: "high",
+                        date: deal.date,
+                        owner: "AI智能分配"
+                      }));
+                      setTrackingRows([...newRows, ...trackingRows]);
+                    }} 
+                    className="px-4 py-2 border border-[#D97706]/30 bg-[#D97706]/5 text-[#D97706] text-sm hover:bg-[#D97706]/10 transition-colors flex items-center gap-1 rounded-lg font-medium">
+                    <Sparkles size={14} /> AI 同步最新大盘报表
+                  </button>
+                  <button onClick={addRow} className="px-4 py-2 border border-[#E5E1D8] bg-white text-[#666] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors flex items-center gap-1 rounded-lg shadow-sm">
+                    <Plus size={14} /> 新建任务
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -524,99 +742,7 @@ export default function OperationsPage() {
           </motion.div>
         )}
 
-        {/* ═══════════════════ 成交分析 ═══════════════════ */}
-        {activeSubTab === "analysis" && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="grid lg:grid-cols-[1fr_380px] gap-12">
-              <div className="space-y-6">
-                {/* 转化漏斗分析 */}
-                <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
-                  <h3 className="text-base font-bold text-[#2D2A26] mb-5">转化漏斗分析</h3>
-                  <div className="space-y-3">
-                    {[
-                      { stage: "官网访问", count: 8420, rate: "100%" },
-                      { stage: "注册留资", count: 1264, rate: "15.0%" },
-                      { stage: "需求沟通", count: 486, rate: "38.4%" },
-                      { stage: "方案提报", count: 198, rate: "40.7%" },
-                      { stage: "签约成交", count: 47, rate: "23.7%" },
-                    ].map((item, i) => {
-                      const width = (item.count / 8420) * 100;
-                      return (
-                        <motion.div key={item.stage} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}>
-                          <div className="flex items-center justify-between text-sm mb-1.5">
-                            <span className="text-[#9E9B96]">{item.stage}</span>
-                            <div className="flex gap-8">
-                              <span className="text-[#2D2A26] font-semibold">{item.count.toLocaleString()}</span>
-                              <span className="text-[#6B6660] font-mono w-14 text-right">{item.rate}</span>
-                            </div>
-                          </div>
-                          <div className="h-7 bg-white overflow-hidden">
-                            <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }}
-                              transition={{ delay: 0.3 + i * 0.1, duration: 0.6, ease: "easeOut" }}
-                              className="h-full" style={{ background: `rgba(255,255,255,${0.03 + (5 - i) * 0.02})` }} />
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
 
-                {/* 月度趋势 */}
-                <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
-                  <h3 className="text-base font-bold text-[#2D2A26] mb-4">月度成交趋势</h3>
-                  <div className="flex items-end gap-2 h-40">
-                    {[65, 78, 52, 91, 84, 120, 98, 135, 128, 142, 156, 168].map((v, i) => (
-                      <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${(v / 168) * 100}%` }}
-                        transition={{ delay: i * 0.05, duration: 0.4 }}
-                        className="flex-1 bg-[#F3F1ED] hover:bg-white/15 transition-colors relative group cursor-pointer">
-                        <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-[#6B6660] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{v}万</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div className="flex justify-between mt-2 text-[9px] text-[#A3A3A3]">
-                    {["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"].map(m => (
-                      <span key={m}>{m}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* AI 数据洞察 (Gemini 式) — 可展开详情 */}
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
-                <h3 className="text-base font-bold text-[#2D2A26] mb-4 flex items-center gap-2">
-                  <Sparkles size={16} /> AI 数据洞察
-                </h3>
-                <div className="space-y-4">
-                  {insights.map((item, i) => (
-                    <motion.div key={item.title}
-                      className={`p-8 border bg-white transition-colors cursor-pointer ${expandedInsight === i ? "border-[#A3A3A3]" : "border-[#E5E1D8] hover:border-[#E5E1D8]"}`}
-                      onClick={() => setExpandedInsight(expandedInsight === i ? null : i)}>
-                      <div className="flex items-start justify-between">
-                        <span className={`text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider mb-2 inline-block ${
-                          item.type === "warning" ? "bg-yellow-500/10 text-yellow-400" : item.type === "insight" ? "bg-blue-500/10 text-blue-400" : "bg-green-500/10 text-green-400"
-                        }`}>{item.type === "warning" ? "预警" : item.type === "insight" ? "洞察" : "建议"}</span>
-                        {expandedInsight === i ? <ChevronUp size={12} className="text-[#6B6660]" /> : <ChevronDown size={12} className="text-[#6B6660]" />}
-                      </div>
-                      <h4 className="text-sm font-semibold text-[#2D2A26] mb-1">{item.title}</h4>
-                      <p className="text-xs text-[#9E9B96] leading-relaxed">{item.text}</p>
-
-                      <AnimatePresence>
-                        {expandedInsight === i && (
-                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden">
-                            <div className="mt-3 pt-3 border-t border-[#E5E1D8]">
-                              <p className="text-xs text-[#666] whitespace-pre-wrap leading-relaxed">{item.detail}</p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
       </main>
     </div>
   );

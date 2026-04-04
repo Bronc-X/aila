@@ -52,17 +52,17 @@ const toolModules = [
   },
   {
     icon: BarChart3,
-    title: "运营驾驶舱",
+    title: "老板仪表盘",
     desc: "基于图表的智能仪表盘生成、高管视角的 AI 自动总结分析、成交数据洞察",
   },
   {
     icon: Building2,
-    title: "行政效率站",
+    title: "行政效率",
     desc: "律师级合同自动审核生成、冗长会议提取式自动纪要、审批流程 RPA 改造诊断",
   },
   {
     icon: Headphones,
-    title: "客服智能体",
+    title: "智能客服",
     desc: "基于 RAG 对接企业私域知识库的客诉处理、舆情公关监控、大量客户反馈之声提取",
   },
 ];

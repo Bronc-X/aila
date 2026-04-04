@@ -237,12 +237,12 @@ export default function ResearchPage() {
         {activeTab === "brainstorm" && (
           <div className="grid lg:grid-cols-[360px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Brain size={18} /> AI 多角色头脑风暴</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">讨论主题 *</label>
                   <textarea value={topic} onChange={(e) => setTopic(e.target.value)}
-                    placeholder="例如：如何用AI降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
+                    placeholder="例如：如何用AI降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">参与角色（多选）</label>
@@ -263,7 +263,7 @@ export default function ResearchPage() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[600px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">便签板</h2>
                   {stickyNotes.length > 0 && (
@@ -314,12 +314,12 @@ export default function ResearchPage() {
         {activeTab === "prototype" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Zap size={18} /> 快速原型验证</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品构想 *</label>
                   <textarea value={protoIdea} onChange={e => setProtoIdea(e.target.value)}
-                    placeholder="描述你的产品idea：解决什么问题？目标用户？核心功能？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[140px] resize-y" rows={5} />
+                    placeholder="描述你的产品idea：解决什么问题？目标用户？核心功能？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[140px] resize-y" rows={5} />
                 </div>
                 <button onClick={handleProtoValidate} disabled={protoLoading || !protoIdea.trim()}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
@@ -328,7 +328,7 @@ export default function ResearchPage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[500px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">验证报告</h2>
                   {protoResult && <ExportButton content={protoResult} filename="原型验证.txt" />}
@@ -352,7 +352,7 @@ export default function ResearchPage() {
         {/* ═══════════════ 市场研判 (Gemini Canvas 式) ═══════════════ */}
         {activeTab === "market" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
-            <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-8 mb-8">
+            <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
               <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">市场趋势研判</h2>
               <p className="text-[#666] mb-8">点击数据卡片展开详情面板</p>
             </div>
@@ -360,7 +360,7 @@ export default function ResearchPage() {
               {MARKET_CARDS.map((item, i) => (
                 <motion.div key={item.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
                   onClick={() => setExpandedCard(expandedCard === i ? null : i)}
-                  className={`border bg-white p-12 cursor-pointer transition-all ${expandedCard === i ? "border-[#A3A3A3]" : "border-[#E5E1D8] hover:border-[#E5E1D8]"}`}>
+                  className={`border bg-white p-5 cursor-pointer transition-all rounded-xl ${expandedCard === i ? "border-[#D97706] shadow-sm" : "border-[#E5E1D8] hover:border-[#D97706]"}`}>
                   <div className="text-xs text-[#6B6660] mb-2">{item.label}</div>
                   <div className="text-3xl font-black text-[#2D2A26] mb-1 tracking-normal">{item.value}</div>
                   <div className="flex items-center gap-2 mb-2">

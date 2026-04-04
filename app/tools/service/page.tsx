@@ -228,7 +228,7 @@ export default function ServicePage() {
             <div className="w-8 h-8 flex items-center justify-center border border-[#E5E1D8] bg-[#FAF9F6]">
               <Headphones size={16} className="text-[#2D2A26]" />
             </div>
-            <span className="font-semibold text-sm">客服智能体</span>
+            <span className="font-semibold text-sm">智能客服</span>
           </div>
         </div>
         <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
@@ -247,7 +247,7 @@ export default function ServicePage() {
         {activeTab === "chatbot" && (
           <div className="grid lg:grid-cols-[380px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
                   <Bot size={18} /> Agent 配置
                 </h2>
@@ -393,7 +393,7 @@ export default function ServicePage() {
         {activeTab === "followup" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 space-y-5">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Phone size={18} /> 智能回访话术</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">回访场景</label>
@@ -407,7 +407,7 @@ export default function ServicePage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">客户背景（选填）</label>
                   <textarea value={followupContext} onChange={e => setFollowupContext(e.target.value)}
-                    placeholder="例如：使用产品3个月，最近2周活跃度下降..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-8 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
+                    placeholder="例如：使用产品3个月，最近2周活跃度下降..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
                 </div>
                 <button onClick={handleFollowupGenerate} disabled={followupLoading || !selectedScene}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
@@ -416,7 +416,7 @@ export default function ServicePage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-12 min-h-[500px]">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">话术脚本</h2>
                   {followupResult && <ExportButton content={followupResult} filename={`回访话术_${selectedScene}.txt`} />}
@@ -502,10 +502,10 @@ export default function ServicePage() {
         {/* ═══════════════ 客户之声 (可交互词云 + 柱状图) ═══════════════ */}
         {activeTab === "voice" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="grid lg:grid-cols-[1fr_380px] gap-12">
+            <div className="grid lg:grid-cols-[1fr_380px] gap-6">
               <div className="space-y-6">
                 {/* 可点击词云 */}
-                <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
+                <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 rounded-xl">
                   <h3 className="text-base font-bold text-[#2D2A26] mb-2">客户之声分析</h3>
                   <p className="text-xs text-[#6B6660] mb-6">基于 1,247 条客户评价 · 点击关键词查看原始评价</p>
                   <div className="flex flex-wrap gap-3 justify-center py-6">
@@ -539,7 +539,7 @@ export default function ServicePage() {
                 </div>
 
                 {/* 可点击满意度柱状图 */}
-                <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
+                <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 rounded-xl">
                   <h3 className="text-base font-bold text-[#2D2A26] mb-4">满意度分布 · 点击查看评价样本</h3>
                   <div className="space-y-2">
                     {SATISFACTION_DATA.map(item => (
@@ -572,7 +572,7 @@ export default function ServicePage() {
               </div>
 
               {/* AI 洞察报告 */}
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-12">
+              <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 rounded-xl">
                 <h3 className="text-base font-bold text-[#2D2A26] mb-4 flex items-center gap-2">
                   <Sparkles size={16} /> AI 客户洞察报告
                 </h3>
