@@ -33,6 +33,33 @@ const stagger = {
   animate: { transition: { staggerChildren: 0.1 } },
 };
 
+const Highlight = ({ children }: { children: any }) => (
+  <strong className="text-[#D97706] text-3xl md:text-3xl mx-2 font-black whitespace-nowrap inline-block tracking-tight bg-[#D97706]/10 px-2 py-0.5 rounded-xl border border-[#D97706]/20">
+    {children}
+  </strong>
+);
+
+const casesData = [
+  {
+    title: "咨询行业问卷统计与智能决策系统",
+    desc: <>利用 AI 编程开发定制化问卷统计系统，深度挖掘商业增长策略。成果为英勇级交付产品，<Highlight>仅需 5 天完成</Highlight>，为企业直接<Highlight>精准死磕 2 周人力</Highlight>，整体团队效能爆发式<Highlight>跨越飞升 300%</Highlight>，数据洞察深度远胜纯人工处理极限。</>,
+    metrics: ["交付周期减至 5 天", "省 2 周无用功", "效能火箭式提升 300%"],
+    images: ["/cases/media__1775491662965.jpg"],
+  },
+  {
+    title: "电商爆品极速筛查雷达",
+    desc: <>全自动低粉账号短视频爆品精选。传统人工一天 <Highlight>24H不到10个首品</Highlight>，现在仅需<Highlight>5分钟锁定超300款</Highlight>过去一周爆品。搭配智能二次过滤，成功助带货选品实现<Highlight>30倍暴走式量产</Highlight>，让人工彻底回归核心实操策略。</>,
+    metrics: ["24h 压缩至 5 分钟", "智能二次拦截过滤", "全网爆款发现率激增 30 倍"],
+    images: ["/cases/media__1775491662974.png", "/cases/media__1775491662998.png"],
+  },
+  {
+    title: "商用级电商自动化海报工坊",
+    desc: <>摒弃无法落地的娱乐级生图。针对模特与商品的商用级呈现，进行极严苛的模型微调与部署。海量输出极高可用性的带货物料，<Highlight>100% 替代场地与摄制费</Highlight>，经测算为公司<Highlight>一年实打实省下超45万硬开支</Highlight>。</>,
+    metrics: ["彻底干掉拍摄棚/模特费", "单年结余超 45 万成本", "千量级商用图矩阵化高产"],
+    images: ["/cases/media__1775491663001.png", "/cases/media__1775491663011.jpg"],
+  },
+];
+
 // 工具模块数据
 const toolModules = [
   {
@@ -124,6 +151,7 @@ const schedule = [
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [tokenGateOpen, setTokenGateOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -133,6 +161,20 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAF9F6] overflow-hidden font-sans">
+      {/* 图片放大 Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-12 cursor-zoom-out backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <img 
+            src={selectedImage} 
+            className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+            alt="Expanded screen" 
+          />
+        </div>
+      )}
+
       {/* Token 验证 Modal */}
       <TokenGate isOpen={tokenGateOpen} onClose={() => setTokenGateOpen(false)} />
 
@@ -158,6 +200,7 @@ export default function Home() {
         </div>
         <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-medium tracking-wide uppercase text-[#9E9B96] whitespace-nowrap overflow-hidden">
           <a href="#schedule" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">日程剖析</a>
+          <a href="#cases" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">落地案例</a>
           <a href="#tools" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">工具解密</a>
           <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
         </div>
@@ -221,15 +264,22 @@ export default function Home() {
 
           <motion.div
             variants={fadeInUp}
-            className="mt-16 flex flex-col sm:flex-row gap-8 justify-center"
+            className="mt-16 flex flex-col sm:flex-row gap-6 justify-center w-full"
           >
             <button
               onClick={() => setTokenGateOpen(true)}
-              className="bg-[#2D2A26] text-white font-bold tracking-wide uppercase py-5 px-12 hover:bg-black transition-colors rounded-2xl text-lg flex items-center justify-center gap-3 cursor-pointer"
+              className="bg-[#2D2A26] text-white font-bold tracking-wide uppercase py-5 px-10 hover:bg-black transition-colors rounded-2xl text-lg flex items-center justify-center gap-3 cursor-pointer flex-1 sm:max-w-xs"
             >
               启动授课演示
               <ChevronDown size={20} className="-rotate-90" />
             </button>
+            <a
+              href="#cases"
+              className="border-2 border-[#D97706] text-[#D97706] bg-[#D97706]/5 font-bold tracking-wide uppercase py-5 px-10 hover:bg-[#D97706] hover:text-white transition-all rounded-2xl text-lg flex items-center justify-center gap-3 flex-1 sm:max-w-xs cursor-pointer shadow-lg shadow-[#D97706]/10"
+            >
+              直通 AI 提效数据
+              <ArrowRight size={20} />
+            </a>
           </motion.div>
 
         </motion.div>
@@ -242,6 +292,74 @@ export default function Home() {
           <span className="text-xs uppercase font-mono tracking-wide">SCROLL FOR DETAILS</span>
           <ChevronDown size={24} />
         </motion.div>
+      </section>
+
+      {/* 落地案例展示区 */}
+      <section id="cases" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-white border-t border-[#E5E1D8]">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-28 text-center"
+          >
+            <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
+               让数据说话。<br/>
+               <span className="text-[#9E9B96]">指数级降本增效的铁证。</span>
+            </h2>
+            <p className="text-xl md:text-2xl text-[#6B6660] tracking-normal max-w-4xl mx-auto">
+               不是画饼，不是概念。您将亲眼在这套“武器库”实操场景中证实，那些深陷产能泥沼的企业，如何让 AI 将成本直接砍半，让人效实现成倍地裂变与扩张。
+            </p>
+          </motion.div>
+
+          <div className="space-y-36">
+            {casesData.map((caseItem, i) => (
+              <motion.div
+                key={caseItem.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="flex flex-col lg:flex-row items-center gap-16"
+              >
+                {/* 文字区：交替左右 */}
+                <div className={`w-full lg:w-5/12 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <div className="flex flex-wrap gap-3 mb-8">
+                    {caseItem.metrics.map(metric => (
+                       <span key={metric} className="inline-flex items-center px-4 py-2 border border-[#D97706] text-[#D97706] text-[15px] font-bold uppercase tracking-wide rounded-full bg-[#D97706]/5">
+                          {metric}
+                       </span>
+                    ))}
+                  </div>
+                  <h3 className="text-3xl lg:text-4xl font-black text-[#2D2A26] tracking-normal mb-8 leading-snug">
+                    {caseItem.title}
+                  </h3>
+                  <p className="text-xl text-[#6B6660] leading-relaxed mb-10">
+                    {caseItem.desc}
+                  </p>
+                </div>
+                
+                {/* 图片区 */}
+                <div className={`w-full lg:w-7/12 grid gap-8 ${caseItem.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                  {caseItem.images.map((imgSrc, imgIdx) => (
+                    <div 
+                      key={imgIdx} 
+                      onClick={() => setSelectedImage(imgSrc)}
+                      className={`overflow-hidden rounded-3xl border border-[#E5E1D8] shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-white ${caseItem.images.length === 1 ? 'aspect-video lg:aspect-[4/3]' : 'aspect-square lg:aspect-[3/4]'} flex items-center justify-center cursor-zoom-in relative group`}
+                    >
+                       <img src={imgSrc} alt={`${caseItem.title} screenshots`} className="w-full h-full object-cover object-left-top group-hover:scale-105 transition-transform duration-700" />
+                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center">
+                          <span className="opacity-0 group-hover:opacity-100 bg-white/95 text-[#D97706] text-sm font-bold px-5 py-2.5 rounded-full shadow-lg transition-opacity duration-300 transform scale-95 group-hover:scale-100 uppercase tracking-widest flex items-center gap-2">
+                             <Sparkles size={16} /> 点击放大查看
+                          </span>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* 日程区 — 从痛点出发的标题 */}
@@ -309,7 +427,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 工具展示区 — 保留 The Arsenal + 卡片可点击跳转 login */}
       <section id="tools" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-white border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto relative z-10">
