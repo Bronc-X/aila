@@ -4,7 +4,11 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase URL or Anon Key is missing. Check your .env.local file.');
+  console.warn('⚠️ Supabase URL or Anon Key is missing. Check your .env.local file or Vercel Environment Variables.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Ensure the build doesn't crash on Vercel by providing dummy values if strictly missing
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseAnonKey || 'placeholder'
+);
