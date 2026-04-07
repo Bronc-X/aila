@@ -17,6 +17,8 @@ import {
   ChevronDown,
   TrendingDown,
   TrendingUp,
+  X,
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -153,11 +155,50 @@ export default function Home() {
   const [tokenGateOpen, setTokenGateOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  // 报名表单状态
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', company: '' });
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.phone) {
+      setErrorMessage('请填写姓名和手机号');
+      setFormStatus('error');
+      return;
+    }
+
+    setFormStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        setFormStatus('success');
+      } else {
+        setErrorMessage(result.message || '报名失败，请稍后再试');
+        setFormStatus('error');
+      }
+    } catch (err) {
+      setErrorMessage('网络错误，请稍后再试');
+      setFormStatus('error');
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAF9F6] overflow-hidden font-sans">
@@ -177,6 +218,110 @@ export default function Home() {
 
       {/* Token 验证 Modal */}
       <TokenGate isOpen={tokenGateOpen} onClose={() => setTokenGateOpen(false)} />
+
+      {/* 现场报名 Modal */}
+      {isRegisterOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 backdrop-blur-md bg-black/40 transition-opacity">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="bg-white rounded-3xl p-8 sm:p-10 w-full max-w-md shadow-2xl relative border border-[#E5E1D8]"
+          >
+            <button
+              onClick={() => setIsRegisterOpen(false)}
+              className="absolute top-6 right-6 text-[#9E9B96] hover:text-[#2D2A26] transition-colors"
+            >
+              <X size={24} />
+            </button>
+
+            <h3 className="text-3xl font-black text-[#2D2A26] mb-8 tracking-tight text-center">报名咨询</h3>
+
+            {formStatus === 'success' ? (
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="w-16 h-16 bg-[#16A34A]/10 text-[#16A34A] rounded-full flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h4 className="text-2xl font-bold text-[#2D2A26] mb-2">提交成功！</h4>
+                <p className="text-[#6B6660]">助理会尽快与您联系</p>
+                <button
+                  onClick={() => setIsRegisterOpen(false)}
+                  className="mt-8 bg-[#2D2A26] text-white py-3 px-8 rounded-xl font-bold hover:bg-black transition-colors w-full"
+                >
+                  关闭
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-8">
+                {/* 微信二维码区域极简版 */}
+                <div className="flex justify-center">
+                  <img 
+                    src="/assistant.jpg" 
+                    alt="助理微信" 
+                    className="w-48 h-auto object-contain rounded-xl border border-[#E5E1D8] shadow-sm"
+                  />
+                </div>
+                
+                <div className="relative flex items-center py-2">
+                   <div className="flex-grow border-t border-[#E5E1D8]" />
+                   <span className="flex-shrink-0 mx-4 text-xs font-bold text-[#D97706] uppercase tracking-widest">OR</span>
+                   <div className="flex-grow border-t border-[#E5E1D8]" />
+                </div>
+
+                <form onSubmit={handleRegisterSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-[#2D2A26] mb-2">姓名 *</label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-5 py-3 rounded-xl border border-[#E5E1D8] focus:border-[#D97706] focus:ring-2 focus:ring-[#D97706]/20 transition-all outline-none bg-[#FAF9F6] text-[#2D2A26]"
+                      placeholder="请输入您的姓名"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-[#2D2A26] mb-2">手机号码 / 微信号 *</label>
+                    <input
+                      type="text"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-5 py-3 rounded-xl border border-[#E5E1D8] focus:border-[#D97706] focus:ring-2 focus:ring-[#D97706]/20 transition-all outline-none bg-[#FAF9F6] text-[#2D2A26]"
+                      placeholder="请输入您的联系方式"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-[#2D2A26] mb-2">公司名称</label>
+                    <input
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full px-5 py-3 rounded-xl border border-[#E5E1D8] focus:border-[#D97706] focus:ring-2 focus:ring-[#D97706]/20 transition-all outline-none bg-[#FAF9F6] text-[#2D2A26]"
+                      placeholder="请输入您的公司名称"
+                    />
+                  </div>
+
+                  {formStatus === 'error' && (
+                    <p className="text-red-500 text-sm">{errorMessage}</p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={formStatus === 'loading'}
+                    className="w-full bg-[#D97706] text-white py-4 rounded-xl font-bold uppercase tracking-wide hover:bg-[#B45309] transition-colors flex items-center justify-center disabled:opacity-70"
+                  >
+                    {formStatus === 'loading' ? (
+                      <Loader2 className="animate-spin mr-2" size={20} />
+                    ) : null}
+                    提交咨询登记
+                  </button>
+                </form>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      )}
 
       {/* 极简化导航栏 */}
       <motion.nav
@@ -280,6 +425,19 @@ export default function Home() {
               直通 AI 提效数据
               <ArrowRight size={20} />
             </a>
+          </motion.div>
+
+          <motion.div
+            variants={fadeInUp}
+            className="mt-8"
+          >
+            <button
+              onClick={() => setIsRegisterOpen(true)}
+              className="text-[#D97706] font-bold text-lg hover:underline underline-offset-4 flex items-center justify-center gap-2 group transition-all"
+            >
+              <Sparkles size={20} className="group-hover:rotate-12 transition-transform" />
+              或点击此处登记报名咨询
+            </button>
           </motion.div>
 
         </motion.div>
@@ -516,13 +674,33 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-[#E5E1D8] py-16 px-12 md:px-24 lg:px-32 bg-[#FAF9F6]">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 text-sm text-[#9E9B96] font-mono uppercase tracking-wide">
-          <div className="flex items-center gap-8">
-             AI 造浪营 S1 / 智企实验室闭门会
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 text-sm text-[#9E9B96] font-mono tracking-wide">
+          <div className="flex flex-col gap-4 text-center md:text-left text-[#6B6660]">
+             <span className="font-bold uppercase text-[#2D2A26] text-lg">AI 造浪营 S1 / 智企实验室闭门会</span>
+             <p className="flex items-center gap-2 justify-center md:justify-start">
+               如有疑问，欢迎点击右侧悬浮按钮留下信息或直接联系助理
+             </p>
           </div>
-          <span>© 2026 ALL PROCESSES FINALIZED.</span>
+          <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
+            <span>© 2026 ALL PROCESSES FINALIZED.</span>
+            <span className="text-xs uppercase opacity-80">Empowering Next-Gen Enterprises</span>
+          </div>
         </div>
       </footer>
+
+      {/* 悬浮现场报名入口 */}
+      <motion.button
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1, duration: 0.6 }}
+        onClick={() => setIsRegisterOpen(true)}
+        className="fixed bottom-8 right-8 z-[100] bg-[#D97706] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 hover:bg-[#B45309] hover:scale-105 transition-all group"
+      >
+        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+          <Sparkles size={16} className="text-white group-hover:rotate-12 transition-transform" />
+        </div>
+        <span className="font-bold tracking-widest uppercase">报名咨询</span>
+      </motion.button>
     </div>
   );
 }
