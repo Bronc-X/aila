@@ -44,7 +44,7 @@ const Highlight = ({ children }: { children: any }) => (
 const casesData = [
   {
     title: "咨询行业问卷统计与智能决策系统",
-    desc: <>利用 AI 编程开发定制化问卷统计系统，深度挖掘商业增长策略。成果为英勇级交付产品，<Highlight>仅需 5 天完成</Highlight>，为企业直接<Highlight>精准死磕 2 周人力</Highlight>，整体团队效能爆发式<Highlight>跨越飞升 300%</Highlight>，数据洞察深度远胜纯人工处理极限。</>,
+    desc: <>利用 AI 编程开发定制化问卷统计系统，深度挖掘商业增长策略。成果为英勇级交付产品，<Highlight>仅需 5 天完成</Highlight>（含业务梳理和搭建，后续使用仅每次跑 10 分钟自动化程序即可），为企业直接<Highlight>精准死磕 2 周人力</Highlight>，整体团队效能爆发式<Highlight>跨越飞升 300%</Highlight>，数据洞察深度远胜纯人工处理极限。</>,
     metrics: ["交付周期减至 5 天", "省 2 周无用功", "效能火箭式提升 300%"],
     images: ["/cases/media__1775491662965.jpg"],
   },
@@ -100,7 +100,7 @@ const toolModules = [
 const schedule = [
   {
     day: "DAY 1",
-    date: "4月18日",
+    date: "4月17日",
     title: "破局：利润下滑不是终点，是您换引擎的信号",
     blocks: [
       {
@@ -125,7 +125,7 @@ const schedule = [
   },
   {
     day: "DAY 2",
-    date: "4月19日",
+    date: "4月18日",
     title: "上手：不再观望，今天就让 AI 替您干活",
     blocks: [
       {
@@ -235,7 +235,11 @@ export default function Home() {
               <X size={24} />
             </button>
 
-            <h3 className="text-3xl font-black text-[#2D2A26] mb-8 tracking-tight text-center">报名咨询</h3>
+            <h3 className="text-3xl font-black text-[#2D2A26] mb-3 tracking-tight text-center">报名咨询</h3>
+            <p className="text-center text-sm text-[#6B6660] mb-8 flex items-center justify-center gap-2">
+              <Calendar size={14} className="text-[#D97706]" />
+              2026 年 4 月 17 日（周五）— 18 日（周六）
+            </p>
 
             {formStatus === 'success' ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
@@ -374,7 +378,7 @@ export default function Home() {
           className="relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto mt-[-5vh]"
         >
           <motion.div variants={fadeInUp} className="text-[#9E9B96] font-mono tracking-wide uppercase mb-8">
-            —— SEASON I · 2026.04.18
+            —— SEASON I · 2026.04.17
           </motion.div>
 
           <motion.h1
@@ -399,7 +403,7 @@ export default function Home() {
           >
             <span className="flex items-center gap-3">
               <Calendar size={18} className="text-[#D97706]" />
-              APRIL 18-19, 2026
+              APRIL 17-18, 2026
             </span>
             <span className="flex items-center gap-3 border-l border-[#E5E1D8] pl-8">
               <MapPin size={18} className="text-[#D97706]" />
@@ -626,6 +630,91 @@ export default function Home() {
                 </motion.div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 讲师阵容区 */}
+      <section id="speakers" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-white border-t border-[#E5E1D8]">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-28 text-center"
+          >
+            <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
+              谁在为您<span className="text-[#9E9B96]">护航。</span>
+            </h2>
+            <p className="text-xl md:text-2xl text-[#9E9B96] tracking-normal max-w-3xl mx-auto">
+              不讲空泛理论——每一位导师都有真实的商业战果和技术交付物。
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-16 md:gap-12">
+            {/* 谢大叔 */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center group"
+            >
+              <div className="w-36 h-36 mx-auto mb-8 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow duration-500">
+                <img src="/speaker-xie.jpg" alt="谢大叔" className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700" />
+              </div>
+              <h3 className="text-2xl font-black text-[#2D2A26] mb-4">谢大叔</h3>
+              <p className="text-sm text-[#9E9B96] mb-5 tracking-wide">连续创业者 · SCUT 硕士 · 企业运营总监</p>
+              <p className="text-[#6B6660] text-sm leading-relaxed max-w-[240px] mx-auto">
+                深耕企业数字化转型与组织效能提升
+              </p>
+            </motion.div>
+
+            {/* Toni */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-center group"
+            >
+              <div className="w-36 h-36 mx-auto mb-8 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow duration-500">
+                <img src="/speaker-toni.jpg" alt="Toni" className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700" />
+              </div>
+              <h3 className="text-2xl font-black text-[#2D2A26] mb-4">Toni</h3>
+              <p className="text-sm text-[#9E9B96] mb-5 tracking-wide">AI Builder · 独立开发者 · ToB 落地 20+</p>
+              <p className="text-[#6B6660] text-sm leading-relaxed max-w-[240px] mx-auto">
+                从 MVP 到生产级的全栈 AI 应用交付
+              </p>
+            </motion.div>
+
+            {/* Mystery Guest */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center group"
+            >
+              <div className="w-36 h-36 mx-auto mb-8 rounded-full bg-[#F3F1ED] shadow-lg group-hover:shadow-xl transition-shadow duration-500 flex items-center justify-center relative overflow-hidden">
+                {/* Google G Logo */}
+                <svg className="w-16 h-16 opacity-20" viewBox="0 0 24 24">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                <motion.span
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute text-4xl font-black text-[#D97706]"
+                >?</motion.span>
+              </div>
+              <h3 className="text-2xl font-black text-[#2D2A26] mb-4">Mystery Guest</h3>
+              <p className="text-sm text-[#9E9B96] mb-5 tracking-wide">Google 中国区 · 技术负责人</p>
+              <p className="text-[#6B6660] text-sm leading-relaxed max-w-[240px] mx-auto">
+                现场揭晓 · 敬请期待
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>

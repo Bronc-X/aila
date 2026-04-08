@@ -39,7 +39,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       <div className="hero-glow" />
       <motion.div {...fadeUp} className="relative z-10 text-center max-w-3xl mx-auto">
         <motion.div {...d(0.1)} className="text-gray-400 font-mono tracking-wide uppercase text-sm mb-12">
-          <Sparkles size={14} className="inline mr-2 text-[var(--brand-glow)]" /> Season 1 · 2026年4月18-19日
+          <Sparkles size={14} className="inline mr-2 text-[var(--brand-glow)]" /> Season 1 · 2026年4月17-18日
         </motion.div>
         <motion.h1 {...d(0.3)} className="text-7xl md:text-[9rem] font-black leading-tight tracking-normal mb-10">
           <span className="text-gradient">AI造浪营</span>
