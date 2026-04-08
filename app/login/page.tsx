@@ -114,10 +114,27 @@ export default function LoginPage() {
     };
     localStorage.setItem("aila-user-profile", JSON.stringify(profile));
 
-    setTimeout(() => {
-      setLoading(false);
-      router.push("/tools");
-    }, 1000);
+    try {
+      await fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: profile.name,
+          company: profile.company,
+          industry: profile.industry,
+          industry_label: profile.industryLabel,
+          company_size: profile.companySize,
+          pain_points: profile.painPoints,
+          pain_point_labels: profile.painPointLabels,
+          ai_experience: profile.aiExperience
+        })
+      });
+    } catch (e) {
+      console.error("Failed to save profile remotely", e);
+    }
+
+    setLoading(false);
+    router.push("/tools");
   }
 
   const canSubmitInfo = name.trim() && company.trim() && industry;
