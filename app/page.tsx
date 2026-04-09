@@ -223,12 +223,12 @@ export default function Home() {
 
       {/* 现场报名 Modal */}
       {isRegisterOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 backdrop-blur-md bg-black/40 transition-opacity">
+        <div className="fixed inset-0 z-[200] flex justify-center items-start sm:items-center overflow-y-auto p-4 sm:p-6 backdrop-blur-md bg-black/40 transition-opacity">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="bg-white rounded-3xl p-8 sm:p-10 w-full max-w-md shadow-2xl relative border border-[#E5E1D8]"
+            className="my-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 w-full max-w-md shadow-2xl relative border border-[#E5E1D8]"
           >
             <button
               onClick={() => setIsRegisterOpen(false)}
@@ -416,19 +416,8 @@ export default function Home() {
           <a href="#tools" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">工具解密</a>
           <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
         </div>
-        <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0">
-          <button
-            onClick={() => setTokenGateOpen(true)}
-            className="text-[#2D2A26] border border-[#E5E1D8] bg-transparent text-sm font-bold tracking-wide uppercase py-3 px-6 lg:px-10 hover:bg-[#2D2A26] hover:text-white hover:border-[#2D2A26] transition-colors rounded-xl hidden sm:block whitespace-nowrap text-center cursor-pointer"
-          >
-            进入讲演模式
-          </button>
-          <Link
-            href="/login"
-            className="bg-[#D97706] text-white text-sm font-bold tracking-wide uppercase py-3 px-8 lg:px-12 hover:bg-[#B45309] transition-colors rounded-xl whitespace-nowrap text-center"
-          >
-            输入邀请码
-          </Link>
+        <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0 w-10 lg:w-[150px]">
+          {/* 右侧预留占位符以确保导航栏文字绝对居中 */}
         </div>
       </motion.nav>
 
@@ -476,34 +465,14 @@ export default function Home() {
 
           <motion.div
             variants={fadeInUp}
-            className="mt-16 flex flex-col sm:flex-row gap-6 justify-center w-full"
-          >
-            <button
-              onClick={() => setTokenGateOpen(true)}
-              className="bg-[#2D2A26] text-white font-bold tracking-wide uppercase py-5 px-10 hover:bg-black transition-colors rounded-2xl text-lg flex items-center justify-center gap-3 cursor-pointer flex-1 sm:max-w-xs"
-            >
-              启动授课演示
-              <ChevronDown size={20} className="-rotate-90" />
-            </button>
-            <a
-              href="#cases"
-              className="border-2 border-[#D97706] text-[#D97706] bg-[#D97706]/5 font-bold tracking-wide uppercase py-5 px-10 hover:bg-[#D97706] hover:text-white transition-all rounded-2xl text-lg flex items-center justify-center gap-3 flex-1 sm:max-w-xs cursor-pointer shadow-lg shadow-[#D97706]/10"
-            >
-              直通 AI 提效数据
-              <ArrowRight size={20} />
-            </a>
-          </motion.div>
-
-          <motion.div
-            variants={fadeInUp}
-            className="mt-8"
+            className="mt-16 flex justify-center w-full"
           >
             <button
               onClick={() => setIsRegisterOpen(true)}
-              className="text-[#D97706] font-bold text-lg hover:underline underline-offset-4 flex items-center justify-center gap-2 group transition-all"
+              className="bg-[#D97706] text-white font-black tracking-widest uppercase py-5 px-16 hover:bg-[#B45309] hover:scale-105 transition-all duration-300 rounded-2xl text-xl flex items-center justify-center gap-3 cursor-pointer shadow-2xl shadow-[#D97706]/30 w-full sm:w-auto"
             >
-              <Sparkles size={20} className="group-hover:rotate-12 transition-transform" />
-              或点击此处登记报名咨询
+              <Sparkles size={24} className="group-hover:rotate-12 transition-transform" />
+              立即报名登记
             </button>
           </motion.div>
 
