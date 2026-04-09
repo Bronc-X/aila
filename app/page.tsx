@@ -19,6 +19,8 @@ import {
   TrendingUp,
   X,
   Loader2,
+  Check,
+  Lock,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -157,7 +159,7 @@ export default function Home() {
 
   // 报名表单状态
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', phone: '', company: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', company: '', inviteCode: '' });
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -236,25 +238,72 @@ export default function Home() {
             </button>
 
             <h3 className="text-3xl font-black text-[#2D2A26] mb-3 tracking-tight text-center">报名咨询</h3>
-            <p className="text-center text-sm text-[#6B6660] mb-8 flex items-center justify-center gap-2">
+            <p className="text-center text-sm text-[#6B6660] mb-6 flex items-center justify-center gap-2">
               <Calendar size={14} className="text-[#D97706]" />
               2026 年 4 月 17 日（周五）— 18 日（周六）
             </p>
 
-            {formStatus === 'success' ? (
-              <div className="flex flex-col items-center justify-center py-10 text-center">
-                <div className="w-16 h-16 bg-[#16A34A]/10 text-[#16A34A] rounded-full flex items-center justify-center mb-6">
-                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
+            {/* 新增：价格锚点与特推提示 */}
+            <div className="bg-[#FAF9F6] border border-[#D97706]/20 rounded-xl p-4 mb-6 relative overflow-hidden shadow-sm">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-[#D97706]/10 to-transparent pointer-events-none"></div>
+                <div className="flex justify-between items-center">
+                   <div>
+                      <div className="text-[#9E9B96] text-xs font-medium mb-0.5 flex items-center gap-2">
+                         <span>官方统一定价</span>
+                      </div>
+                      <div className="text-[#2D2A26] text-sm font-bold flex items-baseline gap-1.5">
+                         统一指导价 <span className="text-[#D97706] text-2xl tracking-tight">¥2,580</span><span className="text-xs text-[#9E9B96] font-normal">/席</span>
+                      </div>
+                   </div>
+                   <div className="text-right flex flex-col items-end justify-center">
+                      <div className="text-[#D97706] bg-[#D97706]/10 p-2 rounded-lg flex items-center justify-center">
+                         <Sparkles size={18} />
+                      </div>
+                   </div>
                 </div>
-                <h4 className="text-2xl font-bold text-[#2D2A26] mb-2">提交成功！</h4>
-                <p className="text-[#6B6660]">助理会尽快与您联系</p>
+            </div>
+
+            {formStatus === 'success' ? (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <div className="w-12 h-12 bg-[#16A34A]/10 text-[#16A34A] rounded-full flex items-center justify-center mb-4">
+                  <Check size={24} strokeWidth={3} />
+                </div>
+                <h4 className="text-xl font-bold text-[#2D2A26] mb-1">查验通过，席位已临时锁定</h4>
+                <p className="text-[#6B6660] text-sm mb-6">请在 30 分钟内完成支付，逾期名额将自动释放</p>
+                
+                {/* 隐藏大面积的绿色，只露出中间纯粹的黑白付款码区域，匹配咨询公司的审美约束 */}
+                <div className="bg-[#FAF9F6] p-4 rounded-xl shadow-lg border border-[#E5E1D8] mb-6 flex flex-col items-center w-full max-w-[280px]">
+                  <div className="text-[11px] text-[#9E9B96] mb-4 tracking-widest uppercase font-bold flex items-center gap-2">
+                     <span className="w-8 h-px bg-[#E5E1D8]"></span>锁定名额 · 扫码支付<span className="w-8 h-px bg-[#E5E1D8]"></span>
+                  </div>
+                  
+                  {/* 全新官方定制二维码纯净展示 */}
+                  <div className="relative w-40 h-40 rounded-lg overflow-hidden border border-[#E5E1D8]/50 shadow-inner bg-white mb-4 p-1.5 flex items-center justify-center">
+                    <img 
+                      src="/qr-pay.png" 
+                      alt="支付二维码" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  
+                  <div className="w-full bg-white py-2 px-3 rounded text-sm font-bold flex justify-between items-center border border-[#E5E1D8]">
+                    <span className="text-[#6B6660] font-normal">应付金额:</span>
+                    <span className="text-xl text-[#D97706]">
+                      {formData.inviteCode && formData.inviteCode.trim() !== '' ? '¥1,980' : '¥2,580'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-xs text-[#9E9B96] mb-8 flex items-center gap-1 justify-center">
+                  <Lock size={12} />
+                  <span>支付金额由微信支付平台进行担保与加密结算</span>
+                </div>
+
                 <button
                   onClick={() => setIsRegisterOpen(false)}
-                  className="mt-8 bg-[#2D2A26] text-white py-3 px-8 rounded-xl font-bold hover:bg-black transition-colors w-full"
+                  className="bg-[#2D2A26] text-white py-3 px-8 rounded-xl font-bold hover:bg-black transition-colors w-full"
                 >
-                  关闭
+                  我已完成支付，关闭窗口
                 </button>
               </div>
             ) : (
@@ -303,6 +352,20 @@ export default function Home() {
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       className="w-full px-5 py-3 rounded-xl border border-[#E5E1D8] focus:border-[#D97706] focus:ring-2 focus:ring-[#D97706]/20 transition-all outline-none bg-[#FAF9F6] text-[#2D2A26]"
                       placeholder="请输入您的公司名称"
+                    />
+                  </div>
+                  <div>
+                    <label className="flex items-center justify-between text-sm font-bold text-[#2D2A26] mb-2">
+                      <span className="flex items-center gap-1.5"><Sparkles size={14} className="text-[#D97706]" /> 专属邀请码</span>
+                      <span className="text-xs text-[#9E9B96] font-normal">选填</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.inviteCode}
+                      onChange={(e) => setFormData({ ...formData, inviteCode: e.target.value.toUpperCase() })}
+                      maxLength={6}
+                      className="w-full px-5 py-3 rounded-xl border-2 border-[#D97706]/30 focus:border-[#D97706] focus:ring-4 focus:ring-[#D97706]/10 transition-all outline-none bg-[#FAF9F6] text-[#D97706] font-mono font-bold tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal placeholder:text-[#9E9B96]"
+                      placeholder="请填入主办方授权邀请码（选填）"
                     />
                   </div>
 

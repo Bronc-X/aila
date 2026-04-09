@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>AI 造浪营 · 高端海报工厂</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&family=Noto+Serif+SC:wght@600;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 50px; 
+    padding: 60px; 
+    background: #0f0f0f; 
+    font-family: 'Noto Sans SC', sans-serif; 
+    justify-content: center;
+    margin: 0;
+  }
+  
+  .poster-canvas {
+    width: 600px;
+    height: 850px;
+    background-color: #FAF9F6;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    overflow: hidden;
+  }
+
+  .poster-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(250,249,246,0.95) 0%, rgba(250,249,246,0) 30%, rgba(250,249,246,0) 45%, rgba(250,249,246,0.8) 65%, rgba(250,249,246,0.98) 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 50px 45px 35px;
+  }
+
+
+  /* 顶部标签 */
+  .badge { 
+    display: inline-block;
+    font-weight: 800; 
+    font-size: 13px; 
+    color: #D97706; 
+    letter-spacing: 4px; 
+    border-bottom: 2px solid #D97706;
+    padding-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  /* 主标题层 */
+  .title-area { margin-top: auto; margin-bottom: 20px;}
+
+  .serif-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 54px;
+    line-height: 1.1;
+    color: #2D2A26;
+    font-weight: 900;
+    margin: 0 0 15px 0;
+  }
+  
+  .sans-title {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 52px;
+    line-height: 1.15;
+    color: #2D2A26;
+    font-weight: 900;
+    margin: 0 0 15px 0;
+    letter-spacing: -2px;
+  }
+
+  .accent { color: #D97706; }
+
+  .subtitle { 
+    font-size: 20px; 
+    font-weight: 400; 
+    color: #6B6660; 
+    margin: 0 0 25px 0; 
+    letter-spacing: 1px; 
+    line-height: 1.6;
+  }
+
+  /* 价格展示块 */
+  .pricing-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+    border-left: 3px solid #D97706;
+    padding-left: 20px;
+  }
+
+  .price-col { display: flex; flex-direction: column; gap: 4px; }
+
+  .price-label { font-size: 14px; font-weight: 700; color: #9E9B96; letter-spacing: 1px;}
+  
+  .price-early .value { 
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px; 
+    color: #9E9B96; 
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+  
+  .price-vip .label {
+    color: #D97706;
+  }
+
+  .price-vip .value { 
+    font-family: 'Oswald', sans-serif;
+    font-size: 42px; 
+    color: #D97706; 
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .price-vip .value span {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 18px;
+    margin-right: 4px;
+  }
+
+  /* 底部信息与二维码布局 */
+  .footer-row { 
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(45,42,38,0.15);
+    padding-top: 20px;
+  }
+  
+  .footer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .info-item { display: flex; flex-direction: column; gap: 2px;}
+  .info-title { font-size: 11px; font-weight: 800; color: #9E9B96; letter-spacing: 2px;}
+  .info-text { font-size: 15px; font-weight: 800; color: #2D2A26; letter-spacing: 0px;}
+
+  /* 二维码美学块 */
+  .qr-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 10px 15px 10px 10px;
+    border-radius: 8px;
+    border: 1px solid #E5E1D8;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  
+  .qr-image-wrapper {
+    width: 85px;
+    height: 85px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #F3F1ED;
+  }
+  
+  /* 小助理专属纯白二维码：无需裁剪，直接居中铺满展示 */
+  .qr-image-wrapper img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+  }
+
+  .qr-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .qr-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: #2D2A26;
+  }
+  
+  .qr-desc {
+    font-size: 12px;
+    color: #D97706;
+    font-weight: 700;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Poster 1: 高级几何浪潮 -->
+<div class="poster-canvas" style="background-image: url('bg-1.png');">
+  <div class="poster-overlay">
+    <div>
+      <div class="badge">2026/AI造浪营</div>
+    </div>
+    
+    <div class="title-area">
+      <h1 class="serif-title">闭门首战<br>打穿边缘<span class="accent">业务算力</span></h1>
+      <p class="subtitle">抛弃无意义的通用概念。拿到顶级架构思路，让你每一分钱的算力开销转化为绝对净利润。</p>
+    </div>
+    
+    <div class="pricing-layout">
+      <div class="price-col price-vip">
+        <span class="price-label label">官方统一指导价</span>
+        <span class="value"><span>¥</span>2,580</span>
+      </div>
+    </div>
+    
+    <div class="footer-row">
+      <div class="footer-details">
+        <div class="info-item">
+          <span class="info-title">DATE & TIME</span>
+          <span class="info-text">2026.04.17 - 04.18</span>
+        </div>
+      </div>
+      
+      <div class="qr-block">
+        <div class="qr-image-wrapper">
+          <img src="../public/qr-wechat.jpg" alt="QR Code">
+        </div>
+        <div class="qr-text">
+          <span class="qr-title">咨询小助理</span>
+          <span class="qr-desc">扫码定席核销</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Poster 2: 数据互联光感科技 -->
+<div class="poster-canvas" style="background-image: url('bg-2.png');">
+  <div class="poster-overlay">
+    <div>
+       <div class="badge">2026/AI造浪营</div>
+    </div>
+    
+    <div class="title-area">
+       <h1 class="sans-title">你的高级销冠<br>应是一群<span class="accent">算法集群</span></h1>
+       <p class="subtitle">实弹演练两昼夜。把最新的数字模型直接配置到你的销售、转化与回款链条中。</p>
+    </div>
+    
+    <div class="pricing-layout">
+      <div class="price-col price-vip">
+        <span class="price-label label">官方统一指导价</span>
+        <span class="value"><span>¥</span>2,580</span>
+      </div>
+    </div>
+    
+    <div class="footer-row">
+      <div class="footer-details">
+        <div class="info-item">
+          <span class="info-title">DATE & TIME</span>
+          <span class="info-text">2026.04.17 - 04.18</span>
+        </div>
+      </div>
+      
+      <div class="qr-block">
+        <div class="qr-image-wrapper">
+          <img src="../public/qr-wechat.jpg" alt="QR Code">
+        </div>
+        <div class="qr-text">
+          <span class="qr-title">咨询小助理</span>
+          <span class="qr-desc">扫码定席核销</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Poster 3: 核心能量圆球 -->
+<div class="poster-canvas" style="background-image: url('bg-3.png');">
+  <div class="poster-overlay">
+    <div>
+      <div class="badge">2026/AI造浪营</div>
+    </div>
+    
+    <div class="title-area">
+      <h1 class="serif-title">构建绝对的<br>私有业务<span class="accent">知识库</span></h1>
+      <p class="subtitle">人员离职带不走的才是资产。这一次，我们教你如何将十年的沉淀转化为自动出单大脑。</p>
+    </div>
+    
+    <div class="pricing-layout">
+      <div class="price-col price-vip">
+        <span class="price-label label">官方统一指导价</span>
+        <span class="value"><span>¥</span>2,580</span>
+      </div>
+    </div>
+    
+    <div class="footer-row">
+      <div class="footer-details">
+        <div class="info-item">
+          <span class="info-title">DATE & TIME</span>
+          <span class="info-text">2026.04.17 - 04.18</span>
+        </div>
+      </div>
+      
+      <div class="qr-block">
+        <div class="qr-image-wrapper">
+          <img src="../public/qr-wechat.jpg" alt="QR Code">
+        </div>
+        <div class="qr-text">
+          <span class="qr-title">咨询小助理</span>
+          <span class="qr-desc">扫码定席核销</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

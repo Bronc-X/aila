@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>分销商机密规章 · 内部海报</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&family=Noto+Serif+SC:wght@600;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { 
+    display: flex; 
+    padding: 60px; 
+    background: #0f0f0f; 
+    font-family: 'Noto Sans SC', sans-serif; 
+    justify-content: center;
+    margin: 0;
+  }
+  
+  .poster-canvas {
+    width: 600px;
+    background-color: #1a1a1a;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    overflow: hidden;
+    color: #FAF9F6;
+    padding: 50px 45px;
+    border-top: 4px solid #D97706;
+  }
+
+  /* 密件印章纹理 */
+  .poster-canvas::before {
+    content: "CONFIDENTIAL";
+    position: absolute;
+    top: -50px;
+    right: -80px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 140px;
+    color: rgba(255,255,255,0.02);
+    transform: rotate(-15deg);
+    pointer-events: none;
+  }
+
+  .header { margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px; }
+  .badge { 
+    display: inline-block;
+    font-weight: 900; 
+    font-size: 13px; 
+    color: #1a1a1a; 
+    background: #D97706;
+    padding: 6px 12px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  .serif-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 38px;
+    line-height: 1.2;
+    font-weight: 900;
+    margin: 0;
+  }
+
+  .accent { color: #D97706; }
+
+  /* 核心政策区块 */
+  .policy-section {
+    margin-bottom: 35px;
+  }
+  
+  .policy-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #D97706;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .policy-title::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    background: #D97706;
+  }
+  
+  .policy-content {
+    font-size: 15px;
+    color: rgba(250,249,246,0.8);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* 高亮规则框 */
+  .highlight-box {
+    background: rgba(217,119,6,0.05);
+    border: 1px solid rgba(217,119,6,0.2);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 30px 0;
+  }
+
+  .highlight-box p {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #FAF9F6;
+  }
+
+  .highlight-box .big-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 48px;
+    color: #D97706;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* 底部声明 */
+  .footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<div class="poster-canvas">
+  <div class="header">
+    <div class="badge">INTERNAL USE ONLY</div>
+    <h1 class="serif-title">AI 造浪营<br>超级合伙人<span class="accent">通道协议</span></h1>
+  </div>
+  
+  <div class="highlight-box">
+    <p>专属合作分成激励</p>
+    <span class="big-num">30%<span style="font-size: 20px;"> 课程费用提成</span></span>
+  </div>
+
+  <div class="policy-section">
+    <div class="policy-title">01 / T+1 极速核销阵线</div>
+    <p class="policy-content">所有通过您专属授权【6位邀请码】成功缴费锁定的席位，分佣绝不跨月压款。于闭门营双日圆满落幕后，官方财务核入渠道数据库，24小时内统一打款并签收清账。</p>
+  </div>
+
+  <div class="policy-section">
+    <div class="policy-title">02 / 防跳单终身羁绊</div>
+    <p class="policy-content">系统触发终身归属算法。不论您的客户以何种形式对接官方服务体系，只要他在后台落库的底码隶属于您的阵营，未来接洽所有关于 Agent 高阶大单开发的红利，全部计算提点对冲。</p>
+  </div>
+
+  <div class="policy-section">
+    <div class="policy-title">03 / 极致销售禁带令</div>
+    <p class="policy-content">对发出的每一张截图，禁止朋友圈硬销、禁止擅自突破倒卖定价导致破价。向客户抛发邀请卡底照即可，说辞为：“我这边有内部价特权通道名额，发你验资”。后续收账由官方小助理闭环。</p>
+  </div>
+
+  <div class="footer">
+    <span>AILA SEASON I.</span>
+    <span>邀请码请向主办方申请</span>
+  </div>
+</div>
+
+</body>
+</html>

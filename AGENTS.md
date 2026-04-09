@@ -160,3 +160,23 @@ run_command: killall node 2>/dev/null; rm -rf .next && npm run dev
 - 所有 AI 交互走 `/api/ai/chat/route.ts` 的 Mock 引擎
 - 不接任何外部 API（OpenAI/Gemini/Notion 等）
 - Mock 引擎返回高拟真的业务数据
+
+---
+
+## 本地高阶技能库 (Local Skills)
+
+当前工作区已注册以下 4 个本地技能文件。当用户发出对应指令时，请直接执行对应的工作流与思考模式：
+
+1. **@feynman** (`feynman.md`) 
+   - 机制：费曼学习法拆解。
+   - 要求：白痴原则（8岁听懂），禁用比喻，无术语，使用【痛点源头】、【物理齿轮】、【确切变化】三段式结构。
+2. **@polanyi-tacit** (`polanyi-tacit.md`)
+   - 机制：默会知识理论。
+   - 要求：不评判代码表面对错，挖掘防御性代码背后的伤疤、组织架构妥协与边缘业务现实。
+3. **@gstack** (`gstack.md`)
+   - 机制：极客开发工作流。
+   - 要求：代入 PM/Eng/Builder/QA/DevOps 五大角色，贯彻 Boil the Lake、先搜索再构建、永远推进等原则。
+4. **// turbo-all** / **@auto-build** (`auto-build.md`)
+   - 机制：自动构建。
+   - 要求：执行 `npm install` 和 `npm run build`。
+

@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, phone, company } = body;
+    const { name, phone, company, inviteCode } = body;
 
     if (!name || !phone) {
       return NextResponse.json(
@@ -14,9 +14,10 @@ export async function POST(req: Request) {
     }
 
     // Insert into Supabase
+    // Note: Assuming Supabase 'registrations' table has an 'invite_code' column.
     const { data, error } = await supabase
       .from('registrations')
-      .insert([{ name, phone, company }])
+      .insert([{ name, phone, company, invite_code: inviteCode }])
       .select()
       .single();
 

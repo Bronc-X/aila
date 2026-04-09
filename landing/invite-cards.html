@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 造浪营 2026 - 专属实名邀请函生成套件</title>
+<style>
+  :root {
+    /* Brand Colors matching main app */
+    --bg-color: #FAF9F6;
+    --card-bg: #FFFFFF;
+    --text-primary: #2D2A26;
+    --text-secondary: #6B6660;
+    --text-tertiary: #9E9B96;
+    --border-color: #E5E1D8;
+    --accent: #D97706; /* Amber Orange */
+  }
+
+  * { box-sizing: border-box; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #333;
+    padding: 40px 20px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .card-wrapper {
+    background-color: var(--card-bg);
+    width: 320px;
+    height: 520px;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    padding: 30px 25px;
+  }
+
+  /* Decorative top light */
+  .card-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent) 0%, #FFB020 100%);
+  }
+
+  .logo-area {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background-color: var(--text-primary);
+    color: white;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .badge {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--accent);
+    padding: 6px 10px;
+    background-color: rgba(217, 119, 6, 0.1);
+    border-radius: 4px;
+  }
+
+  h1 {
+    font-size: 26px;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+
+  h1 span.light {
+    color: var(--text-tertiary);
+    font-weight: 300;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .code-area {
+    margin-top: 35px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .code-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .code-label .status {
+    color: var(--accent);
+  }
+
+  .code-value {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: monospace;
+    letter-spacing: 4px;
+    margin: 0;
+  }
+
+  .pricing-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .pricing-tag .strike {
+    text-decoration: line-through;
+    color: var(--text-tertiary);
+    font-weight: 400;
+  }
+
+  .footer-area {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* Dummy QR style mapping to toni.asia */
+  .qr-code {
+    width: 60px;
+    height: 60px;
+    background-color: var(--text-primary);
+    border-radius: 8px;
+    position: relative;
+    padding: 4px;
+  }
+  
+  .qr-code::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    background: repeating-linear-gradient(
+      45deg,
+      #fff,
+      #fff 4px,
+      transparent 4px,
+      transparent 8px
+    ), repeating-linear-gradient(
+      -45deg,
+      #fff,
+      #fff 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+  
+  .qr-code::after {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    background: #fff;
+    border-radius: 2px;
+  }
+
+  .footer-text {
+    flex: 1;
+  }
+
+  .footer-instruction {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+  }
+
+  .footer-url {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    margin: 0;
+  }
+  
+  /* Corner marks for aesthetic */
+  .card-wrapper::before {
+    content: '';
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<script>
+  const codes = [
+    "A58129", "X8Q923", "M82W10", "D19XP8", "Y9B7Q5", 
+    "R620P1", "Q3Z8X2", "T89L3N", "C5B0W9", "K9V2X7"
+  ];
+
+  codes.forEach(code => {
+    document.write(`
+      <div class="card-wrapper">
+        <div class="badge">SEASON.1</div>
+        <div class="logo-area">
+          <div class="logo-icon">A</div>
+        </div>
+        
+        <h1>AI<span class="light">造浪营</span></h1>
+        <p class="subtitle">2026.04.17 - 04.18<br>实战闭门会·获得席位置换优先权</p>
+
+        <div class="code-area">
+          <div class="code-label">
+            <span>Access Code</span>
+            <span class="status">VALID</span>
+          </div>
+          <p class="code-value">${code}</p>
+          <div class="pricing-tag">
+            <span>凭码解封特推价 ¥1,980</span>
+            <span class="strike">¥2,580</span>
+          </div>
+        </div>
+
+        <div class="footer-area">
+          <div class="qr-code"></div>
+          <div class="footer-text">
+            <p class="footer-instruction">扫码提交通行口令</p>
+            <p class="footer-url">入阵登记: toni.asia</p>
+          </div>
+        </div>
+      </div>
+    `);
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<button id="downloadBtn" style="position:fixed; bottom:30px; right:30px; z-index:999; padding: 15px 30px; font-size:16px; background:#D97706; color:white; border:none; border-radius:8px; box-shadow:0 10px 25px rgba(217,119,6,0.5); cursor:pointer; font-weight:900; letter-spacing:1px;">🚀 一键批量下载 10 张邀请卡</button>
+
+<script>
+  setTimeout(() => {
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('downloadBtn');
+      btn.innerText = "生成截图中...请稍候";
+      btn.style.opacity = 0.7;
+      btn.disabled = true;
+
+      const cards = document.querySelectorAll('.card-wrapper');
+      for (let i = 0; i < cards.length; i++) {
+        // High quality scale and ensure pure white background inside the rounded border
+        const canvas = await html2canvas(cards[i], { scale: 3, backgroundColor: null });
+        const link = document.createElement('a');
+        link.download = `AI造浪营_专属邀请卡_${codes[i]}.png`;
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Wait 300ms to allow browser to trigger multiple downloads
+        await new Promise(r => setTimeout(r, 300));
+      }
+      
+      btn.innerText = "下载成功！请前往下载文件夹查看";
+      btn.style.background = "#2D2A26";
+    });
+  }, 1000);
+</script>
+
+</body>
+</html>
