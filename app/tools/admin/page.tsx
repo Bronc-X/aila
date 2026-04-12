@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2, ArrowLeft, FileSignature, BookOpen, CalendarClock, Workflow,
-  Sparkles, RefreshCw, Copy, Check, Plus, X, Edit3, ChevronDown, ChevronUp, Download,
+  Sparkles, RefreshCw, Copy, Check, Plus, X, Edit3, ChevronDown, ChevronUp, Download, Presentation,
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
@@ -293,17 +293,22 @@ export default function AdminPage() {
     <div className="min-h-screen bg-[#FAF9F6]">
       <header className="sticky top-0 z-40 border-b border-[#E5E1D8]"
         style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid #E5E1D8" }}>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex items-end justify-between mb-10">
-          <Link href="/tools" className="flex items-center gap-1.5 text-sm text-[#9E9B96] hover:text-[#2D2A26] transition-colors">
-            <ArrowLeft size={16} /> 返回
-          </Link>
-          <div className="w-px h-5 bg-[var(--border-subtle)] mx-4" />
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 flex items-center justify-center border border-[#E5E1D8] bg-[#FAF9F6]">
-              <Building2 size={16} className="text-[#2D2A26]" />
+        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex items-center justify-between mb-10">
+          <div className="flex items-center gap-0">
+            <Link href="/tools" className="flex items-center gap-1.5 text-sm text-[#9E9B96] hover:text-[#2D2A26] transition-colors">
+              <ArrowLeft size={16} /> 返回
+            </Link>
+            <div className="w-px h-5 bg-[#E5E1D8] mx-4" />
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 flex items-center justify-center border border-[#E5E1D8] bg-[#FAF9F6]">
+                <Building2 size={16} className="text-[#2D2A26]" />
+              </div>
+              <span className="font-semibold text-sm">行政效率</span>
             </div>
-            <span className="font-semibold text-sm">行政效率</span>
           </div>
+          <Link href="/slides" className="flex items-center gap-2 text-sm font-mono tracking-wide uppercase text-[#6B6660] hover:text-[#2D2A26] transition-colors">
+            <Presentation size={14} /> 课件学习
+          </Link>
         </div>
         <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
           {tabs.map((tab) => (

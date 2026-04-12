@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MessageSquare, ArrowLeft, Mic, MicOff, Square, FileText, Lightbulb, Send,
-  Copy, Check, RefreshCw, Clock, User, Bot, Sparkles, Phone, Mail, Database, Upload, Trash2
+  Copy, Check, RefreshCw, Clock, User, Bot, Sparkles, Phone, Mail, Database, Upload, Trash2, Presentation
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useCallback, useEffect } from "react";
@@ -415,13 +415,18 @@ export default function SalesPage() {
               <h1 className="text-[2.5rem] font-black text-[#2D2A26] tracking-tight hover:tracking-normal transition-all duration-300">销售助手</h1>
             </div>
           </div>
-          {isRecording && (
-            <div className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1 rounded-full border border-red-100">
-              <motion.div animate={{ scale: [1, 1.3, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
-                className="w-2.5 h-2.5 rounded-full bg-red-500" />
-              <span className="text-[13px] font-bold uppercase tracking-wider">正在监听</span>
-            </div>
-          )}
+          <div className="flex items-center gap-4">
+            {isRecording && (
+              <div className="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1 rounded-full border border-red-100">
+                <motion.div animate={{ scale: [1, 1.3, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                <span className="text-[13px] font-bold uppercase tracking-wider">正在监听</span>
+              </div>
+            )}
+            <Link href="/slides" className="flex items-center gap-2 text-sm font-mono tracking-wide uppercase text-[#6B6660] hover:text-[#2D2A26] transition-colors">
+              <Presentation size={14} /> 课件学习
+            </Link>
+          </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex gap-12 -mb-px mt-2">
           {tabs.map((tab) => (
