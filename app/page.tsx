@@ -21,6 +21,7 @@ import {
   Loader2,
   Check,
   Lock,
+  Presentation,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -416,8 +417,13 @@ export default function Home() {
           <a href="#tools" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">工具解密</a>
           <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
         </div>
-        <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0 w-10 lg:w-[150px]">
-          {/* 右侧预留占位符以确保导航栏文字绝对居中 */}
+        <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0">
+          <button
+            onClick={() => setTokenGateOpen(true)}
+            className="hidden md:flex items-center gap-2 text-sm font-medium tracking-wide uppercase text-[#9E9B96] hover:text-[#2D2A26] transition-colors whitespace-nowrap cursor-pointer"
+          >
+            <Presentation size={14} /> 课件学习
+          </button>
         </div>
       </motion.nav>
 
