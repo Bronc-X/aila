@@ -128,7 +128,7 @@ function PortfolioContent() {
       {/* ======== ANTIOS ======== */}
       <section id="antios" className="min-h-screen p-8 lg:p-16 border-t border-neutral-800/50">
         <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row gap-16 items-center">
-          <div className="flex-1 flex justify-center"><div className="relative w-[280px] h-[560px] rounded-[3rem] border-[6px] border-neutral-900 bg-black shadow-2xl overflow-hidden flex items-center justify-center"><div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 bg-neutral-900 rounded-full z-20" /><div className="text-center space-y-6 px-8"><div className="w-20 h-20 mx-auto rounded-full bg-white/5 border border-neutral-800 flex items-center justify-center"><Shield className="w-10 h-10 text-white/60" /></div><p className="text-white font-bold text-lg">AntiOS</p><p className="text-neutral-500 font-mono text-[10px] leading-relaxed">Health Agent Runtime<br/>Apple Watch → HRV → arousal_load<br/>→ Bayesian Inference → Action</p><div className="flex justify-center gap-2 mt-4">{["HRV","Sleep","Recovery"].map(s=>(<span key={s} className="text-[8px] px-2 py-1 rounded-full border border-neutral-800 text-neutral-500 font-mono">{s}</span>))}</div></div></div></div>
+          <div className="flex-1 flex justify-center"><div className="relative w-[280px] h-[560px] rounded-[3rem] border-[6px] border-neutral-900 bg-black shadow-2xl overflow-hidden"><div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 bg-neutral-900 rounded-full z-20" /><video src="/antios.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover rounded-[2rem]" /><div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 rounded-[2rem]" /></div></div>
           <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex-1 space-y-8">
             <div className="inline-flex items-center space-x-2 px-3 py-1 bg-neutral-900 border border-neutral-800 rounded-full"><span className="w-2 h-2 rounded-full bg-white animate-pulse" /><span className="text-xs font-mono text-neutral-400">iOS 原生健康 Agent 平台</span></div>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight">antios.</h2>
@@ -178,9 +178,13 @@ function PortfolioContent() {
       {/* ======== CTA ======== */}
       <section id="contact" className="flex flex-col items-center justify-center min-h-[60vh] p-8 border-t border-neutral-800/50 text-center">
         <h2 className="text-4xl font-bold tracking-tight mb-8">Connect</h2>
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col md:flex-row gap-6 mb-12">
           <a href="mailto:Broncin@163.com" className="flex items-center gap-3 p-4 border border-neutral-800 rounded-xl hover:border-white transition-colors bg-neutral-900/50"><Mail className="w-6 h-6 text-neutral-400" /><span className="font-mono text-sm">Broncin@163.com</span></a>
           <a href="https://github.com/Bronc-X" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 border border-neutral-800 rounded-xl hover:border-white transition-colors bg-neutral-900/50"><Github className="w-6 h-6 text-neutral-400" /><span className="font-mono text-sm">github.com/Bronc-X</span></a>
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-48 h-48 p-2 bg-white rounded-2xl shadow-2xl overflow-hidden"><img src="/wechat-qr.jpg" alt="WeChat QR" className="w-full h-full object-cover rounded-xl" /></div>
+          <p className="text-xs text-neutral-500 uppercase tracking-widest font-mono">微信名片直连 (WeChat Direct)</p>
         </div>
       </section>
     </div>
