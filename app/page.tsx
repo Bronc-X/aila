@@ -418,6 +418,12 @@ export default function Home() {
           <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
         </div>
         <div className="flex items-center gap-4 lg:gap-8 flex-shrink-0">
+          <Link
+            href="/portfolio"
+            className="hidden md:flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-[#D97706] hover:text-[#B45309] transition-colors whitespace-nowrap cursor-pointer border border-[#D97706]/30 px-4 py-2 rounded-xl hover:bg-[#D97706]/5"
+          >
+            <Sparkles size={14} /> 作品集
+          </Link>
           <button
             onClick={() => setTokenGateOpen(true)}
             className="hidden md:flex items-center gap-2 text-sm font-medium tracking-wide uppercase text-[#9E9B96] hover:text-[#2D2A26] transition-colors whitespace-nowrap cursor-pointer"
