@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  --color-fintech-dark: #0a0a0a;
+  --color-fintech-gray: #1a1a1a;
+  --color-fintech-light: #f5f5f5;
+  --color-fintech-accent: #00ffcc; /* Cyan / neon touch */
+  --color-fintech-gold: #d4af37;
+  
+  --spacing-128: 32rem;
+  --spacing-144: 36rem;
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #f5f5f5;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased overflow-hidden;
+  }
+
+  /* Brutalist typography tweaks */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  /* Custom scrollbar for brutalist feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 0px; /* Brutalist sharp edge */
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-fintech-accent);
+  }
+}
+
+/* Snap scrolling classes */
+.snap-y-mandatory {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
