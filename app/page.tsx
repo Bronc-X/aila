@@ -22,6 +22,7 @@ import {
   Check,
   Lock,
   Presentation,
+  Radio,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -156,6 +157,7 @@ const schedule = [
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [tokenGateOpen, setTokenGateOpen] = useState(false);
+  const [tokenGateTarget, setTokenGateTarget] = useState("/slides");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // 报名表单状态
@@ -220,7 +222,11 @@ export default function Home() {
       )}
 
       {/* Token 验证 Modal */}
-      <TokenGate isOpen={tokenGateOpen} onClose={() => setTokenGateOpen(false)} />
+      <TokenGate
+        isOpen={tokenGateOpen}
+        onClose={() => setTokenGateOpen(false)}
+        redirectTo={tokenGateTarget}
+      />
 
       {/* 现场报名 Modal */}
       {isRegisterOpen && (
@@ -265,7 +271,45 @@ export default function Home() {
             </div>
 
             {formStatus === 'success' ? (
-              <div className="flex flex-col items-center justify-center py-6 text-center">
+              <>
+                <div className="flex flex-col items-center justify-center py-6 text-center">
+                  <div className="w-12 h-12 bg-[#16A34A]/10 text-[#16A34A] rounded-full flex items-center justify-center mb-4">
+                    <Check size={24} strokeWidth={3} />
+                  </div>
+                  <h4 className="text-xl font-bold text-[#2D2A26] mb-1">报名信息已提交</h4>
+                  <p className="text-[#6B6660] text-sm mb-6 max-w-[360px]">
+                    顾问会基于你的信息确认席位、价格和邀请码有效性，当前流程不再展示未落库的锁座或支付成功状态。
+                  </p>
+                  <div className="bg-[#FAF9F6] p-4 rounded-xl shadow-sm border border-[#E5E1D8] mb-6 flex flex-col items-center w-full max-w-[320px]">
+                    <img
+                      src="/assistant.jpg"
+                      alt="课程顾问微信"
+                      className="w-32 h-32 object-contain rounded-xl border border-[#E5E1D8] bg-white mb-4"
+                    />
+                    <div className="w-full space-y-2 text-left text-sm">
+                      <div className="flex items-center justify-between rounded-lg border border-[#E5E1D8] bg-white px-3 py-2">
+                        <span className="text-[#6B6660]">标准价</span>
+                        <span className="font-bold text-[#2D2A26]">¥2,580 / 席</span>
+                      </div>
+                      <div className="rounded-lg border border-[#E5E1D8] bg-white px-3 py-2 text-[#6B6660] leading-relaxed">
+                        {formData.inviteCode.trim()
+                          ? "已记录邀请码，优惠资格将由顾问人工复核后确认。"
+                          : "如有邀请码，可在顾问联系时补充核验。"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-[#9E9B96] mb-8 flex items-center gap-1 justify-center">
+                    <Lock size={12} />
+                    <span>当前流程仅提交报名信息，不直接创建支付单或锁定名额</span>
+                  </div>
+                  <button
+                    onClick={() => setIsRegisterOpen(false)}
+                    className="bg-[#2D2A26] text-white py-3 px-8 rounded-xl font-bold hover:bg-black transition-colors w-full"
+                  >
+                    我知道了，关闭窗口
+                  </button>
+                </div>
+                <div className="hidden">
                 <div className="w-12 h-12 bg-[#16A34A]/10 text-[#16A34A] rounded-full flex items-center justify-center mb-4">
                   <Check size={24} strokeWidth={3} />
                 </div>
@@ -306,7 +350,8 @@ export default function Home() {
                 >
                   我已完成支付，关闭窗口
                 </button>
-              </div>
+                </div>
+              </>
             ) : (
               <div className="flex flex-col space-y-8">
                 {/* 微信二维码区域极简版 */}
@@ -425,7 +470,19 @@ export default function Home() {
             <Sparkles size={14} /> 作品集
           </Link>
           <button
-            onClick={() => setTokenGateOpen(true)}
+            onClick={() => {
+              setTokenGateTarget("/slides/webinar");
+              setTokenGateOpen(true);
+            }}
+            className="hidden md:flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-[#D97706] hover:text-[#B45309] transition-colors whitespace-nowrap bg-[#D97706]/10 px-4 py-2 rounded-full border border-[#D97706]/20 hover:border-[#D97706]/40"
+          >
+            <Radio size={12} className="animate-pulse text-red-500" /> 绾夸笂鐩存挱
+          </button>
+          <button
+            onClick={() => {
+              setTokenGateTarget("/slides");
+              setTokenGateOpen(true);
+            }}
             className="hidden md:flex items-center gap-2 text-sm font-medium tracking-wide uppercase text-[#9E9B96] hover:text-[#2D2A26] transition-colors whitespace-nowrap cursor-pointer"
           >
             <Presentation size={14} /> 课件学习

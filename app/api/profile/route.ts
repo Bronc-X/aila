@@ -1,7 +1,18 @@
-import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+import { getSessionFromRequest } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
+
+export const runtime = "nodejs";
+
+export async function POST(req: NextRequest) {
+  if (!getSessionFromRequest(req)) {
+    return NextResponse.json(
+      { error: "UNAUTHORIZED", message: "请先登录后再保存资料" },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await req.json();
     const { 

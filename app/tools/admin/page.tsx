@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import { EditableCell } from "@/components/ui/EditableCell";
 import { ExportButton } from "@/components/ui/ExportButton";
+import { postJson, type ChatApiResponse } from "@/lib/api-client";
 
 // ── 类型 ──────────────────────────────
 interface ContractClause {
@@ -112,7 +113,7 @@ export default function AdminPage() {
   const [meetingInput, setMeetingInput] = useState("");
   const [minutes, setMinutes] = useState<MinuteItem[]>(INITIAL_MINUTES);
   const [minutesLoading, setMinutesLoading] = useState(false);
-  const [minutesGenerated, setMinutesGenerated] = useState(true);
+  const [minutesGenerated, setMinutesGenerated] = useState(false);
 
   // ── 排班 ──
   const [shifts, setShifts] = useState<Record<string, ShiftCell[]>>(generateShifts);
@@ -123,7 +124,7 @@ export default function AdminPage() {
   // ── 流程诊断 ──
   const [processInput, setProcessInput] = useState("");
   const [processSteps, setProcessSteps] = useState<ProcessStep[]>(INITIAL_PROCESS);
-  const [processGenerated, setProcessGenerated] = useState(true);
+  const [processGenerated, setProcessGenerated] = useState(false);
   const [processLoading, setProcessLoading] = useState(false);
 
   const tabs = [
@@ -136,9 +137,9 @@ export default function AdminPage() {
   // localStorage
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY_PROCESS);
-    if (saved) try { setProcessSteps(JSON.parse(saved)); } catch { /* 忽略 */ }
+    if (saved) try { setProcessSteps(JSON.parse(saved)); setProcessGenerated(true); } catch { /* 忽略 */ }
     const savedMin = localStorage.getItem(STORAGE_KEY_MINUTES);
-    if (savedMin) try { setMinutes(JSON.parse(savedMin)); } catch { /* 忽略 */ }
+    if (savedMin) try { setMinutes(JSON.parse(savedMin)); setMinutesGenerated(true); } catch { /* 忽略 */ }
     const savedShifts = localStorage.getItem(STORAGE_KEY_SHIFTS);
     if (savedShifts) try { setShifts(JSON.parse(savedShifts)); } catch { /* 忽略 */ }
   }, []);
@@ -186,26 +187,30 @@ export default function AdminPage() {
     if (!meetingInput.trim()) return;
     setMinutesLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "你是会议纪要助手。将会议记录整理为结构化纪要。输出JSON数组(不含markdown代码块)，每项：{\"type\":\"decision|action|question\",\"content\":\"...\",\"assignee\":\"...\",\"deadline\":\"...\"}" },
-            { role: "user", content: meetingInput },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: "你是会议纪要助手。将会议记录整理为结构化纪要。输出JSON数组(不含markdown代码块)，每项：{\"type\":\"decision|action|question\",\"content\":\"...\",\"assignee\":\"...\",\"deadline\":\"...\"}" },
+          { role: "user", content: meetingInput },
+        ],
       });
-      const data = await res.json();
       const content = data.choices?.[0]?.message?.content || "";
-      try {
-        const parsed = JSON.parse(content);
-        setMinutes(parsed.map((item: MinuteItem, i: number) => ({ ...item, id: Date.now().toString() + i })));
-        setMinutesGenerated(true);
-      } catch {
-        setMinutesGenerated(true);
+
+      const parsed = JSON.parse(content);
+      if (!Array.isArray(parsed)) {
+        throw new Error("会议纪要返回格式异常，请重试");
       }
-    } catch { /* 使用默认 */ setMinutesGenerated(true); }
+
+      setMinutes(
+        parsed.map((item: MinuteItem, index: number) => ({
+          ...item,
+          id: `${Date.now()}-${index}`,
+        }))
+      );
+      setMinutesGenerated(true);
+    } catch (error) {
+      setMinutesGenerated(false);
+      alert(error instanceof Error ? error.message : "会议纪要生成失败，请重试");
+    }
     finally { setMinutesLoading(false); }
   };
 
@@ -246,26 +251,29 @@ export default function AdminPage() {
   const handleProcessDiagnosis = async () => {
     setProcessLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "分析流程..." },
-            { role: "user", content: "诊断并推荐方案：流程自动化" },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: "分析流程..." },
+          { role: "user", content: "诊断并推荐方案：流程自动化" },
+        ],
       });
-      const data = await res.json();
       const content = data.choices?.[0]?.message?.content || "";
-      try {
-        const parsed = JSON.parse(content);
-        setProcessSteps(parsed.map((item: any, i: number) => ({ ...item, id: Date.now().toString() + i })));
-      } catch {
-        // failed to parse
+
+      const parsed = JSON.parse(content);
+      if (!Array.isArray(parsed)) {
+        throw new Error("流程诊断返回格式异常，请重试");
       }
-    } catch {
-      // failed to fetch
+
+      setProcessSteps(
+        parsed.map((item: any, index: number) => ({
+          ...item,
+          id: `${Date.now()}-${index}`,
+        }))
+      );
+      setProcessGenerated(true);
+    } catch (error) {
+      setProcessGenerated(false);
+      alert(error instanceof Error ? error.message : "流程诊断失败，请重试");
     } finally {
       setProcessLoading(false);
     }

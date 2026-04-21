@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ExportButton } from "@/components/ui/ExportButton";
 import { AIMessageBubble, ThinkingIndicator, ClaudeInput } from "@/components/ui/ClaudeUI";
+import { postJson, type ChatApiResponse } from "@/lib/api-client";
 
 // ── 类型 ──────────────────────────────
 interface ConversationEntry {
@@ -259,17 +260,14 @@ export default function SalesPage() {
     if (conversation.length % 2 !== 0) return;
     if (conversation[conversation.length - 1].id.startsWith("demo-")) return; // 排除 demo 数据
 
-    const analyzeConversation = async () => {
+const analyzeConversation = async () => {
       try {
         const textLog = conversation.map(c => `${c.speaker === "销售" ? "我方销售" : "客户"}: ${c.text}`).join("\n");
-        const res = await fetch("/api/ai/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            messages: [
-              { 
-                role: "system", 
-                content: `你是一个顶级的B2B销售总监监听助手。请分析以下最新对话日志，预测客户异议并给出我方下一步的应答建议。
+        const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+          messages: [
+            { 
+              role: "system", 
+              content: `你是一个顶级的B2B销售总监监听助手。请分析以下最新对话日志，预测客户异议并给出我方下一步的应答建议。
                 
 【我方产品知识库预设】
 核心卖点：${kbSellingPoints || "暂无预设"}
@@ -279,13 +277,11 @@ export default function SalesPage() {
 请务必返回严格的JSON格式数据，结构如下：
 {"suggestions": [{"type": "应对异议" 或 "追问深挖" 或 "促成交易" 或 "建立信任", "content": "建议销售说的话术（必须结合知识库）", "reason": "原因分析"}], "summary": {"painPoints": ["痛点1"], "objections": ["异议1"], "actionItems": ["下一步动作"]}}
 直接输出JSON，不要任何包裹符号和解释。` 
-              },
-              { role: "user", content: textLog },
-            ],
-            temperature: 0.7,
-          }),
+            },
+            { role: "user", content: textLog },
+          ],
+          temperature: 0.7,
         });
-        const data = await res.json();
         const content = data.choices?.[0]?.message?.content || "";
         const parsed = JSON.parse(content.replace(/```json\n?|\n?```/g, '').trim());
         
@@ -332,38 +328,28 @@ export default function SalesPage() {
   };
 
   // ── 回访策略 (结构化卡片输出) ──────────────────────────────
-  const handleFollowup = async () => {
+const handleFollowup = async () => {
     if (!customerName.trim()) return;
     setFollowupLoading(true);
     setFollowupCards([]);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "你是一个资深销售顾问。根据客户信息生成结构化的回访策略。请按以下JSON格式输出(不要包含markdown代码块标记)：[{\"title\":\"最佳回访时间\",\"icon\":\"⏰\",\"items\":[...]},{\"title\":\"开场话术\",\"icon\":\"💬\",\"items\":[...]},{\"title\":\"预判异议\",\"icon\":\"⚠️\",\"items\":[...]},{\"title\":\"促成策略\",\"icon\":\"🎯\",\"items\":[...]}]" },
-            { role: "user", content: `客户：${customerName}\n背景：${customerContext || "暂无"}` },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: "你是一个资深销售顾问。根据客户信息生成结构化的回访策略。请按以下JSON格式输出(不要包含markdown代码块标记)：[{\"title\":\"最佳回访时间\",\"icon\":\"⏰\",\"items\":[...]},{\"title\":\"开场话术\",\"icon\":\"💬\",\"items\":[...]},{\"title\":\"预判异议\",\"icon\":\"⚠️\",\"items\":[...]},{\"title\":\"促成策略\",\"icon\":\"🎯\",\"items\":[...]}]" },
+          { role: "user", content: `客户：${customerName}\n背景：${customerContext || "暂无"}` },
+        ],
       });
-      const data = await res.json();
       const content = data.choices?.[0]?.message?.content || "";
-      try {
-        const parsed = JSON.parse(content);
-        setFollowupCards(parsed);
-      } catch {
-        // fallback：如果解析失败，生成默认卡片
-        setFollowupCards([
-          { title: "最佳回访时间", icon: "⏰", items: ["建议周二/四 上午10:00-11:30", "避开月初月末忙碌期", "距上次沟通间隔3-5天最佳"] },
-          { title: "开场话术", icon: "💬", items: [`${customerName}您好，上次聊到的方案我们做了优化...`, "想给您分享一个同行业的成功案例", "有个好消息想第一时间告诉您"] },
-          { title: "预判异议", icon: "⚠️", items: ["价格问题 → 分期方案+ROI数据", "不确定效果 → 免费试用+保底承诺", "需要内部审批 → 提供汇报PPT模板"] },
-          { title: "促成策略", icon: "🎯", items: ["限时优惠锁定决策", "安排技术顾问上门演示", "推荐先试用轻量版降低门槛"] },
-        ]);
+
+      const parsed = JSON.parse(content);
+      if (!Array.isArray(parsed)) {
+        throw new Error("回访策略返回格式异常");
       }
-    } catch {
+
+      setFollowupCards(parsed);
+    } catch (error) {
       setFollowupCards([
-        { title: "回访建议", icon: "📋", items: ["网络异常，请重试"] },
+        { title: "回访建议", icon: "📋", items: [error instanceof Error ? error.message : "网络异常，请重试"] },
       ]);
     } finally {
       setFollowupLoading(false);
@@ -371,7 +357,7 @@ export default function SalesPage() {
   };
 
   // ── 灵感追问 (Gemini 多轮对话) ──────────────────────────────
-  const handleSendChat = async () => {
+const handleSendChat = async () => {
     if (!chatInput.trim() || chatLoading) return;
     const userMsg = chatInput.trim();
     setChatInput("");
@@ -380,21 +366,16 @@ export default function SalesPage() {
     setChatLoading(true);
     try {
       const history = [...chatMessages, newUserMsg].map(m => ({ role: m.role as "user" | "assistant", content: m.content }));
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "你是一个资深销售教练，擅长深度分析销售对话和客户心理。回答要具体、有洞察力。当引用用户之前的对话内容时，用【引用】标注。回答控制在300字以内。" },
-            ...history,
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: "你是一个资深销售教练，擅长深度分析销售对话和客户心理。回答要具体、有洞察力。当引用用户之前的对话内容时，用【引用】标注。回答控制在300字以内。" },
+          ...history,
+        ],
       });
-      const data = await res.json();
       const reply = data.choices?.[0]?.message?.content || "分析失败，请重试";
       setChatMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: reply }]);
-    } catch {
-      setChatMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: "网络异常，请重试" }]);
+    } catch (error) {
+      setChatMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: error instanceof Error ? error.message : "网络异常，请重试" }]);
     } finally {
       setChatLoading(false);
     }

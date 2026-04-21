@@ -11,6 +11,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { ExportButton } from "@/components/ui/ExportButton";
 import { EditableCell } from "@/components/ui/EditableCell";
 import { AIMessageBubble, ThinkingIndicator, ClaudeInput } from "@/components/ui/ClaudeUI";
+import { postJson, type ChatApiResponse } from "@/lib/api-client";
 
 // ── 类型 ──────────────────────────────
 interface ChatMsg { role: "user" | "assistant"; content: string; rating?: "up" | "down"; }
@@ -115,34 +116,29 @@ export default function ServicePage() {
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chatMessages]);
 
   // ── 配置Bot ──
-  const handleConfigureBot = () => {
+const handleConfigureBot = () => {
     setBotConfigured(true);
-    setChatMessages([{ role: "assistant", content: `你好！我是${botName}，很高兴为您服务 😊\n\n我已经学习了您提供的产品知识，可以回答客户的相关问题。\n\n请试着像客户一样问我一个问题吧！` }]);
+    setChatMessages([{ role: "assistant", content: `你好！我是${botName}，很高兴为您服务 😊\n\n当前配置已经保存到本地测试台，下面的问答会按这份配置调用真实 AI。\n\n请试着像客户一样问我一个问题吧！` }]);
   };
 
   // ── 发送消息 ──
-  const handleSendMessage = async () => {
+const handleSendMessage = async () => {
     if (!chatInput.trim() || chatLoading) return;
     const userMsg = chatInput;
     setChatInput("");
     setChatMessages((prev) => [...prev, { role: "user", content: userMsg }]);
     setChatLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `你是一个叫"${botName}"的智能客服，人设风格：${botPersona}。\n知识库：${faqInput || "这是一家科技公司，主营AI解决方案。价格：基础版5000元/月，企业版20000元/月。支持7天免费试用。"}\n知识标签：${knowledgeTags.join("、")}\n回答要求：1.语气${botPersona} 2.回答具体实用 3.200字以内 4.无法回答则建议联系人工` },
-            ...chatMessages.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
-            { role: "user" as const, content: userMsg },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: `你是一个叫"${botName}"的智能客服，人设风格：${botPersona}。\n知识库：${faqInput || "这是一家科技公司，主营AI解决方案。价格：基础版5000元/月，企业版20000元/月。支持7天免费试用。"}\n知识标签：${knowledgeTags.join("、")}\n回答要求：1.语气${botPersona} 2.回答具体实用 3.200字以内 4.无法回答则建议联系人工` },
+          ...chatMessages.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
+          { role: "user" as const, content: userMsg },
+        ],
       });
-      const data = await res.json();
       setChatMessages((prev) => [...prev, { role: "assistant", content: data.choices?.[0]?.message?.content || "抱歉，请联系人工客服 🙏" }]);
-    } catch {
-      setChatMessages((prev) => [...prev, { role: "assistant", content: "网络异常，请稍后重试" }]);
+    } catch (error) {
+      setChatMessages((prev) => [...prev, { role: "assistant", content: error instanceof Error ? error.message : "网络异常，请稍后重试" }]);
     } finally { setChatLoading(false); }
   };
 
@@ -161,47 +157,39 @@ export default function ServicePage() {
   const removeTag = (tag: string) => setKnowledgeTags(prev => prev.filter(t => t !== tag));
 
   // ── 回访话术生成 ──
-  const handleFollowupGenerate = async () => {
+const handleFollowupGenerate = async () => {
     if (!selectedScene) return;
     setFollowupLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `你是一个客服培训专家。根据回访场景生成一份决策树式的话术脚本。格式：每个阶段包含：阶段名、话术、客户可能反应及应对。用---分隔阶段。` },
-            { role: "user", content: `回访场景：${selectedScene}\n客户背景：${followupContext || "暂无"}` },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: `你是一个客服培训专家。根据回访场景生成一份决策树式的话术脚本。格式：每个阶段包含：阶段名、话术、客户可能反应及应对。用---分隔阶段。` },
+          { role: "user", content: `回访场景：${selectedScene}\n客户背景：${followupContext || "暂无"}` },
+        ],
       });
-      const data = await res.json();
       setFollowupResult(data.choices?.[0]?.message?.content || "生成失败");
-    } catch { setFollowupResult("网络错误，请重试"); }
+    } catch (error) {
+      setFollowupResult(error instanceof Error ? error.message : "网络错误，请重试");
+    }
     finally { setFollowupLoading(false); }
   };
 
   // ── 舆情生成回复 ──
-  const generateReply = async (id: string) => {
+const generateReply = async (id: string) => {
     setReplyGenerating(id);
     const item = sentiments.find(s => s.id === id);
     if (!item) return;
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "你是品牌公关专家。根据客户评价生成得体的官方回复。要求：1.真诚道歉(如负面) 2.提供解决方案 3.100字以内 4.语气专业温暖" },
-            { role: "user", content: `平台：${item.platform}\n评价内容：${item.content}\n情绪：${item.sentiment}` },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: "你是品牌公关专家。根据客户评价生成得体的官方回复。要求：1.真诚道歉(如负面) 2.提供解决方案 3.100字以内 4.语气专业温暖" },
+          { role: "user", content: `平台：${item.platform}\n评价内容：${item.content}\n情绪：${item.sentiment}` },
+        ],
       });
-      const data = await res.json();
       const reply = data.choices?.[0]?.message?.content || "回复生成失败";
       setSentiments(prev => prev.map(s => s.id === id ? { ...s, reply } : s));
-    } catch {
-      setSentiments(prev => prev.map(s => s.id === id ? { ...s, reply: "生成失败，请重试" } : s));
+    } catch (error) {
+      setSentiments(prev => prev.map(s => s.id === id ? { ...s, reply: error instanceof Error ? error.message : "生成失败，请重试" } : s));
     } finally { setReplyGenerating(null); }
   };
 
@@ -320,7 +308,7 @@ export default function ServicePage() {
                 </div>
                 <button onClick={handleConfigureBot}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-2.5 text-sm">
-                  <Sparkles size={16} /> {botConfigured ? "重新训练" : "训练 Agent"}
+                  <Sparkles size={16} /> {botConfigured ? "更新配置" : "保存配置"}
                 </button>
               </div>
             </motion.div>
@@ -341,7 +329,7 @@ export default function ServicePage() {
                   {!botConfigured ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
                       <MessageCircle size={32} className="text-[#A3A3A3] mb-3" />
-                      <p className="text-[#9E9B96]">先在左侧配置并训练 Agent</p>
+                      <p className="text-[#9E9B96]">先在左侧保存配置，再测试真实 AI 回复</p>
                     </div>
                   ) : (
                     <>

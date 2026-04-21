@@ -3,8 +3,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { postJson } from "@/lib/api-client";
 
 // ── 行业选项（12个）──
 const industries = [
@@ -66,7 +68,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState<"code" | "info">("code");
+  const [nextPath, setNextPath] = useState("/tools");
   const router = useRouter();
+
+  useEffect(() => {
+    const next = new URLSearchParams(window.location.search).get("next");
+    if (next && next.startsWith("/")) {
+      setNextPath(next);
+    }
+  }, []);
 
   const togglePain = (val: string) => {
     setSelectedPains((prev) => {
@@ -76,20 +86,22 @@ export default function LoginPage() {
     });
   };
 
-  async function handleCodeSubmit(e: React.FormEvent) {
+async function handleCodeSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!inviteCode.trim()) return;
     setLoading(true);
     setError("");
 
-    setTimeout(() => {
-      setLoading(false);
-      if (inviteCode !== "2026") {
-        setError("授权凭证无效 / AUTHORIZATION FAILED");
-        return;
-      }
+    try {
+      await postJson("/api/auth/login", {
+        inviteCode: inviteCode.trim(),
+      });
       setStep("info");
-    }, 800);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "邀请码校验失败");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleInfoSubmit(e: React.FormEvent) {
@@ -115,29 +127,60 @@ export default function LoginPage() {
     localStorage.setItem("aila-user-profile", JSON.stringify(profile));
 
     try {
-      await fetch('/api/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: profile.name,
-          company: profile.company,
-          industry: profile.industry,
-          industry_label: profile.industryLabel,
-          company_size: profile.companySize,
-          pain_points: profile.painPoints,
-          pain_point_labels: profile.painPointLabels,
-          ai_experience: profile.aiExperience
-        })
+      await postJson("/api/profile", {
+        name: profile.name,
+        company: profile.company,
+        industry: profile.industry,
+        industry_label: profile.industryLabel,
+        company_size: profile.companySize,
+        pain_points: profile.painPoints,
+        pain_point_labels: profile.painPointLabels,
+        ai_experience: profile.aiExperience,
       });
     } catch (e) {
-      console.error("Failed to save profile remotely", e);
+      setLoading(false);
+      setError(e instanceof Error ? e.message : "信息保存失败，请稍后重试");
+      return;
     }
 
     setLoading(false);
-    router.push("/tools");
+    router.push(nextPath);
   }
 
   const canSubmitInfo = name.trim() && company.trim() && industry;
+  const handleCodeStepSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inviteCode.trim()) return;
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await postJson<{
+        success: boolean;
+        grantedScope: "tools" | "slides";
+        scopes: Array<"tools" | "slides">;
+      }>("/api/auth/login", {
+        inviteCode: inviteCode.trim(),
+        nextPath,
+      });
+
+      if (nextPath.startsWith("/slides")) {
+        router.push(nextPath);
+        return;
+      }
+
+      if (!result.scopes.includes("tools")) {
+        router.push("/slides");
+        return;
+      }
+
+      setStep("info");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "閭€璇风爜鏍￠獙澶辫触");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] flex flex-col items-center justify-center px-6 md:px-12 lg:px-24 py-12 relative overflow-hidden font-sans">
@@ -172,7 +215,7 @@ export default function LoginPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, x: -50 }}
-              onSubmit={handleCodeSubmit}
+              onSubmit={handleCodeStepSubmit}
               className="space-y-12"
             >
               <div className="relative group">

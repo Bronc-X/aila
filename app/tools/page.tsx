@@ -14,7 +14,10 @@ import {
   Home,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useCallback } from "react";
+
+import { postJson } from "@/lib/api-client";
 
 const modules = [
   {
@@ -242,6 +245,16 @@ function ToolCard({
 
 export default function ToolsPage() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await postJson("/api/auth/logout", {});
+    } finally {
+      router.push("/");
+      router.refresh();
+    }
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] font-sans pb-24">
@@ -270,7 +283,10 @@ export default function ToolsPage() {
             >
               <Presentation size={14} /> Deck
             </Link>
-            <button className="hover:text-red-500 transition-colors flex items-center gap-2">
+            <button
+              onClick={handleLogout}
+              className="hover:text-red-500 transition-colors flex items-center gap-2"
+            >
               <LogOut size={14} /> Exit
             </button>
           </div>

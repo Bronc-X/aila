@@ -28,6 +28,7 @@ import { useState, useEffect, useCallback } from "react";
 import { EditableCell } from "@/components/ui/EditableCell";
 import { StatusDropdown, TASK_STATUS_OPTIONS, PRIORITY_OPTIONS } from "@/components/ui/StatusDropdown";
 import { ExportButton } from "@/components/ui/ExportButton";
+import { postJson, type ChatApiResponse } from "@/lib/api-client";
 import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
 
 function DroppableColumn({ id, children, className }: any) {
@@ -163,14 +164,11 @@ export default function OperationsPage() {
   const handleGenerateDashboard = async () => {
     setDbGenerating(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { 
-              role: "system", 
-              content: `你是一个顶尖的商业数据分析师(BI)系统。请根据用户设定的基础条件，推演并模拟出一组极其逼真、符合该行业特征的运营数据大屏。
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { 
+            role: "system", 
+            content: `你是一个顶尖的商业数据分析师(BI)系统。请根据用户设定的基础条件，推演并模拟出一组极其逼真、符合该行业特征的运营数据大屏。
 请返回格式如下的极严格 JSON：
 {
   "kpis": [
@@ -189,8 +187,8 @@ export default function OperationsPage() {
   ]
 }
 不要有任何多余的文本、解释或包裹的Markdown标识。` 
-            },
-            { role: "user", content: `背景信息：
+          },
+          { role: "user", content: `背景信息：
 行业：【${dbConfig.industry}】
 目标客户画像：【${dbConfig.customerProfile}】
 销售团队规模：【${dbConfig.teamSize}人】
@@ -199,11 +197,9 @@ export default function OperationsPage() {
 当期核心经营重心：【${dbConfig.priority}】
 
 请基于以上初始客观资源和设定，推演并合理分配各层漏斗及财务各项KPI，各数据必须符合逻辑及行业常识，不要太假。不要生成markdown代码块！` },
-          ],
-          temperature: 0.8,
-        }),
+        ],
+        temperature: 0.8,
       });
-      const data = await res.json();
       const content = data.choices?.[0]?.message?.content || "";
       const parsed = JSON.parse(content.replace(/```json\n?|\n?```/g, '').trim());
       
@@ -214,7 +210,7 @@ export default function OperationsPage() {
       }
       setDbData(parsed);
     } catch (e) {
-      alert("AI 生成全盘数据失败，请重试");
+      alert(e instanceof Error ? e.message : "AI 生成全盘数据失败，请重试");
     } finally {
       setDbGenerating(false);
     }
@@ -224,20 +220,15 @@ export default function OperationsPage() {
   const handleGenerateReport = async () => {
     setReportLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `你是一个专业的运营总监助理。根据提供的工作要点数据，生成一份结构清晰、数据翔实的${reportType === "daily" ? "日报" : reportType === "weekly" ? "周报" : "月报"}。\n包含：1.核心数据总结 2.重点工作进展 3.存在问题 4.下一步计划。\n格式要专业简洁，适合直接发给老板看。` },
-            { role: "user", content: reportInput || "本周新增客户47个，成交8单，总成交额128.45万。重点跟进了深圳XX科技的23万大单。线索转化率18.6%，较上周提升2.1个百分点。存在问题：客单价下降3.2%，需要调整话术。" },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: `你是一个专业的运营总监助理。根据提供的工作要点数据，生成一份结构清晰、数据翔实的${reportType === "daily" ? "日报" : reportType === "weekly" ? "周报" : "月报"}。\n包含：1.核心数据总结 2.重点工作进展 3.存在问题 4.下一步计划。\n格式要专业简洁，适合直接发给老板看。` },
+          { role: "user", content: reportInput || "本周新增客户47个，成交8单，总成交额128.45万。重点跟进了深圳XX科技的23万大单。线索转化率18.6%，较上周提升2.1个百分点。存在问题：客单价下降3.2%，需要调整话术。" },
+        ],
       });
-      const data = await res.json();
       setReportResult(data.choices?.[0]?.message?.content || "生成失败");
-    } catch {
-      setReportResult("生成失败，请重试");
+    } catch (error) {
+      setReportResult(error instanceof Error ? error.message : "生成失败，请重试");
     } finally {
       setReportLoading(false);
     }

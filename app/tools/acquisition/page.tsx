@@ -30,6 +30,11 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { EditableCell } from "@/components/ui/EditableCell";
 import { ExportButton } from "@/components/ui/ExportButton";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
+import {
+  postJson,
+  type ChatApiResponse,
+  type ImageApiResponse,
+} from "@/lib/api-client";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -265,20 +270,17 @@ export default function AcquisitionPage() {
     const toneLabel = tones.find((t) => t.id === selectedTone)?.label || "专业";
     const industryLabel = industries.find((i) => i.id === selectedIndustry)?.label || "通用";
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `你是一个资深的全平台营销文案专家。你擅长为${industryLabel}行业创作针对不同平台的营销文案。\n请严格按照以下格式输出，为每个平台生成独立的文案版本，用 --- 分隔。\n每个平台文案需要：\n1. 符合该平台的内容调性和算法偏好\n2. 包含合适的emoji和标签\n3. 突出产品核心卖点\n4. 包含明确的行动号召(CTA)\n5. 语气风格：${toneLabel}` },
-            { role: "user", content: `请为以下产品生成${platformNames}平台的营销文案：\n产品名称：${productName}\n产品描述：${productDesc || "（请根据产品名称推断）"}\n目标平台：${platformNames}\n行业：${industryLabel}\n语气：${toneLabel}` },
-          ],
-          temperature: 0.8,
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: `你是一个资深的全平台营销文案专家。你擅长为${industryLabel}行业创作针对不同平台的营销文案。\n请严格按照以下格式输出，为每个平台生成独立的文案版本，用 --- 分隔。\n每个平台文案需要：\n1. 符合该平台的内容调性和算法偏好\n2. 包含合适的emoji和标签\n3. 突出产品核心卖点\n4. 包含明确的行动号召(CTA)\n5. 语气风格：${toneLabel}` },
+          { role: "user", content: `请为以下产品生成${platformNames}平台的营销文案：\n产品名称：${productName}\n产品描述：${productDesc || "（请根据产品名称推断）"}\n目标平台：${platformNames}\n行业：${industryLabel}\n语气：${toneLabel}` },
+        ],
+        temperature: 0.8,
       });
-      const data = await res.json();
       setResult(data.choices?.[0]?.message?.content || "生成失败，请重试");
-    } catch { setResult("网络错误，请检查连接后重试"); }
+    } catch (error) {
+      setResult(error instanceof Error ? error.message : "网络错误，请检查连接后重试");
+    }
     finally { setLoading(false); }
   }, [productName, productDesc, selectedPlatforms, selectedTone, selectedIndustry]);
 
@@ -295,29 +297,26 @@ export default function AcquisitionPage() {
     if (!posterName.trim()) return;
     setPosterLoading(true);
     try {
-      const res = await fetch("/api/ai/image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: `设计一张极简高级的营销海报背景，主题：${posterName}。要求：无需文字，背景纯净，符合${industries.find(i => i.id === selectedIndustry)?.label || '电商'}行业，采用高饱和度主色调，体现专业和现代感。`
-        }),
+      const data = await postJson<ImageApiResponse>("/api/ai/image", {
+        prompt: `设计一张极简高级的营销海报背景，主题：${posterName}。要求：无需文字，背景纯净，符合${industries.find(i => i.id === selectedIndustry)?.label || '电商'}行业，采用高饱和度主色调，体现专业和现代感。`,
       });
-      const data = await res.json();
-      if (data.urls && data.urls.length > 0) {
-        setPosterStyles(prev => [
-          { ...prev[0], name: "风格一：极简科技", src: data.urls[0] || "", size: posterSelectedSize },
-          { ...prev[1], name: "风格二：暗黑高端", src: data.urls[1] || "", size: posterSelectedSize },
-          { ...prev[2], name: "风格三：活力橙色", src: data.urls[2] || "", size: posterSelectedSize },
-          { ...prev[3], name: "风格四：商务蓝灰", src: data.urls[3] || "", size: posterSelectedSize }
-        ]);
+
+      if (!data.urls || data.urls.length === 0) {
+        throw new Error("海报生成失败，请稍后重试");
       }
-      // 无论 API 是否返回图片，都设置为已生成，展示 CSS 渐变海报
+
+      setPosterStyles(prev => [
+        { ...prev[0], name: "风格一：极简科技", src: data.urls?.[0] || "", size: posterSelectedSize },
+        { ...prev[1], name: "风格二：暗黑高端", src: data.urls?.[1] || "", size: posterSelectedSize },
+        { ...prev[2], name: "风格三：活力橙色", src: data.urls?.[2] || "", size: posterSelectedSize },
+        { ...prev[3], name: "风格四：商务蓝灰", src: data.urls?.[3] || "", size: posterSelectedSize }
+      ]);
       setPosterGenerated(true);
       setSelectedPoster(0);
-    } catch {
-      // API 失败时仍然展示 CSS 渐变占位海报
-      setPosterGenerated(true);
-      setSelectedPoster(0);
+    } catch (error) {
+      setPosterGenerated(false);
+      setSelectedPoster(null);
+      alert(error instanceof Error ? error.message : "海报生成失败，请稍后重试");
     } finally {
       setPosterLoading(false);
     }
@@ -328,23 +327,37 @@ export default function AcquisitionPage() {
     if (!videoTopic.trim()) return;
     setVideoLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `你是一个专业的短视频创作导演，擅长制作${videoDuration}的商业短视频。请按照分镜表格式输出脚本。每行包含：场景号、时间段、镜头描述、旁白/字幕、拍摄备注。用---分隔每个分镜。` },
-            { role: "user", content: `请为以下主题生成一个${videoDuration}的短视频分镜脚本：${videoTopic}` },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: `你是一个专业的短视频创作导演，擅长制作${videoDuration}的商业短视频。请按照分镜表格式输出脚本。每行包含：场景号、时间段、镜头描述、旁白/字幕、拍摄备注。用---分隔每个分镜。` },
+          { role: "user", content: `请为以下主题生成一个${videoDuration}的短视频分镜脚本：${videoTopic}` },
+        ],
       });
-      const data = await res.json();
       const content = data.choices?.[0]?.message?.content || "";
-      // 简单解析或使用默认分镜
-      if (content) {
-        setVideoGenerated(true);
+
+      const blocks = content.split(/---+/).map((block) => block.trim()).filter(Boolean);
+      if (blocks.length === 0) {
+        throw new Error("短视频脚本生成失败，请稍后重试");
       }
-    } catch { /* 使用默认分镜 */ setVideoGenerated(true); }
+
+      const rows = blocks.map((block, index) => {
+        const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
+        return {
+          id: `${Date.now()}-${index}`,
+          scene: (index + 1).toString().padStart(2, "0"),
+          time: lines[1] || "",
+          shot: lines[2] || lines[0] || "",
+          narration: lines[3] || "",
+          note: lines[4] || "",
+        };
+      });
+
+      setStoryboard(rows.length > 0 ? rows : INITIAL_STORYBOARD);
+      setVideoGenerated(true);
+    } catch (error) {
+      setVideoGenerated(false);
+      alert(error instanceof Error ? error.message : "短视频脚本生成失败，请稍后重试");
+    }
     finally { setVideoLoading(false); }
   };
 
@@ -995,17 +1008,12 @@ export default function AcquisitionPage() {
                           const vPrompt = prompt;
 
                           try {
-                            const res = await fetch("/api/ai/image", {
-                              method: "POST",
-                              headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify({ 
-                                prompt: vPrompt, 
-                                images: productB64 ? [productB64] : [], 
-                                modelImage: finalModelB64 
-                              })
+                            const data = await postJson<ImageApiResponse>("/api/ai/image", {
+                              prompt: vPrompt,
+                              images: productB64 ? [productB64] : [],
+                              modelImage: finalModelB64,
                             });
-                            
-                            const data = await res.json();
+
                             if (data.urls && data.urls.length > 0) {
                               finalResults.push({
                                 id: `synth-${pf.name}-${v}`,

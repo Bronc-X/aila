@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback } from "react";
 import { EditableCell } from "@/components/ui/EditableCell";
 import { StatusDropdown } from "@/components/ui/StatusDropdown";
 import { ExportButton } from "@/components/ui/ExportButton";
+import { postJson, type ChatApiResponse } from "@/lib/api-client";
 
 // ── 类型 ──────────────────────────────
 interface StickyNote {
@@ -130,18 +131,13 @@ export default function ResearchPage() {
     setStickyNotes([]);
     const selectedRoleData = selectedRoles.map(id => roles.find(r => r.id === id)).filter(Boolean);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `你是一个多角色创新工作坊主持人。请模拟以下角色讨论。每个角色输出1-2个核心观点，用---分隔每个角色的发言。格式：角色名\n观点内容` },
-            { role: "user", content: `主题：${topic}\n参与角色：${selectedRoleData.map(r => r?.label).join("、")}` },
-          ],
-          temperature: 0.9,
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: `你是一个多角色创新工作坊主持人。请模拟以下角色讨论。每个角色输出1-2个核心观点，用---分隔每个角色的发言。格式：角色名\n观点内容` },
+          { role: "user", content: `主题：${topic}\n参与角色：${selectedRoleData.map(r => r?.label).join("、")}` },
+        ],
+        temperature: 0.9,
       });
-      const data = await res.json();
       const content = data.choices?.[0]?.message?.content || "";
       // 解析为便签卡片
       const blocks = content.split(/---+/).filter((b: string) => b.trim());
@@ -157,8 +153,17 @@ export default function ResearchPage() {
         };
       });
       setStickyNotes(notes);
-    } catch {
-      setStickyNotes([{ id: "err", role: "系统", emoji: "⚠️", content: "生成失败，请重试", vote: 0, status: "new" }]);
+    } catch (error) {
+      setStickyNotes([
+        {
+          id: "err",
+          role: "系统",
+          emoji: "⚠️",
+          content: error instanceof Error ? error.message : "生成失败，请重试",
+          vote: 0,
+          status: "new",
+        },
+      ]);
     } finally { setLoading(false); }
   };
 
@@ -176,19 +181,16 @@ export default function ResearchPage() {
     setProtoLoading(true);
     setProtoChecks({});
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "你是一个产品验证专家。请从以下维度评估产品构想：\n1.市场需求评分(1-10)及理由\n2.技术可行性评分(1-10)及理由\n3.竞品差异化评分(1-10)及理由\n4.商业模型评分(1-10)及理由\n5.SWOT分析(优势/劣势/机会/威胁各2-3条)\n6.MVP功能清单(5-8个核心功能，用checkbox格式)\n最后给出总体建议。" },
-            { role: "user", content: `产品构想：${protoIdea}` },
-          ],
-        }),
+      const data = await postJson<ChatApiResponse>("/api/ai/chat", {
+        messages: [
+          { role: "system", content: "你是一个产品验证专家。请从以下维度评估产品构想：\n1.市场需求评分(1-10)及理由\n2.技术可行性评分(1-10)及理由\n3.竞品差异化评分(1-10)及理由\n4.商业模型评分(1-10)及理由\n5.SWOT分析(优势/劣势/机会/威胁各2-3条)\n6.MVP功能清单(5-8个核心功能，用checkbox格式)\n最后给出总体建议。" },
+          { role: "user", content: `产品构想：${protoIdea}` },
+        ],
       });
-      const data = await res.json();
       setProtoResult(data.choices?.[0]?.message?.content || "分析失败");
-    } catch { setProtoResult("网络错误，请重试"); }
+    } catch (error) {
+      setProtoResult(error instanceof Error ? error.message : "网络错误，请重试");
+    }
     finally { setProtoLoading(false); }
   };
 
