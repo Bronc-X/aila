@@ -48,20 +48,20 @@ const Highlight = ({ children }: { children: any }) => (
 const casesData = [
   {
     title: "咨询行业问卷统计与智能决策系统",
-    desc: <>利用 AI 编程开发定制化问卷统计系统，深度挖掘商业增长策略。成果为英勇级交付产品，<Highlight>仅需 5 天完成</Highlight>（含业务梳理和搭建，后续使用仅每次跑 10 分钟自动化程序即可），为企业直接<Highlight>精准死磕 2 周人力</Highlight>，整体团队效能爆发式<Highlight>跨越飞升 300%</Highlight>，数据洞察深度远胜纯人工处理极限。</>,
-    metrics: ["交付周期减至 5 天", "省 2 周无用功", "效能火箭式提升 300%"],
+    desc: <>利用 AI 编程开发定制化问卷统计系统，深度挖掘商业增长策略。成果为业务级交付产品，<Highlight>仅需 5 天完成</Highlight>（含业务梳理与搭建，后续使用仅需每次运行 10 分钟自动化程序），为企业直接<Highlight>精准省下 2 周人力</Highlight>，整体团队效能爆发式<Highlight>提升 300%</Highlight>，数据洞察深度远胜纯人工处理。</>,
+    metrics: ["交付周期减至 5 天", "省下 2 周无用功", "效能火箭式提升 300%"],
     images: ["/cases/media__1775491662965.jpg"],
   },
   {
     title: "电商爆品极速筛查雷达",
-    desc: <>全自动低粉账号短视频爆品精选。传统人工一天 <Highlight>24H不到10个首品</Highlight>，现在仅需<Highlight>5分钟锁定超300款</Highlight>过去一周爆品。搭配智能二次过滤，成功助带货选品实现<Highlight>30倍暴走式量产</Highlight>，让人工彻底回归核心实操策略。</>,
-    metrics: ["24h 压缩至 5 分钟", "智能二次拦截过滤", "全网爆款发现率激增 30 倍"],
+    desc: <>全自动低粉账号短视频爆品精选。传统人工一天 <Highlight>24H 不到 10 个候选品</Highlight>，现在仅需<Highlight>5 分钟锁定超 100 款</Highlight>过去一周爆品。搭配智能二次过滤，成功助带货选品实现<Highlight>30 倍量产提效</Highlight>，让人工彻底回归核心实操策略。</>,
+    metrics: ["24h 压缩至 5 分钟", "智能二次拦截过滤", "全网爆款发现率提升 30 倍"],
     images: ["/cases/media__1775491662974.png", "/cases/media__1775491662998.png"],
   },
   {
     title: "商用级电商自动化海报工坊",
-    desc: <>摒弃无法落地的娱乐级生图。针对模特与商品的商用级呈现，进行极严苛的模型微调与部署。海量输出极高可用性的带货物料，<Highlight>100% 替代场地与摄制费</Highlight>，经测算为公司<Highlight>一年实打实省下超45万硬开支</Highlight>。</>,
-    metrics: ["彻底干掉拍摄棚/模特费", "单年结余超 45 万成本", "千量级商用图矩阵化高产"],
+    desc: <>摒弃无法落地的娱乐级生图。针对模特与商品的商用级呈现，进行极严苛的模型微调与部署。海量输出极高可用性的带货物料，<Highlight>100% 替代场地与摄制费</Highlight>，经测算为公司<Highlight>一年实打实省下 45 万硬开支</Highlight>。</>,
+    metrics: ["彻底干掉拍摄与模特费", "单年结余超 45 万成本", "千量级商用图矩阵化高产"],
     images: ["/cases/media__1775491663001.png", "/cases/media__1775491663011.jpg"],
   },
 ];
@@ -71,7 +71,7 @@ const toolModules = [
   {
     icon: Target,
     title: "获客中心",
-    desc: "批量AI海报生成、短视频自动化制作、全平台文案矩阵铺设",
+    desc: "批量 AI 海报生成、短视频自动化制作、全平台文案矩阵铺设",
   },
   {
     icon: MessageSquare,
@@ -91,16 +91,16 @@ const toolModules = [
   {
     icon: Building2,
     title: "行政效率",
-    desc: "律师级合同自动审核生成、冗长会议提取式自动纪要、审批流程 RPA 改造诊断",
+    desc: "律师级合同自动审核生成、冗长会议提取式自动纪要、审批流与 RPA 改造诊断",
   },
   {
     icon: Headphones,
     title: "智能客服",
-    desc: "基于 RAG 对接企业私域知识库的客诉处理、舆情公关监控、大量客户反馈之声提取",
+    desc: "基于 RAG 对接企业私域知识库的客诉处理、舆情公关监控、大量客户反馈之声提炼",
   },
 ];
 
-// 两天流程 — 从中小企业主痛点出发重写
+// 两天流程：从中小企业主痛点出发重写
 const schedule = [
   {
     day: "DAY 1",
@@ -112,8 +112,8 @@ const schedule = [
         label: "看清残局：您的利润正在被谁吞掉？",
         items: [
           "2026 年 AI 能力边界全景：哪些岗位正在被替代，哪些企业已经在翻倍增长",
-          "残酷数据对比：用了 AI 的同行，获客成本砍半、人效翻三倍的真实账本",
-          "中小企业引入 AI 最容易踩的三个致命深坑——以及怎么绕过去",
+          "残酷数据对比：用上 AI 的同行，获客成本砍半、人效翻三倍的真实账本",
+          "中小企业引入 AI 最容易踩的三个致命深坑，以及怎么绕过去",
         ],
       },
       {
@@ -137,7 +137,7 @@ const schedule = [
         label: "工具实训：零基础也能即学即用的杀手级武器",
         items: [
           "从 100+ AI 工具中筛出最适合中小企业的 12 个杀手级应用",
-          "手把手教学：用 Dify / Coze 搭建您自己的智能获客+销售系统",
+          "手把手教学：用 Dify / Coze 搭建您自己的智能获客 + 销售系统",
           "10 秒出报表：用 AI 替代过去要花半天的数据分析工作",
         ],
       },
@@ -175,7 +175,7 @@ export default function Home() {
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
-      setErrorMessage('请填写姓名和手机号');
+      setErrorMessage("请填写姓名和手机号");
       setFormStatus('error');
       return;
     }
@@ -247,7 +247,7 @@ export default function Home() {
             <h3 className="text-3xl font-black text-[#2D2A26] mb-3 tracking-tight text-center">报名咨询</h3>
             <p className="text-center text-sm text-[#6B6660] mb-6 flex items-center justify-center gap-2">
               <Calendar size={14} className="text-[#D97706]" />
-              2026 年 4 月 17 日（周五）— 18 日（周六）
+              2026 年 4 月 17 日（周五）- 18 日（周六）
             </p>
 
             {/* 新增：价格锚点与特推提示 */}
@@ -259,7 +259,7 @@ export default function Home() {
                          <span>官方统一定价</span>
                       </div>
                       <div className="text-[#2D2A26] text-sm font-bold flex items-baseline gap-1.5">
-                         统一指导价 <span className="text-[#D97706] text-2xl tracking-tight">¥2,580</span><span className="text-xs text-[#9E9B96] font-normal">/席</span>
+                         统一指导价 <span className="text-[#D97706] text-2xl tracking-tight">￥2,580</span><span className="text-xs text-[#9E9B96] font-normal">/ 人</span>
                       </div>
                    </div>
                    <div className="text-right flex flex-col items-end justify-center">
@@ -288,8 +288,8 @@ export default function Home() {
                     />
                     <div className="w-full space-y-2 text-left text-sm">
                       <div className="flex items-center justify-between rounded-lg border border-[#E5E1D8] bg-white px-3 py-2">
-                        <span className="text-[#6B6660]">标准价</span>
-                        <span className="font-bold text-[#2D2A26]">¥2,580 / 席</span>
+                        <span className="text-[#6B6660]">标准票</span>
+                        <span className="font-bold text-[#2D2A26]">￥2,580 / 人</span>
                       </div>
                       <div className="rounded-lg border border-[#E5E1D8] bg-white px-3 py-2 text-[#6B6660] leading-relaxed">
                         {formData.inviteCode.trim()
@@ -334,7 +334,7 @@ export default function Home() {
                   <div className="w-full bg-white py-2 px-3 rounded text-sm font-bold flex justify-between items-center border border-[#E5E1D8]">
                     <span className="text-[#6B6660] font-normal">应付金额:</span>
                     <span className="text-xl text-[#D97706]">
-                      {formData.inviteCode && formData.inviteCode.trim() !== '' ? '¥1,980' : '¥2,580'}
+                      {formData.inviteCode && formData.inviteCode.trim() !== '' ? '￥1,980' : '￥2,580'}
                     </span>
                   </div>
                 </div>
@@ -345,16 +345,16 @@ export default function Home() {
                 </div>
 
                 <button
-                  onClick={() => setIsRegisterOpen(false)}
-                  className="bg-[#2D2A26] text-white py-3 px-8 rounded-xl font-bold hover:bg-black transition-colors w-full"
-                >
-                  我已完成支付，关闭窗口
-                </button>
+                    onClick={() => setIsRegisterOpen(false)}
+                    className="bg-[#2D2A26] text-white py-3 px-8 rounded-xl font-bold hover:bg-black transition-colors w-full"
+                  >
+                    我已完成支付，关闭窗口
+                  </button>
                 </div>
               </>
             ) : (
               <div className="flex flex-col space-y-8">
-                {/* 微信二维码区域极简版 */}
+                {/* 微信二维码区域极简 */}
                 <div className="flex justify-center">
                   <img 
                     src="/assistant.jpg" 
@@ -381,7 +381,7 @@ export default function Home() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-[#2D2A26] mb-2">手机号码 / 微信号 *</label>
+                    <label className="block text-sm font-bold text-[#2D2A26] mb-2">手机号 / 微信 *</label>
                     <input
                       type="text"
                       value={formData.phone}
@@ -457,7 +457,7 @@ export default function Home() {
           </span>
         </div>
         <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-medium tracking-wide uppercase text-[#9E9B96] whitespace-nowrap overflow-hidden">
-          <a href="#schedule" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">日程剖析</a>
+          <a href="#schedule" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">日程解析</a>
           <a href="#cases" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">落地案例</a>
           <a href="#tools" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">工具解密</a>
           <a href="#about" className="hover:text-[#2D2A26] transition-colors whitespace-nowrap">关于峰会</a>
@@ -476,7 +476,7 @@ export default function Home() {
             }}
             className="hidden md:flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-[#D97706] hover:text-[#B45309] transition-colors whitespace-nowrap bg-[#D97706]/10 px-4 py-2 rounded-full border border-[#D97706]/20 hover:border-[#D97706]/40"
           >
-            <Radio size={12} className="animate-pulse text-red-500" /> 绾夸笂鐩存挱
+            <Radio size={12} className="animate-pulse text-red-500" /> 线上直播
           </button>
           <button
             onClick={() => {
@@ -490,7 +490,7 @@ export default function Home() {
         </div>
       </motion.nav>
 
-      {/* Hero 区域 — 从痛点出发 */}
+      {/* Hero 区域 */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-12 lg:px-32 pt-32 pb-16">
         <motion.div
           initial="initial"
@@ -499,21 +499,21 @@ export default function Home() {
           className="relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto mt-[-5vh]"
         >
           <motion.div variants={fadeInUp} className="text-[#9E9B96] font-mono tracking-wide uppercase mb-8">
-            —— SEASON I · 2026.04.17
+            — SEASON I · 2026.04.17
           </motion.div>
 
           <motion.h1
             variants={fadeInUp}
             className="text-6xl md:text-[9rem] font-black tracking-normal leading-tight mb-10 text-[#2D2A26]"
           >
-            AI<span className="text-[#6B6660]">造浪营</span>。
+            AI<span className="text-[#6B6660]">造浪营</span>
           </motion.h1>
 
           <motion.p
             variants={fadeInUp}
             className="text-2xl md:text-3xl text-[#9E9B96] max-w-4xl leading-snug tracking-normal mb-16"
           >
-            订单下滑、利润缩水、团队疲于内卷——<br className="hidden md:block"/>
+            订单下滑、利润缩水、团队疲于内卷。<br className="hidden md:block"/>
             问题不在努力不够，而在<span className="text-[#2D2A26] font-bold">武器没升级</span>。<br className="hidden md:block"/>
             两天时间，逐环节锁定 AI 的精确切入点，让每一分钱的成本都找到可量化的回报路径。
           </motion.p>
@@ -567,11 +567,11 @@ export default function Home() {
             className="mb-28 text-center"
           >
             <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
-               让数据说话。<br/>
-               <span className="text-[#9E9B96]">指数级降本增效的铁证。</span>
+               让数据说话<br/>
+               <span className="text-[#9E9B96]">指数级降本增效的铁证</span>
             </h2>
             <p className="text-xl md:text-2xl text-[#6B6660] tracking-normal max-w-4xl mx-auto">
-               不是画饼，不是概念。您将亲眼在这套“武器库”实操场景中证实，那些深陷产能泥沼的企业，如何让 AI 将成本直接砍半，让人效实现成倍地裂变与扩张。
+               不是画饼，不是概念。您将亲眼在这套“武器库”实操场景中证实，那些深陷产能泥沼的企业，如何让 AI 将成本直接砍半，让人效实现成倍裂变与扩张。
             </p>
           </motion.div>
 
@@ -625,7 +625,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 日程区 — 从痛点出发的标题 */}
+      {/* 日程区 */}
       <section id="schedule" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-[#FAF9F6] border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -638,7 +638,7 @@ export default function Home() {
               两天，六大环节，逐个击破。
             </h2>
             <p className="text-xl md:text-2xl text-[#9E9B96] tracking-normal max-w-3xl">
-              不卖概念、不讲空话。每个模块都直接对应您企业的获客、销售、运营、行政、客服和研发环节，现场演练可直接复制到您公司的落地方案。
+              不卖概念，不讲空话。每个模块都直接对应您企业的获客、销售、运营、行政、客服和研发环节，现场演练可直接复制到您公司的落地方案。
             </p>
           </motion.div>
 
@@ -690,7 +690,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* 工具展示区 — 保留 The Arsenal + 卡片可点击跳转 login */}
+      {/* 工具展示区 */}
       <section id="tools" className="relative py-32 md:py-40 px-12 md:px-24 lg:px-32 bg-white border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto relative z-10">
           <motion.div
@@ -700,11 +700,11 @@ export default function Home() {
             className="mb-28"
           >
             <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
-               您的企业，哪些环节<br className="hidden md:block"/>明天就能用 AI？<br/>
+               您的企业，哪些环节<br className="hidden md:block"/>明天就能接入 AI<br/>
                <span className="text-[#9E9B96]">The Arsenal.</span>
             </h2>
             <p className="text-xl md:text-2xl text-[#9E9B96] tracking-normal max-w-3xl">
-               从获客到售后，六大核心职能的 AI 实战工具已就绪。不是看演示——是您亲手操作，带走能直接落地的方案。
+               从获客到售后，六大核心职能的 AI 实战工具已就绪。不是看演示，而是您亲手操作，带走能直接落地的方案。
             </p>
           </motion.div>
 
@@ -745,15 +745,15 @@ export default function Home() {
             className="mb-28 text-center"
           >
             <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal mb-8">
-              谁在为您<span className="text-[#9E9B96]">护航。</span>
+              谁在为您<span className="text-[#9E9B96]">护航</span>
             </h2>
             <p className="text-xl md:text-2xl text-[#9E9B96] tracking-normal max-w-3xl mx-auto">
-              不讲空泛理论——每一位导师都有真实的商业战果和技术交付物。
+              不讲空泛理论，每一位导师都有真实的商业战果和技术交付物。
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-16 md:gap-12">
-            {/* 谢大叔 */}
+            {/* 谢总 */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -761,9 +761,9 @@ export default function Home() {
               className="text-center group"
             >
               <div className="w-36 h-36 mx-auto mb-8 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow duration-500">
-                <img src="/speaker-xie.jpg" alt="谢大叔" className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700" />
+                <img src="/speaker-xie.jpg" alt="谢总" className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700" />
               </div>
-              <h3 className="text-2xl font-black text-[#2D2A26] mb-4">谢大叔</h3>
+              <h3 className="text-2xl font-black text-[#2D2A26] mb-4">谢总</h3>
               <p className="text-sm text-[#9E9B96] mb-5 tracking-wide">连续创业者 · SCUT 硕士 · 企业运营总监</p>
               <p className="text-[#6B6660] text-sm leading-relaxed max-w-[240px] mx-auto">
                 深耕企业数字化转型与组织效能提升
@@ -811,7 +811,7 @@ export default function Home() {
                 >?</motion.span>
               </div>
               <h3 className="text-2xl font-black text-[#2D2A26] mb-4">Mystery Guest</h3>
-              <p className="text-sm text-[#9E9B96] mb-5 tracking-wide">Google 中国区 · 技术负责人</p>
+              <p className="text-sm text-[#9E9B96] mb-5 tracking-wide">Google 中国 · 技术负责人</p>
               <p className="text-[#6B6660] text-sm leading-relaxed max-w-[240px] mx-auto">
                 现场揭晓 · 敬请期待
               </p>
@@ -820,7 +820,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 脚尾 CTA — K型分化 + 痛点 */}
+      {/* 脚尾 CTA */}
       <section id="about" className="relative py-36 md:py-48 px-12 md:px-24 lg:px-32 bg-[#FAF9F6] border-t border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div
@@ -828,7 +828,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {/* K型分化图示 */}
+            {/* K 型分化图示 */}
             <div className="flex items-center justify-center gap-6 mb-12">
               <div className="flex items-center gap-2 text-green-600">
                 <TrendingUp size={28} strokeWidth={3} />
@@ -842,14 +842,14 @@ export default function Home() {
             </div>
 
             <h2 className="text-5xl md:text-[5.5rem] font-black text-[#2D2A26] leading-tight tracking-normal mb-10">
-              AI 时代的 K 型十字路口。<br />
+              AI 时代的 K 型十字路口<br />
               <span className="text-[#9E9B96]">向上，或向下。没有中间地带。</span>
             </h2>
             <p className="text-2xl text-[#9E9B96] leading-relaxed mb-8 tracking-normal max-w-3xl mx-auto">
-              同行已经在用 AI 接单、降本、提效——利润曲线正在急剧分化。您的窗口期，不会永远敞开。
+              同行已经在用 AI 接单、降本、提效，利润曲线正在急剧分化。您的窗口期，不会永远敞开。
             </p>
             <p className="text-xl text-[#6B6660] leading-relaxed mb-20 tracking-normal max-w-3xl mx-auto">
-              这不是又一堂"认知课"——这是为您企业量身定制的 AI 落地路线图。<br/>
+              这不是又一场认知课，而是为您企业量身定制的 AI 落地路线图。<br/>
               两天后，您带走的不是笔记，是<span className="text-[#2D2A26] font-bold">能立刻执行的行动方案</span>。
             </p>
             <Link

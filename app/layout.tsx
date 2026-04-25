@@ -21,11 +21,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "AI造浪营 · 智企实验室闭门会",
-  description: "让AI真正走进企业的每一个环节 — 为企业主打造的AI赋能实战培训",
+  description: "让 AI 真正走进企业的每一个环节，为企业主打造的 AI 赋能实战培训",
   keywords: ["AI培训", "企业AI", "数字化转型", "AI工具", "企业赋能"],
   openGraph: {
     title: "AI造浪营 · 智企实验室闭门会 S1",
-    description: "两天闭门实战，从认知到工具，让AI真正走进企业的每一个业务环节",
+    description: "两天闭门实战，从认知到工具，让 AI 真正走进企业的每一个业务环节",
     type: "website",
   },
 };
@@ -49,4 +49,3 @@ export default function RootLayout({
     </html>
   );
 }
-
