@@ -18,10 +18,11 @@ type Vec3 = { x: number; y: number; z: number };
 type Camera = { x: number; y: number; z: number; yaw: number; pitch: number };
 type Projected = Vec3 & { scale: number; visible: boolean };
 type HitZone = { id: string; href: string; x: number; y: number; w: number; h: number; depth: number };
-type PointerState = {
-  x: number;
-  y: number;
-  hasPointer: boolean;
+type CubeFace = {
+  points: Projected[];
+  fill: string;
+  stroke: string;
+  depth: number;
 };
 type GateKind = "word" | "panel" | "cube";
 type BackgroundVideo = {
@@ -87,12 +88,12 @@ const gates: Gate[] = [
     title: "WORK",
     eyebrow: "代表作品",
     copy: "AILA / Antios / QuantMAx",
-    x: 430,
-    y: -128,
-    z: 76,
-    width: 316,
-    height: 190,
-    depth: 52,
+    x: 486,
+    y: -18,
+    z: -190,
+    width: 326,
+    height: 198,
+    depth: 214,
     rotY: -0.5,
     tint: "#fff3dc",
     kind: "panel",
@@ -104,12 +105,12 @@ const gates: Gate[] = [
     title: "SERVICES",
     eyebrow: "企业合作",
     copy: "诊断、原型与系统落地",
-    x: -560,
+    x: -540,
     y: 94,
     z: -150,
-    width: 360,
-    height: 210,
-    depth: 58,
+    width: 356,
+    height: 214,
+    depth: 226,
     rotY: 0.44,
     tint: "#a8f06a",
     kind: "panel",
@@ -124,9 +125,9 @@ const gates: Gate[] = [
     x: 20,
     y: 228,
     z: -318,
-    width: 244,
-    height: 244,
-    depth: 150,
+    width: 276,
+    height: 276,
+    depth: 276,
     rotY: 0.08,
     tint: "#8ed6ce",
     kind: "cube",
@@ -138,12 +139,12 @@ const gates: Gate[] = [
     title: "TRAINING",
     eyebrow: "课程训练",
     copy: "工作坊、Slides 与工具入口",
-    x: 554,
-    y: 158,
+    x: 566,
+    y: 148,
     z: -552,
-    width: 308,
-    height: 184,
-    depth: 48,
+    width: 356,
+    height: 214,
+    depth: 226,
     rotY: -0.34,
     tint: "#f0c56b",
     kind: "panel",
@@ -225,19 +226,107 @@ function strokeProjectedLine(
   ctx.stroke();
 }
 
+function drawProjectedEllipse(
+  ctx: CanvasRenderingContext2D,
+  center: Projected,
+  radiusX: number,
+  radiusY: number,
+  rotation: number,
+  stroke: string,
+  width = 1,
+) {
+  if (!center.visible) return;
+  ctx.beginPath();
+  ctx.ellipse(center.x, center.y, radiusX, radiusY, rotation, 0, Math.PI * 2);
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = width;
+  ctx.stroke();
+}
+
+function attachLoopingVideo(video: HTMLVideoElement, source: BackgroundVideo, playbackRate: number) {
+  let hls: Hls | undefined;
+  let keepAlive = 0;
+  video.pause();
+  video.removeAttribute("src");
+  video.currentTime = 0;
+  video.loop = true;
+  video.muted = true;
+  video.playsInline = true;
+  video.playbackRate = playbackRate;
+  video.load();
+
+  if (source.kind === "hls" && Hls.isSupported()) {
+    hls = new Hls({ enableWorker: true });
+    hls.loadSource(source.src);
+    hls.attachMedia(video);
+  } else {
+    video.src = source.src;
+  }
+
+  const play = () => {
+    void video.play().catch(() => undefined);
+  };
+
+  const restart = () => {
+    video.currentTime = 0;
+    play();
+  };
+
+  const resume = () => {
+    if (video.paused || video.ended) play();
+  };
+
+  video.addEventListener("loadedmetadata", play, { once: true });
+  video.addEventListener("ended", restart);
+  video.addEventListener("pause", resume);
+  video.addEventListener("stalled", resume);
+  video.addEventListener("suspend", resume);
+  keepAlive = window.setInterval(resume, 2400);
+  play();
+
+  return () => {
+    video.removeEventListener("loadedmetadata", play);
+    video.removeEventListener("ended", restart);
+    video.removeEventListener("pause", resume);
+    video.removeEventListener("stalled", resume);
+    video.removeEventListener("suspend", resume);
+    window.clearInterval(keepAlive);
+    hls?.destroy();
+  };
+}
+
+function drawFittedText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  stroke = false,
+) {
+  const measured = Math.max(1, ctx.measureText(text).width);
+  const scaleX = Math.min(1, maxWidth / measured);
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scaleX, 1);
+  if (stroke) ctx.strokeText(text, 0, 0);
+  else ctx.fillText(text, 0, 0);
+  ctx.restore();
+}
+
 export default function ToniSpatialHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const galaxyVideoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hitZonesRef = useRef<HitZone[]>([]);
   const cameraRef = useRef<Camera>({ x: 0, y: 0, z: 0, yaw: -0.02, pitch: -0.035 });
   const targetRef = useRef<Camera>({ x: 0, y: 0, z: 0, yaw: -0.02, pitch: -0.035 });
   const velocityRef = useRef(0);
   const dragRef = useRef({ active: false, moved: false, x: 0, y: 0, yaw: 0, pitch: 0 });
-  const pointerRef = useRef<PointerState>({ x: 0, y: 0, hasPointer: false });
   const [activeVideoId, setActiveVideoId] = useState(backgroundVideos[0].id);
   const [activeId, setActiveId] = useState("toni");
   const router = useRouter();
   const activeVideo = backgroundVideos.find((video) => video.id === activeVideoId) ?? backgroundVideos[0];
+  const galaxyVideo = backgroundVideos.find((video) => video.id === "silk-flow") ?? backgroundVideos[1];
 
   const stars = useMemo(
     () =>
@@ -556,11 +645,6 @@ export default function ToniSpatialHero() {
     ctx.lineWidth = Math.max(1, 2.2 * center.scale);
     ctx.strokeStyle = "rgba(255, 183, 105, 0.26)";
     ctx.strokeText(gate.title, center.x, center.y);
-
-    const labelY = center.y + fontSize * 0.54;
-    ctx.font = `800 ${clamp(13 * center.scale, 9, 13)}px Arial, sans-serif`;
-    ctx.fillStyle = "rgba(255, 244, 222, 0.72)";
-    ctx.fillText("AI PRODUCT SYSTEMS", center.x, labelY);
     ctx.restore();
 
     const hitW = gate.width * center.scale;
@@ -593,7 +677,19 @@ export default function ToniSpatialHero() {
     const halfH = gate.height / 2;
     const halfD = gate.depth / 2;
     const phase = resolved.phase;
-    const rotation = gate.rotY + Math.sin(phase) * 0.035;
+    const rotation = gate.rotY + Math.sin(phase) * 0.055;
+    const tilt = Math.sin(phase * 0.72) * 0.035;
+
+    const toWorld = (point: Vec3) => {
+      const lifted = rotateX(point, tilt);
+      const rotated = rotateY(lifted, rotation);
+      return {
+        x: rotated.x + center.x,
+        y: rotated.y + center.y,
+        z: rotated.z + center.z,
+      };
+    };
+
     const corners = [
       { x: -halfW, y: -halfH, z: -halfD },
       { x: halfW, y: -halfH, z: -halfD },
@@ -603,70 +699,171 @@ export default function ToniSpatialHero() {
       { x: halfW, y: -halfH, z: halfD },
       { x: halfW, y: halfH, z: halfD },
       { x: -halfW, y: halfH, z: halfD },
-    ].map((corner) => {
-      const rotated = rotateY(corner, rotation);
-      return {
-        x: rotated.x + center.x,
-        y: rotated.y + center.y,
-        z: rotated.z + center.z,
-      };
-    });
+    ].map(toWorld);
+    const centerPlane = [
+      { x: -halfW, y: -halfH, z: 0 },
+      { x: halfW, y: -halfH, z: 0 },
+      { x: halfW, y: halfH, z: 0 },
+      { x: -halfW, y: halfH, z: 0 },
+    ].map((point) => project(toWorld(point), width, height));
     const projected = corners.map((corner) => project(corner, width, height));
     const frontCenter = project(center, width, height);
     if (!frontCenter.visible) return;
 
     const active = activeId === gate.id;
     const depthAlpha = clamp(1 - frontCenter.z / 2100, 0.18, 1);
-    const faceFill = gate.kind === "cube" ? "rgba(8, 32, 38, 0.72)" : "rgba(255, 247, 229, 0.08)";
-
-    drawPolygon(ctx, [projected[0], projected[1], projected[5], projected[4]], "rgba(0, 0, 0, 0.55)");
-    drawPolygon(ctx, [projected[1], projected[2], projected[6], projected[5]], mix(gate.tint, 0.13 * depthAlpha));
-    drawPolygon(ctx, [projected[2], projected[3], projected[7], projected[6]], "rgba(0, 0, 0, 0.48)");
-    drawPolygon(ctx, [projected[4], projected[5], projected[6], projected[7]], faceFill, mix(gate.tint, active ? 0.62 : 0.24));
-
-    ctx.save();
-    ctx.globalCompositeOperation = "screen";
-    strokeProjectedLine(ctx, projected[4], project({ x: 0, y: 0, z: center.z - 420 }, width, height), `rgba(226, 242, 236, ${0.08 * depthAlpha})`);
-    ctx.restore();
-
-    const left = frontCenter.x - halfW * frontCenter.scale + 20 * frontCenter.scale;
-    const top = frontCenter.y - halfH * frontCenter.scale + 20 * frontCenter.scale;
     const panelW = gate.width * frontCenter.scale;
     const panelH = gate.height * frontCenter.scale;
 
-    ctx.save();
-    ctx.shadowColor = gate.tint;
-    ctx.shadowBlur = active ? 22 : 8;
-    ctx.strokeStyle = mix(gate.tint, active ? 0.68 : 0.22);
-    ctx.lineWidth = active ? 1.5 : 1;
-    ctx.strokeRect(frontCenter.x - panelW / 2, frontCenter.y - panelH / 2, panelW, panelH);
-    ctx.shadowBlur = 0;
-
-    if (gate.id === "work") {
-      const thumbW = panelW * 0.44;
-      const thumbH = panelH * 0.32;
-      const gradient = ctx.createLinearGradient(left, top, left + thumbW, top + thumbH);
-      gradient.addColorStop(0, "rgba(255, 248, 230, 0.66)");
-      gradient.addColorStop(0.5, "rgba(255, 59, 31, 0.34)");
-      gradient.addColorStop(1, "rgba(9, 26, 25, 0.78)");
-      ctx.fillStyle = gradient;
+    const projectedCenter = project({ x: center.x, y: center.y + halfH + 16, z: center.z + halfD * 0.35 }, width, height);
+    if (projectedCenter.visible) {
+      ctx.save();
+      ctx.globalCompositeOperation = "multiply";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.42)";
       ctx.beginPath();
-      ctx.roundRect(left, top, thumbW, thumbH, 8 * frontCenter.scale);
+      ctx.ellipse(
+        projectedCenter.x,
+        projectedCenter.y,
+        Math.max(16, panelW * 0.48),
+        Math.max(6, panelH * 0.14),
+        rotation * 0.26,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
+      ctx.restore();
     }
 
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-    ctx.fillStyle = "rgba(255, 246, 229, 0.58)";
-    ctx.font = `800 ${clamp(12 * frontCenter.scale, 8, 12)}px Arial, sans-serif`;
-    ctx.fillText(gate.eyebrow.toUpperCase(), left, top + (gate.id === "work" ? panelH * 0.42 : 0));
-    ctx.fillStyle = gate.tint;
-    ctx.font = `900 ${clamp(48 * frontCenter.scale, 27, 48)}px Georgia, Times New Roman, serif`;
-    ctx.fillText(gate.title, left, top + (gate.id === "work" ? panelH * 0.52 : 26 * frontCenter.scale));
-    ctx.fillStyle = "rgba(255, 246, 229, 0.76)";
-    ctx.font = `800 ${clamp(14 * frontCenter.scale, 10, 14)}px Arial, sans-serif`;
-    ctx.fillText(gate.copy, left, top + (gate.id === "work" ? panelH * 0.78 : 90 * frontCenter.scale));
+    const faces: CubeFace[] = [
+      {
+        points: [projected[0], projected[1], projected[2], projected[3]],
+        fill: "rgba(2, 3, 4, 0.92)",
+        stroke: `rgba(255, 246, 229, ${0.12 * depthAlpha})`,
+        depth: (projected[0].z + projected[1].z + projected[2].z + projected[3].z) / 4,
+      },
+      {
+        points: [projected[0], projected[1], projected[5], projected[4]],
+        fill: "rgba(19, 21, 17, 0.88)",
+        stroke: mix(gate.tint, 0.24 * depthAlpha),
+        depth: (projected[0].z + projected[1].z + projected[5].z + projected[4].z) / 4,
+      },
+      {
+        points: [projected[1], projected[2], projected[6], projected[5]],
+        fill: mix(gate.tint, 0.38 * depthAlpha),
+        stroke: mix(gate.tint, 0.36 * depthAlpha),
+        depth: (projected[1].z + projected[2].z + projected[6].z + projected[5].z) / 4,
+      },
+      {
+        points: [projected[2], projected[3], projected[7], projected[6]],
+        fill: "rgba(0, 0, 0, 0.88)",
+        stroke: `rgba(255, 246, 229, ${0.14 * depthAlpha})`,
+        depth: (projected[2].z + projected[3].z + projected[7].z + projected[6].z) / 4,
+      },
+      {
+        points: [projected[3], projected[0], projected[4], projected[7]],
+        fill: "rgba(6, 10, 10, 0.9)",
+        stroke: mix(gate.tint, 0.24 * depthAlpha),
+        depth: (projected[3].z + projected[0].z + projected[4].z + projected[7].z) / 4,
+      },
+      {
+        points: [projected[4], projected[5], projected[6], projected[7]],
+        fill: gate.kind === "cube" ? "rgba(4, 24, 29, 0.92)" : "rgba(9, 11, 10, 0.94)",
+        stroke: mix(gate.tint, active ? 0.92 : 0.58),
+        depth: (projected[4].z + projected[5].z + projected[6].z + projected[7].z) / 4,
+      },
+    ];
+
+    faces
+      .sort((a, b) => b.depth - a.depth)
+      .forEach((face) => {
+        drawPolygon(ctx, face.points, face.fill, face.stroke);
+      });
+
+    ctx.save();
+    ctx.globalCompositeOperation = "screen";
+    ctx.shadowColor = gate.tint;
+    ctx.shadowBlur = active ? 26 : 15;
+    strokeProjectedLine(ctx, projected[4], projected[5], mix(gate.tint, 0.54 * depthAlpha), 1.2);
+    strokeProjectedLine(ctx, projected[5], projected[6], mix(gate.tint, 0.46 * depthAlpha), 1.2);
+    strokeProjectedLine(ctx, projected[6], projected[7], mix(gate.tint, 0.34 * depthAlpha), 1.1);
+    strokeProjectedLine(ctx, projected[7], projected[4], mix(gate.tint, 0.46 * depthAlpha), 1.2);
+    strokeProjectedLine(ctx, projected[5], projected[1], `rgba(255, 246, 229, ${0.16 * depthAlpha})`, 0.8);
+    strokeProjectedLine(ctx, projected[6], projected[2], `rgba(255, 246, 229, ${0.12 * depthAlpha})`, 0.8);
     ctx.restore();
+
+    if (centerPlane.every((point) => point.visible)) {
+      const planeTopLeft = centerPlane[0];
+      const planeTopRight = centerPlane[1];
+      const planeBottomLeft = centerPlane[3];
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(centerPlane[0].x, centerPlane[0].y);
+      ctx.lineTo(centerPlane[1].x, centerPlane[1].y);
+      ctx.lineTo(centerPlane[2].x, centerPlane[2].y);
+      ctx.lineTo(centerPlane[3].x, centerPlane[3].y);
+      ctx.closePath();
+      ctx.clip();
+
+      ctx.transform(
+        (planeTopRight.x - planeTopLeft.x) / gate.width,
+        (planeTopRight.y - planeTopLeft.y) / gate.width,
+        (planeBottomLeft.x - planeTopLeft.x) / gate.height,
+        (planeBottomLeft.y - planeTopLeft.y) / gate.height,
+        planeTopLeft.x,
+        planeTopLeft.y,
+      );
+
+      const chamber = ctx.createRadialGradient(
+        gate.width * 0.5,
+        gate.height * 0.48,
+        0,
+        gate.width * 0.5,
+        gate.height * 0.48,
+        Math.max(gate.width, gate.height) * 0.7,
+      );
+      chamber.addColorStop(0, mix(gate.tint, active ? 0.18 : 0.11));
+      chamber.addColorStop(0.48, "rgba(0, 0, 0, 0)");
+      chamber.addColorStop(1, "rgba(0, 0, 0, 0.45)");
+      ctx.fillStyle = chamber;
+      ctx.fillRect(0, 0, gate.width, gate.height);
+
+      ctx.globalCompositeOperation = "screen";
+      ctx.shadowBlur = 0;
+      for (let point = 0; point < 34; point += 1) {
+        const seed = point + gate.z * 0.1;
+        const x = gate.width * (0.09 + seeded(seed + 3) * 0.82);
+        const y = gate.height * (0.13 + seeded(seed + 7) * 0.74);
+        const pulse = 0.55 + Math.sin(time * 0.0022 + seed) * 0.45;
+        ctx.fillStyle = mix(gate.tint, (active ? 0.17 : 0.08) * pulse);
+        ctx.fillRect(x, y, 1.2 + seeded(seed + 11) * 1.8, 1.2 + seeded(seed + 13) * 1.6);
+      }
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.globalCompositeOperation = "source-over";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.88)";
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = "rgba(255, 246, 229, 0.82)";
+      ctx.font = `800 ${clamp(gate.height * 0.086, 12, 19)}px Bahnschrift, Arial Narrow, Arial, sans-serif`;
+      drawFittedText(ctx, gate.eyebrow.toUpperCase(), gate.width / 2, gate.height * 0.32, gate.width * 0.72);
+
+      const titleSize = clamp(Math.min(gate.width / (gate.title.length * 0.42), gate.height * 0.42), 42, 78);
+      ctx.font = `800 ${titleSize}px "Bodoni 72", "Bodoni MT", Didot, "Didot LT STD", "Iowan Old Style", Georgia, serif`;
+      ctx.lineWidth = Math.max(1, titleSize * 0.045);
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.76)";
+      drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.54, gate.width * 0.82, true);
+      ctx.shadowColor = gate.tint;
+      ctx.shadowBlur = active ? 17 : 9;
+      const titleGradient = ctx.createLinearGradient(gate.width * 0.16, gate.height * 0.39, gate.width * 0.84, gate.height * 0.61);
+      titleGradient.addColorStop(0, "#fff6e5");
+      titleGradient.addColorStop(0.34, gate.tint);
+      titleGradient.addColorStop(0.68, "#f4dfb7");
+      titleGradient.addColorStop(1, gate.tint);
+      ctx.fillStyle = titleGradient;
+      drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.54, gate.width * 0.82);
+      ctx.restore();
+    }
 
     hitZonesRef.current.push({
       id: gate.id,
@@ -704,76 +901,6 @@ export default function ToniSpatialHero() {
     ctx.restore();
   }, [project]);
 
-  const updateSignalPointer = useCallback((width: number, height: number, time: number) => {
-    const pointer = pointerRef.current;
-    if (!pointer.x || !pointer.y || !pointer.hasPointer) {
-      pointer.x = width * (0.54 + Math.sin(time * 0.00014) * 0.18);
-      pointer.y = height * (0.42 + Math.cos(time * 0.00018) * 0.12);
-    }
-  }, []);
-
-  const drawSignalRibbons = useCallback((ctx: CanvasRenderingContext2D, width: number, height: number, time: number) => {
-    const pointer = pointerRef.current;
-    const cursorX = pointer.hasPointer ? pointer.x : width * (0.52 + Math.sin(time * 0.00014) * 0.16);
-    const cursorY = pointer.hasPointer ? pointer.y : height * (0.44 + Math.cos(time * 0.00018) * 0.12);
-    const pullX = (cursorX - width / 2) * 0.045;
-    const pullY = (cursorY - height / 2) * 0.035;
-
-    ctx.save();
-    ctx.globalCompositeOperation = "screen";
-    ctx.lineCap = "round";
-
-    for (let i = 0; i < 6; i += 1) {
-      const baseY = height * (0.22 + i * 0.105);
-      const amplitude = height * (0.018 + i * 0.003);
-      const phase = time * (0.00028 + i * 0.000035) + i * 1.36;
-      const gradient = ctx.createLinearGradient(0, baseY, width, baseY + amplitude * 2);
-      gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      gradient.addColorStop(0.18, i % 2 === 0 ? "rgba(142, 214, 206, 0.13)" : "rgba(255, 190, 105, 0.12)");
-      gradient.addColorStop(0.48, "rgba(255, 246, 229, 0.16)");
-      gradient.addColorStop(0.82, i % 2 === 0 ? "rgba(255, 59, 31, 0.13)" : "rgba(168, 240, 106, 0.11)");
-      gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-
-      for (let pass = 0; pass < 2; pass += 1) {
-        ctx.beginPath();
-        for (let x = -90; x <= width + 90; x += 26) {
-          const drift = Math.sin(x * 0.0042 + phase) * amplitude + Math.sin(x * 0.009 + phase * 0.7) * amplitude * 0.45;
-          const perspective = (x / width - 0.5) * (i - 2.5) * 18;
-          const y = baseY + drift + perspective + pullY * (0.2 + i * 0.08);
-          const warpedX = x + pullX * Math.sin(i + x * 0.003);
-          if (x === -90) ctx.moveTo(warpedX, y);
-          else ctx.lineTo(warpedX, y);
-        }
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = pass === 0 ? 24 - i * 2 : 1.35;
-        ctx.globalAlpha = pass === 0 ? 0.18 : 0.9;
-        ctx.filter = pass === 0 ? "blur(10px)" : "none";
-        ctx.stroke();
-      }
-    }
-
-    ctx.filter = "none";
-    ctx.globalAlpha = 1;
-    for (let i = 0; i < 5; i += 1) {
-      const sweep = wrap(time * (0.035 + i * 0.006) + i * 360, width + 520) - 260;
-      const y = height * (0.16 + seeded(i + 401) * 0.72);
-      const beam = ctx.createLinearGradient(sweep - 180, y - 90, sweep + 260, y + 90);
-      beam.addColorStop(0, "rgba(0, 0, 0, 0)");
-      beam.addColorStop(0.46, i % 2 === 0 ? "rgba(142, 214, 206, 0.11)" : "rgba(255, 190, 105, 0.095)");
-      beam.addColorStop(0.5, "rgba(255, 246, 229, 0.14)");
-      beam.addColorStop(0.56, i % 2 === 0 ? "rgba(255, 59, 31, 0.085)" : "rgba(168, 240, 106, 0.08)");
-      beam.addColorStop(1, "rgba(0, 0, 0, 0)");
-      ctx.save();
-      ctx.translate(sweep, y);
-      ctx.rotate(-0.26 + i * 0.1);
-      ctx.fillStyle = beam;
-      ctx.fillRect(-260, -12 - i * 1.2, 540, 22 + i * 2);
-      ctx.restore();
-    }
-
-    ctx.restore();
-  }, []);
-
   const drawScene = useCallback((
     ctx: CanvasRenderingContext2D,
     width: number,
@@ -781,61 +908,38 @@ export default function ToniSpatialHero() {
     time: number,
   ) => {
     const background = ctx.createRadialGradient(width * 0.48, height * 0.42, 0, width * 0.48, height * 0.42, Math.max(width, height) * 0.84);
-    background.addColorStop(0, "rgba(7, 8, 8, 0.58)");
-    background.addColorStop(0.42, "rgba(1, 3, 4, 0.66)");
-    background.addColorStop(1, "rgba(0, 0, 0, 0.9)");
+    background.addColorStop(0, "rgba(7, 8, 8, 0.08)");
+    background.addColorStop(0.42, "rgba(1, 3, 4, 0.18)");
+    background.addColorStop(1, "rgba(0, 0, 0, 0.5)");
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, width, height);
 
     drawAtmosphere(ctx, width, height, time);
     drawStars(ctx, width, height, time);
-    drawTunnel(ctx, width, height, time);
-    drawGlassSheets(ctx, width, height, time);
 
     hitZonesRef.current = [];
-    [...gates]
-      .sort((a, b) => resolveGateCenter(b, time).localZ - resolveGateCenter(a, time).localZ)
-      .forEach((gate) => {
-        if (gate.kind === "word") {
-          drawWordGate(ctx, gate, width, height, time);
-        } else {
-          drawPanelGate(ctx, gate, width, height, time);
-        }
-      });
+    const sortedGates = [...gates].sort((a, b) => resolveGateCenter(b, time).localZ - resolveGateCenter(a, time).localZ);
+    sortedGates
+      .filter((gate) => gate.kind === "word")
+      .forEach((gate) => drawWordGate(ctx, gate, width, height, time));
+    sortedGates
+      .filter((gate) => gate.kind !== "word")
+      .forEach((gate) => drawPanelGate(ctx, gate, width, height, time));
 
     drawForegroundFragments(ctx, width, height, time);
-    drawSignalRibbons(ctx, width, height, time);
-  }, [drawAtmosphere, drawForegroundFragments, drawGlassSheets, drawPanelGate, drawSignalRibbons, drawStars, drawTunnel, drawWordGate, resolveGateCenter]);
+  }, [drawAtmosphere, drawForegroundFragments, drawPanelGate, drawStars, drawWordGate, resolveGateCenter]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return undefined;
-
-    let hls: Hls | undefined;
-    video.pause();
-    video.removeAttribute("src");
-    video.load();
-
-    if (activeVideo.kind === "hls" && Hls.isSupported()) {
-      hls = new Hls({ enableWorker: true });
-      hls.loadSource(activeVideo.src);
-      hls.attachMedia(video);
-    } else {
-      video.src = activeVideo.src;
-    }
-
-    const play = () => {
-      void video.play().catch(() => undefined);
-    };
-
-    video.addEventListener("loadedmetadata", play, { once: true });
-    play();
-
-    return () => {
-      video.removeEventListener("loadedmetadata", play);
-      hls?.destroy();
-    };
+    return attachLoopingVideo(video, activeVideo, 0.86);
   }, [activeVideo]);
+
+  useEffect(() => {
+    const video = galaxyVideoRef.current;
+    if (!video) return undefined;
+    return attachLoopingVideo(video, galaxyVideo, 0.72);
+  }, [galaxyVideo]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -869,7 +973,6 @@ export default function ToniSpatialHero() {
       }
       camera.z += reduceMotion ? 0 : 0.42 + velocityRef.current;
       velocityRef.current *= 0.9;
-      updateSignalPointer(width, height, time);
 
       ctx.clearRect(0, 0, width, height);
       drawScene(ctx, width, height, time);
@@ -883,7 +986,7 @@ export default function ToniSpatialHero() {
       window.removeEventListener("resize", resize);
       window.cancelAnimationFrame(animation);
     };
-  }, [drawScene, updateSignalPointer]);
+  }, [drawScene]);
 
   const focusGate = (gate: Gate) => {
     setActiveId(gate.id);
@@ -915,9 +1018,13 @@ export default function ToniSpatialHero() {
 
   const handleMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    pointerRef.current.x = event.clientX - rect.left;
-    pointerRef.current.y = event.clientY - rect.top;
-    pointerRef.current.hasPointer = true;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const hovered = [...hitZonesRef.current]
+      .filter((zone) => x >= zone.x && x <= zone.x + zone.w && y >= zone.y && y <= zone.y + zone.h)
+      .sort((a, b) => a.depth - b.depth)[0];
+    if (hovered && hovered.id !== activeId) setActiveId(hovered.id);
 
     if (!dragRef.current.active) return;
     const dx = event.clientX - dragRef.current.x;
@@ -934,7 +1041,6 @@ export default function ToniSpatialHero() {
   };
 
   const handleMouseLeave = () => {
-    pointerRef.current.hasPointer = false;
     handleMouseUp();
   };
 
@@ -966,6 +1072,9 @@ export default function ToniSpatialHero() {
       aria-label="Toni spatial homepage"
     >
       <video ref={videoRef} className={styles.backgroundVideo} muted loop playsInline aria-hidden="true" />
+      <video ref={galaxyVideoRef} className={styles.galaxyVideo} muted loop playsInline aria-hidden="true" />
+      <div className={styles.earthHalo} aria-hidden="true" />
+      <div className={styles.cosmicMist} aria-hidden="true" />
       <canvas ref={canvasRef} className={styles.canvas} />
       <nav className={styles.nav} aria-label="Primary">
         <Link href="/" className={styles.brand}>
@@ -976,6 +1085,7 @@ export default function ToniSpatialHero() {
           <Link href="/services">企业合作</Link>
           <Link href="/about">关于</Link>
           <Link href="/aila">AILA</Link>
+          <Link href="/contact">联系</Link>
           <Link href="/training">课程</Link>
         </div>
       </nav>
@@ -993,11 +1103,17 @@ export default function ToniSpatialHero() {
               focusGate(gate);
             }}
           >
-            <span>{gate.eyebrow}</span>
             {gate.title}
           </Link>
         ))}
       </div>
+      <Link
+        href="/contact"
+        className={styles.contactButton}
+        onClick={(event) => event.stopPropagation()}
+      >
+        联系我
+      </Link>
       <div className={styles.videoPicker} aria-label="Visual texture">
         {backgroundVideos.map((video) => (
           <button

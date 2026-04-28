@@ -140,6 +140,159 @@
   text-wrap: balance;
 }
 
+.contactHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.32fr);
+  gap: 1rem;
+  align-items: stretch;
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto 2.5rem;
+  border-radius: 18px;
+  padding: clamp(1rem, 2vw, 1.4rem);
+  background:
+    linear-gradient(115deg, rgba(255, 59, 31, 0.18), transparent 34%),
+    radial-gradient(circle at 76% 24%, rgba(168, 240, 106, 0.24), transparent 24rem),
+    #050806;
+  color: var(--cream);
+}
+
+.contactCopy {
+  display: grid;
+  align-content: center;
+  min-height: min(34rem, calc(100svh - 8rem));
+  padding: clamp(1.4rem, 5vw, 4rem);
+}
+
+.contactCopy h1 {
+  max-width: 54rem;
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(3.1rem, 6vw, 6.2rem);
+  font-weight: 900;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.contactCopy p:not(.eyebrow) {
+  max-width: 40rem;
+  margin: 1.25rem 0 0;
+  color: rgba(255, 249, 234, 0.72);
+  font-size: 1.02rem;
+  font-weight: 720;
+  line-height: 1.75;
+}
+
+.qrPanel {
+  display: grid;
+  align-content: center;
+  border: 1px solid rgba(255, 249, 234, 0.14);
+  border-radius: 12px;
+  padding: 1rem;
+  background: rgba(255, 249, 234, 0.08);
+}
+
+.qrStack {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.qrTile {
+  display: grid;
+  grid-template-columns: 6.8rem minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.qrFrame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 0.34rem solid #fff;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.qrFrame img {
+  object-fit: cover;
+}
+
+.qrTile strong {
+  color: var(--cream);
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.qrTile span {
+  color: var(--lime);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.contactSection {
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto 2rem;
+  padding: 2rem 0 4rem;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.contactCard {
+  position: relative;
+  display: grid;
+  min-height: 10rem;
+  align-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem;
+  background: rgba(255, 249, 234, 0.82);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.contactCard svg:first-child {
+  color: var(--red);
+}
+
+.contactCard small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.contactCard strong {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.4vw, 1.28rem);
+  font-weight: 900;
+  line-height: 1.16;
+}
+
+.contactCard svg:last-child {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.contactCard:hover,
+.contactCard:focus-visible {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  outline: none;
+}
+
+.contactCard:hover strong,
+.contactCard:focus-visible strong {
+  color: var(--cream);
+}
+
 .lede {
   max-width: 43rem;
   margin: 1.45rem 0 0;
@@ -789,6 +942,7 @@
   }
 
   .hero,
+  .contactHero,
   .sectionHeader,
   .caseGrid,
   .trackGrid,
@@ -821,6 +975,7 @@
   .moduleGrid,
   .statStrip,
   .metricTags,
+  .contactGrid,
   .mapList {
     grid-template-columns: 1fr;
   }
