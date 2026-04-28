@@ -7,6 +7,21 @@ import { useState } from "react";
 
 const sessions = [
   {
+    day: "LIVE",
+    date: "线上版",
+    title: "1小时线上讲演：看懂AI如何为你的企业省下百万级成本",
+    blocks: [
+      {
+        id: "webinar",
+        time: "60min",
+        title: "企业主专场 · 转化型 Webinar",
+        desc: "区隔市场乱象、三大行业深化案例、企业AI改造路线图 — 打痛点、建信任、推转化。",
+        slides: 22,
+        ready: true,
+      },
+    ],
+  },
+  {
     day: "DAY 1",
     date: "2026.04.18",
     title: "破局：利润下滑不是终点，是换引擎的信号",

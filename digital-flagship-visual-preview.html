@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digital Flagship Design Direction Preview</title>
+  <style>
+    :root {
+      --navy: #060616;
+      --lime: #c1fd3a;
+      --white: #ffffff;
+      --ink: #090911;
+      --muted: #8c8c9a;
+      --line: rgba(255, 255, 255, 0.14);
+      --line-dark: rgba(6, 6, 22, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--navy);
+      color: var(--white);
+      font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding: 20px 44px;
+      background: rgba(6, 6, 22, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 0.9;
+    }
+
+    .mark {
+      display: grid;
+      grid-template-columns: repeat(2, 13px);
+      grid-template-rows: repeat(3, 8px);
+      gap: 4px;
+      width: 30px;
+    }
+
+    .mark span {
+      background: var(--lime);
+      transform: skewX(-14deg);
+    }
+
+    .mark span:nth-child(2),
+    .mark span:nth-child(5) {
+      opacity: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 24px;
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      border: 1px solid var(--lime);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-2px);
+      outline: none;
+      background: #d2ff65;
+    }
+
+    .button.dark {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 980px;
+      padding: 72px 44px 110px;
+      background:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px),
+        repeating-radial-gradient(circle at 78% 26%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 64px),
+        var(--navy);
+      background-size: 48px 48px, 48px 48px, auto, auto;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 52px;
+      align-items: start;
+    }
+
+    .mega {
+      margin: 0;
+      max-width: 950px;
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-size: 128px;
+      line-height: 0.92;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-media {
+      display: grid;
+      grid-template-columns: 1fr 0.8fr;
+      gap: 18px;
+      padding-top: 34px;
+    }
+
+    .shot {
+      min-height: 220px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      overflow: hidden;
+      background: #151525;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+    }
+
+    .shot.product {
+      background:
+        radial-gradient(circle at 32% 18%, #f6e4a8 0 46px, transparent 48px),
+        linear-gradient(140deg, #fbf3dc 0 38%, #facf54 38% 56%, #2d7d36 56% 100%);
+    }
+
+    .shot.crowd {
+      background:
+        linear-gradient(180deg, rgba(6, 6, 22, 0) 0%, rgba(6, 6, 22, 0.62) 100%),
+        repeating-linear-gradient(90deg, #16244f 0 8px, #0e1734 8px 18px);
+    }
+
+    .shot.mobile {
+      grid-column: 1 / -1;
+      min-height: 380px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 18px;
+      background: #0b0b18;
+    }
+
+    .phone {
+      border-radius: 20px;
+      background: #f7f2dd;
+      overflow: hidden;
+      border: 2px solid #202030;
+    }
+
+    .phone:nth-child(2) {
+      background: #0d5a2a;
+    }
+
+    .phone:nth-child(3) {
+      background: #ffcf37;
+    }
+
+    .phone::before {
+      content: "";
+      display: block;
+      height: 34%;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .phone::after {
+      content: "";
+      display: block;
+      width: 72%;
+      height: 12px;
+      margin: 22px auto;
+      border-radius: 999px;
+      background: rgba(6, 6, 22, 0.9);
+      box-shadow: 0 34px 0 rgba(6, 6, 22, 0.22), 0 68px 0 rgba(6, 6, 22, 0.14);
+    }
+
+    .manifesto {
+      max-width: 920px;
+      margin: 130px auto 0;
+      text-align: center;
+    }
+
+    .manifesto p {
+      margin: 0;
+      font-size: 52px;
+      line-height: 1.03;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .partner {
+      margin-top: 70px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .lime-section {
+      position: relative;
+      padding: 112px 44px 118px;
+      color: var(--ink);
+      background:
+        linear-gradient(var(--line-dark) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line-dark) 1px, transparent 1px),
+        repeating-radial-gradient(circle at 78% 18%, rgba(6, 6, 22, 0.14) 0 1px, transparent 1px 64px),
+        var(--lime);
+      background-size: 48px 48px, 48px 48px, auto, auto;
+    }
+
+    .small-copy {
+      max-width: 440px;
+      margin: 0 auto 80px;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .service-wall {
+      max-width: 1180px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 56px;
+      line-height: 1.02;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .service-list {
+      max-width: 1180px;
+      margin: 94px auto 0;
+      border-top: 1px solid var(--ink);
+    }
+
+    .service-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--ink);
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .plus {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      position: relative;
+    }
+
+    .plus::before,
+    .plus::after {
+      content: "";
+      position: absolute;
+      background: var(--ink);
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+    }
+
+    .plus::after {
+      transform: rotate(90deg);
+    }
+
+    .work {
+      padding: 112px 44px 130px;
+      background:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px),
+        var(--navy);
+      background-size: 48px 48px, 48px 48px, auto;
+    }
+
+    .section-title {
+      margin: 0 auto 56px;
+      max-width: 980px;
+      text-align: center;
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-size: 96px;
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    .case-card {
+      min-height: 430px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #101020;
+    }
+
+    .case-card .image {
+      height: 280px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0)),
+        var(--tone, #ef5c39);
+    }
+
+    .case-card:nth-child(2) {
+      --tone: #6ad061;
+    }
+
+    .case-card:nth-child(3) {
+      --tone: #ffe06f;
+    }
+
+    .case-card:nth-child(4) {
+      --tone: #e8b6ff;
+    }
+
+    .case-card .body {
+      padding: 20px;
+    }
+
+    .case-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+
+    .case-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .proof {
+      padding: 112px 44px 124px;
+      background: var(--navy);
+      border-top: 1px solid var(--line);
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 1220px;
+      margin: 0 auto;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .proof-card {
+      min-height: 280px;
+      padding: 32px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tag {
+      align-self: flex-start;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .proof-card p {
+      max-width: 310px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.5;
+    }
+
+    .cta {
+      padding: 118px 44px 132px;
+      text-align: center;
+      background: var(--navy);
+    }
+
+    .cta h2 {
+      margin: 0 auto 44px;
+      max-width: 900px;
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-size: 104px;
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 54px;
+      padding: 74px 44px 48px;
+      background: var(--navy);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .signup h2 {
+      margin: 0 0 14px;
+      font-size: 44px;
+      font-weight: 400;
+    }
+
+    .signup p {
+      max-width: 520px;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.5;
+    }
+
+    .email-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .email-row input {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+      background: transparent;
+      color: var(--white);
+      font: inherit;
+    }
+
+    .email-row input:focus {
+      outline: 2px solid var(--lime);
+      outline-offset: 4px;
+    }
+
+    .circle-submit {
+      flex: 0 0 auto;
+      width: 66px;
+      height: 66px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--lime);
+      color: var(--ink);
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 980px) {
+      .nav {
+        padding: 18px 22px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero,
+      .lime-section,
+      .work,
+      .proof,
+      .cta,
+      .footer {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mega {
+        font-size: 82px;
+      }
+
+      .manifesto p {
+        font-size: 36px;
+      }
+
+      .service-wall {
+        font-size: 38px;
+      }
+
+      .service-row {
+        font-size: 30px;
+      }
+
+      .section-title,
+      .cta h2 {
+        font-size: 64px;
+      }
+
+      .case-grid,
+      .proof-grid,
+      .footer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .brand {
+        font-size: 13px;
+      }
+
+      .button {
+        min-height: 38px;
+        padding: 0 16px;
+      }
+
+      .mega {
+        font-size: 54px;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-media {
+        grid-template-columns: 1fr;
+      }
+
+      .shot.mobile {
+        grid-template-columns: 1fr;
+      }
+
+      .manifesto {
+        margin-top: 84px;
+      }
+
+      .manifesto p {
+        font-size: 28px;
+      }
+
+      .service-wall {
+        font-size: 28px;
+      }
+
+      .service-row {
+        font-size: 22px;
+      }
+
+      .section-title,
+      .cta h2 {
+        font-size: 44px;
+      }
+
+      .footer-links {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <a class="brand" href="#">
+        <span class="mark" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </span>
+        <span>Digital<br>Flagship</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#proof">About</a>
+        <a href="#footer">Insights</a>
+      </nav>
+      <a class="button" href="#footer">Work with us</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div>
+            <h1 class="mega" id="hero-title">Built<br>to scale<br>commerce</h1>
+          </div>
+          <div class="hero-media" aria-label="Commerce brand preview collage">
+            <div class="shot product"></div>
+            <div class="shot crowd"></div>
+            <div class="shot mobile">
+              <div class="phone"></div>
+              <div class="phone"></div>
+              <div class="phone"></div>
+            </div>
+          </div>
+        </div>
+        <div class="manifesto">
+          <p>Shopify storefronts for consumer brands that need sharper stories, stronger launches, and clearer paths to purchase.</p>
+          <div class="partner">Shopify partner signal</div>
+        </div>
+      </section>
+
+      <section class="lime-section" id="services" aria-labelledby="services-title">
+        <p class="small-copy">From first launch to ongoing refinement, every module should move the storefront closer to growth.</p>
+        <h2 class="service-wall" id="services-title">Brand launches / store redesigns / theme tailoring / migrations / landing pages / product page refinement / conversion support</h2>
+        <div class="service-list" aria-label="Service categories">
+          <div class="service-row"><span>Brand foundation</span><span class="plus"></span></div>
+          <div class="service-row"><span>Core commerce</span><span class="plus"></span></div>
+          <div class="service-row"><span>Customer experience</span><span class="plus"></span></div>
+          <div class="service-row"><span>Growth optimization</span><span class="plus"></span></div>
+        </div>
+      </section>
+
+      <section class="work" id="work" aria-labelledby="work-title">
+        <h2 class="section-title" id="work-title">Proof from consumer brands</h2>
+        <div class="case-grid">
+          <article class="case-card">
+            <div class="image"></div>
+            <div class="body">
+              <h3>Food and beverage</h3>
+              <p>Packaging energy, mobile commerce, and launch-focused shopping flows.</p>
+            </div>
+          </article>
+          <article class="case-card">
+            <div class="image"></div>
+            <div class="body">
+              <h3>Wellness</h3>
+              <p>Trust-building product pages and education-led conversion paths.</p>
+            </div>
+          </article>
+          <article class="case-card">
+            <div class="image"></div>
+            <div class="body">
+              <h3>Apparel</h3>
+              <p>Editorial storefront systems for drops, collections, and stories.</p>
+            </div>
+          </article>
+          <article class="case-card">
+            <div class="image"></div>
+            <div class="body">
+              <h3>Home and culture</h3>
+              <p>Immersive product browsing with premium visual rhythm.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="proof" id="proof" aria-labelledby="proof-title">
+        <h2 class="section-title" id="proof-title">How the site builds trust</h2>
+        <div class="proof-grid">
+          <article class="proof-card">
+            <span class="tag">Evidence</span>
+            <p>Industry-specific work cards show that the team understands different consumer categories.</p>
+          </article>
+          <article class="proof-card">
+            <span class="tag">Method</span>
+            <p>The service structure turns broad design work into concrete problems a founder can recognize.</p>
+          </article>
+          <article class="proof-card">
+            <span class="tag">Conversion</span>
+            <p>Repeated contact points reduce friction without turning the page into a hard-sell funnel.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta" aria-labelledby="cta-title">
+        <h2 id="cta-title">Elevate the storefront</h2>
+        <a class="button" href="#footer">Start a project</a>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div>
+        <div class="footer-links">
+          <a href="#services">Services</a>
+          <a href="#work">Work</a>
+          <a href="#proof">About</a>
+          <a href="#">Insights</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+        <p style="margin-top: 72px; color: rgba(255,255,255,0.74);">Static visual preview for design extraction. Replace all content and assets before production use.</p>
+      </div>
+      <form class="signup">
+        <h2>Planning a project?</h2>
+        <p>Use the footer as a soft conversion zone for a planner, newsletter, or project intake path.</p>
+        <label class="email-row">
+          <span class="sr-only">Email</span>
+          <input type="email" placeholder="Email">
+          <button class="circle-submit" type="button" aria-label="Submit email">&rarr;</button>
+        </label>
+      </form>
+    </footer>
+  </div>
+</body>
+</html>

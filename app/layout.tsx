@@ -20,12 +20,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI造浪营 · 智企实验室闭门会",
-  description: "让AI真正走进企业的每一个环节 — 为企业主打造的AI赋能实战培训",
-  keywords: ["AI培训", "企业AI", "数字化转型", "AI工具", "企业赋能"],
+  title: "Toni | AI 产品与企业系统设计",
+  description: "Toni 的个人官网：展示 AI 产品、企业工作流改造、系统原型和课程训练能力。",
+  keywords: ["Toni", "AI产品", "企业AI", "系统设计", "工作流改造", "AI培训"],
   openGraph: {
-    title: "AI造浪营 · 智企实验室闭门会 S1",
-    description: "两天闭门实战，从认知到工具，让AI真正走进企业的每一个业务环节",
+    title: "Toni | AI 产品与企业系统设计",
+    description: "把 AI、产品和业务流程做成可演示、可训练、可交付的系统。",
     type: "website",
   },
 };

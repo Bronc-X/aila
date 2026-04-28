@@ -1,0 +1,106 @@
+.home {
+  min-height: 100svh;
+  background: #000;
+  color: #fff6e5;
+  letter-spacing: 0;
+}
+
+.signalPanel {
+  position: fixed;
+  z-index: 12;
+  left: 1.35rem;
+  bottom: 1.35rem;
+  width: min(32.5rem, calc(100vw - 2.7rem));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.08),
+    0 2rem 7rem rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(24px);
+}
+
+.eyebrow,
+.actions,
+.primary,
+.secondary {
+  display: flex;
+  align-items: center;
+}
+
+.eyebrow {
+  gap: 0.45rem;
+  margin: 0 0 0.72rem;
+  color: rgba(255, 246, 229, 0.58);
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.signalPanel h1 {
+  max-width: 29rem;
+  margin: 0;
+  color: #fff6e5;
+  font-size: 2.38rem;
+  font-weight: 900;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 28rem;
+  margin: 0.78rem 0 0.94rem;
+  color: rgba(255, 246, 229, 0.72);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.actions {
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.primary,
+.secondary {
+  min-height: 2.92rem;
+  gap: 0.5rem;
+  border-radius: 8px;
+  padding: 0 0.95rem;
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.primary {
+  background: #ff3b1f;
+  color: #fff6e5;
+  box-shadow: 0 0 1.8rem rgba(255, 59, 31, 0.22);
+}
+
+.secondary {
+  border: 1px solid rgba(255, 246, 229, 0.18);
+  background: rgba(255, 250, 233, 0.035);
+  color: #fff6e5;
+}
+
+@media (max-width: 720px) {
+  .signalPanel {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    width: auto;
+    padding: 0.9rem;
+  }
+
+  .signalPanel h1 {
+    font-size: 1.82rem;
+  }
+
+  .lede {
+    font-size: 0.9rem;
+  }
+
+}
