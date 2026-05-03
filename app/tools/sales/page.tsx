@@ -81,13 +81,13 @@ const demoSummary: AISummary = {
   needs: ["集中管理客户信息，防止人员流失导致客户流失", "激活2500个沉默客户", "降低业务员使用CRM的门槛"],
   objections: ["过去试过CRM系统，业务员不愿使用", "认为CRM操作太复杂", "觉得价格太贵"],
   opportunities: ["3000+ 客户体量，有规模化管理的刚需", "2500个沉默客户 = 大量待激活增长空间", "对问题有清晰认知，愿意讨论解决方案"],
-  nextSteps: ["强调AI自动录入功能，解决'嫌麻烦'的核心异议", "展示沉默客户激活案例和ROI数据", "建议安排一次15分钟的线上演示"],
+    nextSteps: ["强调自动录入功能，解决'嫌麻烦'的核心异议", "展示沉默客户激活案例和ROI数据", "建议安排一次15分钟的线上演示"],
 };
 
 const demoSuggestions: TalkSuggestion[] = [
-  { type: "应对异议", content: "张总，您说的CRM用不起来这个问题特别好。传统CRM确实需要手动录入太多东西。我们的方案不一样——业务员正常打电话、发微信，AI自动识别客户信息并归档，完全不需要额外操作。" },
+    { type: "应对异议", content: "张总，您说的CRM用不起来这个问题特别好。传统CRM确实需要手动录入太多东西。我们的方案把录入放到后台处理，业务员正常打电话、发微信，客户信息会自动识别并归档，不需要额外操作。" },
   { type: "追问深挖", content: "那2500个沉默客户里面，如果按照以往经验，您觉得大概多少比例是有可能被重新激活的？他们当初为什么断联了？" },
-  { type: "促成交易", content: "这样吧张总，我们可以先拿100个沉默客户做个测试，用AI分析他们的历史行为，推荐最佳的回访时机和话术。一周时间看效果，如果不好我们不收费。" },
+    { type: "促成交易", content: "这样吧张总，我们可以先拿100个沉默客户做个测试，分析他们的历史行为，推荐合适的回访时机和话术。一周时间看效果，如果不好我们不收费。" },
   { type: "建立信任", content: "我理解您的顾虑。其实XX行业的李总之前跟您情况一模一样，他用了两个月之后，业务员反馈效率提升了40%，他如果方便我可以帮您拉个群。" },
 ];
 
@@ -483,7 +483,7 @@ const handleSendChat = async () => {
                     <div className="flex flex-col items-center justify-center h-full text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                       <Mic size={32} className="text-[#A3A3A3] mb-3" />
                       <p className="text-[#6B6660] font-medium mb-1">点击&ldquo;开始录音&rdquo;进行实时语音转写</p>
-                      <p className="text-sm text-[#9E9B96]">AI 将实时转写对话并提取关键异议与痛点</p>
+            <p className="text-sm text-[#9E9B96]">系统将实时转写对话，并提取关键异议与痛点</p>
                       <p className="text-xs text-[#A3A3A3] mt-2">也可点击&ldquo;演示模式&rdquo;查看预设效果</p>
                     </div>
                   ) : (
@@ -587,7 +587,7 @@ const handleSendChat = async () => {
                 {suggestions.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-[400px] text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                     <Lightbulb size={28} className="text-[#A3A3A3] mb-3" />
-                    <p className="text-sm text-[#9E9B96] mb-1">AI 正在深度解码对话意图</p>
+                  <p className="text-sm text-[#9E9B96] mb-1">正在解析对话意图</p>
                     <p className="text-[13px] text-[#A3A3A3]">稍后将推送高段位救场话术</p>
                   </div>
                 ) : (
@@ -623,7 +623,7 @@ const handleSendChat = async () => {
                 <h2 className="text-2xl font-bold text-[#2D2A26] flex items-center gap-2 mb-2">
                   <Database className="text-[#D97706]" size={24} /> 销售知识库预训练
                 </h2>
-                <p className="text-[#6B6660]">录入核心卖点与参考资料，AI 将在实时监听时自动匹配对应的杀手锏话术。</p>
+          <p className="text-[#6B6660]">录入核心卖点与参考资料，实时监听时会自动匹配对应的关键话术。</p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
@@ -631,7 +631,7 @@ const handleSendChat = async () => {
                   <div>
                     <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">本品核心卖点 (Selling Points)</label>
                     <textarea value={kbSellingPoints} onChange={e => {setKbSellingPoints(e.target.value); setTimeout(saveKnowledgeBase, 100)}}
-                      placeholder="例如：\n1. AI自动化录入，业务员免操作\n2. 相比竞品，部署周期只需3天..." 
+              placeholder="例如：\n1. 自动化录入，业务员免操作\n2. 相比竞品，部署周期只需3天..."
                       className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] outline-none text-sm min-h-[160px] resize-y" rows={6} />
                   </div>
                   <div>
@@ -644,7 +644,7 @@ const handleSendChat = async () => {
 
                 <div>
                   <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">文档资料投喂</label>
-                  <p className="text-xs text-[#9E9B96] mb-4">拖拽 PDF, Word 等文件到此处，AI 会对文档内容进行向量化读取。</p>
+          <p className="text-xs text-[#9E9B96] mb-4">拖拽 PDF, Word 等文件到此处，系统会读取并整理文档内容。</p>
                   
                   <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl bg-[#FAF9F6] p-8 text-center hover:border-[#D97706] transition-colors cursor-pointer"
                     onClick={() => {
@@ -723,7 +723,7 @@ const handleSendChat = async () => {
                   <div className="flex flex-col items-center justify-center h-[350px] text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                     <Phone size={28} className="text-[#A3A3A3] mb-3" />
                     <p className="text-[#6B6660] font-medium">完善左侧客户信息后生成</p>
-                    <p className="text-sm text-[#9E9B96] mt-2">AI 将吐出包含破冰话术、最佳时间等详尽的结构化指导卡</p>
+              <p className="text-sm text-[#9E9B96] mt-2">系统将生成包含破冰话术、合适时间等内容的结构化指导卡</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -761,7 +761,7 @@ const handleSendChat = async () => {
                     <Sparkles size={16} className="text-[#D97706]" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-[#2D2A26]">AI 销售教练</div>
+                    <div className="text-sm font-semibold text-[#2D2A26]">销售教练</div>
                     <div className="text-xs text-[#9E9B96]">多轮深度分析 · 粘贴对话记录或直接提问</div>
                   </div>
                 </div>

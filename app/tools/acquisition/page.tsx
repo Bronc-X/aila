@@ -41,18 +41,18 @@ import { CSS } from "@dnd-kit/utilities";
 
 // ── 行业提示词映射 ──
 const INDUSTRY_HINTS: Record<string, { placeholder: string; defaultDesc: string }> = {
-  ecommerce: { placeholder: "例如：AI选品助手，跨境爆款预测", defaultDesc: "跨境电商平台" },
+  ecommerce: { placeholder: "例如：选品助手，跨境爆款预测", defaultDesc: "跨境电商平台" },
   manufacturing: { placeholder: "例如：智能质检系统，数字孪生工厂", defaultDesc: "智能制造" },
-  fmcg: { placeholder: "例如：门店AI导购，库存智能预测", defaultDesc: "新零售" },
+  fmcg: { placeholder: "例如：门店导购，库存智能预测", defaultDesc: "新零售" },
   service: { placeholder: "例如：智能排班系统，客户画像分析", defaultDesc: "服务业" },
-  software: { placeholder: "例如：AI代码助手，智能运维平台", defaultDesc: "SaaS" },
-  education: { placeholder: "例如：AI个性化教学，智能题库系统", defaultDesc: "教育科技" },
+  software: { placeholder: "例如：代码助手，智能运维平台", defaultDesc: "SaaS" },
+  education: { placeholder: "例如：个性化教学，智能题库系统", defaultDesc: "教育科技" },
   healthcare: { placeholder: "例如：智能诊断辅助，健康管理平台", defaultDesc: "医疗健康" },
   agriculture: { placeholder: "例如：精准农业系统，农产品溯源", defaultDesc: "农业科技" },
   finance: { placeholder: "例如：智能风控系统，保险核保助手", defaultDesc: "金融保险" },
   logistics: { placeholder: "例如：智能调度系统，仓储机器人", defaultDesc: "智慧物流" },
   realestate: { placeholder: "例如：智能看房助手，房价预测分析", defaultDesc: "智慧地产" },
-  other: { placeholder: "例如：AI解决方案，智能管理平台", defaultDesc: "通用行业" },
+  other: { placeholder: "例如：流程解决方案，智能管理平台", defaultDesc: "通用行业" },
 };
 
 // ── 模特模板 ──
@@ -142,7 +142,7 @@ const POSTER_STYLES = [
 const INITIAL_STORYBOARD: StoryboardRow[] = [
   { id: "1", scene: "01", time: "0-3s", shot: "产品特写 · 慢推", narration: "你见过能让效率翻5倍的工具吗？", note: "暗调打光，产品居中" },
   { id: "2", scene: "02", time: "3-8s", shot: "痛点场景 · 快切", narration: "每天重复的工作，耗尽了你多少时间？", note: "办公室加班画面×3" },
-  { id: "3", scene: "03", time: "8-15s", shot: "产品演示 · 录屏", narration: "一句话，AI帮你全部搞定", note: "实际操作录屏，加速播放" },
+  { id: "3", scene: "03", time: "8-15s", shot: "产品演示 · 录屏", narration: "一句话，繁琐工作交给系统", note: "实际操作录屏，加速播放" },
   { id: "4", scene: "04", time: "15-20s", shot: "数据对比 · 动态图表", narration: "效率提升500%，成本降低60%", note: "动画图表从0到满" },
   { id: "5", scene: "05", time: "20-25s", shot: "CTA · 品牌落版", narration: "点击下方，免费体验7天", note: "Logo + 二维码 + 引导语" },
 ];
@@ -236,7 +236,7 @@ export default function AcquisitionPage() {
   const [selectedModelTemplate, setSelectedModelTemplate] = useState<string | null>(null);
   const [selectedBackground, setSelectedBackground] = useState("gradient-1");
   const [editorGenerating, setEditorGenerating] = useState(false);
-  const [editorGeneratingText, setEditorGeneratingText] = useState("AI Gemini合成中...");
+  const [editorGeneratingText, setEditorGeneratingText] = useState("内容合成中...");
   const [editorResults, setEditorResults] = useState<string[]>([]);
   const [activeEditorTool, setActiveEditorTool] = useState<string | null>(null);
   const modelInputRef = useRef<HTMLInputElement>(null);
@@ -525,7 +525,7 @@ export default function AcquisitionPage() {
                 </div>
                 <button onClick={handleGenerate} disabled={loading || !productName.trim() || selectedPlatforms.length === 0}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
-                  {loading ? <><RefreshCw size={18} className="animate-spin" /> AI正在生成...</> : <><Sparkles size={18} /> 一键生成全平台文案</>}
+                    {loading ? <><RefreshCw size={18} className="animate-spin" /> 正在生成...</> : <><Sparkles size={18} /> 一键生成全平台文案</>}
                 </button>
               </div>
             </motion.div>
@@ -554,14 +554,14 @@ export default function AcquisitionPage() {
                       className="flex flex-col items-center justify-center h-[400px] text-center">
                       <PenTool size={28} className="text-[#6B6660] mb-3" />
                       <p className="text-[#9E9B96]">填写产品信息，选择目标平台</p>
-                      <p className="text-sm text-[#6B6660] mt-1">AI将一键生成多平台适配的营销文案</p>
+              <p className="text-sm text-[#6B6660] mt-1">系统将生成多平台适配的营销文案</p>
                     </motion.div>
                   ) : loading ? (
                     <motion.div key="loading" className="flex flex-col items-center justify-center h-[400px]">
                       <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
                         <Sparkles size={28} className="text-[#D97706] mb-3" />
                       </motion.div>
-                      <p className="text-[#9E9B96]">AI正在为 {selectedPlatforms.length} 个平台生成文案...</p>
+                    <p className="text-[#9E9B96]">正在为 {selectedPlatforms.length} 个平台生成文案...</p>
                     </motion.div>
                   ) : (
                     <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
@@ -617,8 +617,8 @@ export default function AcquisitionPage() {
         {activeSubTool === "poster" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
-              <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">AI 批量海报生成</h2>
-              <p className="text-[#666] mb-8">输入产品信息，AI 自动生成多风格商用级海报模板</p>
+            <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">批量海报生成</h2>
+            <p className="text-[#666] mb-8">输入产品信息，生成多风格商用级海报模板</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mb-8">
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品/活动名称 *</label>
@@ -658,7 +658,7 @@ export default function AcquisitionPage() {
                       style={{ background: (poster as any).gradient || "linear-gradient(135deg, #667eea, #764ba2)" }}
                       onClick={() => posterGenerated && setSelectedPoster(selectedPoster === i ? null : i)}>
                       <div className="text-center text-white">
-                        <div className="text-3xl font-black mb-2">{posterName || "AI 海报"}</div>
+                    <div className="text-3xl font-black mb-2">{posterName || "产品海报"}</div>
                         <div className="text-sm opacity-70">{poster.name}</div>
                       </div>
                     </div>
@@ -738,8 +738,8 @@ export default function AcquisitionPage() {
         {activeSubTool === "video" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
-              <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">AI 短视频脚本 + 分镜</h2>
-              <p className="text-[#666] mb-8">描述产品卖点，AI 生成完整分镜表，每行可编辑拖拽排序</p>
+            <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">短视频脚本 + 分镜</h2>
+            <p className="text-[#666] mb-8">描述产品卖点，生成完整分镜表，每行可编辑拖拽排序</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mb-8">
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">视频主题 *</label>
@@ -797,8 +797,8 @@ export default function AcquisitionPage() {
         {activeSubTool === "editor" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 md:p-8 mb-6 rounded-xl">
-              <h2 className="text-xl font-bold text-[#2D2A26] mb-1">AI 素材合成工作台</h2>
-              <p className="text-sm text-[#666] mb-6">上传模特图+产品图 → AI智能合成 → 批量生成海报</p>
+            <h2 className="text-xl font-bold text-[#2D2A26] mb-1">素材合成工作台</h2>
+            <p className="text-sm text-[#666] mb-6">上传模特图+产品图，合成后批量生成海报</p>
 
               {/* 工具选择卡片（可点击选中） */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
@@ -807,7 +807,7 @@ export default function AcquisitionPage() {
                   { id: "cutout", label: "智能抠图", desc: "一键去除背景", icon: "✂️" },
                   { id: "background", label: "批量换背景", desc: "适配电商场景", icon: "🎨" },
                   { id: "resize", label: "多尺寸适配", desc: "1图→6平台尺寸", icon: "📐" },
-                  { id: "enhance", label: "AI 修图增强", desc: "调色·锐化·降噪", icon: "✨" },
+              { id: "enhance", label: "修图增强", desc: "调色·锐化·降噪", icon: "✨" },
                   { id: "poster", label: "文字海报合成", desc: "图片+文案→海报", icon: "🖼️" },
                 ].map((item, i) => (
                   <motion.button key={item.id}
@@ -1040,7 +1040,7 @@ export default function AcquisitionPage() {
                     alert("合成服务异常，请重试");
                   } finally {
                     setEditorGenerating(false);
-                    setEditorGeneratingText("AI Gemini合成中...");
+    setEditorGeneratingText("内容合成中...");
                   }
                 }}
                 disabled={editorGenerating || editorProductFiles.length === 0}
@@ -1078,7 +1078,7 @@ export default function AcquisitionPage() {
                         </div>
                         {/* 角标 */}
                         <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-md text-[#D97706] border border-[#D97706]/40 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                          <Sparkles size={8}/> AI合成
+                  <Sparkles size={8}/> 智能合成
                         </div>
                         {/* 模特小头像展示 */}
                         {item.modelPreview && (

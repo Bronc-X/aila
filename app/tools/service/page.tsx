@@ -118,7 +118,7 @@ export default function ServicePage() {
   // ── 配置Bot ──
 const handleConfigureBot = () => {
     setBotConfigured(true);
-    setChatMessages([{ role: "assistant", content: `你好！我是${botName}，很高兴为您服务 😊\n\n当前配置已经保存到本地测试台，下面的问答会按这份配置调用真实 AI。\n\n请试着像客户一样问我一个问题吧！` }]);
+    setChatMessages([{ role: "assistant", content: `你好！我是${botName}，很高兴为您服务。\n\n当前配置已经保存到本地测试台，下面的问答会按这份配置回复。\n\n请试着像客户一样问我一个问题吧！` }]);
   };
 
   // ── 发送消息 ──
@@ -329,7 +329,7 @@ const generateReply = async (id: string) => {
                   {!botConfigured ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
                       <MessageCircle size={32} className="text-[#A3A3A3] mb-3" />
-                      <p className="text-[#9E9B96]">先在左侧保存配置，再测试真实 AI 回复</p>
+          <p className="text-[#9E9B96]">先在左侧保存配置，再测试真实回复</p>
                     </div>
                   ) : (
                     <>
@@ -443,7 +443,7 @@ const generateReply = async (id: string) => {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-bold text-[#2D2A26]">舆情公关监控</h2>
-                <p className="text-xs text-[#6B6660] mt-1">实时监测 · AI 生成回复 · 一键标记已处理</p>
+          <p className="text-xs text-[#6B6660] mt-1">实时监测 · 生成回复 · 一键标记已处理</p>
               </div>
               <div className="flex gap-3 text-xs">
                 <div className="px-3 py-1.5 border border-green-500/30 bg-green-500/5 text-green-400 rounded-full">正面 {total > 0 ? Math.round(posCount/total*100) : 0}%</div>
@@ -468,7 +468,7 @@ const generateReply = async (id: string) => {
                   <p className="text-sm text-[#9E9B96] mb-3 leading-relaxed">{item.content}</p>
                   {item.reply ? (
                     <div className="p-3 bg-white border border-[#E5E1D8] mb-2">
-                      <p className="text-[10px] text-[#6B6660] mb-1">AI 建议回复：</p>
+                        <p className="text-[10px] text-[#6B6660] mb-1">建议回复：</p>
                       <EditableCell value={item.reply} onSave={v => setSentiments(prev => prev.map(s => s.id === item.id ? { ...s, reply: v } : s))} className="text-xs text-[#9E9B96]" type="textarea" />
                     </div>
                   ) : null}
@@ -567,7 +567,7 @@ const generateReply = async (id: string) => {
               {/* AI 洞察报告 */}
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 rounded-xl">
                 <h3 className="text-base font-bold text-[#2D2A26] mb-4 flex items-center gap-2">
-                  <Sparkles size={16} /> AI 客户洞察报告
+              <Sparkles size={16} /> 客户洞察报告
                 </h3>
                 <div className="space-y-4">
                   {[

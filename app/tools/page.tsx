@@ -25,7 +25,7 @@ const modules = [
     icon: Target,
     title: "获客中心",
     subtitle: "MARKETING",
-    desc: "批量AI海报生成 · 短视频制作 · 全平台文案矩阵 · 素材智能编辑",
+    desc: "海报出图 · 短视频脚本 · 分发文案 · 素材处理",
     tools: ["批量海报", "短视频", "文案矩阵", "素材编辑"],
     href: "/tools/acquisition",
     gradient: "from-amber-500/10 to-orange-500/5",
@@ -35,7 +35,7 @@ const modules = [
     icon: MessageSquare,
     title: "销售助手",
     subtitle: "SALES",
-    desc: "实时对话分析 · 销售话术提示 · 智能回访策略 · 灵感追问引导",
+    desc: "对话跟进 · 话术提示 · 回访节奏 · 追问线索",
     tools: ["实时对话", "话术提示", "智能回访", "灵感追问"],
     href: "/tools/sales",
     gradient: "from-blue-500/10 to-indigo-500/5",
@@ -45,7 +45,7 @@ const modules = [
     icon: FlaskConical,
     title: "研发工坊",
     subtitle: "RESEARCH",
-    desc: "AI头脑风暴 · 快速原型验证 · 市场趋势研判 · 数字资产盘点",
+    desc: "想法推演 · 原型验证 · 市场研判 · 资产盘点",
     tools: ["头脑风暴", "快速原型", "市场研判", "资产盘点"],
     href: "/tools/research",
     gradient: "from-purple-500/10 to-violet-500/5",
@@ -55,8 +55,8 @@ const modules = [
     icon: BarChart3,
     title: "老板仪表盘",
     subtitle: "DASHBOARD",
-    desc: "智能仪表盘 · AI日报周报 · 回访进度追踪 · 成交数据分析",
-    tools: ["智能仪表盘", "AI报告", "回访追踪", "成交分析"],
+    desc: "经营看板 · 日报周报 · 回访进度 · 成交分析",
+    tools: ["经营看板", "经营报告", "回访追踪", "成交分析"],
     href: "/tools/operations",
     gradient: "from-emerald-500/10 to-green-500/5",
   },
@@ -75,7 +75,7 @@ const modules = [
     icon: Headphones,
     title: "智能客服",
     subtitle: "SERVICE",
-    desc: "智能客服配置 · 智能回访话术 · 舆情公关助手 · 客户之声分析",
+    desc: "客服配置 · 回访话术 · 舆情监控 · 客户反馈",
     tools: ["智能客服", "回访话术", "舆情监控", "客户之声"],
     href: "/tools/service",
     gradient: "from-rose-500/10 to-pink-500/5",
@@ -308,7 +308,7 @@ export default function ToolsPage() {
               <span className="text-[#6B6660]">Center.</span>
             </h1>
             <p className="text-lg text-[#9E9B96] tracking-normal max-w-2xl font-medium">
-              极简企业级控制中枢。全链路能力引擎在此汇聚。
+              企业工具控制台。获客、销售、研发、运营和客服在这里汇合。
             </p>
           </div>
 

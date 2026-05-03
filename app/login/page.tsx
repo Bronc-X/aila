@@ -51,10 +51,10 @@ const painPoints = [
 
 // ── AI 使用经验 ──
 const aiExperience = [
-  { value: "none", label: "完全没用过", desc: "还没有接触过 AI 工具" },
-  { value: "tried", label: "试过 ChatGPT 等", desc: "用过通用 AI 聊天工具" },
-  { value: "simple", label: "已部署简单应用", desc: "在部分环节使用了 AI" },
-  { value: "deep", label: "已深度整合 AI", desc: "AI 已融入核心业务流程" },
+  { value: "none", label: "完全没用过", desc: "团队还没有正式使用相关工具" },
+  { value: "tried", label: "试过 ChatGPT 等", desc: "用过通用聊天工具，尚未形成流程" },
+  { value: "simple", label: "已部署简单应用", desc: "部分环节已经开始使用工具辅助" },
+  { value: "deep", label: "已深度整合", desc: "工具已经进入核心业务流程" },
 ];
 
 export default function LoginPage() {
@@ -176,7 +176,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
 
       setStep("info");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "閭€璇风爜鏍￠獙澶辫触");
+      setError(e instanceof Error ? e.message : "邀请码校验失败");
     } finally {
       setLoading(false);
     }
@@ -204,7 +204,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
           <p className="text-lg text-[#9E9B96] tracking-normal">
             {step === "code"
               ? "本次闭门实训采用邀请制，请输入您收到的专属邀请码。"
-              : "帮助我们为您的企业定制最佳 AI 落地方案。"}
+              : "帮助我们更准确地理解您的企业现场。"}
           </p>
         </div>
 
@@ -372,7 +372,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
               {/* ── AI 使用经验 ── */}
               <div>
                 <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-4 uppercase">
-                  AI Readiness · AI 使用经验
+                  Readiness · 工具使用经验
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {aiExperience.map((exp) => (

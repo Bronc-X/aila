@@ -13,12 +13,12 @@ import Link from "next/link";
 
 /* ───────── Aila Tools Data ───────── */
 const tools = [
-  { icon: Target, title: "获客中心", sub: "MARKETING", desc: "批量 AI 海报 · 短视频脚本 · 全平台文案矩阵 · 素材编辑", tags: ["批量海报","短视频","文案矩阵","素材编辑"], stat: "28", statLabel: "Active Campaigns", color: "bg-amber-500/10", iconColor: "text-amber-500", borderHover: "hover:border-amber-500/50", detail: "接入阿里云 Wanx-v1 万相生图引擎，单次生成 4 张商用级海报。支持从产品图自动生成短视频脚本和全平台（抖音/小红书/公众号）分发文案。" },
-  { icon: MessageSquare, title: "销售助手", sub: "SALES", desc: "实时对话分析 · 话术提示 · 智能回访策略 · 灵感追问", tags: ["实时对话","话术提示","智能回访","灵感追问"], stat: "154", statLabel: "Open Deals", color: "bg-blue-500/10", iconColor: "text-blue-400", borderHover: "hover:border-blue-400/50", detail: "销售员通话/聊天时，Agent 实时分析对话内容，推送最优话术建议。自动生成回访任务并按客户意向度排序。" },
-  { icon: FlaskConical, title: "研发工坊", sub: "R&D", desc: "AI 头脑风暴 · 快速原型验证 · 市场趋势研判 · 资产盘点", tags: ["头脑风暴","快速原型","市场研判","资产盘点"], stat: "42", statLabel: "Research Projects", color: "bg-purple-500/10", iconColor: "text-purple-400", borderHover: "hover:border-purple-400/50", detail: "将模糊需求输入后，Agent 自动拆解为可执行方案，进行竞品分析和市场容量估算。" },
-  { icon: BarChart3, title: "老板仪表盘", sub: "DASHBOARD", desc: "智能日报周报 · 回访进度追踪 · 成交数据分析", tags: ["智能仪表盘","AI 报告","回访追踪","成交分析"], stat: "89%", statLabel: "Active Campaigns", color: "bg-emerald-500/10", iconColor: "text-emerald-400", borderHover: "hover:border-emerald-400/50", detail: "每天早晨自动汇总前日全部门关键指标，生成结构化日报推送至企业微信群。" },
+  { icon: Target, title: "获客中心", sub: "MARKETING", desc: "海报出图 · 短视频脚本 · 分发文案 · 素材编辑", tags: ["批量海报","短视频","文案矩阵","素材编辑"], stat: "28", statLabel: "Active Campaigns", color: "bg-amber-500/10", iconColor: "text-amber-500", borderHover: "hover:border-amber-500/50", detail: "接入阿里云 Wanx-v1 万相生图引擎，单次生成 4 张商用级海报。产品图可以继续延展成短视频脚本和抖音、小红书、公众号分发文案。" },
+  { icon: MessageSquare, title: "销售助手", sub: "SALES", desc: "对话跟进 · 话术提示 · 回访节奏 · 灵感追问", tags: ["实时对话","话术提示","智能回访","灵感追问"], stat: "154", statLabel: "Open Deals", color: "bg-blue-500/10", iconColor: "text-blue-400", borderHover: "hover:border-blue-400/50", detail: "销售通话或聊天进行时，系统同步整理对话重点、潜在异议和下一步动作，再按客户意向度生成回访任务。" },
+  { icon: FlaskConical, title: "研发工坊", sub: "R&D", desc: "想法推演 · 原型验证 · 市场研判 · 资产盘点", tags: ["头脑风暴","快速原型","市场研判","资产盘点"], stat: "42", statLabel: "Research Projects", color: "bg-purple-500/10", iconColor: "text-purple-400", borderHover: "hover:border-purple-400/50", detail: "模糊需求进入系统后，被拆成可讨论的方案、竞品视角和市场容量判断，方便团队继续取舍。" },
+  { icon: BarChart3, title: "老板仪表盘", sub: "DASHBOARD", desc: "日报周报 · 回访进度 · 成交数据 · 经营视图", tags: ["经营看板","经营报告","回访追踪","成交分析"], stat: "89%", statLabel: "Active Campaigns", color: "bg-emerald-500/10", iconColor: "text-emerald-400", borderHover: "hover:border-emerald-400/50", detail: "每天早晨汇总前日关键指标，把部门进展、回访状态和成交变化整理成老板能快速浏览的日报。" },
   { icon: Building2, title: "行政效率", sub: "ADMIN", desc: "合同文档助手 · 会议纪要 · 排班优化 · 流程自动化", tags: ["合同助手","会议纪要","排班优化","流程诊断"], stat: "350", statLabel: "Users", color: "bg-sky-500/10", iconColor: "text-sky-400", borderHover: "hover:border-sky-400/50", detail: "上传合同扫描件后自动提取关键条款并标注风险点。录音自动转文字并生成结构化纪要。" },
-  { icon: Headphones, title: "智能客服", sub: "SERVICE", desc: "客服配置 · 回访话术 · 舆情监控 · 客户之声分析", tags: ["智能客服","回访话术","舆情监控","客户之声"], stat: "19", statLabel: "Active Tickets", color: "bg-rose-500/10", iconColor: "text-rose-400", borderHover: "hover:border-rose-400/50", detail: "自动接管售后常见问题。实时监控全网舆情，负面评论 30 秒内预警。" },
+  { icon: Headphones, title: "智能客服", sub: "SERVICE", desc: "客服配置 · 回访话术 · 舆情监控 · 客户反馈", tags: ["智能客服","回访话术","舆情监控","客户之声"], stat: "19", statLabel: "Active Tickets", color: "bg-rose-500/10", iconColor: "text-rose-400", borderHover: "hover:border-rose-400/50", detail: "常见售后问题交给系统先接住，舆情和客户反馈同步进入监控面板，方便团队及时处理。" },
 ];
 
 /* ───────── Code Gate ───────── */
@@ -102,7 +102,7 @@ function PortfolioContent() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="space-y-6 max-w-3xl">
           <p className="text-xs font-mono text-neutral-500 tracking-[0.3em] uppercase">Agent Architecture × Cross-Domain Engineering</p>
           <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.95]">Toni Studio.</h1>
-          <p className="text-base text-neutral-400 font-mono max-w-2xl mx-auto leading-relaxed">一个跨界工程团队。同时掌握 iOS 原生开发、企业级全链路 Agent 部署与 A 股分钟级量化策略工程。</p>
+          <p className="text-base text-neutral-400 font-mono max-w-2xl mx-auto leading-relaxed">一个跨界工程团队，长期在 iOS 原生开发、企业系统交付和 A 股分钟级量化策略之间来回打磨。</p>
         </motion.div>
       </section>
 
@@ -110,10 +110,10 @@ function PortfolioContent() {
       <section id="aila" className="min-h-screen p-8 lg:p-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="space-y-8">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-neutral-900 border border-neutral-800 rounded-full"><span className="w-2 h-2 rounded-full bg-[#00ffcc] animate-pulse" /><span className="text-xs font-mono text-neutral-400">B 端企业全链路 Agent 工具矩阵</span></div>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-neutral-900 border border-neutral-800 rounded-full"><span className="w-2 h-2 rounded-full bg-[#00ffcc] animate-pulse" /><span className="text-xs font-mono text-neutral-400">B 端企业工具矩阵</span></div>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight">aila.</h2>
-            <h3 className="text-xl font-mono text-[#00ffcc] tracking-widest">类 Bloomberg 的企业定制化 Agent 中枢</h3>
-            <p className="text-sm text-neutral-400 leading-relaxed font-mono">Aila 将获客、销售、研发、行政、客服 6 条业务线的核心操作全部收编到一个统一的 Agent 控制台中。直连阿里云 DashScope 的 Qwen-Plus 推理引擎和 Wanx-v1 生图引擎。<strong className="text-neutral-300">点击右侧卡片查看每个工具的详细能力。</strong></p>
+            <h3 className="text-xl font-mono text-[#00ffcc] tracking-widest">企业定制化控制中枢</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-mono">Aila 把获客、销售、研发、行政、客服 6 条业务线放进统一控制台。部分能力连接阿里云 DashScope 的 Qwen-Plus 推理引擎和 Wanx-v1 生图引擎。<strong className="text-neutral-300">点击右侧卡片查看每个工具的详细能力。</strong></p>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1 }}><ToolPanel /></motion.div>
         </div>
@@ -132,8 +132,8 @@ function PortfolioContent() {
           <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex-1 space-y-8">
             <div className="inline-flex items-center space-x-2 px-3 py-1 bg-neutral-900 border border-neutral-800 rounded-full"><span className="w-2 h-2 rounded-full bg-white animate-pulse" /><span className="text-xs font-mono text-neutral-400">iOS 原生健康 Agent 平台</span></div>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tight">antios.</h2>
-            <h3 className="text-xl font-mono text-white tracking-widest">不是 AI 聊天 App，是健康状态运行时</h3>
-            <p className="text-sm text-neutral-400 leading-relaxed font-mono">Agent 的第一输入源不是文字，而是 Apple Watch 每秒采集的生理参数——HRV、静息心率、睡眠分期。在本地压缩成 8 个强类型派生状态变量（arousal_load / recovery_debt），然后才交给大模型做有约束的推理。</p>
+            <h3 className="text-xl font-mono text-white tracking-widest">以健康状态为核心的运行时</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-mono">Antios 的输入从 Apple Watch 每秒采集的生理参数开始：HRV、静息心率、睡眠分期先在本地压缩成 8 个强类型派生状态变量（arousal_load / recovery_debt），再进入有约束的推理链路。</p>
           </motion.div>
         </div>
         {/* 三层护城河 */}

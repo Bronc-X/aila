@@ -156,7 +156,7 @@ export default function OperationsPage() {
   const subTabs = [
     { id: "dashboard" as const, label: "智能仪表盘", icon: BarChart3 },
     { id: "analysis" as const, label: "成交分析", icon: TrendingUp },
-    { id: "report" as const, label: "AI报告", icon: FileText },
+  { id: "report" as const, label: "经营报告", icon: FileText },
     { id: "tracking" as const, label: "回访追踪", icon: CalendarDays },
   ];
 
@@ -210,7 +210,7 @@ export default function OperationsPage() {
       }
       setDbData(parsed);
     } catch (e) {
-      alert(e instanceof Error ? e.message : "AI 生成全盘数据失败，请重试");
+      alert(e instanceof Error ? e.message : "全盘数据生成失败，请重试");
     } finally {
       setDbGenerating(false);
     }
@@ -321,8 +321,8 @@ export default function OperationsPage() {
                   <div className="w-12 h-12 bg-[#D97706]/10 text-[#D97706] rounded-full flex items-center justify-center mx-auto mb-3">
                     <Sparkles size={24} />
                   </div>
-                  <h2 className="text-2xl font-bold text-[#2D2A26]">初始化 AI 智能大屏</h2>
-                  <p className="text-[#6B6660] text-sm mt-2">填写您的业务规模与目标，AI 将为您推演并监控实时数据指标。</p>
+              <h2 className="text-2xl font-bold text-[#2D2A26]">初始化经营数据大屏</h2>
+              <p className="text-[#6B6660] text-sm mt-2">填写业务规模与目标，系统会推演并监控实时数据指标。</p>
                 </div>
                 
                 <div className="space-y-4">
@@ -387,7 +387,7 @@ export default function OperationsPage() {
                 <div className="pt-4">
                   <button onClick={handleGenerateDashboard} disabled={dbGenerating}
                     className="w-full bg-[#D97706] text-white font-bold tracking-widest py-3.5 rounded-xl hover:bg-[#B45309] transition-all flex justify-center items-center gap-2 disabled:opacity-50">
-                    {dbGenerating ? <><RefreshCw size={18} className="animate-spin"/> AI 深度推演中...</> : <><BarChart3 size={18}/> 生成高维数据大屏</>}
+              {dbGenerating ? <><RefreshCw size={18} className="animate-spin"/> 深度推演中...</> : <><BarChart3 size={18}/> 生成高维数据大屏</>}
                   </button>
                 </div>
               </div>
@@ -526,7 +526,7 @@ export default function OperationsPage() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
-                  <FileText size={18} className="text-[#D97706]" /> AI 智能报告
+                <FileText size={18} className="text-[#D97706]" /> 经营报告
                 </h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">报告类型</label>
@@ -589,7 +589,7 @@ export default function OperationsPage() {
               <div className="flex flex-col items-center justify-center h-[350px] text-center border-2 border-dashed border-[#E5E1D8] bg-[#FAF9F6] rounded-xl m-2">
                 <TrendingUp size={28} className="text-[#A3A3A3] mb-3" />
                 <p className="text-[#6B6660] font-medium">请先在【智能仪表盘】配置大盘数据</p>
-                <p className="text-sm text-[#9E9B96] mt-2">AI 将根据您的最新推演数据，深挖异动指标并提供决断建议</p>
+              <p className="text-sm text-[#9E9B96] mt-2">系统将根据最新推演数据，深挖异动指标并提供决断建议</p>
               </div>
             ) : (
               <div className="space-y-6">
@@ -651,12 +651,12 @@ export default function OperationsPage() {
                         status: deal.status === "signed" ? "completed" : "pending",
                         priority: "high",
                         date: deal.date,
-                        owner: "AI智能分配"
+          owner: "系统分配"
                       }));
                       setTrackingRows([...newRows, ...trackingRows]);
                     }} 
                     className="px-4 py-2 border border-[#D97706]/30 bg-[#D97706]/5 text-[#D97706] text-sm hover:bg-[#D97706]/10 transition-colors flex items-center gap-1 rounded-lg font-medium">
-                    <Sparkles size={14} /> AI 同步最新大盘报表
+              <Sparkles size={14} /> 同步最新大盘报表
                   </button>
                   <button onClick={addRow} className="px-4 py-2 border border-[#E5E1D8] bg-white text-[#666] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors flex items-center gap-1 rounded-lg shadow-sm">
                     <Plus size={14} /> 新建任务

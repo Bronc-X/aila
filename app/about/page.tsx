@@ -4,22 +4,22 @@ import { ArrowUpRight, Moon } from "lucide-react";
 import styles from "../site.module.css";
 
 const principles = [
-  ["先做现场", "不先讲概念，先把业务现场、角色、输入输出和失败边界画清楚。"],
-  ["先出原型", "一个能点击、能演示、能被团队质疑的版本，比十页方案更快逼近真实。"],
-  ["先让人接住", "系统不是上线就结束，要让老板能判断、员工能使用、团队能复盘。"],
+  ["先到现场", "从一张表、一段对话、一次交付卡顿开始，看清事情真正发生的地方。"],
+  ["先见雏形", "能点、能试、能被追问的版本，往往比厚厚一份方案更接近答案。"],
+  ["先让人用住", "交付之后还要有人愿意打开、敢于判断，并能把结果带回日常工作。"],
 ];
 
 const capabilityMap = [
-  ["产品判断", "把一句“我们想用 AI”拆成业务目标、流程瓶颈、使用角色和判断指标。"],
-  ["界面与交互", "把复杂流程做成清楚的界面、状态和操作节奏，让人知道下一步点哪里。"],
-  ["AI 工作流", "把 Prompt、数据、工具和人工复核组合成稳定流程，避免只停在演示层。"],
-  ["训练交付", "用课程、案例和工具把团队带上手，形成可重复的 AI 使用动作。"],
+  ["产品判断", "把含混的想法落到业务目标、流程瓶颈、使用角色和判断指标上。"],
+  ["界面与交互", "把复杂流程收进清楚的界面、状态和操作节奏里，让人自然知道下一步。"],
+  ["工作流设计", "把数据、工具、提示词和人工复核编排成稳定链路，能跑，也能追责。"],
+  ["训练交付", "用课程、案例和工具把团队带上手，让方法留在组织里继续生长。"],
 ];
 
 const timeline = [
   ["01", "拆问题", "明确谁使用、输入什么、输出给谁、错了怎么回滚。"],
-  ["02", "做系统", "从演示原型推进到可试用工具，让需求进入真实反馈。"],
-  ["03", "训练人", "把系统讲清楚、教会团队、留下复盘方法，而不是只交一个链接。"],
+  ["02", "做系统", "从演示原型推进到可试用工具，让需求接受真实反馈。"],
+  ["03", "训练人", "把系统讲清楚，把团队带会，也把复盘方法留下。"],
 ];
 
 export default function AboutPage() {
@@ -32,10 +32,10 @@ export default function AboutPage() {
         </Link>
         <div className={styles.links}>
           <Link href="/work">作品</Link>
-          <Link href="/services">企业合作</Link>
-          <Link href="/about">关于</Link>
           <Link href="/aila">AILA</Link>
-          <Link href="/training">课程</Link>
+          <Link href="/tools">工具</Link>
+          <Link href="/about">关于</Link>
+          <Link href="/contact">联系</Link>
         </div>
       </nav>
 
@@ -43,11 +43,11 @@ export default function AboutPage() {
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>
             <Moon size={16} />
-            AI Builder / Independent developer
+            Product builder / Independent developer
           </p>
-          <h1>Toni，把 AI 产品和业务流程做成可交付系统。</h1>
+          <h1>Toni，把产品判断和业务流程做成可交付系统。</h1>
           <p className={styles.lede}>
-            AI Builder、独立开发者，长期做 ToB 场景里的原型、工具和训练交付。从 MVP 到生产级应用，我更关心 AI 能不能进入真实流程，被人用起来，并且留下可复盘的业务结果。
+            独立开发者，长期做 ToB 场景里的原型、工具和训练交付。从 MVP 到生产级应用，我关心的是系统能否进入真实流程，被人持续使用，并留下说得清的业务结果。
           </p>
         </div>
         <aside className={styles.portraitPanel}>
@@ -56,7 +56,7 @@ export default function AboutPage() {
           </div>
           <div className={styles.statStrip}>
             <div>
-              <strong>AI</strong>
+              <strong>Flow</strong>
               <span>产品与工作流</span>
             </div>
             <div>
@@ -73,9 +73,9 @@ export default function AboutPage() {
 
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>工作方式很简单：先把混乱变成结构。</h2>
+          <h2>工作方式很简单：先把混乱理出骨架。</h2>
           <p>
-            合作开始时，我不会先问要不要接大模型，而是先问：谁使用、输入什么、输出给谁、结果错了谁复核。
+            合作开始时，我先问最朴素的几个问题：谁使用，输入什么，输出给谁，结果错了由谁复核。
           </p>
         </div>
         <div className={styles.grid}>
@@ -94,9 +94,9 @@ export default function AboutPage() {
           <aside className={styles.playbookIndex}>
             <strong>One person, full chain.</strong>
             <ul className={styles.playbookList}>
-              <li>从业务判断到界面结构，不把责任切碎。</li>
-              <li>从可演示原型到团队训练，保持交付连续。</li>
-              <li>从工具效果到使用机制，避免项目上线后闲置。</li>
+              <li>业务判断、界面结构和交付责任放在同一张桌上看。</li>
+              <li>从可演示原型到团队训练，交付不断线。</li>
+              <li>工具效果要接上使用机制，才不会上线后闲置。</li>
             </ul>
           </aside>
           <div className={styles.mapList}>
@@ -123,12 +123,12 @@ export default function AboutPage() {
       </section>
 
       <section className={styles.cta}>
-        <h2>判断我适不适合做你的项目，先看已经拆出来的真实作品。</h2>
+        <h2>想判断是否合拍，可以先看这些已经落过地的作品。</h2>
         <div className={styles.actions}>
           <Link href="/work" className={styles.button}>
             进入作品
           </Link>
-          <Link href="/services" className={styles.ghost}>
+          <Link href="/aila#cooperation" className={styles.ghost}>
             合作方式 <ArrowUpRight size={15} />
           </Link>
         </div>

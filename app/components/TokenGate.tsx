@@ -38,7 +38,7 @@ export default function TokenGate({
       setToken("");
       router.push(redirectTo);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "TOKEN 楠岃瘉澶辫触 / ACCESS DENIED");
+      setError(e instanceof Error ? e.message : "通行验证失败 / ACCESS DENIED");
     } finally {
       setLoading(false);
     }
@@ -73,10 +73,10 @@ export default function TokenGate({
             </div>
 
             <h2 className="text-4xl md:text-5xl font-black text-[#2D2A26] tracking-normal mb-5">
-              璁叉紨閫氳楠岃瘉
+              讲演通行验证
             </h2>
             <p className="text-lg text-[#9E9B96] tracking-normal mb-16">
-              璇ユā鍧椾粎闄愭巿鏉冭甯堜娇鐢紝璇疯緭鍏ヨ婕?Token銆?
+              该模块仅限授权讲师使用。请输入讲演 Token。
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-12">

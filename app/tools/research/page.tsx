@@ -245,11 +245,11 @@ export default function ResearchPage() {
           <div className="grid lg:grid-cols-[360px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5">
-                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Brain size={18} /> AI 多角色头脑风暴</h2>
+            <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Brain size={18} /> 多角色头脑风暴</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">讨论主题 *</label>
                   <textarea value={topic} onChange={(e) => setTopic(e.target.value)}
-                    placeholder="例如：如何用AI降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
+              placeholder="例如：如何降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">参与角色（多选）</label>
@@ -330,7 +330,7 @@ export default function ResearchPage() {
                 </div>
                 <button onClick={handleProtoValidate} disabled={protoLoading || !protoIdea.trim()}
                   className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
-                  {protoLoading ? <><RefreshCw size={18} className="animate-spin" /> 分析中...</> : <><Sparkles size={18} /> AI 验证分析</>}
+              {protoLoading ? <><RefreshCw size={18} className="animate-spin" /> 分析中...</> : <><Sparkles size={18} /> 验证分析</>}
                 </button>
               </div>
             </motion.div>
@@ -344,7 +344,7 @@ export default function ResearchPage() {
                   <div className="flex flex-col items-center justify-center h-[350px] text-center">
                     <Zap size={32} className="text-[#6B6660] mb-3" />
                     <p className="text-[#9E9B96]">描述产品构想后生成</p>
-                    <p className="text-sm text-[#6B6660]">AI将输出多维评分 + SWOT + MVP清单</p>
+          <p className="text-sm text-[#6B6660]">系统将输出多维评分、SWOT 与 MVP 清单</p>
                   </div>
                 ) : (
                   <div className="p-5 border border-[#E5E1D8] bg-white max-h-[500px] overflow-y-auto">

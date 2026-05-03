@@ -70,7 +70,7 @@ const gates: Gate[] = [
     href: "/about",
     title: "TONI",
     eyebrow: "关于 Toni",
-    copy: "个人介绍、方法与合作背景",
+    copy: "个人介绍、工作方法与合作背景",
     x: 20,
     y: -116,
     z: 260,
@@ -101,10 +101,10 @@ const gates: Gate[] = [
   },
   {
     id: "services",
-    href: "/services",
-    title: "SERVICES",
-    eyebrow: "企业合作",
-    copy: "诊断、原型与系统落地",
+    href: "/tools",
+    title: "TOOLS",
+    eyebrow: "工具大厅",
+    copy: "六个可进入的业务工作台",
     x: -540,
     y: 94,
     z: -150,
@@ -120,7 +120,7 @@ const gates: Gate[] = [
     id: "aila",
     href: "/aila",
     title: "AILA",
-    eyebrow: "AI 工作台",
+    eyebrow: "企业工作台",
     copy: "面向经营流程的工具矩阵",
     x: 20,
     y: 228,
@@ -135,7 +135,7 @@ const gates: Gate[] = [
   },
   {
     id: "training",
-    href: "/training",
+    href: "/work/training-system",
     title: "TRAINING",
     eyebrow: "课程训练",
     copy: "工作坊、Slides 与工具入口",
@@ -322,11 +322,11 @@ export default function ToniSpatialHero() {
   const targetRef = useRef<Camera>({ x: 0, y: 0, z: 0, yaw: -0.02, pitch: -0.035 });
   const velocityRef = useRef(0);
   const dragRef = useRef({ active: false, moved: false, x: 0, y: 0, yaw: 0, pitch: 0 });
-  const [activeVideoId, setActiveVideoId] = useState(backgroundVideos[0].id);
+  const [activeVideoId, setActiveVideoId] = useState("silk-flow");
   const [activeId, setActiveId] = useState("toni");
   const router = useRouter();
   const activeVideo = backgroundVideos.find((video) => video.id === activeVideoId) ?? backgroundVideos[0];
-  const galaxyVideo = backgroundVideos.find((video) => video.id === "silk-flow") ?? backgroundVideos[1];
+  const galaxyVideo = backgroundVideos.find((video) => video.id !== activeVideoId) ?? backgroundVideos[1];
 
   const stars = useMemo(
     () =>
@@ -916,6 +916,8 @@ export default function ToniSpatialHero() {
 
     drawAtmosphere(ctx, width, height, time);
     drawStars(ctx, width, height, time);
+    drawTunnel(ctx, width, height, time);
+    drawGlassSheets(ctx, width, height, time);
 
     hitZonesRef.current = [];
     const sortedGates = [...gates].sort((a, b) => resolveGateCenter(b, time).localZ - resolveGateCenter(a, time).localZ);
@@ -927,7 +929,7 @@ export default function ToniSpatialHero() {
       .forEach((gate) => drawPanelGate(ctx, gate, width, height, time));
 
     drawForegroundFragments(ctx, width, height, time);
-  }, [drawAtmosphere, drawForegroundFragments, drawPanelGate, drawStars, drawWordGate, resolveGateCenter]);
+  }, [drawAtmosphere, drawForegroundFragments, drawGlassSheets, drawPanelGate, drawStars, drawTunnel, drawWordGate, resolveGateCenter]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -950,7 +952,7 @@ export default function ToniSpatialHero() {
     let animation = 0;
     let width = 0;
     let height = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const resize = () => {
@@ -1082,11 +1084,10 @@ export default function ToniSpatialHero() {
         </Link>
         <div className={styles.links}>
           <Link href="/work">作品</Link>
-          <Link href="/services">企业合作</Link>
-          <Link href="/about">关于</Link>
           <Link href="/aila">AILA</Link>
+          <Link href="/tools">工具</Link>
+          <Link href="/about">关于</Link>
           <Link href="/contact">联系</Link>
-          <Link href="/training">课程</Link>
         </div>
       </nav>
       <div className={styles.controls} aria-label="Spatial gates">
