@@ -486,6 +486,116 @@
   outline: none;
 }
 
+.taigaSignal {
+  position: absolute;
+  z-index: 10;
+  top: clamp(5.9rem, 13vh, 8.8rem);
+  right: clamp(1rem, 4vw, 4.6rem);
+  display: grid;
+  width: 4.8rem;
+  height: 4.8rem;
+  place-items: center;
+  color: rgba(255, 246, 229, 0.74);
+  text-decoration: none;
+  opacity: 0.34;
+  transform: translate3d(0, 0, 0) rotate(-4deg) scale(0.72);
+  transform-origin: 50% 72%;
+  animation: taigaDrift 9s ease-in-out infinite;
+  filter: drop-shadow(0 0 1.3rem rgba(168, 240, 106, 0.2));
+  pointer-events: auto;
+}
+
+.taigaSignal::before {
+  position: absolute;
+  inset: 0.45rem;
+  border: 1px solid rgba(168, 240, 106, 0.22);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 52% 58%, rgba(168, 240, 106, 0.12), transparent 48%),
+    rgba(0, 0, 0, 0.1);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.1),
+    0 0 2.4rem rgba(34, 214, 101, 0.12);
+  content: "";
+  transform: scale(0.86);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease,
+    border-color 240ms ease;
+}
+
+.taigaSignal:hover,
+.taigaSignal:focus-visible {
+  opacity: 1;
+  outline: none;
+  transform: translate3d(-0.28rem, -0.18rem, 0) rotate(0deg) scale(1);
+  filter: drop-shadow(0 0 1.8rem rgba(168, 240, 106, 0.36));
+}
+
+.taigaSignal:hover::before,
+.taigaSignal:focus-visible::before {
+  border-color: rgba(168, 240, 106, 0.52);
+  transform: scale(1);
+}
+
+.taigaOrbit {
+  position: absolute;
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(rgba(168, 240, 106, 0.55), rgba(168, 240, 106, 0.08)) border-box;
+  mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  border: 1px solid transparent;
+  opacity: 0.54;
+  animation: taigaOrbitSpin 7s linear infinite;
+}
+
+.taigaSprite {
+  --taiga-end-x: -384px;
+  position: relative;
+  z-index: 1;
+  width: 48px;
+  height: 52px;
+  background-image: url("/pet/taiga/spritesheet.webp");
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 384px 468px;
+  image-rendering: pixelated;
+  transform: translate3d(0, 0.1rem, 0) scale(1.15);
+  animation: taigaIdle 1s steps(8) infinite;
+}
+
+.taigaWhisper {
+  position: absolute;
+  right: 3.55rem;
+  bottom: 1rem;
+  border: 1px solid rgba(168, 240, 106, 0.28);
+  border-radius: 999px;
+  padding: 0.28rem 0.46rem;
+  background: rgba(0, 0, 0, 0.24);
+  color: rgba(255, 246, 229, 0.78);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  opacity: 0;
+  transform: translate3d(0.55rem, 0, 0);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.taigaSignal:hover .taigaWhisper,
+.taigaSignal:focus-visible .taigaWhisper {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 .videoPicker {
   position: absolute;
   z-index: 12;
@@ -520,6 +630,29 @@
   background: rgba(142, 214, 206, 0.12);
   color: #fff6e5;
   outline: none;
+}
+
+@keyframes taigaDrift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: -0.35rem 0.55rem;
+  }
+}
+
+@keyframes taigaOrbitSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes taigaIdle {
+  to {
+    background-position-x: var(--taiga-end-x);
+  }
 }
 
 @media (max-width: 860px) {
@@ -604,6 +737,33 @@
   }
 
   .contactButton {
+    display: none;
+  }
+
+  .taigaSignal {
+    top: auto;
+    right: 0.9rem;
+    bottom: 4.4rem;
+    width: 4rem;
+    height: 4rem;
+    opacity: 0.42;
+    transform: translate3d(0, 0, 0) scale(0.68);
+  }
+
+  .taigaSprite {
+    --taiga-end-x: -320px;
+    width: 40px;
+    height: 43px;
+    background-size: 320px 387px;
+    transform: translate3d(0, 0.05rem, 0) scale(1.05);
+  }
+
+  .taigaOrbit {
+    width: 3.55rem;
+    height: 3.55rem;
+  }
+
+  .taigaWhisper {
     display: none;
   }
 

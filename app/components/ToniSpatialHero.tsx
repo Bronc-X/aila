@@ -1167,6 +1167,17 @@ export default function ToniSpatialHero() {
       >
         联系陪跑
       </Link>
+      <Link
+        href="/pet/taiga"
+        className={styles.taigaSignal}
+        aria-label="Find Taiga"
+        onMouseDown={(event) => event.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <span className={styles.taigaOrbit} aria-hidden="true" />
+        <span className={styles.taigaSprite} aria-hidden="true" />
+        <span className={styles.taigaWhisper}>TAIGA</span>
+      </Link>
       <div className={styles.videoPicker} aria-label="Visual texture">
         {backgroundVideos.map((video) => (
           <button
