@@ -19,7 +19,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
       <div className="grid md:grid-cols-2 gap-10">
         <div>
           <h4 className="text-xl font-bold flex items-center gap-2 mb-4 text-[#2D2A26]">
-            <Users className="text-[#D97706]" /> 过去的痛点
+            <Users className="text-[#22d665]" /> 过去的痛点
           </h4>
           <p className="text-[var(--text-secondary)] leading-relaxed">
             酒店面临的海量"非标准诉求"（如：多拿两瓶水、发票开错了、空调不制热）以前全靠前台或总机人工录单分发。不仅响应慢，且流转链条长，SOP 超过 100 多项，新员工培训周期极高。
@@ -233,7 +233,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <p className="text-[var(--text-muted)] text-lg mt-1">出处研判：全球顶级投行与 AI 研究机构共识</p>
       </div>
       <p className="text-lg text-[var(--text-secondary)] leading-loose">
-        大模型目前每半年完成一次底层认知突进，导致应用层的壁垒搭建时间被极度压缩。资本和市场给予传统企业的数字化缓冲期仅剩 <strong className="text-[#D97706]">18 个月</strong>，逾期将陷入成本结构被跨代际碾压的"绝望谷谷底"。
+        大模型目前每半年完成一次底层认知突进，导致应用层的壁垒搭建时间被极度压缩。资本和市场给予传统企业的数字化缓冲期仅剩 <strong className="text-[#22d665]">18 个月</strong>，逾期将陷入成本结构被跨代际碾压的"绝望谷谷底"。
       </p>
     </div>
   ),

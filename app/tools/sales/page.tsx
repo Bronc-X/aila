@@ -386,12 +386,12 @@ const handleSendChat = async () => {
       <header className="sticky top-0 z-40 border-b border-[#E5E1D8] bg-white/95 backdrop-blur-md pt-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-end justify-between mb-10">
           <div className="flex flex-col gap-6">
-            <Link href="/tools" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A3A3A3] hover:text-[#D97706] transition-colors uppercase tracking-[0.2em] w-fit">
+            <Link href="/tools" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A3A3A3] hover:text-[#22d665] transition-colors uppercase tracking-[0.2em] w-fit">
               <ArrowLeft size={14} /> 返回超级中枢
             </Link>
             <div className="flex items-center gap-5">
               <div className="w-[56px] h-[56px] flex items-center justify-center rounded-2xl border-2 border-[#E5E1D8] bg-white shadow-sm ring-4 ring-[#FAF9F6]">
-                <MessageSquare size={26} className="text-[#D97706]" />
+                <MessageSquare size={26} className="text-[#22d665]" />
               </div>
               <h1 className="text-[2.5rem] font-black text-[#2D2A26] tracking-tight hover:tracking-normal transition-all duration-300">销售助手</h1>
             </div>
@@ -413,7 +413,7 @@ const handleSendChat = async () => {
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
-                activeTab === tab.id ? "border-[#D97706] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
+                activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}>
               <tab.icon size={14} /> {tab.label}
             </button>
@@ -427,14 +427,14 @@ const handleSendChat = async () => {
         {activeTab === "realtime" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_320px_320px] gap-6 items-start">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6 max-h-[600px] overflow-y-auto flex flex-col">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#22d665] transition-all p-6 max-h-[600px] overflow-y-auto flex flex-col">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
-                    <FileText size={18} className="text-[#D97706]"/> 实时对话
+                    <FileText size={18} className="text-[#22d665]"/> 实时对话
                   </h2>
                   <div className="flex gap-2">
                     {!isRecording && conversation.length === 0 && (
-                      <button onClick={handleStartDemo} className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors !py-2 !px-4 text-sm flex items-center gap-1.5">
+                      <button onClick={handleStartDemo} className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors !py-2 !px-4 text-sm flex items-center gap-1.5">
                         <Sparkles size={14} /> 演示模式
                       </button>
                     )}
@@ -443,12 +443,12 @@ const handleSendChat = async () => {
                         <select
                           value={currentSpeaker}
                           onChange={(e) => setCurrentSpeaker(e.target.value as "客户" | "销售")}
-                          className="text-xs border border-[#E5E1D8] text-[#6B6660] bg-white px-2 py-2 rounded-lg focus:outline-none focus:border-[#D97706]">
+                          className="text-xs border border-[#E5E1D8] text-[#6B6660] bg-white px-2 py-2 rounded-lg focus:outline-none focus:border-[#22d665]">
                           <option value="销售">我是销售</option>
                           <option value="客户">我是客户</option>
                         </select>
                         <button onClick={handleStartRecording}
-                          className="bg-white text-[#6B6660] border border-[#E5E1D8] font-bold uppercase tracking-wide hover:border-[#D97706] hover:text-[#D97706] transition-colors !py-2 !px-4 text-sm flex items-center gap-1.5 rounded-lg shadow-sm">
+                          className="bg-white text-[#6B6660] border border-[#E5E1D8] font-bold uppercase tracking-wide hover:border-[#22d665] hover:text-[#22d665] transition-colors !py-2 !px-4 text-sm flex items-center gap-1.5 rounded-lg shadow-sm">
                           <Mic size={14} /> 开始录音
                         </button>
                       </>
@@ -471,7 +471,7 @@ const handleSendChat = async () => {
                     </div>
                     <div className="flex h-2 overflow-hidden rounded-full">
                       <motion.div animate={{ width: `${salesPct}%` }}
-                        className="h-full bg-[#D97706]" />
+                        className="h-full bg-[#22d665]" />
                       <motion.div animate={{ width: `${100 - salesPct}%` }}
                         className="h-full bg-[#E5E1D8]" />
                     </div>
@@ -495,7 +495,7 @@ const handleSendChat = async () => {
                             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                             className={`flex gap-3 ${entry.speaker === "销售" ? "" : "flex-row-reverse"}`}>
                             <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 text-xs font-bold rounded-lg ${
-                              entry.speaker === "销售" ? "bg-[#D97706]/10 text-[#D97706]" : "bg-[#F5F3EE] text-[#6B6660]"
+                              entry.speaker === "销售" ? "bg-[#22d665]/10 text-[#22d665]" : "bg-[#F5F3EE] text-[#6B6660]"
                             }`}>
                               {entry.speaker === "销售" ? <User size={14} /> : "客"}
                             </div>
@@ -505,12 +505,12 @@ const handleSendChat = async () => {
                                 : "bg-white border border-[#E5E1D8] text-[#6B6660] rounded-tr-sm shadow-sm"
                             }`}>
                               <div className="flex items-center gap-2 mb-1.5">
-                                <span className={`text-xs font-semibold ${entry.speaker === "销售" ? "text-[#D97706]" : "text-[#2D2A26]"}`}>{entry.speaker}</span>
+                                <span className={`text-xs font-semibold ${entry.speaker === "销售" ? "text-[#22d665]" : "text-[#2D2A26]"}`}>{entry.speaker}</span>
                                 <span className="text-[10px] text-[#A3A3A3] font-mono">{entry.timestamp}</span>
                               </div>
                               <span>
                                 {parts.map((p, i) => p.isKeyword ? (
-                                  <span key={i} className="text-[#D97706] font-bold bg-[#D97706]/10 px-1 rounded-sm mx-0.5">{p.text}</span>
+                                  <span key={i} className="text-[#22d665] font-bold bg-[#22d665]/10 px-1 rounded-sm mx-0.5">{p.text}</span>
                                 ) : (
                                   <span key={i}>{p.text}</span>
                                 ))}
@@ -525,14 +525,14 @@ const handleSendChat = async () => {
                   {interimText && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                       className="flex gap-3">
-                      <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-xs font-bold rounded-lg bg-[#D97706]/10 text-[#D97706]">
+                      <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-xs font-bold rounded-lg bg-[#22d665]/10 text-[#22d665]">
                         <Mic size={14} />
                       </div>
-                      <div className="max-w-[80%] px-4 py-3 text-[15px] leading-relaxed rounded-2xl bg-[#FEF3C7] border border-[#D97706]/20 text-[#92400E] rounded-tl-sm">
+                      <div className="max-w-[80%] px-4 py-3 text-[15px] leading-relaxed rounded-2xl bg-[#FEF3C7] border border-[#22d665]/20 text-[#92400E] rounded-tl-sm">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-semibold text-[#D97706]">正在听...</span>
+                          <span className="text-xs font-semibold text-[#22d665]">正在听...</span>
                           <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1.2 }}
-                            className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
+                            className="w-1.5 h-1.5 rounded-full bg-[#22d665]" />
                         </div>
                         {interimText}
                       </div>
@@ -545,9 +545,9 @@ const handleSendChat = async () => {
 
             {/* AI 实时摘要 */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#22d665] transition-all p-6">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2 mb-6">
-                  <Bot size={18} className="text-[#D97706]" /> 实时战况摘要
+                  <Bot size={18} className="text-[#22d665]" /> 实时战况摘要
                 </h2>
                 {!summary ? (
                   <div className="flex flex-col items-center justify-center h-[400px] text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
@@ -557,7 +557,7 @@ const handleSendChat = async () => {
                 ) : (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                     {[
-                      { label: "🎯 客户需求", items: summary.needs, color: "text-[#D97706] bg-[#D97706]/10" },
+                      { label: "🎯 客户需求", items: summary.needs, color: "text-[#22d665] bg-[#22d665]/10" },
                       { label: "⚠️ 异议/顾虑", items: summary.objections, color: "text-red-600 bg-red-500/10" },
                       { label: "💡 突破机会", items: summary.opportunities, color: "text-green-600 bg-green-500/10" },
                       { label: "📋 下一步行动", items: summary.nextSteps, color: "text-blue-600 bg-blue-500/10" },
@@ -580,9 +580,9 @@ const handleSendChat = async () => {
 
             {/* 话术建议 */}
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#22d665] transition-all p-6">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2 mb-6">
-                  <Lightbulb size={18} className="text-[#D97706]" /> 话术支援 (实时打补丁)
+                  <Lightbulb size={18} className="text-[#22d665]" /> 话术支援 (实时打补丁)
                 </h2>
                 {suggestions.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-[400px] text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
@@ -593,14 +593,14 @@ const handleSendChat = async () => {
                 ) : (
                   <div className="space-y-4">
                     {suggestions.map((s, i) => {
-                      const typeColor = { "应对异议": "bg-red-50 text-red-600 border-red-100", "追问深挖": "bg-blue-50 text-blue-600 border-blue-100", "促成交易": "bg-green-50 text-green-600 border-green-100", "建立信任": "bg-yellow-50 text-[#D97706] border-yellow-100" }[s.type];
+                      const typeColor = { "应对异议": "bg-red-50 text-red-600 border-red-100", "追问深挖": "bg-blue-50 text-blue-600 border-blue-100", "促成交易": "bg-green-50 text-green-600 border-green-100", "建立信任": "bg-yellow-50 text-[#22d665] border-yellow-100" }[s.type];
                       return (
                         <motion.div key={i} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
-                          className="p-8 rounded-xl border border-[#E5E1D8] bg-[#FAF9F6] group cursor-pointer hover:border-[#D97706] hover:shadow-sm transition-all relative">
+                          className="p-8 rounded-xl border border-[#E5E1D8] bg-[#FAF9F6] group cursor-pointer hover:border-[#22d665] hover:shadow-sm transition-all relative">
                           <div className="flex items-center justify-between mb-2">
                             <span className={`text-[11px] font-bold px-2 py-0.5 rounded border ${typeColor}`}>{s.type}</span>
                             <button onClick={() => handleCopy(s.content, `sug-${i}`)}
-                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded bg-white border border-[#E5E1D8] hover:border-[#D97706] hover:text-[#D97706]">
+                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded bg-white border border-[#E5E1D8] hover:border-[#22d665] hover:text-[#22d665]">
                               {copied === `sug-${i}` ? <Check size={14} className="text-green-600" /> : <Copy size={14} className="text-[#6B6660]" />}
                             </button>
                           </div>
@@ -621,7 +621,7 @@ const handleSendChat = async () => {
             <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm p-8 space-y-8">
               <div className="border-b border-[#E5E1D8] pb-6">
                 <h2 className="text-2xl font-bold text-[#2D2A26] flex items-center gap-2 mb-2">
-                  <Database className="text-[#D97706]" size={24} /> 销售知识库预训练
+                  <Database className="text-[#22d665]" size={24} /> 销售知识库预训练
                 </h2>
           <p className="text-[#6B6660]">录入核心卖点与参考资料，实时监听时会自动匹配对应的关键话术。</p>
               </div>
@@ -632,13 +632,13 @@ const handleSendChat = async () => {
                     <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">本品核心卖点 (Selling Points)</label>
                     <textarea value={kbSellingPoints} onChange={e => {setKbSellingPoints(e.target.value); setTimeout(saveKnowledgeBase, 100)}}
               placeholder="例如：\n1. 自动化录入，业务员免操作\n2. 相比竞品，部署周期只需3天..."
-                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] outline-none text-sm min-h-[160px] resize-y" rows={6} />
+                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] focus:ring-1 focus:ring-[#22d665] outline-none text-sm min-h-[160px] resize-y" rows={6} />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">常见异议与话术 (Objections & Handlings)</label>
                     <textarea value={kbCompetitors} onChange={e => {setKbCompetitors(e.target.value); setTimeout(saveKnowledgeBase, 100)}}
                       placeholder="例如：\n客户嫌贵怎么说：提醒客户算一笔人力成本账...\n客户觉得系统难用：演示我们的语音免写功能..." 
-                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] outline-none text-sm min-h-[160px] resize-y" rows={6} />
+                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-4 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] focus:ring-1 focus:ring-[#22d665] outline-none text-sm min-h-[160px] resize-y" rows={6} />
                   </div>
                 </div>
 
@@ -646,7 +646,7 @@ const handleSendChat = async () => {
                   <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">文档资料投喂</label>
           <p className="text-xs text-[#9E9B96] mb-4">拖拽 PDF, Word 等文件到此处，系统会读取并整理文档内容。</p>
                   
-                  <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl bg-[#FAF9F6] p-8 text-center hover:border-[#D97706] transition-colors cursor-pointer"
+                  <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl bg-[#FAF9F6] p-8 text-center hover:border-[#22d665] transition-colors cursor-pointer"
                     onClick={() => {
                         const newFile = {name: `产品白皮书_v${Math.floor(Math.random()*10)}.pdf`, size: `${(Math.random()*5+1).toFixed(1)}MB`};
                         setKbFiles([...kbFiles, newFile]);
@@ -690,29 +690,29 @@ const handleSendChat = async () => {
         {activeTab === "followup" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-all p-6 text-[#2D2A26] space-y-4">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#22d665] transition-all p-6 text-[#2D2A26] space-y-4">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
-                  <Phone size={18} className="text-[#D97706]" /> 智能回访策略
+                  <Phone size={18} className="text-[#22d665]" /> 智能回访策略
                 </h2>
                 <div>
                   <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">客户名称 *</label>
                   <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)}
-                    placeholder="例如：张总 / 李经理" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-3 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all outline-none text-[15px]" />
+                    placeholder="例如：张总 / 李经理" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-3 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#22d665] focus:ring-1 focus:ring-[#22d665] transition-all outline-none text-[15px]" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase tracking-wide">背景信息 / 上次沟通记录</label>
                   <textarea value={customerContext} onChange={(e) => setCustomerContext(e.target.value)}
-                    placeholder="详细描述沟通要点、客户关注点、异议等..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-3 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706] transition-all outline-none text-[15px] min-h-[140px] resize-y" rows={5} />
+                    placeholder="详细描述沟通要点、客户关注点、异议等..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] rounded-xl p-3 text-[#2D2A26] placeholder-[#A3A3A3] focus:border-[#22d665] focus:ring-1 focus:ring-[#22d665] transition-all outline-none text-[15px] min-h-[140px] resize-y" rows={5} />
                 </div>
                 <button onClick={handleFollowup} disabled={followupLoading || !customerName.trim()}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-widest rounded-xl hover:bg-[#B45309] shadow-sm transition-all w-full flex items-center justify-center gap-2 !py-3.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-widest rounded-xl hover:bg-[#15803d] shadow-sm transition-all w-full flex items-center justify-center gap-2 !py-3.5 disabled:opacity-50 disabled:cursor-not-allowed">
                   {followupLoading ? <><RefreshCw size={18} className="animate-spin" /> 推演中...</> : <><Sparkles size={18} /> 生成高转化回访剧本</>}
                 </button>
               </div>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#D97706] transition-colors p-6">
+              <div className="border border-[#E5E1D8] bg-white rounded-xl shadow-sm hover:border-[#22d665] transition-colors p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">工作协同卡片</h2>
                   {followupCards.length > 0 && (
@@ -729,7 +729,7 @@ const handleSendChat = async () => {
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                     {followupCards.map((card, i) => (
                       <motion.div key={card.title} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.08 }}
-                        className="p-5 border border-[#E5E1D8] bg-[#FAF9F6] rounded-xl hover:border-[#D97706] hover:shadow-md transition-all">
+                        className="p-5 border border-[#E5E1D8] bg-[#FAF9F6] rounded-xl hover:border-[#22d665] hover:shadow-md transition-all">
                         <div className="flex items-center gap-3 mb-4 border-b border-[#E5E1D8] pb-3">
                           <span className="text-xl bg-white w-8 h-8 rounded-full flex justify-center items-center shadow-sm">{card.icon}</span>
                           <h4 className="text-[15px] font-bold text-[#2D2A26]">{card.title}</h4>
@@ -737,7 +737,7 @@ const handleSendChat = async () => {
                         <ul className="space-y-2.5">
                           {card.items.map((item, j) => (
                             <li key={j} className="text-[#6B6660] text-sm leading-relaxed flex items-start gap-2">
-                              <span className="text-[#D97706] mt-1 shrink-0">•</span>
+                              <span className="text-[#22d665] mt-1 shrink-0">•</span>
                               <span>{item}</span>
                             </li>
                           ))}
@@ -757,8 +757,8 @@ const handleSendChat = async () => {
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] rounded-xl flex flex-col overflow-hidden shadow-sm hover:shadow transition-shadow" style={{ height: "680px" }}>
               <div className="px-12 py-4 border-b border-[#E5E1D8] bg-white flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#D97706]/10 flex items-center justify-center">
-                    <Sparkles size={16} className="text-[#D97706]" />
+                  <div className="w-8 h-8 rounded-lg bg-[#22d665]/10 flex items-center justify-center">
+                    <Sparkles size={16} className="text-[#22d665]" />
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-[#2D2A26]">销售教练</div>
@@ -775,7 +775,7 @@ const handleSendChat = async () => {
                     <div className="flex flex-wrap gap-2 justify-center mt-4">
                       {["分析一段客户对话", "如何应对价格异议", "客户说再考虑怎么办", "如何提高转化率"].map(q => (
                         <button key={q} onClick={() => { setChatInput(q); }}
-                          className="px-3 py-1.5 border border-[#E5E1D8] rounded-full text-[#6B6660] bg-white text-xs hover:border-[#D97706] hover:text-[#D97706] transition-colors">
+                          className="px-3 py-1.5 border border-[#E5E1D8] rounded-full text-[#6B6660] bg-white text-xs hover:border-[#22d665] hover:text-[#22d665] transition-colors">
                           {q}
                         </button>
                       ))}

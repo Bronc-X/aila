@@ -8,12 +8,12 @@
 
 :root {
   /* 品牌色 — 琥珀橙系 */
-  --brand-primary: #D97706;        /* 主色：深琥珀橙 */
-  --brand-secondary: #EA580C;      /* 副色：烈橙 */
-  --brand-accent: #F59E0B;         /* 强调：明黄橙 */
-  --brand-glow: #FB923C;           /* 辉光橙 */
-  --brand-warm: #DC6843;           /* 暖赤橙 (CTA) */
-  --brand-soft: #FDE68A;           /* 柔黄 */
+  --brand-primary: #22d665;        /* 主色：深琥珀橙 */
+  --brand-secondary: #00a884;      /* 副色：烈橙 */
+  --brand-accent: #a8f06a;         /* 强调：明黄橙 */
+  --brand-glow: #72e894;           /* 辉光橙 */
+  --brand-warm: #00a884;           /* 暖赤橙 (CTA) */
+  --brand-soft: #d9f99d;           /* 柔黄 */
 
   /* Claude 暖白底色体系 */
   --bg-primary: #FAF9F6;           /* 全局背景色（极其柔和的暖灰白） */
@@ -24,11 +24,11 @@
 
   /* 渐变保持极简发光 */
   /* 渐变保持极简发光 */
-  --gradient-brand: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-  --gradient-warm: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  --gradient-brand: linear-gradient(135deg, #22d665 0%, #15803d 100%);
+  --gradient-warm: linear-gradient(135deg, #a8f06a 0%, #22d665 100%);
   --gradient-subtle: linear-gradient(180deg, #FAF9F6 0%, #F5F4EF 100%);
   --gradient-card: transparent;
-  --gradient-glow: radial-gradient(ellipse at center, rgba(217,119,6,0.05) 0%, transparent 60%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(34, 214, 101,0.05) 0%, transparent 60%);
   --gradient-hero: linear-gradient(135deg, #F5F4EF 0%, #FAF9F6 100%);
 
   /* 文字色 */
@@ -36,22 +36,22 @@
   --text-primary: #2D2B29;         /* 极深炭灰，并非死黑，保证高阅读护眼感 */
   --text-secondary: #7A7570;       /* 说明性文字使用的柔和深灰 */
   --text-muted: #A39E98;           /* 进一步隐退的文字层级 */
-  --text-brand: #D97706;           /* 品牌色强调行 */
+  --text-brand: #22d665;           /* 品牌色强调行 */
   --text-dark: #FFFFFF;            /* 如今被反转，作为反差用色（如在深色徽章上使用） */
 
   /* 边框 */
   /* 边框 (Claude风格使用极细且对比度极弱的边框分割线) */
   --border-subtle: rgba(28,25,23,0.08); /* 极弱隔离 */
   --border-default: rgba(28,25,23,0.15); /* 默认粗卡线 */
-  --border-active: rgba(217,119,6,0.6); /* 激活边框采用品牌橙 */
-  --border-warm: rgba(217,119,6,0.3);
+  --border-active: rgba(34, 214, 101,0.6); /* 激活边框采用品牌橙 */
+  --border-warm: rgba(34, 214, 101,0.3);
 
   /* 阴影 */
   /* 阴影 - 调整为亮色下的柔和投影 */
-  --shadow-glow: 0 4px 30px rgba(217,119,6,0.1);
+  --shadow-glow: 0 4px 30px rgba(34, 214, 101,0.1);
   --shadow-card: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
   --shadow-elevated: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-  --shadow-warm: 0 8px 30px rgba(217,119,6,0.15);
+  --shadow-warm: 0 8px 30px rgba(34, 214, 101,0.15);
 
   /* 圆角 */
   --radius-sm: 6px;
@@ -99,7 +99,7 @@ body {
 }
 
 ::selection {
-  background: rgba(217,119,6,0.25);
+  background: rgba(34, 214, 101,0.25);
   color: #fff;
 }
 
@@ -128,8 +128,8 @@ body {
   to { opacity: 1; transform: translateX(0); }
 }
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(217,119,6,0.15); }
-  50% { box-shadow: 0 0 40px rgba(217,119,6,0.3); }
+  0%, 100% { box-shadow: 0 0 20px rgba(34, 214, 101,0.15); }
+  50% { box-shadow: 0 0 40px rgba(34, 214, 101,0.3); }
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -194,7 +194,7 @@ body {
 }
 .btn-brand:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(217,119,6,0.35);
+  box-shadow: 0 8px 30px rgba(34, 214, 101,0.35);
 }
 .btn-brand::after {
   content: "";
@@ -219,7 +219,7 @@ body {
 }
 .btn-outline:hover {
   border-color: var(--brand-primary);
-  background: rgba(217,119,6,0.06);
+  background: rgba(34, 214, 101,0.06);
   color: var(--brand-glow);
 }
 
@@ -239,7 +239,7 @@ body {
 .input-field::placeholder { color: var(--text-muted); }
 .input-field:focus {
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(217,119,6,0.1);
+  box-shadow: 0 0 0 3px rgba(34, 214, 101,0.1);
 }
 
 /* 标签徽章 */
@@ -255,19 +255,19 @@ body {
   text-transform: uppercase;
 }
 .badge-brand {
-  background: rgba(217,119,6,0.12);
+  background: rgba(34, 214, 101,0.12);
   color: var(--brand-glow);
-  border: 1px solid rgba(217,119,6,0.2);
+  border: 1px solid rgba(34, 214, 101,0.2);
 }
 .badge-accent {
-  background: rgba(245,158,11,0.12);
+  background: rgba(168, 240, 106,0.12);
   color: var(--brand-accent);
-  border: 1px solid rgba(245,158,11,0.2);
+  border: 1px solid rgba(168, 240, 106,0.2);
 }
 .badge-warm {
-  background: rgba(220,104,67,0.12);
+  background: rgba(0, 168, 132,0.12);
   color: var(--brand-warm);
-  border: 1px solid rgba(220,104,67,0.2);
+  border: 1px solid rgba(0, 168, 132,0.2);
 }
 
 /* 章节标题 */
@@ -302,7 +302,7 @@ body {
   transform: translateX(-50%);
   width: 800px;
   height: 500px;
-  background: radial-gradient(ellipse, rgba(217,119,6,0.08) 0%, rgba(245,158,11,0.04) 40%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(34, 214, 101,0.08) 0%, rgba(168, 240, 106,0.04) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }

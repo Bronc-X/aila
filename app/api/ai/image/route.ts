@@ -36,7 +36,7 @@ function inferPalette(prompt: string): [string, string, string] {
   const lowered = prompt.toLowerCase();
 
   if (/(orange|amber|warm|sun|琥珀|橙)/.test(lowered)) {
-    return ["#fff7ed", "#fdba74", "#d97706"];
+    return ["#f2f5d1", "#a8f06a", "#22d665"];
   }
 
   if (/(blue|ocean|tech|科技|蓝)/.test(lowered)) {
@@ -48,7 +48,7 @@ function inferPalette(prompt: string): [string, string, string] {
   }
 
   if (/(dark|black|night|暗黑|黑)/.test(lowered)) {
-    return ["#111827", "#374151", "#f59e0b"];
+    return ["#111827", "#374151", "#a8f06a"];
   }
 
   return ["#f8fafc", "#cbd5e1", "#0f172a"];
@@ -128,7 +128,7 @@ async function generateDesignSpec(prompt: string, hasProduct: boolean, hasModel:
             hasProduct,
             hasModel,
             output: {
-              palette: ["#ffffff", "#f59e0b", "#111827"],
+              palette: ["#ffffff", "#a8f06a", "#111827"],
               layout: "centerpiece",
               accentShape: "halo",
               mood: "clean commercial editorial",

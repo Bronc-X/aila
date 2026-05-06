@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, GitBranch as Github, Mail, MessageCircle, Star } from "lucide-react";
+import { ArrowUpRight, GitBranch as Github, Mail, MessageCircle, Moon, Star } from "lucide-react";
 import styles from "../site.module.css";
 
 export const dynamic = "force-dynamic";
@@ -55,6 +55,12 @@ const qrChannels: QrChannel[] = [
   },
 ];
 
+const principles = [
+  ["先到现场", "从一张表、一段对话、一次交付卡顿开始，看清事情真正发生的地方。"],
+  ["先见雏形", "能点、能试、能被追问的版本，往往比厚厚一份方案更接近答案。"],
+  ["先让人用住", "交付之后还要有人愿意打开、敢于判断，并能把结果带回日常工作。"],
+];
+
 async function getLotusRepo(): Promise<GitHubRepo | null> {
   try {
     const response = await fetch("https://api.github.com/repos/Bronc-X/Lotus", {
@@ -90,20 +96,19 @@ export default async function ContactPage() {
           <Link href="/work">作品</Link>
           <Link href="/aila">AILA</Link>
           <Link href="/tools">工具</Link>
-          <Link href="/about">关于</Link>
-          <Link href="/contact">联系</Link>
+          <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
 
       <section className={styles.contactHero}>
         <div className={styles.contactCopy}>
           <p className={styles.eyebrow}>
-            <MessageCircle size={16} />
-            Contact Toni
+            <Moon size={16} />
+            Toni / AI product companion
           </p>
-          <h1>把你的想法、现场和卡住的地方发给我。</h1>
+          <h1>把想法、现场和卡住的地方发给我。</h1>
           <p>
-            微信最快。也可以先用邮件说清项目背景、现有流程、团队规模，以及你最想先解决的那件事。
+            我做 AI 产品陪跑、Agent 编排和工程交付。合作通常从一个真实场景开始：谁使用，输入什么，输出给谁，错了怎么复核。
           </p>
         </div>
 
@@ -120,6 +125,23 @@ export default async function ContactPage() {
             ))}
           </div>
         </aside>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2>工作方式很简单：先把混乱理出骨架。</h2>
+          <p>不是先写一份漂亮方案，而是先把能跑起来的最短链路找出来。</p>
+        </div>
+        <div className={styles.grid}>
+          {principles.map(([title, text]) => (
+            <article className={styles.card} key={title}>
+              <small>Principle</small>
+              <MessageCircle size={24} />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className={styles.contactSection}>

@@ -13,7 +13,7 @@ import Link from "next/link";
 
 /* ───────── Aila Tools Data ───────── */
 const tools = [
-  { icon: Target, title: "获客中心", sub: "MARKETING", desc: "海报出图 · 短视频脚本 · 分发文案 · 素材编辑", tags: ["批量海报","短视频","文案矩阵","素材编辑"], stat: "28", statLabel: "Active Campaigns", color: "bg-amber-500/10", iconColor: "text-amber-500", borderHover: "hover:border-amber-500/50", detail: "接入阿里云 Wanx-v1 万相生图引擎，单次生成 4 张商用级海报。产品图可以继续延展成短视频脚本和抖音、小红书、公众号分发文案。" },
+  { icon: Target, title: "获客中心", sub: "MARKETING", desc: "海报出图 · 短视频脚本 · 分发文案 · 素材编辑", tags: ["批量海报","短视频","文案矩阵","素材编辑"], stat: "28", statLabel: "Active Campaigns", color: "bg-lime-500/10", iconColor: "text-lime-500", borderHover: "hover:border-lime-500/50", detail: "接入阿里云 Wanx-v1 万相生图引擎，单次生成 4 张商用级海报。产品图可以继续延展成短视频脚本和抖音、小红书、公众号分发文案。" },
   { icon: MessageSquare, title: "销售助手", sub: "SALES", desc: "对话跟进 · 话术提示 · 回访节奏 · 灵感追问", tags: ["实时对话","话术提示","智能回访","灵感追问"], stat: "154", statLabel: "Open Deals", color: "bg-blue-500/10", iconColor: "text-blue-400", borderHover: "hover:border-blue-400/50", detail: "销售通话或聊天进行时，系统同步整理对话重点、潜在异议和下一步动作，再按客户意向度生成回访任务。" },
   { icon: FlaskConical, title: "研发工坊", sub: "R&D", desc: "想法推演 · 原型验证 · 市场研判 · 资产盘点", tags: ["头脑风暴","快速原型","市场研判","资产盘点"], stat: "42", statLabel: "Research Projects", color: "bg-purple-500/10", iconColor: "text-purple-400", borderHover: "hover:border-purple-400/50", detail: "模糊需求进入系统后，被拆成可讨论的方案、竞品视角和市场容量判断，方便团队继续取舍。" },
   { icon: BarChart3, title: "老板仪表盘", sub: "DASHBOARD", desc: "日报周报 · 回访进度 · 成交数据 · 经营视图", tags: ["经营看板","经营报告","回访追踪","成交分析"], stat: "89%", statLabel: "Active Campaigns", color: "bg-emerald-500/10", iconColor: "text-emerald-400", borderHover: "hover:border-emerald-400/50", detail: "每天早晨汇总前日关键指标，把部门进展、回访状态和成交变化整理成老板能快速浏览的日报。" },
@@ -58,14 +58,14 @@ function ToolPanel() {
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 p-4">
         {tools.map((t, i) => (
           <motion.div key={t.sub} onClick={() => setActiveId(activeId === i ? null : i)}
-            className={`relative bg-[#f5f3ef] rounded-xl p-4 cursor-pointer transition-all duration-300 border-2 ${activeId === i ? 'border-[#D97706] shadow-lg' : 'border-transparent ' + t.borderHover}`}
+            className={`relative bg-[#f5f3ef] rounded-xl p-4 cursor-pointer transition-all duration-300 border-2 ${activeId === i ? 'border-[#22d665] shadow-lg' : 'border-transparent ' + t.borderHover}`}
             whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }}>
             <div className={`w-8 h-8 rounded-lg ${t.color} flex items-center justify-center mb-3`}><t.icon className={`w-4 h-4 ${t.iconColor}`} /></div>
             <h4 className="text-[#2D2A26] font-black text-base mb-0.5">{t.title}</h4>
             <span className="text-[#9E9B96] font-mono text-[9px] tracking-[0.15em] block mb-2">{t.sub}</span>
             <p className="text-[#9E9B96] text-[10px] leading-relaxed mb-3 line-clamp-2">{t.desc}</p>
             <div className="flex flex-wrap gap-1 mb-3">
-              {t.tags.map(tag => (<span key={tag} className={`text-[8px] px-1.5 py-0.5 rounded-full border font-medium ${activeId === i ? 'bg-[#D97706] text-white border-[#D97706]' : 'border-[#E5E1D8] text-[#9E9B96]'} transition-colors`}>{tag}</span>))}
+              {t.tags.map(tag => (<span key={tag} className={`text-[8px] px-1.5 py-0.5 rounded-full border font-medium ${activeId === i ? 'bg-[#22d665] text-white border-[#22d665]' : 'border-[#E5E1D8] text-[#9E9B96]'} transition-colors`}>{tag}</span>))}
             </div>
             <div className="flex items-end gap-2 border-t border-[#E5E1D8] pt-2">
               <span className="text-[#2D2A26] font-black text-lg leading-none">{t.stat}</span>

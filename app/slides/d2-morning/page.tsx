@@ -26,7 +26,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s1" bg="linear-gradient(135deg, #FAF9F6 0%, #F3F1ED 100%)">
       <div className="hero-glow" />
       <motion.div {...fadeUp} className="relative z-10 text-center max-w-4xl mx-auto">
-        <motion.div {...d(0.1)} className="text-[#D97706] font-mono tracking-wide uppercase text-sm mb-12">
+        <motion.div {...d(0.1)} className="text-[#22d665] font-mono tracking-wide uppercase text-sm mb-12">
           D2 SESSION I
         </motion.div>
         <motion.h1 {...d(0.3)} className="text-7xl md:text-[8rem] font-black leading-tight tracking-normal mb-10">
@@ -41,7 +41,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal text-left">
           理论到此为止。
         </h2>
-        <p className="text-6xl md:text-[6.5rem] text-[#D97706] font-black tracking-normal text-left leading-[1.1] mt-4">
+        <p className="text-6xl md:text-[6.5rem] text-[#22d665] font-black tracking-normal text-left leading-[1.1] mt-4">
           今天只做一件事：<br /><span className="whitespace-nowrap">选定兵器，下场厮杀。</span>
         </p>
       </motion.div>
@@ -53,9 +53,9 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
           “可是，上新系统，员工学不会<span className="whitespace-nowrap">怎么办？”</span>
         </h2>
         <p className="text-3xl text-[#6B6660] leading-relaxed mt-10 max-w-4xl mx-auto">
-          接下来展示的工具，<span className="font-bold border-b-4 border-[#D97706]">不需要任何培训和改变习惯</span>。<br />
+          接下来展示的工具，<span className="font-bold border-b-4 border-[#22d665]">不需要任何培训和改变习惯</span>。<br />
           因为它们全都能长在微信、飞书、钉钉里。<br />
-          <span className="font-bold text-[#D97706]">员工只会觉得自己加了一个“神仙同事”。</span>
+          <span className="font-bold text-[#22d665]">员工只会觉得自己加了一个“神仙同事”。</span>
         </p>
         <div className="grid grid-cols-3 gap-12 mt-16 text-left">
            <div className="border border-[#E5E1D8] p-12 rounded-xl bg-[#FAF9F6] shadow-sm">
@@ -98,10 +98,10 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
               onClick={() => {
                 if(caseDetails[item.key]) setModalContent(caseDetails[item.key]);
               }}
-              className="bg-white border border-[#E5E1D8] hover:border-[#D97706] cursor-pointer transition-colors p-8 rounded-xl flex flex-col justify-between aspect-[4/3] group shadow-sm hover:shadow-md">
+              className="bg-white border border-[#E5E1D8] hover:border-[#22d665] cursor-pointer transition-colors p-8 rounded-xl flex flex-col justify-between aspect-[4/3] group shadow-sm hover:shadow-md">
                 <div className="flex justify-between items-start">
-                  <div className="text-sm font-bold text-[#D97706] tracking-wide font-mono">{item.tag}</div>
-                  <item.icon className="text-[#9E9B96] group-hover:text-[#D97706] transition-colors" size={32} />
+                  <div className="text-sm font-bold text-[#22d665] tracking-wide font-mono">{item.tag}</div>
+                  <item.icon className="text-[#9E9B96] group-hover:text-[#22d665] transition-colors" size={32} />
                 </div>
                 <h3 className="text-2xl font-black text-[#2D2A26] tracking-normal mt-6">{item.title}</h3>
              </motion.div>
@@ -114,9 +114,9 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s_m1">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full flex flex-col md:flex-row items-center gap-16">
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-[#D97706] tracking-wide uppercase mb-4">01 获客引擎</h3>
+          <h3 className="text-2xl font-bold text-[#22d665] tracking-wide uppercase mb-4">01 获客引擎</h3>
           <h2 className="text-6xl md:text-7xl font-black text-[#2D2A26] leading-[1.1] tracking-normal mb-8">
-            内容不再是成本，<br />是<span className="text-[#D97706]">免费弹药</span>。
+            内容不再是成本，<br />是<span className="text-[#22d665]">免费弹药</span>。
           </h2>
           <p className="text-xl text-[#6B6660] leading-relaxed mb-8">
             扔掉低产能的外包写手。丢一篇竞品爆款进去，Agent 会自动剥离大纲，融进你的产品卖点，并瞬时裂变出 100 篇契合小红书、抖音、独立站体质的种草图文。
@@ -128,13 +128,13 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                <div className="text-[#2D2A26] font-medium text-lg">1 篇 / 45分钟</div>
              </div>
              <div className="pl-6 w-1/2">
-               <div className="text-sm text-[#D97706] font-bold mb-1">硅基员工 (Agent)</div>
-               <div className="text-[#D97706] font-black text-2xl">100 篇 / 1分钟</div>
+               <div className="text-sm text-[#22d665] font-bold mb-1">硅基员工 (Agent)</div>
+               <div className="text-[#22d665] font-black text-2xl">100 篇 / 1分钟</div>
              </div>
           </div>
         </div>
         <div className="flex-1 border-l border-[#E5E1D8] pl-16 py-8 cursor-pointer group" onClick={() => setModalContent(caseDetails["marketing"])}>
-           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#D97706] transition-colors duration-300">100<span className="text-5xl">x</span></div>
+           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#22d665] transition-colors duration-300">100<span className="text-5xl">x</span></div>
            <p className="font-mono text-[#9E9B96] tracking-wide uppercase font-bold">产能倍增释放</p>
            <p className="text-sm text-[#6B6660] mt-4 flex items-center gap-2"><Search size={16} /> 点击查看控制台界面</p>
         </div>
@@ -145,12 +145,12 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s_m2">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full flex flex-col md:flex-row items-center gap-16">
         <div className="flex-1 border-r border-[#E5E1D8] pr-16 py-8 text-right cursor-pointer group" onClick={() => setModalContent(caseDetails["sales"])}>
-           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#D97706] transition-colors duration-300">40<span className="text-5xl">%</span></div>
+           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#22d665] transition-colors duration-300">40<span className="text-5xl">%</span></div>
            <p className="font-mono text-[#9E9B96] tracking-wide uppercase font-bold">无效跟进耗损剔除</p>
            <p className="text-sm text-[#6B6660] mt-4 flex items-center justify-end gap-2"><Search size={16} /> 点击查看控制台界面</p>
         </div>
         <div className="flex-1 pl-4">
-          <h3 className="text-2xl font-bold text-[#D97706] tracking-wide uppercase mb-4">02 销售军师</h3>
+          <h3 className="text-2xl font-bold text-[#22d665] tracking-wide uppercase mb-4">02 销售军师</h3>
           <h2 className="text-5xl md:text-6xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal">
             销冠之所以是销冠，<br />因为他不干脏活。
           </h2>
@@ -164,8 +164,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                <div className="text-[#2D2A26] font-medium text-lg">仅占 35%</div>
              </div>
              <div className="pl-6 w-1/2">
-               <div className="text-sm text-[#D97706] font-bold mb-1">引入销售军师后</div>
-               <div className="text-[#D97706] font-black text-2xl">飙升至 80%</div>
+               <div className="text-sm text-[#22d665] font-bold mb-1">引入销售军师后</div>
+               <div className="text-[#22d665] font-black text-2xl">飙升至 80%</div>
              </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s_m3" bg="white">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full flex flex-col md:flex-row items-center gap-16">
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-[#D97706] tracking-wide uppercase mb-4">03 客服管家</h3>
+          <h3 className="text-2xl font-bold text-[#22d665] tracking-wide uppercase mb-4">03 客服管家</h3>
           <h2 className="text-6xl md:text-7xl font-black text-[#2D2A26] leading-[1.1] tracking-normal mb-8">
             用十年的老骨干，<br />做 7x24 小时接待。
           </h2>
@@ -190,13 +190,13 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                <div className="text-[#2D2A26] font-medium text-lg">师傅带 3 个月</div>
              </div>
              <div className="pl-6 w-1/2">
-               <div className="text-sm text-[#D97706] font-bold mb-1">硅基+碳基上岗</div>
-               <div className="text-[#D97706] font-black text-2xl">0 天即战力</div>
+               <div className="text-sm text-[#22d665] font-bold mb-1">硅基+碳基上岗</div>
+               <div className="text-[#22d665] font-black text-2xl">0 天即战力</div>
              </div>
           </div>
         </div>
         <div className="flex-1 border-l border-[#E5E1D8] pl-16 py-8 cursor-pointer group" onClick={() => setModalContent(caseDetails["service"])}>
-           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#D97706] transition-colors duration-300">24<span className="text-5xl text-[#D97706]">.7</span></div>
+           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#22d665] transition-colors duration-300">24<span className="text-5xl text-[#22d665]">.7</span></div>
            <p className="font-mono text-[#9E9B96] tracking-wide uppercase font-bold">算力无休，情绪永远稳定</p>
            <p className="text-sm text-[#6B6660] mt-4 flex items-center gap-2"><Search size={16} /> 点击查看控制台界面</p>
         </div>
@@ -207,12 +207,12 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s_m4">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full flex flex-col md:flex-row items-center gap-16">
         <div className="flex-1 border-r border-[#E5E1D8] pr-16 py-8 text-right cursor-pointer group" onClick={() => setModalContent(caseDetails["ops"])}>
-           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#D97706] transition-colors duration-300">3<span className="text-5xl">SEC</span></div>
+           <div className="text-[10rem] font-black text-[#2D2A26] leading-tight tracking-normal opacity-90 mb-4 group-hover:text-[#22d665] transition-colors duration-300">3<span className="text-5xl">SEC</span></div>
            <p className="font-mono text-[#9E9B96] tracking-wide uppercase font-bold">告别“表哥表姐”熬夜拉数据</p>
            <p className="text-sm text-[#6B6660] mt-4 flex items-center justify-end gap-2"><Search size={16} /> 点击查看控制台界面</p>
         </div>
         <div className="flex-1 pl-4">
-          <h3 className="text-2xl font-bold text-[#D97706] tracking-wide uppercase mb-4">04 运营看板</h3>
+          <h3 className="text-2xl font-bold text-[#22d665] tracking-wide uppercase mb-4">04 运营看板</h3>
           <h2 className="text-5xl md:text-6xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal">
             用“人话”来算账。<br />你的决策不必等周报。
           </h2>
@@ -226,8 +226,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                <div className="text-[#2D2A26] font-medium text-lg">归因出表需 1-2 天</div>
              </div>
              <div className="pl-6 w-1/2">
-               <div className="text-sm text-[#D97706] font-bold mb-1">硅基 BI 分析</div>
-               <div className="text-[#D97706] font-black text-2xl">3 秒即时出图</div>
+               <div className="text-sm text-[#22d665] font-bold mb-1">硅基 BI 分析</div>
+               <div className="text-[#22d665] font-black text-2xl">3 秒即时出图</div>
              </div>
           </div>
         </div>
@@ -238,7 +238,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       <motion.div {...fadeUp} className="text-center w-full max-w-5xl mx-auto">
         <h2 className="text-4xl md:text-6xl font-black text-[#FAF9F6] leading-[1.3] mb-8 tracking-normal">
           所有的这些能力，<br />
-          全都可以<span className="text-[#D97706]">无痛</span><span className="whitespace-nowrap">缝合进您的现状。</span>
+          全都可以<span className="text-[#22d665]">无痛</span><span className="whitespace-nowrap">缝合进您的现状。</span>
         </h2>
         <div className="grid grid-cols-3 gap-8 mt-16 max-w-4xl mx-auto">
           <div className="border border-neutral-700 p-8 rounded-xl bg-neutral-800/50 backdrop-blur">
@@ -246,7 +246,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
             <p className="text-neutral-300 font-bold">企微无缝接入</p>
           </div>
           <div className="border border-neutral-700 p-8 rounded-xl bg-neutral-800/50 backdrop-blur relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-[#D97706]/40 to-transparent blur-md"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-[#22d665]/40 to-transparent blur-md"></div>
             <img src="https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/feishu-logo-white.svg" alt="Feishu" className="h-10 mx-auto mb-4 mt-1 relative z-10" />
             <p className="text-white font-bold relative z-10">飞书群组唤醒</p>
           </div>
@@ -263,7 +263,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         <h2 className="text-5xl md:text-7xl font-black text-[#2D2A26] leading-tight mb-8 tracking-normal">
           不用再看 PPT 上的录屏。
         </h2>
-        <p className="text-4xl text-[#D97706] font-bold tracking-wide mt-10">
+        <p className="text-4xl text-[#22d665] font-bold tracking-wide mt-10">
           现在，打开控制台。
         </p>
         <p className="text-2xl text-[#6B6660] leading-relaxed mt-10 max-w-4xl mx-auto">

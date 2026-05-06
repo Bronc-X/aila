@@ -86,7 +86,7 @@ export default function SlidesIndexPage() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 py-6 flex items-center justify-between">
           <Link href="/tools" className="flex items-center gap-8 group">
-            <div className="w-10 h-10 flex items-center justify-center font-black bg-[#D97706] text-white text-sm group-hover:scale-95 transition-transform rounded-xl">
+            <div className="w-10 h-10 flex items-center justify-center font-black bg-[#22d665] text-white text-sm group-hover:scale-95 transition-transform rounded-xl">
               A
             </div>
             <span className="font-bold tracking-wide text-[#9E9B96] uppercase text-xs">AI Camp · Decks</span>
@@ -134,15 +134,15 @@ export default function SlidesIndexPage() {
                         onMouseEnter={() => setHoveredId(block.id)}
                         onMouseLeave={() => setHoveredId(null)}
                         className={`group p-10 md:p-12 border-2 rounded-2xl transition-all duration-300 ${
-                          block.ready 
-                           ? "border-[#E5E1D8] hover:border-[#D97706] bg-white hover:shadow-lg cursor-pointer" 
+                          block.ready
+                           ? "border-[#E5E1D8] hover:border-[#22d665] bg-white hover:shadow-lg cursor-pointer"
                            : "border-[#E5E1D8] opacity-40 cursor-not-allowed bg-[#FAF9F6]"
                         }`}
                       >
                         <div className="flex flex-col md:flex-row gap-8 md:gap-12">
                           {/* 时间块 */}
                           <div className="shrink-0 w-28">
-                             <div className="font-mono text-xl text-[#9E9B96] group-hover:text-[#D97706] transition-colors">{block.time}</div>
+                             <div className="font-mono text-xl text-[#9E9B96] group-hover:text-[#22d665] transition-colors">{block.time}</div>
                           </div>
 
                           {/* 内容体 */}
@@ -172,7 +172,7 @@ export default function SlidesIndexPage() {
                           {block.ready && (
                              <div className="flex items-center shrink-0">
                                 <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 transition-all duration-300 ${
-                                  isHovered ? "bg-[#D97706] text-white border-[#D97706] scale-110 shadow-lg" : "bg-[#FAF9F6] text-[#9E9B96] border-[#E5E1D8]"
+                                  isHovered ? "bg-[#22d665] text-white border-[#22d665] scale-110 shadow-lg" : "bg-[#FAF9F6] text-[#9E9B96] border-[#E5E1D8]"
                                 }`}>
                                    <Play size={22} className="ml-1" />
                                 </div>

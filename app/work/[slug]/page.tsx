@@ -38,8 +38,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
           <Link href="/work">作品</Link>
           <Link href="/aila">AILA</Link>
           <Link href="/tools">工具</Link>
-          <Link href="/about">关于</Link>
-          <Link href="/contact">联系</Link>
+          <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
 

@@ -186,7 +186,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
     <div className="min-h-screen bg-[#FAF9F6] flex flex-col items-center justify-center px-6 md:px-12 lg:px-24 py-12 relative overflow-hidden font-sans">
       <Link
         href="/"
-        className="absolute top-8 left-6 md:left-12 lg:left-24 text-[#9E9B96] font-mono text-sm tracking-wide hover:text-[#D97706] transition-colors flex items-center gap-2 uppercase"
+        className="absolute top-8 left-6 md:left-12 lg:left-24 text-[#9E9B96] font-mono text-sm tracking-wide hover:text-[#22d665] transition-colors flex items-center gap-2 uppercase"
       >
         <ArrowLeft size={16} /> 返回首页
       </Link>
@@ -224,7 +224,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
                   value={inviteCode}
                   onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
                   placeholder="PROTOTYPE-CODE"
-                  className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-4xl md:text-5xl font-mono text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors text-center tracking-[0.2em] md:tracking-[0.5em]"
+                  className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-4xl md:text-5xl font-mono text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#22d665] transition-colors text-center tracking-[0.2em] md:tracking-[0.5em]"
                   maxLength={8}
                   autoFocus
                 />
@@ -239,7 +239,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
               <button
                 type="submit"
                 disabled={loading || !inviteCode.trim()}
-                className="w-full sm:w-auto mx-auto flex items-center justify-center gap-8 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#D97706] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#D97706] rounded-2xl"
+                className="w-full sm:w-auto mx-auto flex items-center justify-center gap-8 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#22d665] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#22d665] rounded-2xl"
               >
                 {loading ? "VERIFYING..." : "ENTER AUTH"}
                 {!loading && (
@@ -269,7 +269,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="真实姓名"
-                    className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-3 text-xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors"
+                    className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-3 text-xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#22d665] transition-colors"
                     autoFocus
                   />
                 </div>
@@ -282,7 +282,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="公司全称"
-                    className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-3 text-xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors"
+                    className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-3 text-xl text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#22d665] transition-colors"
                   />
                 </div>
               </div>
@@ -300,8 +300,8 @@ async function handleCodeSubmit(e: React.FormEvent) {
                       onClick={() => setIndustry(ind.value)}
                       className={`py-3 px-2 text-sm font-bold tracking-normal transition-all rounded-xl flex flex-col items-center gap-1.5 ${
                         industry === ind.value
-                          ? "bg-[#D97706] text-white border-2 border-[#D97706] scale-[1.03] shadow-lg shadow-[#D97706]/20"
-                          : "border-2 border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706] hover:text-[#D97706]"
+                          ? "bg-[#22d665] text-white border-2 border-[#22d665] scale-[1.03] shadow-lg shadow-[#22d665]/20"
+                          : "border-2 border-[#E5E1D8] text-[#6B6660] hover:border-[#22d665] hover:text-[#22d665]"
                       }`}
                     >
                       <span className="text-lg">{ind.emoji}</span>
@@ -324,8 +324,8 @@ async function handleCodeSubmit(e: React.FormEvent) {
                       onClick={() => setCompanySize(s.value)}
                       className={`py-2.5 px-5 text-sm font-bold transition-all rounded-xl border-2 ${
                         companySize === s.value
-                          ? "border-[#D97706] bg-[#D97706]/10 text-[#D97706]"
-                          : "border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706]"
+                          ? "border-[#22d665] bg-[#22d665]/10 text-[#22d665]"
+                          : "border-[#E5E1D8] text-[#6B6660] hover:border-[#22d665]"
                       }`}
                     >
                       {s.label}
@@ -338,7 +338,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
               <div>
                 <label className="block text-xs font-bold tracking-wide text-[#9E9B96] mb-2 uppercase">
                   Pain Points · 最想解决的痛点{" "}
-                  <span className="text-[#D97706] normal-case">
+                  <span className="text-[#22d665] normal-case">
                     （可选 {selectedPains.length}/3）
                   </span>
                 </label>
@@ -354,10 +354,10 @@ async function handleCodeSubmit(e: React.FormEvent) {
                         disabled={disabled}
                         className={`py-2.5 px-3 text-xs font-bold transition-all rounded-xl border-2 flex items-center gap-1.5 ${
                           selected
-                            ? "border-[#D97706] bg-[#D97706]/10 text-[#D97706]"
+                            ? "border-[#22d665] bg-[#22d665]/10 text-[#22d665]"
                             : disabled
                             ? "border-[#E5E1D8] text-[#C5C0B8] opacity-40 cursor-not-allowed"
-                            : "border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706]"
+                            : "border-[#E5E1D8] text-[#6B6660] hover:border-[#22d665]"
                         }`}
                       >
                         <span>{p.emoji}</span>
@@ -382,13 +382,13 @@ async function handleCodeSubmit(e: React.FormEvent) {
                       onClick={() => setAiExp(exp.value)}
                       className={`py-3 px-4 text-left transition-all rounded-xl border-2 ${
                         aiExp === exp.value
-                          ? "border-[#D97706] bg-[#D97706]/10"
-                          : "border-[#E5E1D8] hover:border-[#D97706]"
+                          ? "border-[#22d665] bg-[#22d665]/10"
+                          : "border-[#E5E1D8] hover:border-[#22d665]"
                       }`}
                     >
                       <div
                         className={`text-sm font-bold ${
-                          aiExp === exp.value ? "text-[#D97706]" : "text-[#2D2A26]"
+                          aiExp === exp.value ? "text-[#22d665]" : "text-[#2D2A26]"
                         }`}
                       >
                         {exp.label}
@@ -406,7 +406,7 @@ async function handleCodeSubmit(e: React.FormEvent) {
               <button
                 type="submit"
                 disabled={loading || !canSubmitInfo}
-                className="w-full flex items-center justify-center gap-4 py-5 bg-[#D97706] text-white hover:bg-[#B45309] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-xl font-black uppercase tracking-normal rounded-2xl"
+                className="w-full flex items-center justify-center gap-4 py-5 bg-[#22d665] text-white hover:bg-[#15803d] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-xl font-black uppercase tracking-normal rounded-2xl"
               >
                 {loading ? "INITIALIZING..." : "LAUNCH CONTROL MODULE"}
                 {!loading && (

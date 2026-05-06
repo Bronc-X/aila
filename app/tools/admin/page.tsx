@@ -322,7 +322,7 @@ export default function AdminPage() {
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
-                activeTab === tab.id ? "border-[#D97706] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
+                activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}><tab.icon size={14} /> {tab.label}</button>
           ))}
         </div>
@@ -341,17 +341,17 @@ export default function AdminPage() {
                   <div className="flex flex-wrap gap-2">
                     {contractTypes.map(t => (
                       <button key={t.id} onClick={() => setContractType(t.id)}
-                        className={`px-3 py-1.5 text-sm transition-all border ${contractType === t.id ? "border-[#D97706] bg-[#F3F1ED] text-[#2D2A26]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>{t.label}</button>
+                        className={`px-3 py-1.5 text-sm transition-all border ${contractType === t.id ? "border-[#22d665] bg-[#F3F1ED] text-[#2D2A26]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>{t.label}</button>
                     ))}
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">关键信息</label>
                   <textarea value={contractInput} onChange={e => setContractInput(e.target.value)}
-                    placeholder="甲乙方、金额、期限等（不填使用模板）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
+                    placeholder="甲乙方、金额、期限等（不填使用模板）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
                 </div>
                 <button onClick={handleGenerateContract} disabled={loading}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                   {loading ? <><RefreshCw size={18} className="animate-spin" /> 生成中...</> : <><Sparkles size={18} /> 生成合同草稿</>}
                 </button>
               </div>
@@ -388,7 +388,7 @@ export default function AdminPage() {
                         {clause.editable ? (
                           <textarea value={clause.content} onChange={e => updateClause(clause.id, e.target.value)}
                             onBlur={() => toggleClauseEdit(clause.id)} autoFocus
-                            className="w-full bg-[#FAF9F6] border border-[#D97706]/20 text-[#2D2A26] text-xs p-3 outline-none focus:border-[#D97706] transition-colors min-h-[80px] resize-y font-mono" />
+                            className="w-full bg-[#FAF9F6] border border-[#22d665]/20 text-[#2D2A26] text-xs p-3 outline-none focus:border-[#22d665] transition-colors min-h-[80px] resize-y font-mono" />
                         ) : (
                           <p className="text-xs text-[#9E9B96] leading-relaxed whitespace-pre-wrap">{clause.content}</p>
                         )}
@@ -407,17 +407,17 @@ export default function AdminPage() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><BookOpen size={18} /> 智能会议纪要</h2>
-                <div className="border-2 border-dashed border-[#E5E1D8] p-6 text-center hover:border-[#D97706] transition-colors cursor-pointer rounded-xl">
+                <div className="border-2 border-dashed border-[#E5E1D8] p-6 text-center hover:border-[#22d665] transition-colors cursor-pointer rounded-xl">
                   <BookOpen size={28} className="text-[#A3A3A3] mx-auto mb-2" />
                   <p className="text-xs text-[#9E9B96]">上传录音 (MP3/WAV/M4A)</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">或粘贴文字记录</label>
                   <textarea value={meetingInput} onChange={e => setMeetingInput(e.target.value)}
-                    placeholder="粘贴会议记录..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[120px] resize-y" rows={4} />
+                    placeholder="粘贴会议记录..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[120px] resize-y" rows={4} />
                 </div>
                 <button onClick={handleGenerateMinutes} disabled={minutesLoading || !meetingInput.trim()}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                   {minutesLoading ? <><RefreshCw size={18} className="animate-spin" /> 生成中...</> : <><Sparkles size={18} /> 生成结构化纪要</>}
                 </button>
               </div>
@@ -493,7 +493,7 @@ export default function AdminPage() {
                       <div key={dayIdx}
                         onClick={() => cycleShift(name, dayIdx)}
                         onContextMenu={(e) => { e.preventDefault(); toggleLock(name, dayIdx); }}
-                        className={`p-3 border-t border-[#E5E1D8] cursor-pointer transition-colors hover:bg-[#F3F1ED] font-bold ${SHIFT_LABELS[cell.shift]?.color || "text-[#6B6660]"} ${cell.locked ? "ring-1 ring-inset ring-[#D97706]/30" : ""}`}>
+                        className={`p-3 border-t border-[#E5E1D8] cursor-pointer transition-colors hover:bg-[#F3F1ED] font-bold ${SHIFT_LABELS[cell.shift]?.color || "text-[#6B6660]"} ${cell.locked ? "ring-1 ring-inset ring-[#22d665]/30" : ""}`}>
                         {cell.shift}
                         {cell.locked && <span className="text-[8px] block text-[#A3A3A3]">🔒</span>}
                       </div>
@@ -521,18 +521,18 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">描述现有流程</label>
                   <textarea value={processInput} onChange={e => setProcessInput(e.target.value)}
-                    placeholder="客户下单 → 审核 → 仓库确认 → ..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
+                    placeholder="客户下单 → 审核 → 仓库确认 → ..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[160px] resize-y" rows={6} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">痛点反馈</label>
                   <div className="flex flex-wrap gap-2">
                     {["耗时长", "易出错", "依赖人工", "信息断层", "重复劳动", "难追踪"].map(p => (
-                      <button key={p} className="px-3 py-1.5 border border-[#E5E1D8] text-[#666] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors">{p}</button>
+                      <button key={p} className="px-3 py-1.5 border border-[#E5E1D8] text-[#666] text-sm hover:border-[#22d665] hover:text-[#2D2A26] transition-colors">{p}</button>
                     ))}
                   </div>
                 </div>
                 <button onClick={handleProcessDiagnosis} disabled={processLoading}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                   {processLoading ? <><RefreshCw size={18} className="animate-spin" /> 分析中...</> : <><Sparkles size={18} /> 诊断并推荐方案</>}
                 </button>
               </div>

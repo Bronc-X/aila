@@ -68,8 +68,8 @@ export default function TokenGate({
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
             className="w-full max-w-xl text-center"
           >
-            <div className="w-16 h-16 mx-auto mb-10 flex items-center justify-center rounded-2xl bg-[#FFF7ED] border border-[#FDDCAB]">
-              <ShieldCheck size={28} className="text-[#D97706]" />
+            <div className="w-16 h-16 mx-auto mb-10 flex items-center justify-center rounded-2xl bg-[#F2F5D1] border border-[#A8F06A]">
+              <ShieldCheck size={28} className="text-[#22d665]" />
             </div>
 
             <h2 className="text-4xl md:text-5xl font-black text-[#2D2A26] tracking-normal mb-5">
@@ -86,7 +86,7 @@ export default function TokenGate({
                   value={token}
                   onChange={(e) => setToken(e.target.value.toUpperCase())}
                   placeholder="ENTER TOKEN"
-                  className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-4xl md:text-5xl font-mono text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#D97706] transition-colors text-center tracking-[0.3em]"
+                  className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] pb-4 text-4xl md:text-5xl font-mono text-[#2D2A26] placeholder-[#C5C0B8] focus:ring-0 focus:outline-none focus:border-[#22d665] transition-colors text-center tracking-[0.3em]"
                   maxLength={8}
                   autoFocus
                 />
@@ -99,7 +99,7 @@ export default function TokenGate({
               <button
                 type="submit"
                 disabled={loading || !token.trim()}
-                className="mx-auto flex items-center justify-center gap-6 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#D97706] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#D97706] rounded-2xl"
+                className="mx-auto flex items-center justify-center gap-6 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#22d665] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#22d665] rounded-2xl"
               >
                 {loading ? "VERIFYING..." : "AUTHENTICATE"}
                 {!loading && (

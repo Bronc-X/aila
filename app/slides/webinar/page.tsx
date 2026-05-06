@@ -41,9 +41,9 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     /* ━━━━━━ 第一幕：开场核爆 ━━━━━━ */
 
     // S1: 封面 — 深黑+发光粒子+巨型文字
-    <Slide key="s1" bg="radial-gradient(ellipse at 30% 20%, rgba(217,119,6,0.08) 0%, #0A0A0A 50%, #050505 100%)">
+    <Slide key="s1" bg="radial-gradient(ellipse at 30% 20%, rgba(34, 214, 101,0.08) 0%, #0A0A0A 50%, #050505 100%)">
       <style>{`
-        @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 20px rgba(217,119,6,0.3), 0 0 60px rgba(217,119,6,0.1); } 50% { box-shadow: 0 0 40px rgba(217,119,6,0.5), 0 0 120px rgba(217,119,6,0.2); } }
+        @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 20px rgba(34, 214, 101,0.3), 0 0 60px rgba(34, 214, 101,0.1); } 50% { box-shadow: 0 0 40px rgba(34, 214, 101,0.5), 0 0 120px rgba(34, 214, 101,0.2); } }
         @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
         .glow-border { animation: pulse-glow 3s ease-in-out infinite; }
         .float-slow { animation: float 6s ease-in-out infinite; }
@@ -53,14 +53,14 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
           <Radio size={12} className="animate-pulse" /> LIVE · 正在直播
         </motion.div>
         <motion.h1 {...rise(0.2)} className="text-[7rem] md:text-[12rem] font-black leading-[0.85] tracking-tight mb-8">
-          <span style={{ background: "linear-gradient(135deg, #F59E0B 0%, #D97706 40%, #B45309 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI造浪营</span>
+          <span style={{ background: "linear-gradient(135deg, #a8f06a 0%, #22d665 40%, #15803d 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI造浪营</span>
         </motion.h1>
         <motion.p {...rise(0.4)} className="text-2xl md:text-3xl text-neutral-500 font-light tracking-wide">
           60分钟 · 看懂AI如何帮你<span className="text-white font-semibold">每年省下百万</span>
         </motion.p>
         <motion.div {...rise(0.6)} className="mt-16 flex items-center justify-center gap-6 text-neutral-600 text-sm font-mono tracking-wider">
           <span>智企实验室</span>
-          <span className="w-1 h-1 bg-amber-600 rounded-full"></span>
+          <span className="w-1 h-1 bg-lime-600 rounded-full"></span>
           <span>企业主专场</span>
         </motion.div>
       </motion.div>
@@ -70,19 +70,19 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s2" bg="#080808">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="mb-12">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">THE NAME</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">THE NAME</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-5xl md:text-[5.5rem] font-black text-white leading-[1.05] tracking-tight mb-12">
           为什么叫<br />
-          <span style={{ background: "linear-gradient(90deg, #F59E0B, #D97706)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{"\"造浪营\""}？</span>
+          <span style={{ background: "linear-gradient(90deg, #a8f06a, #22d665)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{"\"造浪营\""}？</span>
         </motion.h2>
-        <motion.div {...rise(0.4)} className="border-l-4 border-amber-600 pl-8 max-w-3xl">
+        <motion.div {...rise(0.4)} className="border-l-4 border-lime-600 pl-8 max-w-3xl">
           <p className="text-xl md:text-2xl text-neutral-400 leading-[1.8] font-light">
             2026 年的 AI 是一场<span className="text-white font-medium">摧毁旧有商业秩序的滔天巨浪</span>。<br />
             在岸边观望的人，终将被吞噬。
           </p>
           <p className="text-xl md:text-2xl text-neutral-400 leading-[1.8] font-light mt-6">
-            我们不卖课。我们帮你<span className="text-amber-500 font-semibold">下场、踩板、造浪</span>。
+            我们不卖课。我们帮你<span className="text-lime-500 font-semibold">下场、踩板、造浪</span>。
           </p>
         </motion.div>
       </motion.div>
@@ -103,7 +103,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
         <div className="grid md:grid-cols-3 gap-6" onClick={() => setModal(caseDetails["chaos_detail"])}>
           {[
             { num: "01", title: "卖课型", desc: "录几十小时视频收你几千块。学完只会跟AI闲聊，业务纹丝不动。", tag: "信息差倒卖", border: "border-red-900/40" },
-            { num: "02", title: "卖工具型", desc: "打着培训旗号卖SaaS订阅。教的全是怎么用他的工具，不续费归零。", tag: "工具锁定", border: "border-orange-900/40" },
+            { num: "02", title: "卖工具型", desc: "打着培训旗号卖SaaS订阅。教的全是怎么用他的工具，不续费归零。", tag: "工具锁定", border: "border-emerald-900/40" },
             { num: "03", title: "空谈型", desc: "请几个「专家」讲两天PPT。听完热血沸腾，回公司第一步都不知道。", tag: "焦虑贩卖", border: "border-yellow-900/40" },
           ].map((item, i) => (
             <motion.div key={item.num} {...rise(0.3 + i * 0.12)}
@@ -123,10 +123,10 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s4" bg="#060606">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="mb-12">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">DIFFERENTIATION</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">DIFFERENTIATION</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-4xl md:text-6xl font-black text-white mb-16 tracking-tight">
-          我们<span className="text-amber-500">不一样</span>
+          我们<span className="text-lime-500">不一样</span>
         </motion.h2>
         <motion.div {...rise(0.3)} className="overflow-hidden rounded-2xl border border-white/[0.06]">
           <table className="w-full text-left">
@@ -134,7 +134,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
               <tr className="bg-white/[0.03]">
                 <th className="p-6 text-neutral-600 text-xs font-mono tracking-[0.3em] uppercase w-[160px]">维度</th>
                 <th className="p-6 text-neutral-600 text-xs font-mono tracking-[0.3em] uppercase">市面AI培训</th>
-                <th className="p-6 text-amber-600 text-xs font-mono tracking-[0.3em] uppercase">AI造浪营</th>
+                <th className="p-6 text-lime-600 text-xs font-mono tracking-[0.3em] uppercase">AI造浪营</th>
               </tr>
             </thead>
             <tbody>
@@ -148,7 +148,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
                 <tr key={row.dim} className="border-t border-white/[0.04]">
                   <td className="p-6 text-white font-semibold text-sm">{row.dim}</td>
                   <td className="p-6 text-neutral-600 line-through text-sm">{row.them}</td>
-                  <td className="p-6 text-amber-400 font-semibold text-sm">{row.us}</td>
+                  <td className="p-6 text-lime-400 font-semibold text-sm">{row.us}</td>
                 </tr>
               ))}
             </tbody>
@@ -158,13 +158,13 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     </Slide>,
 
     // S5: 认知冲击——24个月对比
-    <Slide key="s5" bg="radial-gradient(ellipse at 50% 50%, rgba(217,119,6,0.04) 0%, #080808 70%)">
+    <Slide key="s5" bg="radial-gradient(ellipse at 50% 50%, rgba(34, 214, 101,0.04) 0%, #080808 70%)">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="mb-12">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">24 MONTHS AGO vs NOW</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">24 MONTHS AGO vs NOW</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-4xl md:text-5xl font-black text-white mb-14 tracking-tight">
-          这不是科幻<span className="text-amber-500">。</span>全都已经在用了<span className="text-amber-500">。</span>
+          这不是科幻<span className="text-lime-500">。</span>全都已经在用了<span className="text-lime-500">。</span>
         </motion.h2>
         <div className="space-y-6">
           {[
@@ -175,7 +175,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
           ].map((item, i) => (
             <motion.div key={i} {...rise(0.2 + i * 0.1)}
               className="flex items-start gap-6 p-6 rounded-xl border border-white/[0.04] bg-white/[0.01] hover:bg-white/[0.03] transition-colors">
-              <item.icon size={20} className="text-amber-600 mt-1 shrink-0" />
+              <item.icon size={20} className="text-lime-600 mt-1 shrink-0" />
               <div className="flex-1">
                 <p className="text-neutral-600 line-through text-sm mb-2">{item.before}</p>
                 <p className="text-white font-medium">{item.after}</p>
@@ -187,28 +187,28 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     </Slide>,
 
     // S5.5: Agent 架构革命——从单兵到军团
-    <Slide key="s_agent" bg="radial-gradient(ellipse at 60% 30%, rgba(217,119,6,0.06) 0%, #080808 60%)">
+    <Slide key="s_agent" bg="radial-gradient(ellipse at 60% 30%, rgba(34, 214, 101,0.06) 0%, #080808 60%)">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="flex items-center gap-4 mb-12">
-          <Network size={20} className="text-amber-600" />
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">AGENT ARCHITECTURE</span>
+          <Network size={20} className="text-lime-600" />
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">AGENT ARCHITECTURE</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
           {"从\"你问我答\""}<br />
-          {"到"}<span style={{ background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>一支自主作战的数字军团</span>
+          {"到"}<span style={{ background: "linear-gradient(135deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>一支自主作战的数字军团</span>
         </motion.h2>
         <motion.p {...rise(0.3)} className="text-neutral-500 text-lg mb-12">2026年AI最大的跃迁不是更聪明——是学会了<span className="text-white font-semibold">多Agent协作</span></motion.p>
         <div className="grid md:grid-cols-3 gap-6" onClick={() => setModal(caseDetails["agent_arch"])}>
           {[
             { title: "Hermes Agent", sub: "自进化型私人AI", desc: "完成任务后自动提炼经验，用得越多越懂你的业务", icon: Brain, border: "border-white/[0.06]" },
-            { title: "Claude Managed Agent", sub: "企业级托管团队", desc: "无需搭建基础设施，一键部署自主决策的AI团队", icon: Workflow, border: "border-amber-600/20" },
+            { title: "Claude Managed Agent", sub: "企业级托管团队", desc: "无需搭建基础设施，一键部署自主决策的AI团队", icon: Workflow, border: "border-lime-600/20" },
             { title: "Subagent 并行", sub: "任务自动拆解+并行", desc: "5个Subagent同时执行，3天的工作量压缩到3分钟", icon: Zap, border: "border-white/[0.06]" },
           ].map((item, i) => (
             <motion.div key={item.title} {...rise(0.3 + i * 0.12)}
               className={`relative p-8 rounded-2xl border ${item.border} bg-white/[0.02] backdrop-blur-sm cursor-pointer hover:bg-white/[0.04] transition-all group`}>
-              <item.icon size={24} className="text-amber-600/60 mb-5 group-hover:text-amber-500 transition-colors" />
+              <item.icon size={24} className="text-lime-600/60 mb-5 group-hover:text-lime-500 transition-colors" />
               <h3 className="text-lg font-bold text-white mb-1">{item.title}</h3>
-              <p className="text-amber-500/80 text-xs font-mono tracking-wider mb-4">{item.sub}</p>
+              <p className="text-lime-500/80 text-xs font-mono tracking-wider mb-4">{item.sub}</p>
               <p className="text-neutral-500 text-sm leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
@@ -225,7 +225,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s6" bg="#050505">
       <motion.div {...pop} className="max-w-6xl mx-auto text-center">
         <motion.div {...rise(0.1)} className="mb-16">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">THE NUMBERS DON{"'"}T LIE</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">THE NUMBERS DON{"'"}T LIE</span>
         </motion.div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {[
@@ -235,10 +235,10 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
             { num: "18", label: "个月——留给你的窗口期", src: "行业共识", icon: AlertTriangle },
           ].map((item, i) => (
             <motion.div key={item.num} {...rise(0.2 + i * 0.1)}
-              className="relative p-8 rounded-2xl border border-white/[0.04] bg-white/[0.01] overflow-hidden group cursor-pointer hover:border-amber-900/30 transition-all"
+              className="relative p-8 rounded-2xl border border-white/[0.04] bg-white/[0.01] overflow-hidden group cursor-pointer hover:border-lime-900/30 transition-all"
               onClick={() => { if (caseDetails[item.src === "NVIDIA 2026" ? "nvidia" : "window"]) setModal(caseDetails[item.src === "NVIDIA 2026" ? "nvidia" : "window"]); }}>
-              <div className="absolute -top-6 -right-6 w-32 h-32 bg-amber-600/[0.03] rounded-full blur-3xl group-hover:bg-amber-600/[0.08] transition-all"></div>
-              <item.icon size={20} className="text-amber-600/60 mb-6" />
+              <div className="absolute -top-6 -right-6 w-32 h-32 bg-lime-600/[0.03] rounded-full blur-3xl group-hover:bg-lime-600/[0.08] transition-all"></div>
+              <item.icon size={20} className="text-lime-600/60 mb-6" />
               <div className="text-5xl md:text-6xl font-black text-white mb-3" style={{ background: "linear-gradient(180deg, #FFF 0%, #666 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{item.num}{item.num === "18" ? "" : ""}</div>
               <p className="text-neutral-500 text-sm leading-relaxed mb-3">{item.label}</p>
               <span className="text-[10px] font-mono text-neutral-700 tracking-wider">{item.src}</span>
@@ -252,7 +252,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s7" bg="#080808">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.h2 {...rise(0.1)} className="text-4xl md:text-5xl font-black text-white mb-16 tracking-tight text-center">
-          同样的工作<span className="text-amber-500">，</span>效率差多少<span className="text-amber-500">？</span>
+          同样的工作<span className="text-lime-500">，</span>效率差多少<span className="text-lime-500">？</span>
         </motion.h2>
         {[
           { task: "100篇多平台营销文案", old: "15人天", ai: "0.25人天", ratio: "60×" },
@@ -264,10 +264,10 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
             <span className="text-white font-medium text-lg">{item.task}</span>
             <span className="text-neutral-600 line-through text-sm text-center font-mono">{item.old}</span>
             <span className="text-emerald-400 text-sm text-center font-mono font-semibold">{item.ai}</span>
-            <span className="text-4xl font-black text-center" style={{ background: "linear-gradient(180deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{item.ratio}</span>
+            <span className="text-4xl font-black text-center" style={{ background: "linear-gradient(180deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{item.ratio}</span>
           </motion.div>
         ))}
-        <motion.p {...rise(0.6)} className="text-center text-amber-600 font-semibold text-lg mt-12">
+        <motion.p {...rise(0.6)} className="text-center text-lime-600 font-semibold text-lg mt-12">
           你的竞对已经在用了。你还在等什么？
         </motion.p>
       </motion.div>
@@ -276,14 +276,14 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     /* ━━━━━━ 第三幕：三大案例深度拆解 ━━━━━━ */
 
     // S8: 章节页——三大案例
-    <Slide key="s8" bg="radial-gradient(ellipse at 50% 50%, rgba(217,119,6,0.06) 0%, #050505 60%)">
+    <Slide key="s8" bg="radial-gradient(ellipse at 50% 50%, rgba(34, 214, 101,0.06) 0%, #050505 60%)">
       <motion.div {...pop} className="text-center max-w-4xl mx-auto">
         <motion.div {...rise(0.1)} className="mb-12">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">REAL CASES</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">REAL CASES</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-5xl md:text-[7rem] font-black text-white leading-[0.9] tracking-tight mb-8">
           三个<br />
-          <span style={{ background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>真实案例</span>
+          <span style={{ background: "linear-gradient(135deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>真实案例</span>
         </motion.h2>
         <motion.p {...rise(0.4)} className="text-xl text-neutral-500 font-light">
           不是PPT上的远景——是已经帮企业省到真金白银的事实
@@ -295,11 +295,11 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s_case1" bg="#060606">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="flex items-center gap-4 mb-10">
-          <div className="w-12 h-12 rounded-xl bg-amber-600/10 flex items-center justify-center">
-            <BarChart3 size={24} className="text-amber-500" />
+          <div className="w-12 h-12 rounded-xl bg-lime-600/10 flex items-center justify-center">
+            <BarChart3 size={24} className="text-lime-500" />
           </div>
           <div>
-            <span className="text-amber-600 font-mono text-xs tracking-[0.3em] uppercase block">CASE 01</span>
+            <span className="text-lime-600 font-mono text-xs tracking-[0.3em] uppercase block">CASE 01</span>
             <span className="text-white font-bold text-lg">PYXL · 超级数据分析</span>
           </div>
         </motion.div>
@@ -307,12 +307,12 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
           <motion.div {...rise(0.2)}>
             <h3 className="text-3xl md:text-4xl font-black text-white leading-tight mb-8 tracking-tight">
               10万行数据<br />
-              <span className="text-amber-500">3分钟出洞察</span>
+              <span className="text-lime-500">3分钟出洞察</span>
             </h3>
             <div className="space-y-5 text-neutral-400 leading-relaxed">
               <p>📊 <span className="text-white font-medium">痛点：</span>老板拍脑袋、市场部凭感觉。海量销售数据、客户反馈、渠道ROI散落在20个Excel里，没人能3天内整理出有用的结论。</p>
               <p>🤖 <span className="text-white font-medium">AI怎么做：</span>PYXL一键导入全量数据，自动识别维度、清洗异常值，用自然语言提问即可获得交叉分析、趋势预测和可视化图表。</p>
-              <p>💰 <span className="text-white font-medium">结果：</span>某消费品公司用AI分析3年销售数据，发现了一个被忽略的高利润品类组合，季度利润<span className="text-amber-400 font-bold">增长23%</span>。</p>
+              <p>💰 <span className="text-white font-medium">结果：</span>某消费品公司用AI分析3年销售数据，发现了一个被忽略的高利润品类组合，季度利润<span className="text-lime-400 font-bold">增长23%</span>。</p>
             </div>
           </motion.div>
           <motion.div {...rise(0.4)} className="flex flex-col justify-center gap-6">
@@ -326,12 +326,12 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
                 <span className="text-emerald-400 font-mono font-bold">3 分钟</span>
               </div>
               <div className="border-t border-white/[0.06] pt-4 text-center">
-                <span className="text-5xl font-black" style={{ background: "linear-gradient(180deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>7200×</span>
+                <span className="text-5xl font-black" style={{ background: "linear-gradient(180deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>7200×</span>
                 <p className="text-neutral-600 text-xs mt-2 font-mono tracking-wider">EFFICIENCY MULTIPLIER</p>
               </div>
             </div>
-            <div className="p-6 rounded-xl bg-amber-600/[0.06] border border-amber-600/20">
-              <p className="text-amber-400 text-sm font-semibold">★ 核心逻辑：数据不值钱，<span className="text-white">洞察</span>才值钱。AI把你埋在Excel里的金矿挖出来。</p>
+            <div className="p-6 rounded-xl bg-lime-600/[0.06] border border-lime-600/20">
+              <p className="text-lime-400 text-sm font-semibold">★ 核心逻辑：数据不值钱，<span className="text-white">洞察</span>才值钱。AI把你埋在Excel里的金矿挖出来。</p>
             </div>
           </motion.div>
         </div>
@@ -342,11 +342,11 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s_case2" bg="#060606">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="flex items-center gap-4 mb-10">
-          <div className="w-12 h-12 rounded-xl bg-amber-600/10 flex items-center justify-center">
-            <Image size={24} className="text-amber-500" />
+          <div className="w-12 h-12 rounded-xl bg-lime-600/10 flex items-center justify-center">
+            <Image size={24} className="text-lime-500" />
           </div>
           <div>
-            <span className="text-amber-600 font-mono text-xs tracking-[0.3em] uppercase block">CASE 02</span>
+            <span className="text-lime-600 font-mono text-xs tracking-[0.3em] uppercase block">CASE 02</span>
             <span className="text-white font-bold text-lg">AI模特 · 产品生图</span>
           </div>
         </motion.div>
@@ -381,12 +381,12 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
           <motion.div {...rise(0.3)}>
             <h3 className="text-3xl md:text-4xl font-black text-white leading-tight mb-8 tracking-tight">
               一张白底图<br />
-              <span className="text-amber-500">AI生成全套大片</span>
+              <span className="text-lime-500">AI生成全套大片</span>
             </h3>
             <div className="space-y-5 text-neutral-400 leading-relaxed">
               <p>📱 <span className="text-white font-medium">痛点：</span>每季上新50个SKU，每个要拍6组场景图。摄影+模特+后期= 天文数字的成本和永远赶不上的进度。</p>
               <p>🤖 <span className="text-white font-medium">AI怎么做：</span>上传产品白底图→AI自动匹配模特体型/肤色/姿势→生成INS风、街拍风、电商白底全场景→一键出图100张。</p>
-              <p>💡 <span className="text-white font-medium">额外收益：</span>A/B测试不同风格图的点击率——以前不敢做，现在成本为零，随便测。<span className="text-amber-400 font-bold">转化率平均提升35%</span>。</p>
+              <p>💡 <span className="text-white font-medium">额外收益：</span>A/B测试不同风格图的点击率——以前不敢做，现在成本为零，随便测。<span className="text-lime-400 font-bold">转化率平均提升35%</span>。</p>
             </div>
           </motion.div>
         </div>
@@ -397,11 +397,11 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s_case3" bg="#060606">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="flex items-center gap-4 mb-10">
-          <div className="w-12 h-12 rounded-xl bg-amber-600/10 flex items-center justify-center">
-            <ShoppingBag size={24} className="text-amber-500" />
+          <div className="w-12 h-12 rounded-xl bg-lime-600/10 flex items-center justify-center">
+            <ShoppingBag size={24} className="text-lime-500" />
           </div>
           <div>
-            <span className="text-amber-600 font-mono text-xs tracking-[0.3em] uppercase block">CASE 03</span>
+            <span className="text-lime-600 font-mono text-xs tracking-[0.3em] uppercase block">CASE 03</span>
             <span className="text-white font-bold text-lg">小红书 · 爆款筛选+二创</span>
           </div>
         </motion.div>
@@ -409,7 +409,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
           <motion.div {...rise(0.2)}>
             <h3 className="text-3xl md:text-4xl font-black text-white leading-tight mb-8 tracking-tight">
               AI选品+AI文案<br />
-              <span className="text-amber-500">+AI海报</span><br />
+              <span className="text-lime-500">+AI海报</span><br />
               全自动二创流水线
             </h3>
             <div className="space-y-5 text-neutral-400 leading-relaxed">
@@ -434,8 +434,8 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
                 </div>
               ))}
             </div>
-            <div className="p-6 rounded-xl bg-amber-600/[0.06] border border-amber-600/20">
-              <p className="text-amber-400 text-sm font-semibold">★ 某美妆团队：3人用AI矩阵运营50个小红书号，月均笔记产出<span className="text-white">2000+条</span>，获客成本<span className="text-white">降低72%</span>。</p>
+            <div className="p-6 rounded-xl bg-lime-600/[0.06] border border-lime-600/20">
+              <p className="text-lime-400 text-sm font-semibold">★ 某美妆团队：3人用AI矩阵运营50个小红书号，月均笔记产出<span className="text-white">2000+条</span>，获客成本<span className="text-white">降低72%</span>。</p>
             </div>
           </motion.div>
         </div>
@@ -448,7 +448,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s12" bg="radial-gradient(ellipse at 30% 70%, rgba(34,197,94,0.04) 0%, #080808 50%, rgba(220,38,38,0.04) 100%)">
       <motion.div {...pop} className="max-w-5xl mx-auto">
         <motion.h2 {...rise(0.1)} className="text-4xl md:text-5xl font-black text-white mb-14 tracking-tight text-center">
-          两种未来<span className="text-amber-500">，</span>你选哪个<span className="text-amber-500">？</span>
+          两种未来<span className="text-lime-500">，</span>你选哪个<span className="text-lime-500">？</span>
         </motion.h2>
         <div className="grid md:grid-cols-2 gap-8">
           <motion.div {...rise(0.2)} className="p-8 rounded-2xl border border-emerald-900/30 bg-emerald-950/10">
@@ -475,12 +475,12 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s13" bg="#050505">
       <motion.div {...pop} className="max-w-5xl mx-auto pl-8">
         <motion.div {...rise(0.1)} className="mb-8">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">THE REAL PROBLEM</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">THE REAL PROBLEM</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-5xl md:text-[6rem] font-black text-white leading-[1.05] tracking-tight">
-          老板有意识<span className="text-amber-500">，</span>
+          老板有意识<span className="text-lime-500">，</span>
         </motion.h2>
-        <motion.h2 {...rise(0.4)} className="text-5xl md:text-[6rem] font-black leading-[1.05] tracking-tight" style={{ background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+        <motion.h2 {...rise(0.4)} className="text-5xl md:text-[6rem] font-black leading-[1.05] tracking-tight" style={{ background: "linear-gradient(135deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
           员工没跟上。
         </motion.h2>
       </motion.div>
@@ -490,12 +490,12 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s14" bg="#080808">
       <motion.div {...pop} className="max-w-5xl mx-auto">
         <motion.h2 {...rise(0.1)} className="text-3xl md:text-4xl font-black text-white mb-12 tracking-tight text-center">
-          员工抗拒AI的<span className="text-amber-500 cursor-pointer" onClick={() => setModal(caseDetails["employee_boss"])}>三层心理</span>
+          员工抗拒AI的<span className="text-lime-500 cursor-pointer" onClick={() => setModal(caseDetails["employee_boss"])}>三层心理</span>
         </motion.h2>
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { icon: Brain, title: "认知层", sub: "不知道用什么", points: ["工具太多，眼花缭乱", "觉得AI是程序员的事"], color: "amber" },
-            { icon: Target, title: "能力层", sub: "知道好但不会", points: ["Prompt写不好", "试一次放弃了"], color: "orange" },
+            { icon: Brain, title: "认知层", sub: "不知道用什么", points: ["工具太多，眼花缭乱", "觉得AI是程序员的事"], color: "lime" },
+            { icon: Target, title: "能力层", sub: "知道好但不会", points: ["Prompt写不好", "试一次放弃了"], color: "emerald" },
             { icon: Users, title: "心理层", sub: "不愿意用", points: ["怕被AI替代", "怕暴露效率低"], color: "red" },
           ].map((item, i) => (
             <motion.div key={item.title} {...rise(0.2 + i * 0.12)}
@@ -515,14 +515,14 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     </Slide>,
 
     // S15: AI是放大器——巨型宣言
-    <Slide key="s15" bg="radial-gradient(ellipse at 50% 40%, rgba(217,119,6,0.08) 0%, #050505 60%)">
+    <Slide key="s15" bg="radial-gradient(ellipse at 50% 40%, rgba(34, 214, 101,0.08) 0%, #050505 60%)">
       <motion.div {...pop} className="text-center max-w-4xl mx-auto">
         <motion.h2 {...rise(0.1)} className="text-5xl md:text-[5rem] font-black text-white leading-[1.1] tracking-tight mb-10">
           AI不是来<span className="text-red-500">替代</span>人的<br />
-          是来<span style={{ background: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>放大</span>人的
+          是来<span style={{ background: "linear-gradient(135deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>放大</span>人的
         </motion.h2>
         <motion.div {...rise(0.3)} className="inline-block border-t border-b border-white/[0.06] py-6 px-12">
-          <p className="text-2xl md:text-3xl font-black" style={{ background: "linear-gradient(90deg, #F59E0B 0%, #D97706 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <p className="text-2xl md:text-3xl font-black" style={{ background: "linear-gradient(90deg, #a8f06a 0%, #22d665 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             碳基大脑 × 硅基算力 = 超级个体
           </p>
         </motion.div>
@@ -536,11 +536,11 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s_silicon" bg="#060606">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="flex items-center gap-4 mb-10">
-          <div className="w-12 h-12 rounded-xl bg-amber-600/10 flex items-center justify-center">
-            <Network size={24} className="text-amber-500" />
+          <div className="w-12 h-12 rounded-xl bg-lime-600/10 flex items-center justify-center">
+            <Network size={24} className="text-lime-500" />
           </div>
           <div>
-            <span className="text-amber-600 font-mono text-xs tracking-[0.3em] uppercase block">SILICON ARMY</span>
+            <span className="text-lime-600 font-mono text-xs tracking-[0.3em] uppercase block">SILICON ARMY</span>
             <span className="text-white font-bold text-lg">{"你的企业也能拥有一支\"硅基军团\""}</span>
           </div>
         </motion.div>
@@ -548,12 +548,12 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
           <motion.div {...rise(0.2)}>
             <h3 className="text-3xl md:text-4xl font-black text-white leading-tight mb-8 tracking-tight">
               一个指令下去<br />
-              <span className="text-amber-500">5个Agent并行</span><br />
+              <span className="text-lime-500">5个Agent并行</span><br />
               3分钟交付
             </h3>
             <div className="space-y-5 text-neutral-400 leading-relaxed">
               <p>{"🎯 "}<span className="text-white font-medium">{"指挥中枢："}</span>{"你说\"帮我上架新品到8国\"——Orchestrator自动拆解成选品、文案、生图、定价、客服5个子任务。"}</p>
-              <p>{"🤖 "}<span className="text-white font-medium">{"并行执行："}</span>{"5个专业Subagent同时开工。Hermes做调研、Claude写6国文案、视觉Agent批量出图——"}<span className="text-amber-400 font-bold">全程无需人工</span>{"。"}</p>
+              <p>{"🤖 "}<span className="text-white font-medium">{"并行执行："}</span>{"5个专业Subagent同时开工。Hermes做调研、Claude写6国文案、视觉Agent批量出图——"}<span className="text-lime-400 font-bold">全程无需人工</span>{"。"}</p>
               <p>{"✅ "}<span className="text-white font-medium">{"汇整交付："}</span>{"3分钟后收到完整上架包，直接可用。"}</p>
             </div>
           </motion.div>
@@ -573,8 +573,8 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
                 </div>
               ))}
             </div>
-            <div className="p-6 rounded-xl bg-amber-600/[0.06] border border-amber-600/20">
-              <p className="text-amber-400 text-sm font-semibold">{"★ 某跨境团队实战："}<span className="text-white">3人 + Agent军团</span>{"管理8国站点，月GMV超200万，人力成本仅为传统的"}<span className="text-white">4.4%</span>{"。"}</p>
+            <div className="p-6 rounded-xl bg-lime-600/[0.06] border border-lime-600/20">
+              <p className="text-lime-400 text-sm font-semibold">{"★ 某跨境团队实战："}<span className="text-white">3人 + Agent军团</span>{"管理8国站点，月GMV超200万，人力成本仅为传统的"}<span className="text-white">4.4%</span>{"。"}</p>
             </div>
           </motion.div>
         </div>
@@ -587,10 +587,10 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s16" bg="#060606">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="mb-12">
-          <span className="text-amber-600 font-mono text-xs tracking-[0.5em] uppercase">WHAT WE DELIVER</span>
+          <span className="text-lime-600 font-mono text-xs tracking-[0.5em] uppercase">WHAT WE DELIVER</span>
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-3xl md:text-4xl font-black text-white mb-12 tracking-tight">
-          我们帮企业打造的<span className="text-amber-500">AI基建</span>
+          我们帮企业打造的<span className="text-lime-500">AI基建</span>
         </motion.h2>
         <div className="grid md:grid-cols-2 gap-6">
           {[
@@ -600,10 +600,10 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
             { icon: MessageSquare, num: "04", title: "飞书/钉钉/企微集成", desc: "CLI一键接入。不换系统、不培训。零学习成本，当天部署当天用。" },
           ].map((item, i) => (
             <motion.div key={item.num} {...rise(0.2 + i * 0.1)}
-              className="p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-amber-900/30 transition-all group">
+              className="p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-lime-900/30 transition-all group">
               <div className="flex items-center gap-4 mb-5">
-                <item.icon size={20} className="text-amber-600/60 group-hover:text-amber-500 transition-colors" />
-                <span className="text-xs font-mono text-amber-600/40 tracking-wider">{item.num}</span>
+                <item.icon size={20} className="text-lime-600/60 group-hover:text-lime-500 transition-colors" />
+                <span className="text-xs font-mono text-lime-600/40 tracking-wider">{item.num}</span>
               </div>
               <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
               <p className="text-neutral-500 text-sm leading-relaxed">{item.desc}</p>
@@ -617,7 +617,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     <Slide key="s17" bg="#080808">
       <motion.div {...pop} className="max-w-4xl mx-auto w-full">
         <motion.h2 {...rise(0.1)} className="text-3xl md:text-4xl font-black text-white mb-14 tracking-tight text-center">
-          你不需要懂AI<span className="text-amber-500">。</span>你需要<span className="text-amber-500">一张路线图。</span>
+          你不需要懂AI<span className="text-lime-500">。</span>你需要<span className="text-lime-500">一张路线图。</span>
         </motion.h2>
         <div className="space-y-8">
           {[
@@ -626,8 +626,8 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
             { week: "W3", title: "推广", desc: "发布公司级AI规范，工具权限发到每一个人", active: false },
           ].map((step, i) => (
             <motion.div key={step.week} {...rise(0.2 + i * 0.1)}
-              className={`flex items-start gap-8 p-8 rounded-2xl border ${step.active ? "border-amber-600/30 bg-amber-600/[0.04]" : "border-white/[0.04] bg-white/[0.01]"}`}>
-              <div className={`shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-sm font-bold font-mono ${step.active ? "bg-amber-600 text-black" : "border border-white/[0.1] text-neutral-600"}`}>{step.week}</div>
+              className={`flex items-start gap-8 p-8 rounded-2xl border ${step.active ? "border-lime-600/30 bg-lime-600/[0.04]" : "border-white/[0.04] bg-white/[0.01]"}`}>
+              <div className={`shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-sm font-bold font-mono ${step.active ? "bg-lime-600 text-black" : "border border-white/[0.1] text-neutral-600"}`}>{step.week}</div>
               <div>
                 <h4 className="font-bold text-white text-xl mb-2">{step.title}</h4>
                 <p className="text-neutral-500 leading-relaxed">{step.desc}</p>
@@ -641,11 +641,11 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     /* ━━━━━━ 第六幕：转化核弹 ━━━━━━ */
 
     // S18: 金句——全屏暗黑
-    <Slide key="s18" bg="radial-gradient(ellipse at 50% 50%, rgba(217,119,6,0.05) 0%, #050505 60%)">
+    <Slide key="s18" bg="radial-gradient(ellipse at 50% 50%, rgba(34, 214, 101,0.05) 0%, #050505 60%)">
       <motion.div {...pop} className="text-center max-w-3xl mx-auto">
         <motion.h2 {...rise(0.2)} className="text-4xl md:text-[3.5rem] font-black text-white leading-[1.3] tracking-tight">
           {"\"AI不会淘汰任何人"}<br />
-          但<span style={{ background: "linear-gradient(90deg, #F59E0B, #D97706)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>会用AI的人</span><br />
+          但<span style={{ background: "linear-gradient(90deg, #a8f06a, #22d665)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>会用AI的人</span><br />
           {"会淘汰不会用的人\""}
         </motion.h2>
         <motion.p {...rise(0.5)} className="text-neutral-600 text-lg mt-12 font-light">
@@ -655,7 +655,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     </Slide>,
 
     // S19: CTA——行动号召 (最强转化)
-    <Slide key="s_cta" bg="radial-gradient(ellipse at 50% 80%, rgba(217,119,6,0.1) 0%, #080808 60%)">
+    <Slide key="s_cta" bg="radial-gradient(ellipse at 50% 80%, rgba(34, 214, 101,0.1) 0%, #080808 60%)">
       <motion.div {...pop} className="max-w-5xl mx-auto w-full">
         <motion.div {...rise(0.1)} className="text-center mb-12">
           <span className="text-red-500 font-mono text-xs tracking-[0.5em] uppercase animate-pulse">⚡ LIMITED · 仅限今日直播</span>
@@ -663,9 +663,9 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <motion.div {...rise(0.2)} className="space-y-6">
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-              扫码<span className="text-amber-500">行动</span>
+              扫码<span className="text-lime-500">行动</span>
             </h2>
-            <div className="p-8 rounded-2xl border border-amber-600/30 bg-amber-600/[0.04]">
+            <div className="p-8 rounded-2xl border border-lime-600/30 bg-lime-600/[0.04]">
               <h3 className="text-xl font-bold text-white mb-5">🔥 直播专属三重福利</h3>
               <ul className="space-y-4">
                 {[
@@ -694,7 +694,7 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
               <p className="text-white font-bold text-lg mb-1">扫码加微信</p>
               <p className="text-neutral-600 text-sm">备注「AI造浪」优先通过</p>
             </div>
-            <motion.div {...fade(0.8)} className="mt-6 flex items-center justify-center gap-2 text-amber-600 font-mono text-sm tracking-wider">
+            <motion.div {...fade(0.8)} className="mt-6 flex items-center justify-center gap-2 text-lime-600 font-mono text-sm tracking-wider">
               <Clock size={14} className="animate-pulse" /> 福利倒计时 · 直播结束即关闭
             </motion.div>
           </motion.div>
@@ -703,13 +703,13 @@ function allSlides(setModal: (c: React.ReactNode) => void) {
     </Slide>,
 
     // S20: Q&A
-    <Slide key="s_final" bg="radial-gradient(ellipse at 50% 30%, rgba(217,119,6,0.06) 0%, #050505 60%)">
+    <Slide key="s_final" bg="radial-gradient(ellipse at 50% 30%, rgba(34, 214, 101,0.06) 0%, #050505 60%)">
       <motion.div {...pop} className="relative z-10 text-center max-w-3xl mx-auto">
         <motion.div {...rise(0.1)}>
-          <MessageSquare size={40} className="mx-auto mb-10 text-amber-600/40" />
+          <MessageSquare size={40} className="mx-auto mb-10 text-lime-600/40" />
         </motion.div>
         <motion.h2 {...rise(0.2)} className="text-4xl md:text-5xl font-black text-white mb-8 tracking-tight">
-          聊聊<span className="text-amber-500">你的困惑</span>
+          聊聊<span className="text-lime-500">你的困惑</span>
         </motion.h2>
         <motion.p {...rise(0.4)} className="text-lg text-neutral-500 leading-relaxed mb-12 font-light">
           哪一点最打动你？最大的顾虑是什么？<br />

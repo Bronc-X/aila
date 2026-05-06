@@ -302,7 +302,7 @@ export default function OperationsPage() {
           {subTabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveSubTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
-                activeSubTab === tab.id ? "border-[#D97706] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
+                activeSubTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}>
               <tab.icon size={14} /> {tab.label}
             </button>
@@ -318,7 +318,7 @@ export default function OperationsPage() {
             {!dbData ? (
               <div className="max-w-2xl mx-auto border border-[#E5E1D8] bg-white rounded-xl shadow-sm p-8 space-y-6 mt-10">
                 <div className="text-center mb-8">
-                  <div className="w-12 h-12 bg-[#D97706]/10 text-[#D97706] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div className="w-12 h-12 bg-[#22d665]/10 text-[#22d665] rounded-full flex items-center justify-center mx-auto mb-3">
                     <Sparkles size={24} />
                   </div>
               <h2 className="text-2xl font-bold text-[#2D2A26]">初始化经营数据大屏</h2>
@@ -330,12 +330,12 @@ export default function OperationsPage() {
                     <div>
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">所在行业</label>
                       <input type="text" value={dbConfig.industry} onChange={e => setDbConfig({...dbConfig, industry: e.target.value})}
-                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">目标客户画像</label>
                       <input type="text" value={dbConfig.customerProfile} onChange={e => setDbConfig({...dbConfig, customerProfile: e.target.value})}
-                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                     </div>
                   </div>
 
@@ -344,7 +344,7 @@ export default function OperationsPage() {
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">本月营销预算</label>
                       <div className="flex gap-2">
                         <input type="number" value={dbConfig.marketingBudget} onChange={e => setDbConfig({...dbConfig, marketingBudget: e.target.value})}
-                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                         <span className="w-12 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">{dbConfig.unit}</span>
                       </div>
                     </div>
@@ -352,7 +352,7 @@ export default function OperationsPage() {
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">销售团队规模</label>
                       <div className="flex gap-2">
                         <input type="number" value={dbConfig.teamSize} onChange={e => setDbConfig({...dbConfig, teamSize: e.target.value})}
-                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                         <span className="w-12 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">人</span>
                       </div>
                     </div>
@@ -363,9 +363,9 @@ export default function OperationsPage() {
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">月度营收总目标</label>
                       <div className="flex gap-2">
                          <input type="number" value={dbConfig.target} onChange={e => setDbConfig({...dbConfig, target: e.target.value})}
-                           className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg" />
+                           className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                          <select value={dbConfig.unit} onChange={e => setDbConfig({...dbConfig, unit: e.target.value})}
-                           className="w-24 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg">
+                           className="w-24 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg">
                            <option value="万">万</option>
                            <option value="千万">千万</option>
                          </select>
@@ -374,7 +374,7 @@ export default function OperationsPage() {
                     <div>
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">当期核心经营重心</label>
                       <select value={dbConfig.priority} onChange={e => setDbConfig({...dbConfig, priority: e.target.value})}
-                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#D97706] rounded-lg">
+                        className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg">
                         <option>获取新客 (扩大流量盘)</option>
                         <option>提高转化率 (精细化运营)</option>
                         <option>提升客单价 (大客户战略)</option>
@@ -386,7 +386,7 @@ export default function OperationsPage() {
 
                 <div className="pt-4">
                   <button onClick={handleGenerateDashboard} disabled={dbGenerating}
-                    className="w-full bg-[#D97706] text-white font-bold tracking-widest py-3.5 rounded-xl hover:bg-[#B45309] transition-all flex justify-center items-center gap-2 disabled:opacity-50">
+                    className="w-full bg-[#22d665] text-white font-bold tracking-widest py-3.5 rounded-xl hover:bg-[#15803d] transition-all flex justify-center items-center gap-2 disabled:opacity-50">
               {dbGenerating ? <><RefreshCw size={18} className="animate-spin"/> 深度推演中...</> : <><BarChart3 size={18}/> 生成高维数据大屏</>}
                   </button>
                 </div>
@@ -395,7 +395,7 @@ export default function OperationsPage() {
               <>
                 {/* 重新生成按钮 */}
                 <div className="flex justify-end mb-4">
-                  <button onClick={() => setDbData(null)} className="text-sm text-[#9E9B96] hover:text-[#D97706] transition-colors flex items-center gap-1.5">
+                  <button onClick={() => setDbData(null)} className="text-sm text-[#9E9B96] hover:text-[#22d665] transition-colors flex items-center gap-1.5">
                     <RefreshCw size={14} /> 重新推演
                   </button>
                 </div>
@@ -465,7 +465,7 @@ export default function OperationsPage() {
                             <span className="text-[#6B6660]">{stage.count} 个 · {stage.amount}</span>
                             {hoveredPipeline === i && i > 0 && (
                               <motion.span initial={{ opacity: 0, x: 5 }} animate={{ opacity: 1, x: 0 }}
-                                className="text-xs text-[#D97706] bg-[#F3F1ED] px-2 py-0.5 rounded-full">
+                                className="text-xs text-[#22d665] bg-[#F3F1ED] px-2 py-0.5 rounded-full">
                                 转化 {convRate}%
                               </motion.span>
                             )}
@@ -477,7 +477,7 @@ export default function OperationsPage() {
                             animate={{ width: `${width}%` }}
                             transition={{ delay: 0.3 + i * 0.1, duration: 0.6, ease: "easeOut" }}
                             className="h-full rounded-lg"
-                            style={{ background: `linear-gradient(90deg, rgba(217,119,6,${0.3 + i * 0.08}) 0%, rgba(217,119,6,${0.15 + i * 0.05}) 100%)` }}
+                            style={{ background: `linear-gradient(90deg, rgba(34, 214, 101,${0.3 + i * 0.08}) 0%, rgba(34, 214, 101,${0.15 + i * 0.05}) 100%)` }}
                           />
                         </div>
                       </motion.div>
@@ -506,7 +506,7 @@ export default function OperationsPage() {
                           <div className="text-xs text-[#6B6660]">{deal.date}</div>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm font-semibold text-[#D97706]">{deal.amount}</div>
+                          <div className="text-sm font-semibold text-[#22d665]">{deal.amount}</div>
                           <span className={`text-[10px] px-2 py-0.5 rounded-full ${statusOpt.color}`}>{statusOpt.label}</span>
                         </div>
                       </motion.div>
@@ -526,7 +526,7 @@ export default function OperationsPage() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
-                <FileText size={18} className="text-[#D97706]" /> 经营报告
+                <FileText size={18} className="text-[#22d665]" /> 经营报告
                 </h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">报告类型</label>
@@ -534,7 +534,7 @@ export default function OperationsPage() {
                     {[{id:"daily",label:"日报"},{id:"weekly",label:"周报"},{id:"monthly",label:"月报"}].map(t => (
                       <button key={t.id} onClick={() => setReportType(t.id)}
                         className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all border ${
-                          reportType === t.id ? "border-[#D97706] bg-[rgba(217,119,6,0.08)] text-[#D97706]" : "border-[#E5E1D8] text-[#6B6660]"
+                          reportType === t.id ? "border-[#22d665] bg-[rgba(34, 214, 101,0.08)] text-[#22d665]" : "border-[#E5E1D8] text-[#6B6660]"
                         }`}>{t.label}</button>
                     ))}
                   </div>
@@ -542,10 +542,10 @@ export default function OperationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">工作要点 / 数据</label>
                   <textarea value={reportInput} onChange={e => setReportInput(e.target.value)}
-                    placeholder="输入本期工作要点...（不填则使用示例数据）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[180px] resize-y rounded-lg" rows={7} />
+                    placeholder="输入本期工作要点...（不填则使用示例数据）" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[180px] resize-y rounded-lg" rows={7} />
                 </div>
                 <button onClick={handleGenerateReport} disabled={reportLoading}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                   {reportLoading ? <><RefreshCw size={18} className="animate-spin" /> 生成中...</> : <><Sparkles size={18} /> 一键生成报告</>}
                 </button>
               </div>
@@ -558,7 +558,7 @@ export default function OperationsPage() {
                   {reportResult && (
                     <div className="flex gap-2">
                       <button onClick={() => handleCopy(reportResult, "report")}
-                        className="bg-[#FAF9F6] text-[#6B6660] border border-[#A3A3A3] font-bold uppercase tracking-wide hover:border-[#D97706] hover:text-[#2D2A26] transition-colors !py-1.5 !px-3 text-xs flex items-center gap-1">
+                        className="bg-[#FAF9F6] text-[#6B6660] border border-[#A3A3A3] font-bold uppercase tracking-wide hover:border-[#22d665] hover:text-[#2D2A26] transition-colors !py-1.5 !px-3 text-xs flex items-center gap-1">
                         {copied === "report" ? <><Check size={12} /> 已复制</> : <><Copy size={12} /> 复制</>}
                       </button>
                       <ExportButton content={reportResult} filename={`${reportType === "daily" ? "日报" : reportType === "weekly" ? "周报" : "月报"}_${new Date().toISOString().slice(0,10)}.txt`} />
@@ -655,10 +655,10 @@ export default function OperationsPage() {
                       }));
                       setTrackingRows([...newRows, ...trackingRows]);
                     }} 
-                    className="px-4 py-2 border border-[#D97706]/30 bg-[#D97706]/5 text-[#D97706] text-sm hover:bg-[#D97706]/10 transition-colors flex items-center gap-1 rounded-lg font-medium">
+                    className="px-4 py-2 border border-[#22d665]/30 bg-[#22d665]/5 text-[#22d665] text-sm hover:bg-[#22d665]/10 transition-colors flex items-center gap-1 rounded-lg font-medium">
               <Sparkles size={14} /> 同步最新大盘报表
                   </button>
-                  <button onClick={addRow} className="px-4 py-2 border border-[#E5E1D8] bg-white text-[#666] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors flex items-center gap-1 rounded-lg shadow-sm">
+                  <button onClick={addRow} className="px-4 py-2 border border-[#E5E1D8] bg-white text-[#666] text-sm hover:border-[#22d665] hover:text-[#2D2A26] transition-colors flex items-center gap-1 rounded-lg shadow-sm">
                     <Plus size={14} /> 新建任务
                   </button>
                 </div>

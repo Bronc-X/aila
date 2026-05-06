@@ -228,7 +228,7 @@ const generateReply = async (id: string) => {
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
-                activeTab === tab.id ? "border-[#D97706] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
+                activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}><tab.icon size={14} /> {tab.label}</button>
           ))}
         </div>
@@ -248,7 +248,7 @@ const generateReply = async (id: string) => {
                   <div>
                     <label className="block text-xs text-[#9E9B96] mb-1">客服名称</label>
                     <input type="text" value={botName} onChange={(e) => setBotName(e.target.value)}
-                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-2.5 text-[#2D2A26] text-sm outline-none focus:border-[#D97706] transition-colors" />
+                      className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-2.5 text-[#2D2A26] text-sm outline-none focus:border-[#22d665] transition-colors" />
                   </div>
                   <div>
                     <label className="block text-xs text-[#9E9B96] mb-1">人设风格</label>
@@ -276,8 +276,8 @@ const generateReply = async (id: string) => {
                   <div className="flex gap-1">
                     <input type="text" value={newTag} onChange={e => setNewTag(e.target.value)}
                       onKeyDown={e => e.key === "Enter" && addTag()}
-                      placeholder="新标签..." className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] px-2 py-1 text-xs text-[#2D2A26] outline-none focus:border-[#D97706] transition-colors" />
-                    <button onClick={addTag} className="px-2 py-1 border border-[#E5E1D8] text-[#6B6660] text-xs hover:border-[#D97706] hover:text-[#2D2A26] transition-colors">
+                      placeholder="新标签..." className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] px-2 py-1 text-xs text-[#2D2A26] outline-none focus:border-[#22d665] transition-colors" />
+                    <button onClick={addTag} className="px-2 py-1 border border-[#E5E1D8] text-[#6B6660] text-xs hover:border-[#22d665] hover:text-[#2D2A26] transition-colors">
                       <Plus size={12} />
                     </button>
                   </div>
@@ -304,10 +304,10 @@ const generateReply = async (id: string) => {
                 <div>
                   <label className="block text-xs text-[#9E9B96] mb-2">产品知识/FAQ</label>
                   <textarea value={faqInput} onChange={(e) => setFaqInput(e.target.value)}
-                    placeholder="粘贴产品介绍、FAQ..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-xs min-h-[120px] resize-y" rows={5} />
+                    placeholder="粘贴产品介绍、FAQ..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-xs min-h-[120px] resize-y" rows={5} />
                 </div>
                 <button onClick={handleConfigureBot}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-2.5 text-sm">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-2.5 text-sm">
                   <Sparkles size={16} /> {botConfigured ? "更新配置" : "保存配置"}
                 </button>
               </div>
@@ -362,7 +362,7 @@ const generateReply = async (id: string) => {
                   <div className="px-5 py-3 border-t border-[#E5E1D8] flex gap-2 overflow-x-auto bg-[#FAF9F6]">
                     {quickReplies.filter(r => r).map((r, i) => (
                       <button key={i} onClick={() => { setChatInput(r); }}
-                        className="whitespace-nowrap px-3 py-1.5 border border-[#E5E1D8] rounded-full text-xs text-[#6B6660] bg-white hover:border-[#D97706] hover:text-[#D97706] shadow-sm hover:shadow transition-all font-medium">
+                        className="whitespace-nowrap px-3 py-1.5 border border-[#E5E1D8] rounded-full text-xs text-[#6B6660] bg-white hover:border-[#22d665] hover:text-[#22d665] shadow-sm hover:shadow transition-all font-medium">
                         {r}
                       </button>
                     ))}
@@ -393,17 +393,17 @@ const generateReply = async (id: string) => {
                   <div className="grid grid-cols-2 gap-2">
                     {["售后满意度", "续费提醒", "沉默客户激活", "升级推荐", "投诉安抚", "生日关怀"].map(s => (
                       <button key={s} onClick={() => setSelectedScene(s)}
-                        className={`px-3 py-2.5 border text-sm text-left transition-colors ${selectedScene === s ? "border-[#D97706] text-[#2D2A26] bg-[#F3F1ED]" : "border-[#E5E1D8] text-[#666] hover:border-[#D97706] hover:text-[#2D2A26]"}`}>{s}</button>
+                        className={`px-3 py-2.5 border text-sm text-left transition-colors ${selectedScene === s ? "border-[#22d665] text-[#2D2A26] bg-[#F3F1ED]" : "border-[#E5E1D8] text-[#666] hover:border-[#22d665] hover:text-[#2D2A26]"}`}>{s}</button>
                     ))}
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">客户背景（选填）</label>
                   <textarea value={followupContext} onChange={e => setFollowupContext(e.target.value)}
-                    placeholder="例如：使用产品3个月，最近2周活跃度下降..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
+                    placeholder="例如：使用产品3个月，最近2周活跃度下降..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
                 </div>
                 <button onClick={handleFollowupGenerate} disabled={followupLoading || !selectedScene}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                   {followupLoading ? <><RefreshCw size={18} className="animate-spin" /> 生成中...</> : <><Sparkles size={18} /> 生成回访脚本</>}
                 </button>
               </div>
@@ -475,7 +475,7 @@ const generateReply = async (id: string) => {
                   <div className="flex gap-2">
                     {!item.reply && (
                       <button onClick={() => generateReply(item.id)} disabled={replyGenerating === item.id}
-                        className="text-xs text-[#6B6660] hover:text-[#2D2A26] border border-[#E5E1D8] px-3 py-1.5 hover:border-[#D97706] transition-colors flex items-center gap-1">
+                        className="text-xs text-[#6B6660] hover:text-[#2D2A26] border border-[#E5E1D8] px-3 py-1.5 hover:border-[#22d665] transition-colors flex items-center gap-1">
                         {replyGenerating === item.id ? <><RefreshCw size={12} className="animate-spin" /> 生成中</> : <><Sparkles size={12} /> 生成回复</>}
                       </button>
                     )}

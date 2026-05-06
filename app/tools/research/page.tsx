@@ -59,7 +59,7 @@ const ASSET_STATUS_OPTIONS = [
   { value: "scattered", label: "散落", color: "bg-red-500/10 text-red-400" },
   { value: "partial", label: "部分归档", color: "bg-yellow-500/10 text-yellow-400" },
   { value: "archived", label: "已归档", color: "bg-green-500/10 text-green-400" },
-  { value: "expired", label: "部分过期", color: "bg-orange-500/10 text-orange-400" },
+  { value: "expired", label: "部分过期", color: "bg-emerald-500/10 text-emerald-400" },
   { value: "unstandardized", label: "无标准化", color: "bg-red-500/10 text-red-400" },
 ];
 
@@ -232,7 +232,7 @@ export default function ResearchPage() {
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
-                activeTab === tab.id ? "border-[#D97706] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
+                activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}><tab.icon size={14} /> {tab.label}</button>
           ))}
         </div>
@@ -249,7 +249,7 @@ export default function ResearchPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">讨论主题 *</label>
                   <textarea value={topic} onChange={(e) => setTopic(e.target.value)}
-              placeholder="例如：如何降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
+              placeholder="例如：如何降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">参与角色（多选）</label>
@@ -257,13 +257,13 @@ export default function ResearchPage() {
                     {roles.map((r) => (
                       <button key={r.id} onClick={() => toggleRole(r.id)}
                         className={`flex items-center gap-2 px-3 py-2.5 text-sm transition-all border ${
-                          selectedRoles.includes(r.id) ? "border-[#D97706] bg-[#F3F1ED] text-[#2D2A26]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"
+                          selectedRoles.includes(r.id) ? "border-[#22d665] bg-[#F3F1ED] text-[#2D2A26]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"
                         }`}><span>{r.emoji}</span> {r.label}</button>
                     ))}
                   </div>
                 </div>
                 <button onClick={handleBrainstorm} disabled={loading || !topic.trim() || selectedRoles.length === 0}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                   {loading ? <><RefreshCw size={18} className="animate-spin" /> 讨论中...</> : <><Sparkles size={18} /> 开始头脑风暴</>}
                 </button>
               </div>
@@ -305,7 +305,7 @@ export default function ResearchPage() {
                         </div>
                         <p className="text-xs text-[#9E9B96] leading-relaxed mb-3 whitespace-pre-wrap">{note.content}</p>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => voteNote(note.id, 1)} className="text-[10px] px-2 py-0.5 border border-[#E5E1D8] text-[#6B6660] hover:border-[#D97706] hover:text-[#2D2A26] transition-colors">+1</button>
+                          <button onClick={() => voteNote(note.id, 1)} className="text-[10px] px-2 py-0.5 border border-[#E5E1D8] text-[#6B6660] hover:border-[#22d665] hover:text-[#2D2A26] transition-colors">+1</button>
                           <span className="text-xs text-[#6B6660] font-mono">{note.vote > 0 ? `+${note.vote}` : note.vote}</span>
                         </div>
                       </motion.div>
@@ -326,10 +326,10 @@ export default function ResearchPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品构想 *</label>
                   <textarea value={protoIdea} onChange={e => setProtoIdea(e.target.value)}
-                    placeholder="描述你的产品idea：解决什么问题？目标用户？核心功能？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[140px] resize-y" rows={5} />
+                    placeholder="描述你的产品idea：解决什么问题？目标用户？核心功能？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[140px] resize-y" rows={5} />
                 </div>
                 <button onClick={handleProtoValidate} disabled={protoLoading || !protoIdea.trim()}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
               {protoLoading ? <><RefreshCw size={18} className="animate-spin" /> 分析中...</> : <><Sparkles size={18} /> 验证分析</>}
                 </button>
               </div>
@@ -367,7 +367,7 @@ export default function ResearchPage() {
               {MARKET_CARDS.map((item, i) => (
                 <motion.div key={item.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
                   onClick={() => setExpandedCard(expandedCard === i ? null : i)}
-                  className={`border bg-white p-5 cursor-pointer transition-all rounded-xl ${expandedCard === i ? "border-[#D97706] shadow-sm" : "border-[#E5E1D8] hover:border-[#D97706]"}`}>
+                  className={`border bg-white p-5 cursor-pointer transition-all rounded-xl ${expandedCard === i ? "border-[#22d665] shadow-sm" : "border-[#E5E1D8] hover:border-[#22d665]"}`}>
                   <div className="text-xs text-[#6B6660] mb-2">{item.label}</div>
                   <div className="text-3xl font-black text-[#2D2A26] mb-1 tracking-normal">{item.value}</div>
                   <div className="flex items-center gap-2 mb-2">
@@ -402,7 +402,7 @@ export default function ResearchPage() {
                 <h2 className="text-xl font-bold text-[#2D2A26]">数字资产盘点</h2>
                 <p className="text-xs text-[#6B6660] mt-1">Notion 式数据表格 · 行内编辑 · 状态管理 · localStorage 持久化</p>
               </div>
-              <button onClick={addAsset} className="px-4 py-2 border border-[#E5E1D8] text-[#666] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors flex items-center gap-1">
+              <button onClick={addAsset} className="px-4 py-2 border border-[#E5E1D8] text-[#666] text-sm hover:border-[#22d665] hover:text-[#2D2A26] transition-colors flex items-center gap-1">
                 <Plus size={14} /> 新增资产
               </button>
             </div>

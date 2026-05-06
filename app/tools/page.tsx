@@ -28,7 +28,7 @@ const modules = [
     desc: "海报出图 · 短视频脚本 · 分发文案 · 素材处理",
     tools: ["批量海报", "短视频", "文案矩阵", "素材编辑"],
     href: "/tools/acquisition",
-    gradient: "from-amber-500/10 to-orange-500/5",
+    gradient: "from-lime-500/10 to-emerald-500/5",
   },
   {
     id: "sales",
@@ -155,7 +155,7 @@ function ToolCard({
           }}
           className={`p-8 h-full border bg-white transition-shadow duration-300 relative group flex flex-col rounded-2xl overflow-hidden ${
             isActive
-              ? "border-[#D97706] shadow-[0_8px_40px_-8px_rgba(217,119,6,0.25)]"
+              ? "border-[#22d665] shadow-[0_8px_40px_-8px_rgba(34, 214, 101,0.25)]"
               : "border-[#E5E1D8] hover:shadow-lg"
           }`}
         >
@@ -169,7 +169,7 @@ function ToolCard({
           {/* 顶部光线效果 */}
           {isActive && (
             <motion.div
-              className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#D97706] to-transparent"
+              className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#22d665] to-transparent"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.5 }}
@@ -187,13 +187,13 @@ function ToolCard({
               <mod.icon
                 size={32}
                 className={`${
-                  isActive ? "text-[#D97706]" : "text-[#9E9B96]"
+                  isActive ? "text-[#22d665]" : "text-[#9E9B96]"
                 } transition-colors duration-300`}
               />
             </motion.div>
             <motion.span
               className={`text-[10px] font-mono tracking-[0.2em] font-bold transition-colors duration-300 ${
-                isActive ? "text-[#D97706]" : "text-[#9E9B96]"
+                isActive ? "text-[#22d665]" : "text-[#9E9B96]"
               }`}
               animate={{ y: isActive ? -2 : 0 }}
             >
@@ -214,13 +214,13 @@ function ToolCard({
             </p>
 
             {/* 底部标签 — hover 时逐个亮起 */}
-            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#E5E1D8] group-hover:border-[#D97706]/30 transition-colors">
+            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#E5E1D8] group-hover:border-[#22d665]/30 transition-colors">
               {mod.tools.map((tool, ti) => (
                 <motion.span
                   key={tool}
                   className={`text-[10px] uppercase tracking-wide px-2.5 py-1 font-semibold rounded-full border transition-all duration-200 ${
                     isActive
-                      ? "bg-[#D97706] text-white border-[#D97706]"
+                      ? "bg-[#22d665] text-white border-[#22d665]"
                       : "border-[#E5E1D8] text-[#9E9B96]"
                   }`}
                   animate={{
@@ -262,7 +262,7 @@ export default function ToolsPage() {
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#E5E1D8]">
         <div className="max-w-5xl mx-auto px-6 md:px-12 lg:px-24 py-5 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-4">
-            <div className="w-10 h-10 flex items-center justify-center font-black bg-[#D97706] text-white text-sm rounded-xl">
+            <div className="w-10 h-10 flex items-center justify-center font-black bg-[#22d665] text-white text-sm rounded-xl">
               A
             </div>
             <span className="font-bold tracking-wide text-[#9E9B96] uppercase text-xs">
@@ -299,7 +299,7 @@ export default function ToolsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-20 flex flex-col md:flex-row items-end justify-between gap-8 border-b-2 border-[#D97706] pb-12"
+          className="mb-20 flex flex-col md:flex-row items-end justify-between gap-8 border-b-2 border-[#22d665] pb-12"
         >
           <div>
             <h1 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal leading-tight mb-4 uppercase">
@@ -320,7 +320,7 @@ export default function ToolsPage() {
             <input
               type="text"
               placeholder="GLOBAL SEARCH"
-              className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] group-focus-within:border-[#D97706] transition-colors pl-8 pb-3 text-lg text-[#2D2A26] placeholder-[#9E9B96] focus:ring-0 focus:outline-none font-mono tracking-wide uppercase"
+              className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] group-focus-within:border-[#22d665] transition-colors pl-8 pb-3 text-lg text-[#2D2A26] placeholder-[#9E9B96] focus:ring-0 focus:outline-none font-mono tracking-wide uppercase"
             />
           </div>
         </motion.div>

@@ -9,7 +9,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">测算耗损 / 现场演练示例</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">核心目标：找到投入产出比（ROI）最低的地方</p>
+        <p className="font-bold text-[#22d665]">核心目标：找到投入产出比（ROI）最低的地方</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 例如：新媒体运营部 3 人，年薪共计 36万。</li>
           <li>• 实际产出：每天生产 2 篇图文，转化率不到 1%。</li>
@@ -27,7 +27,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">植入硅基 / 架构设计</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">核心动作：切开业务流，让 AI 直接替代岗位</p>
+        <p className="font-bold text-[#22d665]">核心动作：切开业务流，让 AI 直接替代岗位</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 引入 [AI 获客引擎] Agent：成本降至几乎无感。</li>
           <li>• 设定 SOP（标准操作程序）：每天抓取 50 个行业热点。</li>
@@ -45,7 +45,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">利润锁定 / 财报视角</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">这不仅是工具升级，这是净利重构</p>
+        <p className="font-bold text-[#22d665]">这不仅是工具升级，这是净利重构</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 直接成本下降：36万年薪直降至 12万，立马省出 24万 <strong>纯利</strong>。</li>
           <li>• 产能增加：每天 2 篇剧增至 每天 200 篇，极大概率捕捉爆款。</li>
@@ -61,7 +61,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
       <h2 className="text-4xl font-black text-[#2D2A26] tracking-normal mb-4">准备好切除公司病灶了吗？</h2>
       <p className="text-xl text-[#6B6660]">接下来进入 1v1 商业规划解局时间。</p>
       <div className="mt-8">
-         <span className="inline-block bg-[#D97706] text-white px-8 py-3 rounded-full font-bold shadow-lg">请联系现场业务专家评估</span>
+         <span className="inline-block bg-[#22d665] text-white px-8 py-3 rounded-full font-bold shadow-lg">请联系现场业务专家评估</span>
       </div>
     </div>
   )

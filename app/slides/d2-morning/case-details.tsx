@@ -9,7 +9,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">AI 获客引擎 / 控制台实景</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">核心能力释放点：</p>
+        <p className="font-bold text-[#22d665]">核心能力释放点：</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 一键抓取全网热点关键词和竞品爆款</li>
           <li>• 根据产品白底图，瞬间生成 8 种应用场景商用海报</li>
@@ -27,7 +27,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">AI 销售军师 / 控制台实景</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">核心能力释放点：</p>
+        <p className="font-bold text-[#22d665]">核心能力释放点：</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 自动录制客户音视频通话并结构化分发核心信息至 CRM</li>
           <li>• 根据客户的历史发言，构建深度的客户 3D 画像</li>
@@ -45,7 +45,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">AI 运营看板 / 控制台实景</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">核心能力释放点：</p>
+        <p className="font-bold text-[#22d665]">核心能力释放点：</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 抛弃 Excel 繁琐函数，上传 CSV 直接用自然语言对话查询</li>
           <li>• 跨数据源整合：把淘宝销量、抖音投放消耗拉到一起，自动算单客户转化成本</li>
@@ -63,7 +63,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h2 className="text-3xl font-black text-[#2D2A26] tracking-normal">AI 客服管家 / 控制台实景</h2>
       </div>
       <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#E5E1D8] space-y-4">
-        <p className="font-bold text-[#D97706]">核心能力释放点：</p>
+        <p className="font-bold text-[#22d665]">核心能力释放点：</p>
         <ul className="space-y-2 text-[#6B6660]">
           <li>• 基于企业专属知识库的 7x24 小时精准秒回（多语言）</li>
           <li>• 情绪质检仪：敏锐捕捉客户愤怒倾向，第一时间拉群引入人类专家兜底</li>

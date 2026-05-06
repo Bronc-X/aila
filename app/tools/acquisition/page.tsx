@@ -135,7 +135,7 @@ interface EditorFile {
 const POSTER_STYLES = [
   { name: "极简科技", src: "", size: "1080×1080", gradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)" },
   { name: "暗黑高端", src: "", size: "1080×1080", gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)" },
-  { name: "活力橙色", src: "", size: "1080×1080", gradient: "linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%)" },
+  { name: "活力橙色", src: "", size: "1080×1080", gradient: "linear-gradient(135deg, #a8f06a 0%, #22d665 50%, #15803d 100%)" },
   { name: "商务蓝灰", src: "", size: "1080×1080", gradient: "linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%)" },
 ];
 
@@ -462,7 +462,7 @@ export default function AcquisitionPage() {
           {subTools.map((tool) => (
             <button key={tool.id} onClick={() => setActiveSubTool(tool.id)}
               className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
-                activeSubTool === tool.id ? "border-[#D97706] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
+                activeSubTool === tool.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}>
               <tool.icon size={14} /> {tool.label}
             </button>
@@ -478,24 +478,24 @@ export default function AcquisitionPage() {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 md:p-12 space-y-5">
                 <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2">
-                  <Wand2 size={18} className="text-[#D97706]" /> 文案矩阵生成器
+                  <Wand2 size={18} className="text-[#22d665]" /> 文案矩阵生成器
                 </h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品/服务名称 <span className="text-red-400">*</span></label>
                   <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)}
-                    placeholder={industryHint.placeholder} className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm" />
+                    placeholder={industryHint.placeholder} className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品描述 / 核心卖点</label>
                   <textarea value={productDesc} onChange={(e) => setProductDesc(e.target.value)}
-                    placeholder={`描述你的${industryHint.defaultDesc}产品功能、优势和目标客户`} className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={4} />
+                    placeholder={`描述你的${industryHint.defaultDesc}产品功能、优势和目标客户`} className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={4} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">所属行业</label>
                   <div className="flex flex-wrap gap-2">
                     {industries.map((ind) => (
                       <button key={ind.id} onClick={() => setSelectedIndustry(ind.id)}
-                        className={`px-3 py-1.5 text-sm transition-all border ${selectedIndustry === ind.id ? "border-[#D97706] bg-[rgba(217,119,6,0.12)] text-[#D97706]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>
+                        className={`px-3 py-1.5 text-sm transition-all border ${selectedIndustry === ind.id ? "border-[#22d665] bg-[rgba(34, 214, 101,0.12)] text-[#22d665]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>
                         {ind.label}
                       </button>
                     ))}
@@ -506,7 +506,7 @@ export default function AcquisitionPage() {
                   <div className="grid grid-cols-3 gap-2">
                     {platforms.map((p) => (
                       <button key={p.id} onClick={() => togglePlatform(p.id)}
-                        className={`flex items-center gap-1.5 px-3 py-2 text-sm transition-all border ${selectedPlatforms.includes(p.id) ? "border-[#D97706] bg-[rgba(217,119,6,0.08)] text-[#2D2A26]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>
+                        className={`flex items-center gap-1.5 px-3 py-2 text-sm transition-all border ${selectedPlatforms.includes(p.id) ? "border-[#22d665] bg-[rgba(34, 214, 101,0.08)] text-[#2D2A26]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>
                         <span>{p.emoji}</span>{p.label}
                       </button>
                     ))}
@@ -517,14 +517,14 @@ export default function AcquisitionPage() {
                   <div className="flex flex-wrap gap-2">
                     {tones.map((t) => (
                       <button key={t.id} onClick={() => setSelectedTone(t.id)}
-                        className={`px-3 py-1.5 rounded-full text-sm transition-all border ${selectedTone === t.id ? "border-[#D97706] bg-[rgba(234,88,12,0.12)] text-[#D97706]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>
+                        className={`px-3 py-1.5 rounded-full text-sm transition-all border ${selectedTone === t.id ? "border-[#22d665] bg-[rgba(234,88,12,0.12)] text-[#22d665]" : "border-[#E5E1D8] text-[#6B6660] hover:border-[#A3A3A3]"}`}>
                         {t.label}
                       </button>
                     ))}
                   </div>
                 </div>
                 <button onClick={handleGenerate} disabled={loading || !productName.trim() || selectedPlatforms.length === 0}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
                     {loading ? <><RefreshCw size={18} className="animate-spin" /> 正在生成...</> : <><Sparkles size={18} /> 一键生成全平台文案</>}
                 </button>
               </div>
@@ -537,12 +537,12 @@ export default function AcquisitionPage() {
                   {result && (
                     <div className="flex gap-2">
                       <button onClick={() => handleCopy(result, "all")}
-                        className="bg-[#FAF9F6] text-[#6B6660] border border-[#A3A3A3] font-bold uppercase tracking-wide hover:border-[#D97706] hover:text-[#2D2A26] transition-colors !py-1.5 !px-3 text-xs flex items-center gap-1">
+                        className="bg-[#FAF9F6] text-[#6B6660] border border-[#A3A3A3] font-bold uppercase tracking-wide hover:border-[#22d665] hover:text-[#2D2A26] transition-colors !py-1.5 !px-3 text-xs flex items-center gap-1">
                         {copied === "all" ? <><Check size={12} /> 已复制</> : <><Copy size={12} /> 全部复制</>}
                       </button>
                       <ExportButton content={Object.values(editedBlocks).length > 0 ? resultBlocks.map((b, i) => editedBlocks[`block-${i}`] || b).join("\n\n---\n\n") : result} filename={`文案矩阵_${productName}_${new Date().toISOString().slice(0,10)}.txt`} />
                       <button onClick={handleGenerate} disabled={loading}
-                        className="bg-[#FAF9F6] text-[#6B6660] border border-[#A3A3A3] font-bold uppercase tracking-wide hover:border-[#D97706] hover:text-[#2D2A26] transition-colors !py-1.5 !px-3 text-xs flex items-center gap-1">
+                        className="bg-[#FAF9F6] text-[#6B6660] border border-[#A3A3A3] font-bold uppercase tracking-wide hover:border-[#22d665] hover:text-[#2D2A26] transition-colors !py-1.5 !px-3 text-xs flex items-center gap-1">
                         <RefreshCw size={12} /> 重新生成
                       </button>
                     </div>
@@ -559,7 +559,7 @@ export default function AcquisitionPage() {
                   ) : loading ? (
                     <motion.div key="loading" className="flex flex-col items-center justify-center h-[400px]">
                       <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
-                        <Sparkles size={28} className="text-[#D97706] mb-3" />
+                        <Sparkles size={28} className="text-[#22d665] mb-3" />
                       </motion.div>
                     <p className="text-[#9E9B96]">正在为 {selectedPlatforms.length} 个平台生成文案...</p>
                     </motion.div>
@@ -593,7 +593,7 @@ export default function AcquisitionPage() {
                                 onChange={e => setEditedBlocks(prev => ({ ...prev, [blockId]: e.target.value }))}
                                 onBlur={() => setEditingBlock(null)}
                                 autoFocus
-                                className="w-full bg-[#FAF9F6] border border-[#D97706]/20 text-[#2D2A26] text-sm p-3 outline-none focus:border-[#D97706] transition-colors min-h-[120px] resize-y font-mono" />
+                                className="w-full bg-[#FAF9F6] border border-[#22d665]/20 text-[#2D2A26] text-sm p-3 outline-none focus:border-[#22d665] transition-colors min-h-[120px] resize-y font-mono" />
                             ) : (
                               <div className="text-sm text-[#9E9B96] whitespace-pre-wrap leading-relaxed">{displayContent}</div>
                             )}
@@ -623,20 +623,20 @@ export default function AcquisitionPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品/活动名称 *</label>
                   <input type="text" value={posterName} onChange={e => setPosterName(e.target.value)}
-                    placeholder="例如：双十一大促" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none text-sm rounded-lg" />
+                    placeholder="例如：双十一大促" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none text-sm rounded-lg" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">尺寸规格</label>
                   <div className="flex gap-2">
                     {["1:1 方图", "9:16 竖版", "16:9 横版", "3:4 小红书"].map(s => (
                       <button key={s} onClick={() => setPosterSelectedSize(s)}
-                        className={`px-3 py-2 border text-xs transition-colors ${posterSelectedSize === s ? "border-[#D97706] text-[#2D2A26] bg-[#F3F1ED]" : "border-[#E5E1D8] text-[#666] hover:border-[#D97706] hover:text-[#2D2A26]"}`}>{s}</button>
+                        className={`px-3 py-2 border text-xs transition-colors ${posterSelectedSize === s ? "border-[#22d665] text-[#2D2A26] bg-[#F3F1ED]" : "border-[#E5E1D8] text-[#666] hover:border-[#22d665] hover:text-[#2D2A26]"}`}>{s}</button>
                     ))}
                   </div>
                 </div>
               </div>
               <button onClick={handleGeneratePoster} disabled={posterLoading || !posterName.trim()}
-                className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors flex items-center justify-center gap-2 py-3 px-16 disabled:opacity-50">
+                className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors flex items-center justify-center gap-2 py-3 px-16 disabled:opacity-50">
                 {posterLoading ? <><RefreshCw size={18} className="animate-spin" /> 生成中...</> : <><Sparkles size={18} /> 生成 4 张海报</>}
               </button>
             </div>
@@ -647,7 +647,7 @@ export default function AcquisitionPage() {
                 <motion.div key={poster.name}
                   initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: posterGenerated ? 1 : 0.4, scale: 1 }} transition={{ delay: i * 0.1 }}
                   className={`relative overflow-hidden border transition-all cursor-pointer group rounded-xl ${
-                    selectedPoster === i ? "border-[#D97706] ring-2 ring-[#D97706]/30" : "border-[#E5E1D8] hover:border-[#D97706]"
+                    selectedPoster === i ? "border-[#22d665] ring-2 ring-[#22d665]/30" : "border-[#E5E1D8] hover:border-[#22d665]"
                   }`}>
                   {poster.src ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -668,7 +668,7 @@ export default function AcquisitionPage() {
                     <span className="text-xs text-white/60 block">{posterSelectedSize} · {poster.size}</span>
                   </div>
                   {selectedPoster === i && (
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-[#D97706] rounded-full flex items-center justify-center">
+                    <div className="absolute top-2 right-2 w-6 h-6 bg-[#22d665] rounded-full flex items-center justify-center">
                       <Check size={14} className="text-white" />
                     </div>
                   )}
@@ -706,7 +706,7 @@ export default function AcquisitionPage() {
                     <div>
                       <label className="block text-xs text-[#9E9B96] mb-1">叠加文字</label>
                       <textarea value={posterOverlayText} onChange={e => setPosterOverlayText(e.target.value)}
-                        placeholder="输入要叠加到海报上的文字..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] text-sm placeholder-[#C5C0B8] outline-none focus:border-[#D97706] transition-colors min-h-[80px] resize-y rounded-lg" />
+                        placeholder="输入要叠加到海报上的文字..." className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] text-sm placeholder-[#C5C0B8] outline-none focus:border-[#22d665] transition-colors min-h-[80px] resize-y rounded-lg" />
                     </div>
                     <div className="flex flex-col gap-2">
                       <span className="text-xs text-[#9E9B96]">预览效果</span>
@@ -744,21 +744,21 @@ export default function AcquisitionPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">视频主题 *</label>
                   <input type="text" value={videoTopic} onChange={e => setVideoTopic(e.target.value)}
-                    placeholder="例如：产品开箱测评" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#D97706] transition-colors outline-none text-sm" />
+                    placeholder="例如：产品开箱测评" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none text-sm" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">视频时长</label>
                   <div className="flex gap-2">
                     {["15秒", "30秒", "60秒", "3分钟"].map(d => (
                       <button key={d} onClick={() => setVideoDuration(d)}
-                        className={`px-4 py-2 border text-sm transition-colors ${videoDuration === d ? "border-[#D97706] text-[#2D2A26] bg-[#F3F1ED]" : "border-[#E5E1D8] text-[#666] hover:border-[#D97706] hover:text-[#2D2A26]"}`}>{d}</button>
+                        className={`px-4 py-2 border text-sm transition-colors ${videoDuration === d ? "border-[#22d665] text-[#2D2A26] bg-[#F3F1ED]" : "border-[#E5E1D8] text-[#666] hover:border-[#22d665] hover:text-[#2D2A26]"}`}>{d}</button>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="flex gap-3">
                 <button onClick={handleGenerateVideo} disabled={videoLoading || !videoTopic.trim()}
-                  className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#D97706] transition-colors flex items-center justify-center gap-2 py-3 px-16 disabled:opacity-50">
+                  className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors flex items-center justify-center gap-2 py-3 px-16 disabled:opacity-50">
                   {videoLoading ? <><RefreshCw size={18} className="animate-spin" /> 生成中...</> : <><Sparkles size={18} /> 生成脚本</>}
                 </button>
                 {videoGenerated && (
@@ -785,7 +785,7 @@ export default function AcquisitionPage() {
                   </DndContext>
                 </div>
                 <button onClick={addStoryboardRow}
-                  className="px-4 py-2 border border-dashed border-[#E5E1D8] text-[#6B6660] text-sm hover:border-[#D97706] hover:text-[#2D2A26] transition-colors flex items-center gap-1 w-full justify-center">
+                  className="px-4 py-2 border border-dashed border-[#E5E1D8] text-[#6B6660] text-sm hover:border-[#22d665] hover:text-[#2D2A26] transition-colors flex items-center gap-1 w-full justify-center">
                   <Plus size={14} /> 新增分镜
                 </button>
               </>
@@ -815,17 +815,17 @@ export default function AcquisitionPage() {
                     onClick={() => setActiveEditorTool(activeEditorTool === item.id ? null : item.id)}
                     className={`relative border p-4 text-left transition-all cursor-pointer rounded-xl ${
                       activeEditorTool === item.id
-                        ? "border-[#D97706] bg-[#D97706]/5 shadow-sm"
-                        : "border-[#E5E1D8] bg-white hover:border-[#D97706]"
+                        ? "border-[#22d665] bg-[#22d665]/5 shadow-sm"
+                        : "border-[#E5E1D8] bg-white hover:border-[#22d665]"
                     }`}>
                     {item.hot && (
-                      <span className="absolute -top-2 -right-2 text-[9px] px-1.5 py-0.5 bg-[#D97706] text-white font-bold rounded-full">HOT</span>
+                      <span className="absolute -top-2 -right-2 text-[9px] px-1.5 py-0.5 bg-[#22d665] text-white font-bold rounded-full">HOT</span>
                     )}
                     <span className="text-lg mb-1.5 block">{item.icon}</span>
-                    <h3 className={`text-sm font-bold mb-0.5 ${activeEditorTool === item.id ? "text-[#D97706]" : "text-[#2D2A26]"}`}>{item.label}</h3>
+                    <h3 className={`text-sm font-bold mb-0.5 ${activeEditorTool === item.id ? "text-[#22d665]" : "text-[#2D2A26]"}`}>{item.label}</h3>
                     <p className="text-[11px] text-[#9E9B96]">{item.desc}</p>
                     {activeEditorTool === item.id && (
-                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2 w-5 h-5 bg-[#D97706] rounded-full flex items-center justify-center">
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2 w-5 h-5 bg-[#22d665] rounded-full flex items-center justify-center">
                         <Check size={12} className="text-white" />
                       </motion.div>
                     )}
@@ -836,7 +836,7 @@ export default function AcquisitionPage() {
               {/* 模特+产品上传工作流 */}
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 {/* 模特图上传 */}
-                <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl p-6 text-center hover:border-[#D97706] transition-colors">
+                <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl p-6 text-center hover:border-[#22d665] transition-colors">
                   <input ref={modelInputRef} type="file" accept="image/*" multiple className="hidden"
                     onChange={(e) => {
                       if (e.target.files) {
@@ -865,13 +865,13 @@ export default function AcquisitionPage() {
                     </div>
                   ) : null}
                   <button onClick={() => modelInputRef.current?.click()}
-                    className="text-xs px-4 py-2 border border-[#E5E1D8] rounded-lg text-[#6B6660] hover:border-[#D97706] hover:text-[#D97706] transition-colors">
+                    className="text-xs px-4 py-2 border border-[#E5E1D8] rounded-lg text-[#6B6660] hover:border-[#22d665] hover:text-[#22d665] transition-colors">
                     <Upload size={12} className="inline mr-1" /> 上传模特图
                   </button>
                 </div>
 
                 {/* 产品图上传 */}
-                <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl p-6 text-center hover:border-[#D97706] transition-colors">
+                <div className="border-2 border-dashed border-[#E5E1D8] rounded-xl p-6 text-center hover:border-[#22d665] transition-colors">
                   <input ref={productInputRef} type="file" accept="image/*" multiple className="hidden"
                     onChange={(e) => {
                       if (e.target.files) {
@@ -900,7 +900,7 @@ export default function AcquisitionPage() {
                     </div>
                   ) : null}
                   <button onClick={() => productInputRef.current?.click()}
-                    className="text-xs px-4 py-2 border border-[#E5E1D8] rounded-lg text-[#6B6660] hover:border-[#D97706] hover:text-[#D97706] transition-colors">
+                    className="text-xs px-4 py-2 border border-[#E5E1D8] rounded-lg text-[#6B6660] hover:border-[#22d665] hover:text-[#22d665] transition-colors">
                     <Upload size={12} className="inline mr-1" /> 上传产品图
                   </button>
                 </div>
@@ -914,8 +914,8 @@ export default function AcquisitionPage() {
                     {MODEL_TEMPLATES.map(tpl => (
                       <button key={tpl.id} onClick={() => setSelectedModelTemplate(selectedModelTemplate === tpl.id ? null : tpl.id)}
                         className={`p-4 rounded-xl border-2 text-center transition-all ${selectedModelTemplate === tpl.id
-                          ? "border-[#D97706] shadow-sm" : "border-[#E5E1D8] hover:border-[#D97706]"}`}>
-                        <div className={`w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden flex items-center justify-center border-2 ${selectedModelTemplate === tpl.id ? "border-[#D97706]" : tpl.style}`}>
+                          ? "border-[#22d665] shadow-sm" : "border-[#E5E1D8] hover:border-[#22d665]"}`}>
+                        <div className={`w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden flex items-center justify-center border-2 ${selectedModelTemplate === tpl.id ? "border-[#22d665]" : tpl.style}`}>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={tpl.preview} alt={tpl.name} className="w-full h-full object-cover" />
                         </div>
@@ -923,7 +923,7 @@ export default function AcquisitionPage() {
                         <div className="text-[10px] text-[#9E9B96]">{tpl.desc}</div>
                         {selectedModelTemplate === tpl.id && (
                           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="mt-1 inline-block">
-                            <Check size={14} className="text-[#D97706] mx-auto" />
+                            <Check size={14} className="text-[#22d665] mx-auto" />
                           </motion.div>
                         )}
                       </button>
@@ -937,7 +937,7 @@ export default function AcquisitionPage() {
                 <label className="block text-xs font-bold text-[#9E9B96] mb-3 uppercase">海报背景风格</label>
                 <div className="flex gap-3">
                   {[
-                    { id: "gradient-1", style: "bg-gradient-to-br from-amber-100 to-orange-50", label: "暖色" },
+                    { id: "gradient-1", style: "bg-gradient-to-br from-lime-100 to-emerald-50", label: "暖色" },
                     { id: "gradient-2", style: "bg-gradient-to-br from-blue-100 to-indigo-50", label: "冷色" },
                     { id: "gradient-3", style: "bg-gradient-to-br from-gray-800 to-gray-900", label: "暗黑" },
                     { id: "gradient-4", style: "bg-white", label: "纯白" },
@@ -945,7 +945,7 @@ export default function AcquisitionPage() {
                   ].map(bg => (
                     <button key={bg.id} onClick={() => setSelectedBackground(bg.id)}
                       className={`flex flex-col items-center gap-1.5 transition-all ${selectedBackground === bg.id ? "scale-110" : "hover:scale-105"}`}>
-                      <div className={`w-12 h-12 rounded-xl ${bg.style} border-2 ${selectedBackground === bg.id ? "border-[#D97706]" : "border-[#E5E1D8]"}`} />
+                      <div className={`w-12 h-12 rounded-xl ${bg.style} border-2 ${selectedBackground === bg.id ? "border-[#22d665]" : "border-[#E5E1D8]"}`} />
                       <span className="text-[10px] text-[#9E9B96]">{bg.label}</span>
                     </button>
                   ))}
@@ -1044,7 +1044,7 @@ export default function AcquisitionPage() {
                   }
                 }}
                 disabled={editorGenerating || editorProductFiles.length === 0}
-                className="bg-[#D97706] text-white font-bold uppercase tracking-wide hover:bg-[#B45309] border border-[#D97706] transition-colors w-full flex items-center justify-center gap-2 py-3 rounded-xl disabled:opacity-50">
+                className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#15803d] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 py-3 rounded-xl disabled:opacity-50">
                 {editorGenerating ? (
                   <><RefreshCw size={18} className="animate-spin" /> {editorGeneratingText}</>
                 ) : (
@@ -1057,7 +1057,7 @@ export default function AcquisitionPage() {
             {editorResults.length > 0 && (
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 md:p-8 rounded-xl">
                 <h3 className="text-sm font-bold text-[#2D2A26] mb-4 flex items-center gap-2">
-                  <Sparkles size={16} className="text-[#D97706]"/> 合成结果 ({editorResults.length}张)
+                  <Sparkles size={16} className="text-[#22d665]"/> 合成结果 ({editorResults.length}张)
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {(editorResults as any[]).map((item: any, i: number) => {
@@ -1077,7 +1077,7 @@ export default function AcquisitionPage() {
                           <span className="text-[10px] text-white/90">产品: {item.productName}</span>
                         </div>
                         {/* 角标 */}
-                        <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-md text-[#D97706] border border-[#D97706]/40 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-md text-[#22d665] border border-[#22d665]/40 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                   <Sparkles size={8}/> 智能合成
                         </div>
                         {/* 模特小头像展示 */}

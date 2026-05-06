@@ -14,7 +14,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">包装印刷厂：</b>色差比对靠人手举色卡，赶货时老板自己上手都来不及。AI色差/套位检测上线，色差投诉率从月均12起→0起。</div></li>
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">机加工厂：</b>CNC加工完人工量检，每件量3分钟，检测环节成了产能最大瓶颈。AI在线测量系统让检测速度提升20倍，日产能直接翻番。</div></li>
         </ul>
-        <p className="bg-[#FFF8F0] border border-[#D97706] p-4 rounded-lg font-bold text-[#D97706]">
+        <p className="bg-[#FFF8F0] border border-[#22d665] p-4 rounded-lg font-bold text-[#22d665]">
           ★ 核心逻辑：AI不是替代工人，是替代"最容易疲劳犯错"的那个环节。你的产线上，哪个检测环节最依赖人眼？那就是第一个要改造的点。
         </p>
       </div>
@@ -33,7 +33,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">询盘流失：</b>阿里国际站的询盘，2小时不回客户就流失给竞争对手。AI客服7×24秒级回复，自动生成报价单，转化率提升35%。</div></li>
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">选品靠飞：</b>老板飞美国选品一趟花20万，回来还拿不准。AI全网数据抓取+趋势评分+竞品分析，10分钟出选品报告，准确率比人肉考察还高。</div></li>
         </ul>
-        <p className="bg-[#FFF8F0] border border-[#D97706] p-4 rounded-lg font-bold text-[#D97706]">
+        <p className="bg-[#FFF8F0] border border-[#22d665] p-4 rounded-lg font-bold text-[#22d665]">
           ★ 某深圳3C出海团队：外籍文案3人→0人，年省45万；新品开城周期14天→半天。老板说："早用半年，少亏100万。"
         </p>
       </div>
@@ -53,7 +53,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">医美/连锁门店：</b>好销售一走客户全丢，新人培训3个月才能独立接客。销售话术库+客户画像AI推荐上线，新人上手周期从3月→1周。</div></li>
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">装修/建材：</b>设计师经验全在脑子里，换个人报价差距30%。项目知识库+AI自动估价系统，报价一致性提升到98%。</div></li>
         </ul>
-        <p className="bg-[#FFF8F0] border border-[#D97706] p-4 rounded-lg font-bold text-[#D97706]">
+        <p className="bg-[#FFF8F0] border border-[#22d665] p-4 rounded-lg font-bold text-[#22d665]">
           ★ 核心问题：你公司最值钱的知识，是存在系统里，还是存在某个人的脑子里？如果是后者，那个人走了，你的护城河就没了。
         </p>
       </div>
@@ -73,7 +73,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">公众号/小红书：</b>企业新媒体运营发一条推文要改8遍，现在AI 3分钟从热点采集、观点改写、配图、排版全部搞定。</div></li>
           <li className="flex gap-4"><Target className="text-[var(--brand-primary)] shrink-0 mt-1" size={20} /> <div><b className="text-[#2D2A26]">数字人IP：</b>老板录一段口播模板，AI生成多语言版本，直接在TikTok全球账号分发，一个人做全球市场。</div></li>
         </ul>
-        <p className="bg-[#FFF8F0] border border-[#D97706] p-4 rounded-lg font-bold text-[#D97706]">
+        <p className="bg-[#FFF8F0] border border-[#22d665] p-4 rounded-lg font-bold text-[#22d665]">
           ★ 某餐饮品牌：外包摄影费从年15万→0，抖音矩阵曝光放大100倍。老板原话："以前一条视频拍2天，现在AI一天出200条。"
         </p>
       </div>

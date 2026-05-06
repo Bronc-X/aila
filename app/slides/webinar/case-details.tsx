@@ -98,7 +98,7 @@ export const caseDetails: Record<string, React.ReactNode> = {
         <h3 className="text-3xl font-black text-[#2D2A26]">转型生死线：18个月</h3>
       </div>
       <p className="text-lg text-[var(--text-secondary)] leading-loose">
-        大模型每半年完成一次底层认知突进，应用壁垒搭建时间被极度压缩。传统企业的缓冲期仅剩 <strong className="text-[#D97706]">18个月</strong>。
+        大模型每半年完成一次底层认知突进，应用壁垒搭建时间被极度压缩。传统企业的缓冲期仅剩 <strong className="text-[#22d665]">18个月</strong>。
       </p>
     </div>
   ),
@@ -111,8 +111,8 @@ export const caseDetails: Record<string, React.ReactNode> = {
           <h4 className="font-bold text-red-600 mb-3 text-lg">骗局一：卖课型</h4>
           <p className="text-[var(--text-secondary)]">录好视频卖你几千块，学完只会跟ChatGPT聊天。你的流程、数据、团队协作一个没变。<b>本质：信息差倒卖</b></p>
         </div>
-        <div className="p-6 bg-orange-50 border border-orange-200 rounded-xl">
-          <h4 className="font-bold text-orange-600 mb-3 text-lg">骗局二：卖工具型</h4>
+        <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-xl">
+          <h4 className="font-bold text-emerald-600 mb-3 text-lg">骗局二：卖工具型</h4>
           <p className="text-[var(--text-secondary)]">打着培训旗号卖SaaS订阅。不续费能力归零。<b>本质：工具锁定</b></p>
         </div>
         <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
@@ -144,30 +144,30 @@ export const caseDetails: Record<string, React.ReactNode> = {
     <div className="space-y-8">
       <div className="border-b border-white/[0.06] pb-6">
         <h2 className="text-3xl font-black text-white mb-2 flex items-center gap-3">
-          <Zap className="text-amber-500" size={32} /> Agent 架构：从单兵到军团
+          <Zap className="text-lime-500" size={32} /> Agent 架构：从单兵到军团
         </h2>
         <p className="text-neutral-500 text-lg mt-1">2026年AI最核心的能力跃迁——不是更聪明，而是会"协作"了</p>
       </div>
       <div className="space-y-6 text-neutral-400 leading-relaxed text-lg">
-        <p><b className="text-white">什么是 Agent？</b> 简单说：以前的 AI 是"你问一句它答一句"的应答机器。而 Agent 是拥有<b className="text-amber-400">目标感</b>的 AI——你给它一个目标（比如"帮我分析这份销售数据并生成周报"），它会自己拆解任务、调用工具、校验结果，直到把事情做完。</p>
-        <p><b className="text-white">什么是 Subagent / 多Agent协作？</b> 一个 Agent 做不完的复杂任务，会被自动拆解成多个子任务，分配给不同的专业 Subagent 并行执行。就像一个项目经理把任务分给设计、文案、投放三个团队同时干——只不过这些"团队"全部是 AI，且<b className="text-amber-400">秒级完成</b>。</p>
+        <p><b className="text-white">什么是 Agent？</b> 简单说：以前的 AI 是"你问一句它答一句"的应答机器。而 Agent 是拥有<b className="text-lime-400">目标感</b>的 AI——你给它一个目标（比如"帮我分析这份销售数据并生成周报"），它会自己拆解任务、调用工具、校验结果，直到把事情做完。</p>
+        <p><b className="text-white">什么是 Subagent / 多Agent协作？</b> 一个 Agent 做不完的复杂任务，会被自动拆解成多个子任务，分配给不同的专业 Subagent 并行执行。就像一个项目经理把任务分给设计、文案、投放三个团队同时干——只不过这些"团队"全部是 AI，且<b className="text-lime-400">秒级完成</b>。</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-5 rounded-xl border border-white/[0.06] bg-white/[0.02]">
-          <h4 className="text-amber-500 font-bold text-sm mb-3">Hermes Agent</h4>
+          <h4 className="text-lime-500 font-bold text-sm mb-3">Hermes Agent</h4>
           <p className="text-neutral-500 text-sm leading-relaxed">自学习型私人 AI。每次完成任务后，会把成功经验提炼成"技能文档"存下来。<b className="text-white">用得越多越聪明</b>——像一个会自己进化的员工。</p>
         </div>
-        <div className="p-5 rounded-xl border border-amber-600/20 bg-amber-600/[0.04]">
-          <h4 className="text-amber-500 font-bold text-sm mb-3">Claude Managed Agent</h4>
+        <div className="p-5 rounded-xl border border-lime-600/20 bg-lime-600/[0.04]">
+          <h4 className="text-lime-500 font-bold text-sm mb-3">Claude Managed Agent</h4>
           <p className="text-neutral-500 text-sm leading-relaxed">企业级托管团队。不需要你搭服务器、写代码。直接部署一个<b className="text-white">自主决策的 AI 团队</b>，它们会自动分工、互相校验、汇整输出。</p>
         </div>
         <div className="p-5 rounded-xl border border-white/[0.06] bg-white/[0.02]">
-          <h4 className="text-amber-500 font-bold text-sm mb-3">Subagent 并行架构</h4>
+          <h4 className="text-lime-500 font-bold text-sm mb-3">Subagent 并行架构</h4>
           <p className="text-neutral-500 text-sm leading-relaxed">把复杂任务拆成独立子任务，多个 Agent 同时执行。一个人类需要 3 天的工作，<b className="text-white">5 个 Subagent 并行只需 3 分钟</b>。</p>
         </div>
       </div>
-      <div className="p-6 bg-amber-600/[0.06] rounded-xl border border-amber-600/20">
-        <p className="text-amber-400 text-sm font-semibold">★ 核心洞察：2026年的竞争不再是"谁的AI更聪明"，而是<span className="text-white">谁能把AI编排成一支纪律严明的数字军团</span>。单兵作战的时代已经过去了。</p>
+      <div className="p-6 bg-lime-600/[0.06] rounded-xl border border-lime-600/20">
+        <p className="text-lime-400 text-sm font-semibold">★ 核心洞察：2026年的竞争不再是"谁的AI更聪明"，而是<span className="text-white">谁能把AI编排成一支纪律严明的数字军团</span>。单兵作战的时代已经过去了。</p>
       </div>
     </div>
   ),
@@ -177,12 +177,12 @@ export const caseDetails: Record<string, React.ReactNode> = {
     <div className="space-y-8">
       <div className="border-b border-white/[0.06] pb-6">
         <h2 className="text-3xl font-black text-white mb-2 flex items-center gap-3">
-          <Target className="text-amber-500" size={32} /> 硅基军团：3人干出20人的活
+          <Target className="text-lime-500" size={32} /> 硅基军团：3人干出20人的活
         </h2>
         <p className="text-neutral-500 text-lg mt-1">一个真实的跨境电商 Agent 协作案例</p>
       </div>
       <div className="space-y-6 text-neutral-400 leading-relaxed text-lg">
-        <p><b className="text-white">团队规模：</b>3 个人——1 个运营负责人 + 1 个设计 + 1 个客服。但他们管着 <b className="text-amber-400">8 个国家的站点</b>，月 GMV 超过 200 万。</p>
+        <p><b className="text-white">团队规模：</b>3 个人——1 个运营负责人 + 1 个设计 + 1 个客服。但他们管着 <b className="text-lime-400">8 个国家的站点</b>，月 GMV 超过 200 万。</p>
         <p><b className="text-white">怎么做到的？</b> 他们搭建了一套多 Agent 协作体系：</p>
       </div>
       <div className="space-y-4">

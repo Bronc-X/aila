@@ -4,6 +4,10 @@ import Hls from "hls.js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  ArrowUpRight,
+  Rocket,
+} from "lucide-react";
+import {
   type MouseEvent as ReactMouseEvent,
   type WheelEvent as ReactWheelEvent,
   useCallback,
@@ -49,6 +53,13 @@ type Gate = {
   warp: number;
 };
 
+type ProofStat = {
+  value: string;
+  label: string;
+  shortLabel: string;
+  detail: string;
+};
+
 const backgroundVideos: BackgroundVideo[] = [
   {
     id: "dark-veil",
@@ -67,10 +78,10 @@ const backgroundVideos: BackgroundVideo[] = [
 const gates: Gate[] = [
   {
     id: "toni",
-    href: "/about",
+    href: "/contact",
     title: "TONI",
-    eyebrow: "关于 Toni",
-    copy: "个人介绍、工作方法与合作背景",
+    eyebrow: "联系 / 关于",
+    copy: "AI 产品陪跑、Agent 编排与合作入口",
     x: 20,
     y: -116,
     z: 260,
@@ -78,7 +89,7 @@ const gates: Gate[] = [
     height: 260,
     depth: 120,
     rotY: -0.18,
-    tint: "#ff3b1f",
+    tint: "#22d665",
     kind: "word",
     warp: 24,
   },
@@ -86,8 +97,8 @@ const gates: Gate[] = [
     id: "work",
     href: "/work",
     title: "WORK",
-    eyebrow: "代表作品",
-    copy: "AILA / Antios / QuantMAx",
+    eyebrow: "项目宇宙",
+    copy: "公开产品、陪跑案例与企业交付",
     x: 486,
     y: -18,
     z: -190,
@@ -104,7 +115,7 @@ const gates: Gate[] = [
     href: "/tools",
     title: "TOOLS",
     eyebrow: "工具大厅",
-    copy: "六个可进入的业务工作台",
+    copy: "可进入、可复现、可检查的业务工作台",
     x: -540,
     y: 94,
     z: -150,
@@ -121,7 +132,7 @@ const gates: Gate[] = [
     href: "/aila",
     title: "AILA",
     eyebrow: "企业工作台",
-    copy: "面向经营流程的工具矩阵",
+    copy: "面向经营流程的 AI 工具矩阵",
     x: 20,
     y: 228,
     z: -318,
@@ -138,7 +149,7 @@ const gates: Gate[] = [
     href: "/work/training-system",
     title: "TRAINING",
     eyebrow: "课程训练",
-    copy: "工作坊、Slides 与工具入口",
+    copy: "系统化工程组织、Agent 编排和市场验证",
     x: 566,
     y: 148,
     z: -552,
@@ -146,10 +157,16 @@ const gates: Gate[] = [
     height: 214,
     depth: 226,
     rotY: -0.34,
-    tint: "#f0c56b",
+    tint: "#b7f36f",
     kind: "panel",
     warp: 22,
   },
+];
+
+const proofStats: ProofStat[] = [
+  { value: "40+", label: "近一个月陪跑", shortLabel: "陪跑", detail: "陪到原型、流程和复盘都落地。" },
+  { value: "110+", label: "Lotus 超过 110 stars", shortLabel: "GitHub stars", detail: "开源一键冷启动 coding 工具包，更多是学员真实克隆留下的痕迹。" },
+  { value: "6个", label: "个人产品已上线", shortLabel: "已上线产品", detail: "公开可访问，持续维护和迭代。" },
 ];
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -377,11 +394,11 @@ export default function ToniSpatialHero() {
     ctx.save();
     ctx.globalCompositeOperation = "screen";
 
-    const amber = ctx.createRadialGradient(width * 0.22, height * 0.25, 0, width * 0.22, height * 0.25, width * 0.68);
-    amber.addColorStop(0, "rgba(255, 59, 31, 0.16)");
-    amber.addColorStop(0.34, "rgba(119, 38, 15, 0.07)");
-    amber.addColorStop(1, "rgba(0, 0, 0, 0)");
-    ctx.fillStyle = amber;
+    const greenAurora = ctx.createRadialGradient(width * 0.22, height * 0.25, 0, width * 0.22, height * 0.25, width * 0.68);
+    greenAurora.addColorStop(0, "rgba(34, 214, 101, 0.14)");
+    greenAurora.addColorStop(0.34, "rgba(24, 89, 56, 0.07)");
+    greenAurora.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = greenAurora;
     ctx.fillRect(0, 0, width, height);
 
     const tealDrift = Math.sin(time * 0.00016) * 58;
@@ -414,7 +431,7 @@ export default function ToniSpatialHero() {
       if (!point.visible) return;
       const twinkle = 0.66 + Math.sin(time * 0.0012 + index * 1.7) * 0.34;
       const alpha = clamp((1 - point.z / 2200) * twinkle, 0, 0.18);
-      const tint = index % 9 === 0 ? "168, 240, 106" : index % 7 === 0 ? "255, 218, 176" : "234, 246, 244";
+      const tint = index % 9 === 0 ? "168, 240, 106" : index % 7 === 0 ? "142, 214, 206" : "234, 246, 244";
       ctx.beginPath();
       ctx.arc(point.x, point.y, Math.max(0.45, star.r * point.scale), 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${tint}, ${alpha})`;
@@ -551,7 +568,7 @@ export default function ToniSpatialHero() {
         w: 210 + seeded(index + 277) * 240,
         h: 120 + seeded(index + 299) * 180,
         rot: -0.55 + seeded(index + 311) * 1.1,
-        tint: index % 3 === 0 ? "142, 214, 206" : index % 3 === 1 ? "255, 190, 105" : "255, 246, 229",
+        tint: index % 3 === 0 ? "142, 214, 206" : index % 3 === 1 ? "168, 240, 106" : "234, 246, 244",
       };
     });
 
@@ -622,7 +639,7 @@ export default function ToniSpatialHero() {
 
     ctx.globalCompositeOperation = "screen";
     ctx.filter = `blur(${clamp(fontSize * 0.065, 7, 18)}px)`;
-    ctx.fillStyle = `rgba(255, 59, 31, ${0.28 * alpha})`;
+    ctx.fillStyle = `rgba(34, 214, 101, ${0.28 * alpha})`;
     ctx.fillText(gate.title, center.x - depthOffset * 0.3, center.y + depthOffset * 0.12);
     ctx.filter = "none";
     ctx.globalCompositeOperation = "source-over";
@@ -637,9 +654,9 @@ export default function ToniSpatialHero() {
       );
     }
 
-    ctx.shadowColor = "#ff3b1f";
+    ctx.shadowColor = "#22d665";
     ctx.shadowBlur = active ? 24 : 16;
-    ctx.fillStyle = `rgba(255, 63, 31, ${0.96 * alpha})`;
+    ctx.fillStyle = `rgba(34, 214, 101, ${0.96 * alpha})`;
     ctx.fillText(gate.title, center.x, center.y);
     ctx.shadowBlur = 0;
     ctx.lineWidth = Math.max(1, 2.2 * center.scale);
@@ -858,7 +875,7 @@ export default function ToniSpatialHero() {
       const titleGradient = ctx.createLinearGradient(gate.width * 0.16, gate.height * 0.39, gate.width * 0.84, gate.height * 0.61);
       titleGradient.addColorStop(0, "#fff6e5");
       titleGradient.addColorStop(0.34, gate.tint);
-      titleGradient.addColorStop(0.68, "#f4dfb7");
+      titleGradient.addColorStop(0.68, "#e8f7dc");
       titleGradient.addColorStop(1, gate.tint);
       ctx.fillStyle = titleGradient;
       drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.54, gate.width * 0.82);
@@ -895,7 +912,7 @@ export default function ToniSpatialHero() {
       if (!point.visible) return;
       ctx.filter = `blur(${12 + index * 3}px)`;
       ctx.font = `900 ${fragment.size * point.scale}px Arial Black, Impact, sans-serif`;
-      ctx.fillStyle = `rgba(255, 59, 31, ${fragment.alpha})`;
+      ctx.fillStyle = `rgba(34, 214, 101, ${fragment.alpha})`;
       ctx.fillText(fragment.char, point.x, point.y);
     });
     ctx.restore();
@@ -1077,6 +1094,7 @@ export default function ToniSpatialHero() {
       <video ref={galaxyVideoRef} className={styles.galaxyVideo} muted loop playsInline aria-hidden="true" />
       <div className={styles.earthHalo} aria-hidden="true" />
       <div className={styles.cosmicMist} aria-hidden="true" />
+      <div className={styles.signalGrid} aria-hidden="true" />
       <canvas ref={canvasRef} className={styles.canvas} />
       <nav className={styles.nav} aria-label="Primary">
         <Link href="/" className={styles.brand}>
@@ -1084,12 +1102,46 @@ export default function ToniSpatialHero() {
         </Link>
         <div className={styles.links}>
           <Link href="/work">作品</Link>
-          <Link href="/aila">AILA</Link>
           <Link href="/tools">工具</Link>
-          <Link href="/about">关于</Link>
-          <Link href="/contact">联系</Link>
+          <Link href="/work/training-system">陪跑</Link>
+          <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
+
+      <div className={styles.heroCopy}>
+        <p className={styles.kicker}>
+          <Rocket size={16} />
+          AI product companion / agent workflow
+        </p>
+        <h1>
+          <span className={styles.titleLead}>在 AI 时代</span>
+          <span>把问题</span>
+          <span className={styles.titleFinal}>变成可运行产品</span>
+        </h1>
+        <p>
+          你只需要学会一件事：这个问题，该用怎样的 AI 工具、怎样的方式达成。
+          我陪你从想法、原型、Agent 编排、工程组织，一路跑到可以验证的结果。
+        </p>
+        <div className={styles.heroActions}>
+          <Link href="/work" onClick={(event) => event.stopPropagation()}>
+            看完整档案
+            <ArrowUpRight size={16} />
+          </Link>
+          <Link href="/contact" onClick={(event) => event.stopPropagation()}>
+            联系我
+          </Link>
+        </div>
+      </div>
+
+      <div className={styles.proofDock} aria-label="Trust signals">
+        {proofStats.map((stat) => (
+          <div key={stat.label}>
+            <strong>{stat.value}</strong>
+            <span>{stat.shortLabel}</span>
+          </div>
+        ))}
+      </div>
+
       <div className={styles.controls} aria-label="Spatial gates">
         {gates.map((gate) => (
           <Link
@@ -1113,7 +1165,7 @@ export default function ToniSpatialHero() {
         className={styles.contactButton}
         onClick={(event) => event.stopPropagation()}
       >
-        联系我
+        联系陪跑
       </Link>
       <div className={styles.videoPicker} aria-label="Visual texture">
         {backgroundVideos.map((video) => (

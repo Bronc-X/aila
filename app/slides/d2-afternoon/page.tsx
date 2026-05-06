@@ -28,7 +28,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
         </motion.div>
         <motion.h1 {...d(0.3)} className="text-7xl md:text-[8rem] font-black leading-[1.1] tracking-normal mb-10">
           <span className="text-[#2D2A26]">落地工作坊</span>
-          <br /><span className="text-[#D97706]">{"& 商业赋能"}</span>
+          <br /><span className="text-[#22d665]">{"& 商业赋能"}</span>
         </motion.h1>
       </motion.div>
     </Slide>,
@@ -39,7 +39,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
           听了这么多奇迹，
         </h2>
         <p className="text-6xl md:text-[6.5rem] text-[#2D2A26] font-black tracking-normal text-left leading-[1.1] mt-4">
-          终于轮到<br /><span className="text-[#D97706] whitespace-nowrap">怎么给您的公司开刀子了。</span>
+          终于轮到<br /><span className="text-[#22d665] whitespace-nowrap">怎么给您的公司开刀子了。</span>
         </p>
       </motion.div>
     </Slide>,
@@ -50,7 +50,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
           5 分钟极限诊断
         </h2>
         <p className="text-2xl text-[#6B6660] leading-relaxed mt-4 mb-16">
-          请在纸上写下，您公司目前<span className="font-bold text-[#D97706] border-b-4 border-[#D97706]">最大的 3 个利润出血点</span>。
+          请在纸上写下，您公司目前<span className="font-bold text-[#22d665] border-b-4 border-[#22d665]">最大的 3 个利润出血点</span>。
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
            {[
@@ -59,8 +59,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
              { num: "03", example: "如：每个月花3万块请外包代运营，ROI 几乎为零。" }
            ].map(item => (
              <div key={item.num} className="border border-[#E5E1D8] p-8 rounded-xl bg-[#FAF9F6] shadow-sm relative overflow-hidden group">
-               <div className="absolute top-0 right-0 w-24 h-24 bg-[#D97706] opacity-[0.03] rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
-               <div className="text-[#D97706] font-black text-2xl mb-4">{item.num}</div>
+               <div className="absolute top-0 right-0 w-24 h-24 bg-[#22d665] opacity-[0.03] rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+               <div className="text-[#22d665] font-black text-2xl mb-4">{item.num}</div>
                <div className="border-b-2 border-dashed border-[#A3A3A3] mb-6 mt-8 h-8"></div>
                <div className="text-sm font-mono text-[#6B6660]">{item.example}</div>
              </div>
@@ -72,7 +72,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s3">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
         <div className="flex gap-8 items-center mb-16">
-          <GitPullRequest size={56} className="text-[#D97706]" />
+          <GitPullRequest size={56} className="text-[#22d665]" />
           <h2 className="text-4xl font-black text-[#6B6660] tracking-wide uppercase">
             <span className="text-[#2D2A26]">重构流转 / </span> 3 步落地法
           </h2>
@@ -89,9 +89,9 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                 const cur = mapKeys[item.tag];
                 if(caseDetails[cur]) setModalContent(caseDetails[cur]);
               }}
-              className="flex-1 bg-white border border-[#E5E1D8] hover:border-[#D97706] cursor-pointer transition-colors p-10 rounded-xl shadow-sm hover:shadow-md group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#D97706] opacity-0 group-hover:opacity-5 rounded-full blur-3xl transition-opacity"></div>
-                <div className="text-sm font-mono text-[#D97706] tracking-wide mb-8 font-bold">{item.tag}</div>
+              className="flex-1 bg-white border border-[#E5E1D8] hover:border-[#22d665] cursor-pointer transition-colors p-10 rounded-xl shadow-sm hover:shadow-md group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#22d665] opacity-0 group-hover:opacity-5 rounded-full blur-3xl transition-opacity"></div>
+                <div className="text-sm font-mono text-[#22d665] tracking-wide mb-8 font-bold">{item.tag}</div>
                 <item.icon className="text-[#A3A3A3] group-hover:text-[#2D2A26] transition-colors mb-6" size={48} />
                 <h3 className="text-4xl font-black text-[#2D2A26] tracking-normal mb-4">{item.title}</h3>
                 <p className="text-lg text-[#6B6660]">{item.subtitle}</p>
@@ -104,7 +104,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
     <Slide key="s3_roi" bg="#FAF9F6">
       <motion.div {...fadeUp} className="max-w-5xl mx-auto w-full">
         <h2 className="text-5xl font-black text-[#2D2A26] tracking-wide mb-12 text-center">
-          不要看功能，看 <span className="text-[#D97706]">投资回报率 (ROI)</span>
+          不要看功能，看 <span className="text-[#22d665]">投资回报率 (ROI)</span>
         </h2>
         <div className="bg-white border border-[#E5E1D8] rounded-2xl p-10 shadow-lg flex flex-col md:flex-row gap-12 items-center">
            <div className="flex-1 space-y-8 w-full">
@@ -113,11 +113,11 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                <div className="text-4xl font-mono text-[#2D2A26] border-b-2 border-[#E5E1D8] pb-2">¥ 350,000 / 年</div>
              </div>
              <div>
-               <div className="text-sm font-bold text-[#D97706] mb-2 uppercase tracking-wide">预计 AI 硅基兵团替代比例</div>
-               <div className="text-4xl font-mono text-[#D97706] font-black border-b-2 border-[#E5E1D8] pb-2">65%</div>
+               <div className="text-sm font-bold text-[#22d665] mb-2 uppercase tracking-wide">预计 AI 硅基兵团替代比例</div>
+               <div className="text-4xl font-mono text-[#22d665] font-black border-b-2 border-[#E5E1D8] pb-2">65%</div>
              </div>
            </div>
-           <div className="flex-1 bg-[#F5F3EE] rounded-xl p-8 w-full border border-[#D97706]">
+           <div className="flex-1 bg-[#F5F3EE] rounded-xl p-8 w-full border border-[#22d665]">
              <div className="text-sm font-bold text-[#6B6660] mb-4 uppercase tracking-wide text-center">推演第一年节省现金流直接转为纯利润：</div>
              <div className="text-6xl md:text-7xl font-black text-[#2D2A26] font-mono text-center mb-4">
                22.7 <span className="text-3xl">万元</span>
@@ -151,7 +151,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                     <span className="text-6xl font-black text-white">¥1,980</span>
                     <span className="text-neutral-500 font-mono text-lg">/ 席位</span>
                   </div>
-                  <div className="text-[#D97706] font-bold mt-3 text-sm flex items-center gap-2">
+                  <div className="text-[#22d665] font-bold mt-3 text-sm flex items-center gap-2">
                     ★ 第一期仅开放 30 席
                   </div>
                 </div>
@@ -168,7 +168,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                      "员工思想改造与落地法则"
                    ].map((li, i) => (
                      <li key={i} className="flex gap-3 text-neutral-300 items-start">
-                       <CheckCircle2 size={18} className="text-[#D97706] mt-0.5 shrink-0" />
+                       <CheckCircle2 size={18} className="text-[#22d665] mt-0.5 shrink-0" />
                        <span>{li}</span>
                      </li>
                    ))}
@@ -177,11 +177,11 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
            </div>
 
            {/* STEP 02 - 部署卡 */}
-           <div className="border border-[#D97706]/40 p-10 rounded-2xl bg-gradient-to-b from-neutral-900/80 to-[#1A1612] backdrop-blur shadow-[0_0_40px_rgba(217,119,6,0.1)] relative overflow-hidden flex flex-col">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D97706]/10 rounded-full blur-[80px]"></div>
+           <div className="border border-[#22d665]/40 p-10 rounded-2xl bg-gradient-to-b from-neutral-900/80 to-[#1A1612] backdrop-blur shadow-[0_0_40px_rgba(34, 214, 101,0.1)] relative overflow-hidden flex flex-col">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#22d665]/10 rounded-full blur-[80px]"></div>
               
               <div className="relative z-10 flex flex-col h-full">
-                <div className="inline-block bg-[#D97706] text-white text-sm font-bold px-4 py-1.5 rounded-full mb-6 w-max shadow-[0_0_15px_rgba(217,119,6,0.4)]">
+                <div className="inline-block bg-[#22d665] text-white text-sm font-bold px-4 py-1.5 rounded-full mb-6 w-max shadow-[0_0_15px_rgba(34, 214, 101,0.4)]">
                    STEP 02 : 深度定制
                 </div>
                 <h3 className="text-3xl font-black text-white mb-6">企业数字化深度内训与部署</h3>
@@ -191,7 +191,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                     <span className="text-6xl font-black text-white">¥40,000</span>
                     <span className="text-neutral-500 line-through font-mono text-lg">¥60,000</span>
                   </div>
-                  <div className="text-[#D97706] font-bold mt-3 text-sm leading-relaxed">
+                  <div className="text-[#22d665] font-bold mt-3 text-sm leading-relaxed">
                     ★ 早期体验价，仅限首批 5 家头部合作企业，之后将恢复至 ¥60,000 原价
                   </div>
                 </div>
@@ -208,7 +208,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
                      "全员实操落地内训，确保用得起来"
                    ].map((li, i) => (
                      <li key={i} className="flex gap-3 text-white items-start">
-                       <ChevronRight size={18} className="text-[#D97706] mt-0.5 shrink-0" />
+                       <ChevronRight size={18} className="text-[#22d665] mt-0.5 shrink-0" />
                        <span className="font-medium tracking-wide">{li}</span>
                      </li>
                    ))}
@@ -221,7 +221,7 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
 
     <Slide key="qa" bg="#FAF9F6">
       <motion.div {...fadeUp} className="text-center max-w-5xl mx-auto flex flex-col items-center cursor-pointer group" onClick={() => setModalContent(caseDetails["qa"])}>
-        <MessageSquare size={100} className="text-[#E5E1D8] group-hover:text-[#D97706] transition-colors duration-500 mb-10" />
+        <MessageSquare size={100} className="text-[#E5E1D8] group-hover:text-[#22d665] transition-colors duration-500 mb-10" />
         <h2 className="text-[10rem] md:text-[14rem] font-black text-[#2D2A26] leading-tight tracking-normal mb-4 group-hover:scale-105 transition-transform duration-500">
           Q&A
         </h2>
@@ -233,8 +233,8 @@ function allSlides(setModalContent: (content: React.ReactNode) => void) {
       <motion.div {...fadeUp} className="text-center w-full max-w-5xl mx-auto flex flex-col items-center justify-center">
         <h2 className="text-4xl md:text-[5rem] font-black text-[#2D2A26] leading-[1.3] tracking-normal mx-auto max-w-5xl text-left">
           “ 在 2026 年，<br />
-          要么你<span className="text-[#D97706] border-b-[8px] pb-2 border-[#D97706]">改造</span><span className="whitespace-nowrap">你的企业，</span><br />
-          要么你的同行用AI<span className="text-[#D97706] border-b-[8px] pb-2 border-[#D97706]">吞噬</span><span className="whitespace-nowrap">你。</span><br />
+          要么你<span className="text-[#22d665] border-b-[8px] pb-2 border-[#22d665]">改造</span><span className="whitespace-nowrap">你的企业，</span><br />
+          要么你的同行用AI<span className="text-[#22d665] border-b-[8px] pb-2 border-[#22d665]">吞噬</span><span className="whitespace-nowrap">你。</span><br />
           没有中间选项。 ”
         </h2>
         <motion.p {...d(0.8)} className="text-xl text-[#9E9B96] tracking-widest mt-24 font-mono border-t border-[#E5E1D8] pt-8 uppercase font-bold">
