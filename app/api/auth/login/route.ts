@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     if (!inviteCode) {
       return NextResponse.json(
-        { error: "INVALID_INVITE_CODE", message: "璇疯緭鍏ラ個璇风爜" },
+        { error: "INVALID_INVITE_CODE", message: "请输入邀请码" },
         { status: 400 }
       );
     }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     if (!grantedScope) {
       return NextResponse.json(
-        { error: "INVALID_INVITE_CODE", message: "閭€璇风爜鏃犳晥" },
+        { error: "INVALID_INVITE_CODE", message: "邀请码无效" },
         { status: 401 }
       );
     }
@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
           error: "INSUFFICIENT_SCOPE",
           message:
             requiredScope === "slides"
-              ? "璇ヤ釜閭€璇风爜涓嶈冻浠ヨ闂浠讹紝璇疯緭鍏?2049"
-              : "璇ヤ釜閭€璇风爜涓嶈冻浠ヨ闂?AI 宸ュ叿锛岃杈撳叆 2026",
+              ? "这个邀请码不能访问课件，请输入 2049"
+              : "这个邀请码不能访问 AI 工具，请输入 2026",
         },
         { status: 403 }
       );
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Login API error:", error);
     return NextResponse.json(
-      { error: "INTERNAL_SERVER_ERROR", message: "鐧诲綍澶辫触锛岃绋嶅悗閲嶈瘯" },
+      { error: "INTERNAL_SERVER_ERROR", message: "登录失败，请稍后重试" },
       { status: 500 }
     );
   }

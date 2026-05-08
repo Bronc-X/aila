@@ -3,6 +3,8 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 export const AUTH_COOKIE_NAME = "aila_session";
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
+const DEFAULT_TOOLS_INVITE_CODE = "2026";
+const DEFAULT_SLIDES_INVITE_CODE = "2049";
 
 export type SessionScope = "tools" | "slides";
 
@@ -21,9 +23,19 @@ type LegacySessionPayload = {
   expiresAt: number;
 };
 
-const INVITE_SCOPE_CONFIG: Array<{ scope: SessionScope; code: string | undefined }> = [
-  { scope: "tools", code: process.env.AILA_LOGIN_INVITE_CODE?.trim() },
-  { scope: "slides", code: process.env.AILA_SLIDES_INVITE_CODE?.trim() },
+const INVITE_SCOPE_CONFIG: Array<{ scope: SessionScope; codes: string[] }> = [
+  {
+    scope: "tools",
+    codes: [DEFAULT_TOOLS_INVITE_CODE, process.env.AILA_LOGIN_INVITE_CODE?.trim()].filter(
+      Boolean
+    ) as string[],
+  },
+  {
+    scope: "slides",
+    codes: [DEFAULT_SLIDES_INVITE_CODE, process.env.AILA_SLIDES_INVITE_CODE?.trim()].filter(
+      Boolean
+    ) as string[],
+  },
 ];
 
 function getSessionSecret() {
@@ -99,7 +111,7 @@ export function getInviteScope(inviteCode: string): SessionScope | null {
     return null;
   }
 
-  const match = INVITE_SCOPE_CONFIG.find((entry) => entry.code && entry.code === normalized);
+  const match = INVITE_SCOPE_CONFIG.find((entry) => entry.codes.includes(normalized));
   return match?.scope ?? null;
 }
 

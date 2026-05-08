@@ -86,24 +86,6 @@ export default function LoginPage() {
     });
   };
 
-async function handleCodeSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!inviteCode.trim()) return;
-    setLoading(true);
-    setError("");
-
-    try {
-      await postJson("/api/auth/login", {
-        inviteCode: inviteCode.trim(),
-      });
-      setStep("info");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "邀请码校验失败");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function handleInfoSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !company.trim() || !industry) return;
@@ -126,6 +108,8 @@ async function handleCodeSubmit(e: React.FormEvent) {
     };
     localStorage.setItem("aila-user-profile", JSON.stringify(profile));
 
+    let shouldDelayNavigation = false;
+
     try {
       await postJson("/api/profile", {
         name: profile.name,
@@ -138,12 +122,17 @@ async function handleCodeSubmit(e: React.FormEvent) {
         ai_experience: profile.aiExperience,
       });
     } catch (e) {
-      setLoading(false);
-      setError(e instanceof Error ? e.message : "信息保存失败，请稍后重试");
-      return;
+      shouldDelayNavigation = true;
+      setError("资料已保存在本机，云端同步失败，但不影响进入工具。");
+      console.warn("Profile sync failed:", e);
     }
 
     setLoading(false);
+    if (shouldDelayNavigation) {
+      window.setTimeout(() => router.push(nextPath), 800);
+      return;
+    }
+
     router.push(nextPath);
   }
 

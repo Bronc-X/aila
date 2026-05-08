@@ -22,8 +22,8 @@ export function proxy(request: NextRequest) {
         error: "UNAUTHORIZED",
         message:
           requiredScope === "slides"
-            ? "璇峰厛瀹屾垚璁叉紨璇句欢楠岃瘉"
-            : "璇峰厛鐧诲綍鍚庡啀浣跨敤姝ゅ姛鑳?",
+            ? "请先完成课件访问验证"
+            : "请先登录后再使用此功能",
       },
       { status: 401 }
     );
