@@ -8,6 +8,7 @@ import {
   Rocket,
 } from "lucide-react";
 import {
+  type CSSProperties,
   type MouseEvent as ReactMouseEvent,
   type WheelEvent as ReactWheelEvent,
   useCallback,
@@ -24,10 +25,27 @@ type Projected = Vec3 & { scale: number; visible: boolean };
 type HitZone = { id: string; href: string; x: number; y: number; w: number; h: number; depth: number };
 type CubeFace = {
   points: Projected[];
-  fill: string;
+  fill: string | CanvasGradient | CanvasPattern;
   stroke: string;
   depth: number;
 };
+type BurstShard = {
+  angle: number;
+  distance: number;
+  size: number;
+  spin: number;
+  tint: string;
+};
+type CrystalBurst = {
+  id: string;
+  key: string;
+  x: number;
+  y: number;
+  start: number;
+  tint: string;
+  shards: BurstShard[];
+};
+type BurstStyle = CSSProperties & Record<`--${string}`, string>;
 type GateKind = "word" | "panel" | "cube";
 type BackgroundVideo = {
   id: string;
@@ -102,11 +120,11 @@ const gates: Gate[] = [
     x: 486,
     y: -18,
     z: -190,
-    width: 326,
-    height: 198,
-    depth: 214,
+    width: 264,
+    height: 264,
+    depth: 264,
     rotY: -0.5,
-    tint: "#fff3dc",
+    tint: "#ffd28a",
     kind: "panel",
     warp: 32,
   },
@@ -119,9 +137,9 @@ const gates: Gate[] = [
     x: -540,
     y: 94,
     z: -150,
-    width: 356,
-    height: 214,
-    depth: 226,
+    width: 278,
+    height: 278,
+    depth: 278,
     rotY: 0.44,
     tint: "#a8f06a",
     kind: "panel",
@@ -136,9 +154,9 @@ const gates: Gate[] = [
     x: 20,
     y: 228,
     z: -318,
-    width: 276,
-    height: 276,
-    depth: 276,
+    width: 292,
+    height: 292,
+    depth: 292,
     rotY: 0.08,
     tint: "#8ed6ce",
     kind: "cube",
@@ -153,9 +171,9 @@ const gates: Gate[] = [
     x: 566,
     y: 148,
     z: -552,
-    width: 356,
-    height: 214,
-    depth: 226,
+    width: 282,
+    height: 282,
+    depth: 282,
     rotY: -0.34,
     tint: "#b7f36f",
     kind: "panel",
@@ -210,7 +228,7 @@ function mix(hex: string, alpha: number) {
 function drawPolygon(
   ctx: CanvasRenderingContext2D,
   points: Projected[],
-  fill: string,
+  fill: string | CanvasGradient | CanvasPattern,
   stroke?: string,
 ) {
   if (points.some((point) => !point.visible)) return;
@@ -258,6 +276,116 @@ function drawProjectedEllipse(
   ctx.strokeStyle = stroke;
   ctx.lineWidth = width;
   ctx.stroke();
+}
+
+function drawCrystalRim(
+  ctx: CanvasRenderingContext2D,
+  projected: Projected[],
+  tint: string,
+  depthAlpha: number,
+  active: boolean,
+) {
+  const rimAlpha = (active ? 0.92 : 0.68) * depthAlpha;
+  const glintAlpha = (active ? 0.62 : 0.38) * depthAlpha;
+
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  ctx.shadowColor = "#8f7cff";
+  ctx.shadowBlur = active ? 28 : 18;
+  strokeProjectedLine(ctx, projected[4], projected[5], `rgba(190, 206, 255, ${rimAlpha})`, 1.65);
+  strokeProjectedLine(ctx, projected[5], projected[6], mix(tint, rimAlpha * 0.72), 1.45);
+  strokeProjectedLine(ctx, projected[6], projected[7], `rgba(118, 122, 255, ${rimAlpha * 0.72})`, 1.25);
+  strokeProjectedLine(ctx, projected[7], projected[4], `rgba(213, 233, 255, ${rimAlpha * 0.62})`, 1.3);
+  strokeProjectedLine(ctx, projected[4], projected[0], `rgba(180, 186, 255, ${rimAlpha * 0.5})`, 1);
+  strokeProjectedLine(ctx, projected[5], projected[1], `rgba(248, 255, 255, ${glintAlpha})`, 0.85);
+  strokeProjectedLine(ctx, projected[6], projected[2], `rgba(126, 230, 255, ${glintAlpha * 0.8})`, 0.85);
+  strokeProjectedLine(ctx, projected[7], projected[3], `rgba(142, 214, 206, ${glintAlpha * 0.56})`, 0.75);
+  strokeProjectedLine(ctx, projected[4], projected[6], `rgba(236, 246, 255, ${glintAlpha * 0.34})`, 0.65);
+  strokeProjectedLine(ctx, projected[5], projected[7], `rgba(137, 116, 255, ${glintAlpha * 0.3})`, 0.65);
+
+  projected.slice(4).forEach((point, index) => {
+    if (!point.visible) return;
+    const radius = Math.max(1.2, 3.2 * point.scale);
+    const glow = index % 2 === 0 ? "190, 206, 255" : "126, 230, 255";
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${glow}, ${glintAlpha * 0.82})`;
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+function drawCrystalBurst(ctx: CanvasRenderingContext2D, burst: CrystalBurst, time: number) {
+  const progress = clamp((time - burst.start) / 820, 0, 1);
+  const easeOut = 1 - (1 - progress) ** 3;
+  const alpha = 1 - progress;
+  if (alpha <= 0) return;
+
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  ctx.shadowColor = burst.tint;
+  ctx.shadowBlur = 38 * alpha;
+
+  const flash = ctx.createRadialGradient(burst.x, burst.y, 0, burst.x, burst.y, 170 * easeOut + 16);
+  flash.addColorStop(0, `rgba(255, 246, 229, ${0.7 * alpha})`);
+  flash.addColorStop(0.2, mix(burst.tint, 0.42 * alpha));
+  flash.addColorStop(0.42, `rgba(239, 248, 255, ${0.24 * alpha})`);
+  flash.addColorStop(0.5, "rgba(255, 255, 255, 0)");
+  flash.addColorStop(1, "rgba(255, 255, 255, 0)");
+  ctx.fillStyle = flash;
+  ctx.fillRect(burst.x - 220, burst.y - 220, 440, 440);
+
+  ctx.beginPath();
+  ctx.arc(burst.x, burst.y, 24 + easeOut * 135, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(255, 246, 229, ${0.56 * alpha})`;
+  ctx.lineWidth = 2.4;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(burst.x, burst.y, 9 + easeOut * 86, 0, Math.PI * 2);
+  ctx.strokeStyle = mix(burst.tint, 0.62 * alpha);
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  const ring = ctx.createRadialGradient(burst.x, burst.y, 0, burst.x, burst.y, 132 * easeOut + 10);
+  ring.addColorStop(0, `rgba(255, 246, 229, ${0.26 * alpha})`);
+  ring.addColorStop(0.28, mix(burst.tint, 0.24 * alpha));
+  ring.addColorStop(0.44, `rgba(239, 248, 255, ${0.18 * alpha})`);
+  ring.addColorStop(0.46, "rgba(255, 255, 255, 0)");
+  ring.addColorStop(1, "rgba(255, 255, 255, 0)");
+  ctx.fillStyle = ring;
+  ctx.fillRect(burst.x - 180, burst.y - 180, 360, 360);
+
+  burst.shards.forEach((shard, index) => {
+    const radius = shard.distance * easeOut;
+    const x = burst.x + Math.cos(shard.angle) * radius;
+    const y = burst.y + Math.sin(shard.angle) * radius * 0.72 + progress * 18;
+    const shardAlpha = alpha * (0.68 + seeded(index + 83) * 0.44);
+    const length = shard.size * (1 - progress * 0.42);
+    const width = Math.max(2, length * 0.32);
+    const rotation = shard.angle + shard.spin * progress;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.beginPath();
+    ctx.moveTo(0, -length * 0.52);
+    ctx.lineTo(width, 0);
+    ctx.lineTo(0, length * 0.48);
+    ctx.lineTo(-width * 0.76, length * 0.08);
+    ctx.closePath();
+    const shardFill = ctx.createLinearGradient(-width, -length, width, length);
+    shardFill.addColorStop(0, `rgba(255, 255, 255, ${0.72 * shardAlpha})`);
+    shardFill.addColorStop(0.42, mix(shard.tint, 0.46 * shardAlpha));
+    shardFill.addColorStop(1, `rgba(52, 232, 218, ${0.18 * shardAlpha})`);
+    ctx.fillStyle = shardFill;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(255, 246, 229, ${0.62 * shardAlpha})`;
+    ctx.lineWidth = 0.9;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  ctx.restore();
 }
 
 function attachLoopingVideo(video: HTMLVideoElement, source: BackgroundVideo, playbackRate: number) {
@@ -330,17 +458,37 @@ function drawFittedText(
   ctx.restore();
 }
 
+function makeBurst(id: string, x: number, y: number, tint: string): CrystalBurst {
+  return {
+    id,
+    key: `${id}-${Math.round(performance.now())}-${Math.round(x)}-${Math.round(y)}`,
+    x,
+    y,
+    tint,
+    start: performance.now(),
+    shards: Array.from({ length: 46 }, (_, index) => ({
+      angle: (Math.PI * 2 * index) / 46 + seeded(index + id.length * 19) * 0.24,
+      distance: 54 + seeded(index + 31) * 178,
+      size: 10 + seeded(index + 43) * 34,
+      spin: (seeded(index + 59) - 0.5) * Math.PI * 1.8,
+      tint: index % 4 === 0 ? "#fff6e5" : index % 3 === 0 ? "#8ed6ce" : tint,
+    })),
+  };
+}
+
 export default function ToniSpatialHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const galaxyVideoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hitZonesRef = useRef<HitZone[]>([]);
+  const burstsRef = useRef<CrystalBurst[]>([]);
   const cameraRef = useRef<Camera>({ x: 0, y: 0, z: 0, yaw: -0.02, pitch: -0.035 });
   const targetRef = useRef<Camera>({ x: 0, y: 0, z: 0, yaw: -0.02, pitch: -0.035 });
   const velocityRef = useRef(0);
   const dragRef = useRef({ active: false, moved: false, x: 0, y: 0, yaw: 0, pitch: 0 });
   const [activeVideoId, setActiveVideoId] = useState("silk-flow");
   const [activeId, setActiveId] = useState("toni");
+  const [visibleBursts, setVisibleBursts] = useState<CrystalBurst[]>([]);
   const router = useRouter();
   const activeVideo = backgroundVideos.find((video) => video.id === activeVideoId) ?? backgroundVideos[0];
   const galaxyVideo = backgroundVideos.find((video) => video.id !== activeVideoId) ?? backgroundVideos[1];
@@ -751,41 +899,55 @@ export default function ToniSpatialHero() {
       ctx.restore();
     }
 
+    const crystalFill = (
+      topLeft: Projected,
+      bottomRight: Projected,
+      alpha: number,
+      bright = 0.14,
+    ) => {
+      const gradient = ctx.createLinearGradient(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+      gradient.addColorStop(0, `rgba(239, 248, 255, ${alpha * 0.62})`);
+      gradient.addColorStop(0.22, `rgba(149, 128, 255, ${alpha * bright})`);
+      gradient.addColorStop(0.58, mix(gate.tint, alpha * 0.28));
+      gradient.addColorStop(1, `rgba(7, 14, 42, ${alpha * 0.46})`);
+      return gradient;
+    };
+
     const faces: CubeFace[] = [
       {
         points: [projected[0], projected[1], projected[2], projected[3]],
-        fill: "rgba(2, 3, 4, 0.92)",
-        stroke: `rgba(255, 246, 229, ${0.12 * depthAlpha})`,
+        fill: crystalFill(projected[0], projected[2], 0.5 * depthAlpha, 0.12),
+        stroke: `rgba(190, 206, 255, ${0.2 * depthAlpha})`,
         depth: (projected[0].z + projected[1].z + projected[2].z + projected[3].z) / 4,
       },
       {
         points: [projected[0], projected[1], projected[5], projected[4]],
-        fill: "rgba(19, 21, 17, 0.88)",
-        stroke: mix(gate.tint, 0.24 * depthAlpha),
+        fill: crystalFill(projected[0], projected[5], 0.58 * depthAlpha, 0.18),
+        stroke: `rgba(226, 239, 255, ${0.36 * depthAlpha})`,
         depth: (projected[0].z + projected[1].z + projected[5].z + projected[4].z) / 4,
       },
       {
         points: [projected[1], projected[2], projected[6], projected[5]],
-        fill: mix(gate.tint, 0.38 * depthAlpha),
-        stroke: mix(gate.tint, 0.36 * depthAlpha),
+        fill: crystalFill(projected[1], projected[6], 0.72 * depthAlpha, 0.28),
+        stroke: mix(gate.tint, 0.58 * depthAlpha),
         depth: (projected[1].z + projected[2].z + projected[6].z + projected[5].z) / 4,
       },
       {
         points: [projected[2], projected[3], projected[7], projected[6]],
-        fill: "rgba(0, 0, 0, 0.88)",
-        stroke: `rgba(255, 246, 229, ${0.14 * depthAlpha})`,
+        fill: crystalFill(projected[2], projected[7], 0.5 * depthAlpha, 0.1),
+        stroke: `rgba(126, 230, 255, ${0.22 * depthAlpha})`,
         depth: (projected[2].z + projected[3].z + projected[7].z + projected[6].z) / 4,
       },
       {
         points: [projected[3], projected[0], projected[4], projected[7]],
-        fill: "rgba(6, 10, 10, 0.9)",
-        stroke: mix(gate.tint, 0.24 * depthAlpha),
+        fill: crystalFill(projected[3], projected[4], 0.6 * depthAlpha, 0.16),
+        stroke: `rgba(143, 124, 255, ${0.34 * depthAlpha})`,
         depth: (projected[3].z + projected[0].z + projected[4].z + projected[7].z) / 4,
       },
       {
         points: [projected[4], projected[5], projected[6], projected[7]],
-        fill: gate.kind === "cube" ? "rgba(4, 24, 29, 0.92)" : "rgba(9, 11, 10, 0.94)",
-        stroke: mix(gate.tint, active ? 0.92 : 0.58),
+        fill: crystalFill(projected[4], projected[6], (gate.kind === "cube" ? 0.86 : 0.72) * depthAlpha, 0.36),
+        stroke: active ? `rgba(239, 248, 255, ${0.72 * depthAlpha})` : `rgba(190, 206, 255, ${0.48 * depthAlpha})`,
         depth: (projected[4].z + projected[5].z + projected[6].z + projected[7].z) / 4,
       },
     ];
@@ -796,17 +958,7 @@ export default function ToniSpatialHero() {
         drawPolygon(ctx, face.points, face.fill, face.stroke);
       });
 
-    ctx.save();
-    ctx.globalCompositeOperation = "screen";
-    ctx.shadowColor = gate.tint;
-    ctx.shadowBlur = active ? 26 : 15;
-    strokeProjectedLine(ctx, projected[4], projected[5], mix(gate.tint, 0.54 * depthAlpha), 1.2);
-    strokeProjectedLine(ctx, projected[5], projected[6], mix(gate.tint, 0.46 * depthAlpha), 1.2);
-    strokeProjectedLine(ctx, projected[6], projected[7], mix(gate.tint, 0.34 * depthAlpha), 1.1);
-    strokeProjectedLine(ctx, projected[7], projected[4], mix(gate.tint, 0.46 * depthAlpha), 1.2);
-    strokeProjectedLine(ctx, projected[5], projected[1], `rgba(255, 246, 229, ${0.16 * depthAlpha})`, 0.8);
-    strokeProjectedLine(ctx, projected[6], projected[2], `rgba(255, 246, 229, ${0.12 * depthAlpha})`, 0.8);
-    ctx.restore();
+    drawCrystalRim(ctx, projected, gate.tint, depthAlpha, active);
 
     if (centerPlane.every((point) => point.visible)) {
       const planeTopLeft = centerPlane[0];
@@ -839,22 +991,51 @@ export default function ToniSpatialHero() {
         gate.height * 0.48,
         Math.max(gate.width, gate.height) * 0.7,
       );
-      chamber.addColorStop(0, mix(gate.tint, active ? 0.18 : 0.11));
-      chamber.addColorStop(0.48, "rgba(0, 0, 0, 0)");
-      chamber.addColorStop(1, "rgba(0, 0, 0, 0.45)");
+      chamber.addColorStop(0, `rgba(239, 248, 255, ${active ? 0.17 : 0.11})`);
+      chamber.addColorStop(0.26, mix(gate.tint, active ? 0.22 : 0.14));
+      chamber.addColorStop(0.62, "rgba(45, 34, 100, 0.1)");
+      chamber.addColorStop(1, "rgba(0, 0, 0, 0.28)");
       ctx.fillStyle = chamber;
+      ctx.fillRect(0, 0, gate.width, gate.height);
+
+      const bevel = ctx.createLinearGradient(0, 0, gate.width, gate.height);
+      bevel.addColorStop(0, "rgba(248, 255, 255, 0.22)");
+      bevel.addColorStop(0.18, "rgba(143, 124, 255, 0.06)");
+      bevel.addColorStop(0.52, "rgba(0, 0, 0, 0)");
+      bevel.addColorStop(0.78, "rgba(126, 230, 255, 0.08)");
+      bevel.addColorStop(1, "rgba(239, 248, 255, 0.18)");
+      ctx.fillStyle = bevel;
       ctx.fillRect(0, 0, gate.width, gate.height);
 
       ctx.globalCompositeOperation = "screen";
       ctx.shadowBlur = 0;
-      for (let point = 0; point < 34; point += 1) {
+      for (let point = 0; point < 22; point += 1) {
         const seed = point + gate.z * 0.1;
         const x = gate.width * (0.09 + seeded(seed + 3) * 0.82);
         const y = gate.height * (0.13 + seeded(seed + 7) * 0.74);
         const pulse = 0.55 + Math.sin(time * 0.0022 + seed) * 0.45;
-        ctx.fillStyle = mix(gate.tint, (active ? 0.17 : 0.08) * pulse);
-        ctx.fillRect(x, y, 1.2 + seeded(seed + 11) * 1.8, 1.2 + seeded(seed + 13) * 1.6);
+        ctx.fillStyle = point % 3 === 0
+          ? `rgba(239, 248, 255, ${(active ? 0.18 : 0.1) * pulse})`
+          : mix(gate.tint, (active ? 0.14 : 0.07) * pulse);
+        ctx.fillRect(x, y, 1 + seeded(seed + 11) * 1.5, 1 + seeded(seed + 13) * 1.4);
       }
+
+      ctx.lineWidth = Math.max(1, gate.height * 0.006);
+      ctx.shadowColor = "#8f7cff";
+      ctx.shadowBlur = active ? 18 : 10;
+      ctx.strokeStyle = `rgba(239, 248, 255, ${active ? 0.24 : 0.14})`;
+      ctx.beginPath();
+      ctx.moveTo(gate.width * 0.18, gate.height * 0.18);
+      ctx.lineTo(gate.width * 0.58, gate.height * 0.36);
+      ctx.lineTo(gate.width * 0.82, gate.height * 0.2);
+      ctx.stroke();
+      ctx.strokeStyle = `rgba(143, 124, 255, ${active ? 0.26 : 0.16})`;
+      ctx.beginPath();
+      ctx.moveTo(gate.width * 0.16, gate.height * 0.78);
+      ctx.lineTo(gate.width * 0.44, gate.height * 0.56);
+      ctx.lineTo(gate.width * 0.74, gate.height * 0.68);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
 
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -946,6 +1127,8 @@ export default function ToniSpatialHero() {
       .forEach((gate) => drawPanelGate(ctx, gate, width, height, time));
 
     drawForegroundFragments(ctx, width, height, time);
+    burstsRef.current = burstsRef.current.filter((burst) => time - burst.start < 720);
+    burstsRef.current.forEach((burst) => drawCrystalBurst(ctx, burst, time));
   }, [drawAtmosphere, drawForegroundFragments, drawGlassSheets, drawPanelGate, drawStars, drawTunnel, drawWordGate, resolveGateCenter]);
 
   useEffect(() => {
@@ -1019,12 +1202,39 @@ export default function ToniSpatialHero() {
     velocityRef.current += 18;
   };
 
+  const hitTestGate = (x: number, y: number) =>
+    [...hitZonesRef.current]
+      .filter((zone) => x >= zone.x && x <= zone.x + zone.w && y >= zone.y && y <= zone.y + zone.h)
+      .sort((a, b) => {
+        const areaA = a.w * a.h;
+        const areaB = b.w * b.h;
+        if (Math.abs(areaA - areaB) > 1) return areaA - areaB;
+        return a.depth - b.depth;
+      })[0];
+
+  const triggerBurst = (hit: HitZone, x: number, y: number) => {
+    const gate = gates.find((item) => item.id === hit.id);
+    const burst = makeBurst(hit.id, x, y, gate?.tint ?? "#a8f06a");
+    setActiveId(hit.id);
+    burstsRef.current.push(burst);
+    setVisibleBursts((current) => [...current.slice(-3), burst]);
+    window.setTimeout(() => {
+      setVisibleBursts((current) => current.filter((item) => item.key !== burst.key));
+    }, 860);
+    velocityRef.current += 8;
+  };
+
   const handleWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
     event.preventDefault();
     velocityRef.current += event.deltaY * 0.12;
   };
 
   const handleMouseDown = (event: ReactMouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const hit = hitTestGate(x, y);
+    if (hit && hit.id !== "toni") triggerBurst(hit, x, y);
     dragRef.current = {
       active: true,
       moved: false,
@@ -1068,15 +1278,11 @@ export default function ToniSpatialHero() {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const hit = [...hitZonesRef.current]
-      .filter((zone) => x >= zone.x && x <= zone.x + zone.w && y >= zone.y && y <= zone.y + zone.h)
-      .sort((a, b) => {
-        const areaA = a.w * a.h;
-        const areaB = b.w * b.h;
-        if (Math.abs(areaA - areaB) > 1) return areaA - areaB;
-        return a.depth - b.depth;
-      })[0];
-    if (hit) router.push(hit.href);
+    const hit = hitTestGate(x, y);
+    if (hit) {
+      if (hit.id === "toni") triggerBurst(hit, x, y);
+      window.setTimeout(() => router.push(hit.href), 360);
+    }
   };
 
   return (
@@ -1096,6 +1302,30 @@ export default function ToniSpatialHero() {
       <div className={styles.cosmicMist} aria-hidden="true" />
       <div className={styles.signalGrid} aria-hidden="true" />
       <canvas ref={canvasRef} className={styles.canvas} />
+      <div className={styles.burstLayer} aria-hidden="true">
+        {visibleBursts.map((burst) => (
+          <div
+            key={burst.key}
+            className={styles.crystalBurst}
+            style={{ "--burst-x": `${burst.x}px`, "--burst-y": `${burst.y}px`, "--burst-tint": burst.tint } as BurstStyle}
+          >
+            <span className={styles.burstFlash} />
+            {burst.shards.slice(0, 24).map((shard, index) => (
+              <span
+                key={`${burst.key}-${index}`}
+                className={styles.burstShard}
+                style={{
+                  "--shard-angle": `${shard.angle}rad`,
+                  "--shard-distance": `${shard.distance}px`,
+                  "--shard-size": `${shard.size}px`,
+                  "--shard-spin": `${shard.spin}rad`,
+                  "--shard-tint": shard.tint,
+                } as BurstStyle}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
       <nav className={styles.nav} aria-label="Primary">
         <Link href="/" className={styles.brand}>
           Toni
