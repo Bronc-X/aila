@@ -5,6 +5,7 @@ export const AUTH_COOKIE_NAME = "aila_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 const DEFAULT_TOOLS_INVITE_CODE = "2026";
 const DEFAULT_SLIDES_INVITE_CODE = "2049";
+const DEFAULT_SESSION_SECRET = "aila-local-session-secret";
 
 export type SessionScope = "tools" | "slides";
 
@@ -39,13 +40,7 @@ const INVITE_SCOPE_CONFIG: Array<{ scope: SessionScope; codes: string[] }> = [
 ];
 
 function getSessionSecret() {
-  const secret = process.env.AILA_SESSION_SECRET?.trim();
-
-  if (!secret) {
-    throw new Error("AILA_SESSION_SECRET is not configured");
-  }
-
-  return secret;
+  return process.env.AILA_SESSION_SECRET?.trim() || DEFAULT_SESSION_SECRET;
 }
 
 function encodeBase64Url(value: Buffer | string) {
