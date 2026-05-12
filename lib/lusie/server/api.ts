@@ -17,6 +17,11 @@ export function getHandshakePayload(): HandshakeResponse {
     },
     configured: {
       openai: Boolean(process.env.OPENAI_API_KEY ?? process.env.GPT_API_KEY),
+      storage: Boolean(
+        process.env.SUPABASE_SERVICE_ROLE_KEY ??
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+          process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+      ),
       tripo: Boolean(process.env.TRIPO_API_KEY)
     },
     capabilities: {

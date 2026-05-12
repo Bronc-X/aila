@@ -74,6 +74,7 @@ export interface HandshakeResponse {
   };
   configured: {
     openai: boolean;
+    storage: boolean;
     tripo: boolean;
   };
   capabilities: {

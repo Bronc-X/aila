@@ -84,7 +84,12 @@ async function expectText(routePath, expected) {
 async function expectHandshake() {
   const response = await fetch(`${baseUrl}/api/lusie/handshake`, { cache: "no-store" });
   const json = await response.json();
-  if (!response.ok || json?.ok !== true || json?.app !== "printable-model-demo") {
+  if (
+    !response.ok ||
+    json?.ok !== true ||
+    json?.app !== "printable-model-demo" ||
+    typeof json?.configured?.storage !== "boolean"
+  ) {
     throw new Error("Lusie handshake API returned an unexpected payload.");
   }
 }

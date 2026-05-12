@@ -585,7 +585,7 @@ function ConfigPanel({
           <h2>先定模型方向</h2>
           <p>选原型、尺寸、涂装和打印约束，生成更接近真实载具的概念图。</p>
           <p className="tiny-label">
-            openai:{handshake?.configured.openai ? "已连接" : "缺失"} · tripo:{handshake?.configured.tripo ? "已连接" : "缺失"}
+            openai:{handshake?.configured.openai ? "已连接" : "缺失"} · storage:{handshake?.configured.storage ? "已连接" : "缺失"} · tripo:{handshake?.configured.tripo ? "已连接" : "缺失"}
           </p>
         </div>
 
