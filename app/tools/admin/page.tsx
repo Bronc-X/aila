@@ -368,7 +368,7 @@ export default function AdminPage() {
                   <div className="flex flex-col items-center justify-center h-[350px] text-center">
                     <FileSignature size={32} className="text-[#6B6660] mb-3" />
                     <p className="text-[#9E9B96]">选择类型后生成</p>
-                    <p className="text-sm text-[#6B6660]">AI将输出分条款合同，每条可独立编辑</p>
+                    <p className="text-sm text-[#6B6660]">输出分条款合同草稿，每条可独立编辑并人工复核</p>
                   </div>
                 ) : (
                   <div className="space-y-3 max-h-[500px] overflow-y-auto">
@@ -406,7 +406,7 @@ export default function AdminPage() {
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
-                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><BookOpen size={18} /> 智能会议纪要</h2>
+                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><BookOpen size={18} /> 会议纪要整理</h2>
                 <div className="border-2 border-dashed border-[#E5E1D8] p-6 text-center hover:border-[#22d665] transition-colors cursor-pointer rounded-xl">
                   <BookOpen size={28} className="text-[#A3A3A3] mx-auto mb-2" />
                   <p className="text-xs text-[#9E9B96]">上传录音 (MP3/WAV/M4A)</p>
@@ -479,7 +479,7 @@ export default function AdminPage() {
         {activeTab === "schedule" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
-              <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">AI 排班优化</h2>
+              <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">排班优化演示</h2>
               <p className="text-[#666] mb-6">点击班次循环切换 · 右键锁定 · 数据自动保存</p>
             </div>
             <div className="border border-[#E5E1D8] bg-white p-6 mb-4 rounded-xl">

@@ -188,12 +188,12 @@ export default function LoginPage() {
       >
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-black text-[#2D2A26] tracking-normal leading-tight mb-4">
-            {step === "code" ? "输入邀请码。" : "完善您的信息。"}
+            {step === "code" ? "输入演示邀请码。" : "先补充你的业务背景。"}
           </h1>
           <p className="text-lg text-[#9E9B96] tracking-normal">
             {step === "code"
-              ? "本次闭门实训采用邀请制，请输入您收到的专属邀请码。"
-              : "帮助我们更准确地理解您的企业现场。"}
+              ? "工具演示区采用邀请制，请输入你收到的访问码。"
+              : "这些信息会帮助工具页按行业和痛点给出更贴近现场的示例。"}
           </p>
         </div>
 
@@ -230,7 +230,7 @@ export default function LoginPage() {
                 disabled={loading || !inviteCode.trim()}
                 className="w-full sm:w-auto mx-auto flex items-center justify-center gap-8 py-5 px-14 border-2 border-[#E5E1D8] hover:border-[#22d665] hover:bg-white transition-all disabled:opacity-30 group text-xl font-bold uppercase tracking-wide text-[#6B6660] hover:text-[#22d665] rounded-2xl"
               >
-                {loading ? "VERIFYING..." : "ENTER AUTH"}
+                {loading ? "VERIFYING..." : "进入演示区"}
                 {!loading && (
                   <ArrowRight
                     size={24}
@@ -397,7 +397,7 @@ export default function LoginPage() {
                 disabled={loading || !canSubmitInfo}
                 className="w-full flex items-center justify-center gap-4 py-5 bg-[#22d665] text-white hover:bg-[#15803d] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-xl font-black uppercase tracking-normal rounded-2xl"
               >
-                {loading ? "INITIALIZING..." : "LAUNCH CONTROL MODULE"}
+                {loading ? "INITIALIZING..." : "进入工具控制台"}
                 {!loading && (
                   <ArrowRight
                     size={28}

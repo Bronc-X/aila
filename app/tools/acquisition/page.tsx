@@ -143,8 +143,8 @@ const INITIAL_STORYBOARD: StoryboardRow[] = [
   { id: "1", scene: "01", time: "0-3s", shot: "产品特写 · 慢推", narration: "你见过能让效率翻5倍的工具吗？", note: "暗调打光，产品居中" },
   { id: "2", scene: "02", time: "3-8s", shot: "痛点场景 · 快切", narration: "每天重复的工作，耗尽了你多少时间？", note: "办公室加班画面×3" },
   { id: "3", scene: "03", time: "8-15s", shot: "产品演示 · 录屏", narration: "一句话，繁琐工作交给系统", note: "实际操作录屏，加速播放" },
-  { id: "4", scene: "04", time: "15-20s", shot: "数据对比 · 动态图表", narration: "效率提升500%，成本降低60%", note: "动画图表从0到满" },
-  { id: "5", scene: "05", time: "20-25s", shot: "CTA · 品牌落版", narration: "点击下方，免费体验7天", note: "Logo + 二维码 + 引导语" },
+  { id: "4", scene: "04", time: "15-20s", shot: "流程对比 · 动态图表", narration: "同样的任务，用更少步骤完成", note: "展示前后流程对比" },
+  { id: "5", scene: "05", time: "20-25s", shot: "CTA · 品牌落版", narration: "预约演示，先看是否适合你的流程", note: "Logo + 二维码 + 引导语" },
 ];
 
 const STORAGE_KEY_STORYBOARD = "aila-acquisition-storyboard";
@@ -441,7 +441,7 @@ export default function AcquisitionPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-8 md:px-24 lg:px-32 flex items-center justify-between mb-10 gap-4">
           <div className="flex items-center gap-0">
             <Link href="/tools" className="flex items-center gap-1.5 text-sm text-[#9E9B96] hover:text-[#2D2A26] transition-colors">
-              <ArrowLeft size={16} /> 返回
+              <ArrowLeft size={16} /> 返回工具演示
             </Link>
             <div className="w-px h-5 bg-[#E5E1D8] mx-4" />
             <div className="flex items-center gap-2">
@@ -554,7 +554,7 @@ export default function AcquisitionPage() {
                       className="flex flex-col items-center justify-center h-[400px] text-center">
                       <PenTool size={28} className="text-[#6B6660] mb-3" />
                       <p className="text-[#9E9B96]">填写产品信息，选择目标平台</p>
-              <p className="text-sm text-[#6B6660] mt-1">系统将生成多平台适配的营销文案</p>
+              <p className="text-sm text-[#6B6660] mt-1">生成多平台适配的营销文案草稿，便于人工筛选和二次修改</p>
                     </motion.div>
                   ) : loading ? (
                     <motion.div key="loading" className="flex flex-col items-center justify-center h-[400px]">
@@ -617,8 +617,8 @@ export default function AcquisitionPage() {
         {activeSubTool === "poster" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
-            <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">批量海报生成</h2>
-            <p className="text-[#666] mb-8">输入产品信息，生成多风格商用级海报模板</p>
+            <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">批量海报草稿</h2>
+            <p className="text-[#666] mb-8">输入产品信息，生成多风格海报方向，再由人工筛选和修正</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mb-8">
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品/活动名称 *</label>

@@ -25,7 +25,7 @@ export const deliveryCases: WorkItem[] = [
     k: "01",
     title: "咨询行业问卷统计与智能决策系统",
     sub: "企业交付案例",
-    summary: "基于定制化问卷统计系统，把增长策略、数据洞察和报告生成收进一条稳定流程。",
+    summary: "把问卷回收、统计口径、增长洞察和报告生成收进一条可复用流程。",
     image: "/cases/media__1775491662965.jpg",
     metrics: [
       { label: "周期", value: "5 天交付" },
@@ -51,7 +51,7 @@ export const deliveryCases: WorkItem[] = [
     k: "02",
     title: "电商爆品极速筛查雷达",
     sub: "企业交付案例",
-    summary: "面向低粉账号的短视频选品场景，把人工筛选压缩成可批量复核的选品雷达。",
+    summary: "面向短视频选品，把人工刷内容压缩成可批量复核的候选池。",
     image: "/cases/media__1775491662974.png",
     metrics: [
       { label: "速度", value: "24h 到 5 分钟" },
@@ -77,7 +77,7 @@ export const deliveryCases: WorkItem[] = [
     k: "03",
     title: "商用级电商自动化海报工坊",
     sub: "企业交付案例",
-    summary: "围绕模特、商品和带货物料搭建图片生产流程，让日常投放有稳定素材来源。",
+    summary: "围绕商品图、模特图和投放尺寸搭建素材生产流程，让日常测试有稳定来源。",
     image: "/cases/media__1775491663001.png",
     metrics: [
       { label: "替代", value: "棚拍/模特费" },
@@ -106,20 +106,20 @@ export const productLabs: WorkItem[] = [
     k: "04",
     title: "AILA",
     sub: "企业工具矩阵",
-    summary: "把获客、销售、研发、行政、客服和老板仪表盘整理成统一控制台。",
+    summary: "把获客、销售、验证、行政、客服、老板仪表盘和内容项目整理成可演示的企业工具矩阵。",
     metrics: [
-      { label: "模块", value: "6 条业务线" },
+      { label: "模块", value: "8 个工具" },
       { label: "入口", value: "工具大厅" },
       { label: "状态", value: "可演示" },
     ],
-    context: "AILA 承接旧工具区和旧作品集中的企业工具方向，重点不在堆功能名，而在让企业看到哪些流程可以先被接住。",
+    context: "AILA 承接旧工具区和旧作品集中的企业工具方向。重点不在堆功能名，而在让企业看到哪些流程可以先被接住、先被验证。",
     approach: [
-      "把获客、销售、研发、运营、行政、客服拆成独立工作台。",
+      "把获客、销售、验证、运营、行政、客服和内容项目拆成独立工作台。",
       "每个工作台保留可操作界面，让用户能继续下钻。",
       "对外只展示结构和流程，真实落地再按客户系统与权限接入。",
     ],
     outcome: [
-      "从静态介绍变成可进入的工具矩阵。",
+      "从静态介绍变成可进入、可试用的工具矩阵。",
       "适合作为企业诊断后的第一层方案地图。",
       "后续可以把模块详情统一到 /tools/[module] 动态模板。",
     ],
@@ -131,7 +131,7 @@ export const productLabs: WorkItem[] = [
     k: "05",
     title: "Antios",
     sub: "健康状态运行时",
-    summary: "以 Apple Watch 生理参数为输入，把健康状态整理成可推理的状态变量。",
+    summary: "以 Apple Watch 生理参数为输入，探索个人健康状态的记录、解释和提醒方式。",
     metrics: [
       { label: "平台", value: "iOS 原生" },
       { label: "输入", value: "健康传感器" },
@@ -156,17 +156,17 @@ export const productLabs: WorkItem[] = [
     k: "06",
     title: "QuantMAx",
     sub: "量化信号产品实验",
-    summary: "关注热度排名短时间跃升、价格尚未同步反应的边际影响力信号。",
+    summary: "把量化信号的观察、解释和风险提示做成产品界面实验。",
     metrics: [
       { label: "领域", value: "A 股分钟级" },
       { label: "策略", value: "闭源核心" },
       { label: "形态", value: "界面实验" },
     ],
-    context: "QuantMAx 是旧作品集里的量化策略实验，重点展示产品叙事、信号解释和界面方向，不公开策略核心。",
+    context: "QuantMAx 是旧作品集里的量化策略实验，重点展示产品叙事、信号解释和界面方向，不公开策略核心，也不作为投资建议。",
     approach: [
       "观察热度排名、成交额、时间窗口和价格反应之间的错位。",
       "把策略参数做成可阅读的产品语言。",
-      "用界面呈现信号，而不是暴露底层策略代码。",
+      "用界面呈现信号、风险提示和解释结果，而不是暴露底层策略代码。",
     ],
     outcome: [
       "保留为产品实验档案。",
@@ -181,7 +181,7 @@ export const productLabs: WorkItem[] = [
     k: "07",
     title: "2026 闭门课训练系统",
     sub: "课程与交付方法",
-    summary: "把两天闭门课沉淀成认知、案例、工具和路线图四个连续环节。",
+    summary: "把两天闭门课沉淀成认知、案例、工具和企业路线图四个连续环节。",
     metrics: [
       { label: "时长", value: "2 天" },
       { label: "场次", value: "4 个半天" },

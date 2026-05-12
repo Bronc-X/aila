@@ -131,7 +131,7 @@ const handleSendMessage = async () => {
     try {
       const data = await postJson<ChatApiResponse>("/api/ai/chat", {
         messages: [
-          { role: "system", content: `你是一个叫"${botName}"的智能客服，人设风格：${botPersona}。\n知识库：${faqInput || "这是一家科技公司，主营AI解决方案。价格：基础版5000元/月，企业版20000元/月。支持7天免费试用。"}\n知识标签：${knowledgeTags.join("、")}\n回答要求：1.语气${botPersona} 2.回答具体实用 3.200字以内 4.无法回答则建议联系人工` },
+          { role: "system", content: `你是一个叫"${botName}"的客服助手，人设风格：${botPersona}。\n知识库：${faqInput || "这是一家科技公司，主营AI工具诊断与企业流程原型服务。常见合作方式包括闭门训练、现场诊断和原型交付。具体价格与范围需根据业务场景确认。"}\n知识标签：${knowledgeTags.join("、")}\n回答要求：1.语气${botPersona} 2.回答具体实用 3.200字以内 4.无法回答则建议联系人工` },
           ...chatMessages.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
           { role: "user" as const, content: userMsg },
         ],
@@ -329,7 +329,7 @@ const generateReply = async (id: string) => {
                   {!botConfigured ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
                       <MessageCircle size={32} className="text-[#A3A3A3] mb-3" />
-          <p className="text-[#9E9B96]">先在左侧保存配置，再测试真实回复</p>
+          <p className="text-[#9E9B96]">先在左侧保存配置，再测试回复口径</p>
                     </div>
                   ) : (
                     <>
@@ -387,7 +387,7 @@ const generateReply = async (id: string) => {
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5 rounded-xl">
-                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Phone size={18} /> 智能回访话术</h2>
+                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Phone size={18} /> 回访话术建议</h2>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">回访场景</label>
                   <div className="grid grid-cols-2 gap-2">
@@ -443,7 +443,7 @@ const generateReply = async (id: string) => {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-bold text-[#2D2A26]">舆情公关监控</h2>
-          <p className="text-xs text-[#6B6660] mt-1">实时监测 · 生成回复 · 一键标记已处理</p>
+          <p className="text-xs text-[#6B6660] mt-1">评价样本 · 回复建议 · 标记处理状态</p>
               </div>
               <div className="flex gap-3 text-xs">
                 <div className="px-3 py-1.5 border border-green-500/30 bg-green-500/5 text-green-400 rounded-full">正面 {total > 0 ? Math.round(posCount/total*100) : 0}%</div>

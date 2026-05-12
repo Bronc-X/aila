@@ -97,6 +97,7 @@ export default function TaigaRoom() {
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
+  const nextMessageIdRef = useRef(2);
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, from: "taiga", text: taigaIntro },
   ]);
@@ -153,10 +154,11 @@ export default function TaigaRoom() {
     const text = input.trim();
     if (!text || isThinking) return;
     const nextAction = pickAction(action.id);
-    const pendingId = Date.now() + 1;
+    const userId = nextMessageIdRef.current++;
+    const pendingId = nextMessageIdRef.current++;
     setMessages((current) => [
       ...current.slice(-3),
-      { id: Date.now(), from: "you", text },
+      { id: userId, from: "you", text },
       { id: pendingId, from: "taiga", text: "我在想，等我一下。" },
     ]);
     setAction(nextAction);

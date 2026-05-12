@@ -53,5 +53,22 @@ Built on Next.js 16 (App Router) and reacting seamlessly with Framer Motion, it 
 3. **Cloud Production Deployment**:  
    Code is optimized for zero-config deployment on Vercel. Global DNS routed optimally via `cname-china.vercel-dns.com` for China-Mainland unthrottled access.
 
+## ✦ Lusie / ShipModel Baseline
+
+The ShipModel integration is mounted at `/lusie`:
+
+- `/lusie` keeps the Toni entry page with two choices.
+- `/lusie/showcase` runs the public Lusie showcase.
+- `/lusie/ai` runs the AI model workspace.
+- `/api/lusie/*` hosts the migrated generation API.
+
+Before and after changing this surface, run:
+
+```bash
+npm run test:baseline
+```
+
+The baseline builds Next.js, starts a production server on a temporary local port, and checks the Lusie routes plus the handshake and validation API guard.
+
 ---
 *Developed with supreme aesthetic precision by Toni.*

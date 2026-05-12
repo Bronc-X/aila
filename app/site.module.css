@@ -548,6 +548,7 @@
 .caseGrid,
 .offerGrid,
 .moduleGrid,
+.workGrid,
 .trackGrid,
 .timelineGrid,
 .twoGrid {
@@ -573,11 +574,13 @@
 }
 
 .timelineGrid,
-.twoGrid {
+.twoGrid,
+.workGrid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .card,
+.workCard,
 .step,
 .quote,
 .faq,
@@ -593,6 +596,7 @@
 }
 
 .card,
+.workCard,
 .caseCard,
 .offer,
 .moduleCard,
@@ -605,7 +609,17 @@
   padding: 1.15rem;
 }
 
+.workCard {
+  position: relative;
+  min-height: 19rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 84% 14%, rgba(168, 240, 106, 0.38), transparent 10rem),
+    rgba(255, 249, 234, 0.82);
+}
+
 .card small,
+.workCard small,
 .step small,
 .caseCard small,
 .offer small,
@@ -626,6 +640,7 @@
 }
 
 .card h3,
+.workCard h3,
 .step h3,
 .caseCard h3,
 .offer h3,
@@ -641,6 +656,7 @@
 }
 
 .card p,
+.workCard p,
 .step p,
 .quote p,
 .faq p,
@@ -719,6 +735,150 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+}
+
+.lusieChoiceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lusieChoiceCard {
+  position: relative;
+  display: grid;
+  min-height: 24rem;
+  align-content: space-between;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.15rem;
+  background:
+    linear-gradient(135deg, rgba(34, 214, 101, 0.22), transparent 42%),
+    rgba(255, 249, 234, 0.84);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.lusieChoiceCard::after {
+  position: absolute;
+  right: -4rem;
+  bottom: -5rem;
+  width: 16rem;
+  height: 16rem;
+  border: 1px solid rgba(5, 8, 6, 0.12);
+  border-radius: 999px;
+  background: rgba(168, 240, 106, 0.22);
+  content: "";
+}
+
+.lusieChoiceCard > div {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lusieChoiceCard span {
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.lusieChoiceCard h3 {
+  position: relative;
+  z-index: 1;
+  max-width: 22rem;
+  margin: 2.2rem 0 0.8rem;
+  color: var(--ink);
+  font-size: clamp(2.7rem, 5vw, 5.1rem);
+  font-weight: 900;
+  line-height: 0.92;
+}
+
+.lusieChoiceCard p {
+  position: relative;
+  z-index: 1;
+  max-width: 32rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 680;
+  line-height: 1.68;
+}
+
+.lusieChoiceCard strong {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.45rem;
+  margin-top: 1.2rem;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.lusieChoiceCard:hover,
+.lusieChoiceCard:focus-visible {
+  border-color: var(--green);
+  background:
+    linear-gradient(135deg, rgba(34, 214, 101, 0.34), transparent 46%),
+    var(--ink);
+  color: var(--cream);
+  outline: none;
+}
+
+.lusieChoiceCard:hover h3,
+.lusieChoiceCard:hover p,
+.lusieChoiceCard:hover strong,
+.lusieChoiceCard:focus-visible h3,
+.lusieChoiceCard:focus-visible p,
+.lusieChoiceCard:focus-visible strong {
+  color: var(--cream);
+}
+
+.lusieStatusBand {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto 4rem;
+}
+
+.lusieStatusBand div {
+  display: grid;
+  gap: 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem;
+  background: rgba(255, 249, 234, 0.72);
+}
+
+.lusieStatusBand svg {
+  color: var(--green);
+}
+
+.lusieStatusBand strong {
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.lusieStatusBand span {
+  color: var(--muted);
+  font-size: 0.94rem;
+  font-weight: 680;
+  line-height: 1.55;
+}
+
+.lusieWorkbenchGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.925fr 0.925fr;
+  gap: 1rem;
 }
 
 .caseCard {
@@ -1631,8 +1791,12 @@
   }
 
   .grid,
+  .lusieChoiceGrid,
+  .lusieStatusBand,
+  .lusieWorkbenchGrid,
   .offerGrid,
   .moduleGrid,
+  .workGrid,
   .statStrip,
   .metricTags,
   .openSourceCard,

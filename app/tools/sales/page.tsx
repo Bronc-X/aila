@@ -85,10 +85,10 @@ const demoSummary: AISummary = {
 };
 
 const demoSuggestions: TalkSuggestion[] = [
-    { type: "应对异议", content: "张总，您说的CRM用不起来这个问题特别好。传统CRM确实需要手动录入太多东西。我们的方案把录入放到后台处理，业务员正常打电话、发微信，客户信息会自动识别并归档，不需要额外操作。" },
+  { type: "应对异议", content: "张总，您说的CRM用不起来这个问题特别好。传统CRM确实需要手动录入太多东西。我们的方案把录入放到后台处理，业务员正常打电话、发微信，客户信息会自动识别并归档，不需要额外操作。" },
   { type: "追问深挖", content: "那2500个沉默客户里面，如果按照以往经验，您觉得大概多少比例是有可能被重新激活的？他们当初为什么断联了？" },
-    { type: "促成交易", content: "这样吧张总，我们可以先拿100个沉默客户做个测试，分析他们的历史行为，推荐合适的回访时机和话术。一周时间看效果，如果不好我们不收费。" },
-  { type: "建立信任", content: "我理解您的顾虑。其实XX行业的李总之前跟您情况一模一样，他用了两个月之后，业务员反馈效率提升了40%，他如果方便我可以帮您拉个群。" },
+  { type: "促成交易", content: "这样吧张总，我们可以先拿一小批沉默客户做试点，分析他们的历史行为，推荐合适的回访时机和话术。一周后一起看复盘数据，再决定是否扩大。" },
+  { type: "建立信任", content: "我理解您的顾虑。我们可以先把现有销售动作拆成几个可验证环节：录入、跟进、回访和复盘，先看哪一段最值得工具介入。" },
 ];
 
 // ── 回访策略卡片类型 ──────────────────────────────
@@ -387,7 +387,7 @@ const handleSendChat = async () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-end justify-between mb-10">
           <div className="flex flex-col gap-6">
             <Link href="/tools" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A3A3A3] hover:text-[#22d665] transition-colors uppercase tracking-[0.2em] w-fit">
-              <ArrowLeft size={14} /> 返回超级中枢
+              <ArrowLeft size={14} /> 返回工具演示
             </Link>
             <div className="flex items-center gap-5">
               <div className="w-[56px] h-[56px] flex items-center justify-center rounded-2xl border-2 border-[#E5E1D8] bg-white shadow-sm ring-4 ring-[#FAF9F6]">
@@ -483,7 +483,7 @@ const handleSendChat = async () => {
                     <div className="flex flex-col items-center justify-center h-full text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                       <Mic size={32} className="text-[#A3A3A3] mb-3" />
                       <p className="text-[#6B6660] font-medium mb-1">点击&ldquo;开始录音&rdquo;进行实时语音转写</p>
-            <p className="text-sm text-[#9E9B96]">系统将实时转写对话，并提取关键异议与痛点</p>
+            <p className="text-sm text-[#9E9B96]">用于演示对话转写、异议提取和下一步动作整理</p>
                       <p className="text-xs text-[#A3A3A3] mt-2">也可点击&ldquo;演示模式&rdquo;查看预设效果</p>
                     </div>
                   ) : (
@@ -588,7 +588,7 @@ const handleSendChat = async () => {
                   <div className="flex flex-col items-center justify-center h-[400px] text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                     <Lightbulb size={28} className="text-[#A3A3A3] mb-3" />
                   <p className="text-sm text-[#9E9B96] mb-1">正在解析对话意图</p>
-                    <p className="text-[13px] text-[#A3A3A3]">稍后将推送高段位救场话术</p>
+                    <p className="text-[13px] text-[#A3A3A3]">稍后将推送可复核的跟进建议</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -723,7 +723,7 @@ const handleSendChat = async () => {
                   <div className="flex flex-col items-center justify-center h-[350px] text-center border-2 border-dashed border-[#E5E1D8] rounded-xl m-2">
                     <Phone size={28} className="text-[#A3A3A3] mb-3" />
                     <p className="text-[#6B6660] font-medium">完善左侧客户信息后生成</p>
-              <p className="text-sm text-[#9E9B96] mt-2">系统将生成包含破冰话术、合适时间等内容的结构化指导卡</p>
+              <p className="text-sm text-[#9E9B96] mt-2">生成包含破冰话术、回访时间和下一步动作的结构化指导卡</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">

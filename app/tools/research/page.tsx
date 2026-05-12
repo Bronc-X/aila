@@ -72,9 +72,9 @@ const INITIAL_ASSETS: AssetRow[] = [
 ];
 
 const MARKET_CARDS: MarketCard[] = [
-  { label: "市场规模", value: "¥4,280亿", change: "+38%", sub: "2026E", detail: "2024年市场规模约¥3,100亿，预计2026年达到¥4,280亿。主要增长驱动力：\n1. 政策推动新能源基建\n2. 技术成本下降30%\n3. 企业数字化转型加速" },
-  { label: "头部玩家", value: "12 家", change: "CR5 = 62%", sub: "集中度中等", detail: "Top 5 玩家占据62%市场份额：\n1. A公司 - 18%\n2. B公司 - 15%\n3. C公司 - 12%\n4. D公司 - 9%\n5. E公司 - 8%\n\n机会：长尾市场仍有38%份额可争夺" },
-  { label: "增速预期", value: "26.5%", change: "CAGR", sub: "2024-2028", detail: "年复合增长率26.5%，分阶段：\n- 2024-2025: 35% (爆发期)\n- 2025-2026: 28% (增长期)\n- 2026-2028: 18% (稳定期)\n\n风险：宏观经济放缓可能下调3-5个百分点" },
+  { label: "需求信号", value: "高频", change: "待核实", sub: "来自客户访谈", detail: "先记录客户反复提到的具体问题：谁在处理、每周发生几次、当前用什么办法绕过去。没有真实频次，就不急着估盘子大小。" },
+  { label: "竞争替代", value: "3 类", change: "需对照", sub: "人工 / SaaS / 外包", detail: "验证时先列出现有替代方案：人工表格、通用 SaaS、外包服务。新工具只有在速度、质量或复核成本上更清楚，才值得继续做。" },
+  { label: "落地风险", value: "4 项", change: "先排雷", sub: "数据 / 权限 / 习惯 / 复核", detail: "真实落地前要确认数据来源、权限范围、岗位习惯和人工复核位置。风险先摆出来，原型才不会停在演示层。" },
 ];
 
 const STORAGE_KEY_ASSETS = "aila-research-assets";
@@ -83,7 +83,7 @@ const STORAGE_KEY_NOTES = "aila-research-notes";
 export default function ResearchPage() {
   const [activeTab, setActiveTab] = useState<"brainstorm" | "prototype" | "market" | "assets">("brainstorm");
 
-  // ── 头脑风暴 ──
+  // ── 多角色评审 ──
   const [topic, setTopic] = useState("");
   const [selectedRoles, setSelectedRoles] = useState<string[]>(["ceo", "product", "engineer"]);
   const [loading, setLoading] = useState(false);
@@ -104,9 +104,9 @@ export default function ResearchPage() {
   const [assets, setAssets] = useState<AssetRow[]>(INITIAL_ASSETS);
 
   const tabs = [
-    { id: "brainstorm" as const, label: "头脑风暴", icon: Brain },
-    { id: "prototype" as const, label: "快速原型", icon: Zap },
-    { id: "market" as const, label: "市场研判", icon: TrendingUp },
+    { id: "brainstorm" as const, label: "多角色评审", icon: Brain },
+    { id: "prototype" as const, label: "原型验证", icon: Zap },
+    { id: "market" as const, label: "市场线索", icon: TrendingUp },
     { id: "assets" as const, label: "资产盘点", icon: Database },
   ];
 
@@ -124,7 +124,7 @@ export default function ResearchPage() {
     setSelectedRoles((prev) => prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]);
   };
 
-  // ── 头脑风暴生成便签卡片 ──
+  // ── 多角色评审生成便签卡片 ──
   const handleBrainstorm = async () => {
     if (!topic.trim()) return;
     setLoading(true);
@@ -133,8 +133,8 @@ export default function ResearchPage() {
     try {
       const data = await postJson<ChatApiResponse>("/api/ai/chat", {
         messages: [
-          { role: "system", content: `你是一个多角色创新工作坊主持人。请模拟以下角色讨论。每个角色输出1-2个核心观点，用---分隔每个角色的发言。格式：角色名\n观点内容` },
-          { role: "user", content: `主题：${topic}\n参与角色：${selectedRoleData.map(r => r?.label).join("、")}` },
+          { role: "system", content: `你是一个业务原型评审主持人。请模拟以下角色评审该业务问题。每个角色输出1-2个核心观点，用---分隔每个角色的发言。格式：角色名\n观点内容` },
+          { role: "user", content: `业务问题：${topic}\n参与角色：${selectedRoleData.map(r => r?.label).join("、")}` },
         ],
         temperature: 0.9,
       });
@@ -183,8 +183,8 @@ export default function ResearchPage() {
     try {
       const data = await postJson<ChatApiResponse>("/api/ai/chat", {
         messages: [
-          { role: "system", content: "你是一个产品验证专家。请从以下维度评估产品构想：\n1.市场需求评分(1-10)及理由\n2.技术可行性评分(1-10)及理由\n3.竞品差异化评分(1-10)及理由\n4.商业模型评分(1-10)及理由\n5.SWOT分析(优势/劣势/机会/威胁各2-3条)\n6.MVP功能清单(5-8个核心功能，用checkbox格式)\n最后给出总体建议。" },
-          { role: "user", content: `产品构想：${protoIdea}` },
+          { role: "system", content: "你是一个业务原型验证专家。请从以下维度评估原型设想：\n1.业务痛点评分(1-10)及理由\n2.数据与权限可行性评分(1-10)及理由\n3.人工复核边界评分(1-10)及理由\n4.岗位使用阻力评分(1-10)及理由\n5.主要风险与缓解动作各2-3条\n6.MVP功能清单(5-8个核心功能，用checkbox格式)\n最后给出是否继续投入下一版原型的建议。" },
+          { role: "user", content: `原型设想：${protoIdea}` },
         ],
       });
       setProtoResult(data.choices?.[0]?.message?.content || "分析失败");
@@ -221,7 +221,7 @@ export default function ResearchPage() {
               <div className="w-8 h-8 flex items-center justify-center border border-[#E5E1D8] bg-[#FAF9F6]">
                 <FlaskConical size={16} className="text-[#2D2A26]" />
               </div>
-              <span className="font-semibold text-sm">研发工坊</span>
+              <span className="font-semibold text-sm">验证工坊</span>
             </div>
           </div>
           <Link href="/slides" className="flex items-center gap-2 text-sm font-mono tracking-wide uppercase text-[#6B6660] hover:text-[#2D2A26] transition-colors">
@@ -240,16 +240,16 @@ export default function ResearchPage() {
 
       <main className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 py-8">
 
-        {/* ═══════════════ 头脑风暴 (Miro 便签板式) ═══════════════ */}
+        {/* ═══════════════ 多角色评审 (Miro 便签板式) ═══════════════ */}
         {activeTab === "brainstorm" && (
           <div className="grid lg:grid-cols-[360px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5">
-            <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Brain size={18} /> 多角色头脑风暴</h2>
+            <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Brain size={18} /> 多角色评审</h2>
                 <div>
-                  <label className="block text-sm font-medium text-[#9E9B96] mb-2">讨论主题 *</label>
+                  <label className="block text-sm font-medium text-[#9E9B96] mb-2">要验证的业务问题 *</label>
                   <textarea value={topic} onChange={(e) => setTopic(e.target.value)}
-              placeholder="例如：如何降低制造业质检成本？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
+              placeholder="例如：质检异常太依赖老师傅，怎么先做辅助判断？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[100px] resize-y" rows={3} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#9E9B96] mb-2">参与角色（多选）</label>
@@ -264,7 +264,7 @@ export default function ResearchPage() {
                 </div>
                 <button onClick={handleBrainstorm} disabled={loading || !topic.trim() || selectedRoles.length === 0}
                   className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
-                  {loading ? <><RefreshCw size={18} className="animate-spin" /> 讨论中...</> : <><Sparkles size={18} /> 开始头脑风暴</>}
+                  {loading ? <><RefreshCw size={18} className="animate-spin" /> 评审中...</> : <><Sparkles size={18} /> 生成评审便签</>}
                 </button>
               </div>
             </motion.div>
@@ -274,14 +274,14 @@ export default function ResearchPage() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-[#2D2A26]">便签板</h2>
                   {stickyNotes.length > 0 && (
-                    <ExportButton content={stickyNotes.map(n => `[${n.role}] ${n.content} (投票:${n.vote} 状态:${n.status})`).join("\n\n")} filename="头脑风暴.txt" />
+                    <ExportButton content={stickyNotes.map(n => `[${n.role}] ${n.content} (投票:${n.vote} 状态:${n.status})`).join("\n\n")} filename="多角色评审.txt" />
                   )}
                 </div>
                 {stickyNotes.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-[400px] text-center">
                     <Brain size={32} className="text-[#6B6660] mb-3" />
-                    <p className="text-[#9E9B96]">选择角色并输入主题</p>
-                    <p className="text-sm text-[#6B6660]">每个角色生成一张「便签卡片」</p>
+                    <p className="text-[#9E9B96]">选择角色并输入业务问题</p>
+                    <p className="text-sm text-[#6B6660]">每个角色给出一张可取舍的评审便签</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 gap-8">
@@ -317,16 +317,16 @@ export default function ResearchPage() {
           </div>
         )}
 
-        {/* ═══════════════ 快速原型 (Notion AI 结构化输出) ═══════════════ */}
+        {/* ═══════════════ 原型验证 (Notion AI 结构化输出) ═══════════════ */}
         {activeTab === "prototype" && (
           <div className="grid lg:grid-cols-[400px_1fr] gap-8">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 space-y-5">
-                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Zap size={18} /> 快速原型验证</h2>
+                <h2 className="text-lg font-bold text-[#2D2A26] flex items-center gap-2"><Zap size={18} /> 原型验证</h2>
                 <div>
-                  <label className="block text-sm font-medium text-[#9E9B96] mb-2">产品构想 *</label>
+                  <label className="block text-sm font-medium text-[#9E9B96] mb-2">原型设想 *</label>
                   <textarea value={protoIdea} onChange={e => setProtoIdea(e.target.value)}
-                    placeholder="描述你的产品idea：解决什么问题？目标用户？核心功能？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[140px] resize-y" rows={5} />
+                    placeholder="描述要验证的原型：谁使用？输入什么？输出给谁？哪里需要人工确认？" className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] placeholder-[#C5C0B8] focus:border-[#22d665] transition-colors outline-none font-mono text-sm min-h-[140px] resize-y" rows={5} />
                 </div>
                 <button onClick={handleProtoValidate} disabled={protoLoading || !protoIdea.trim()}
                   className="bg-[#22d665] text-white font-bold uppercase tracking-wide hover:bg-[#DDD] border border-[#22d665] transition-colors w-full flex items-center justify-center gap-2 !py-3 disabled:opacity-50">
@@ -343,8 +343,8 @@ export default function ResearchPage() {
                 {!protoResult ? (
                   <div className="flex flex-col items-center justify-center h-[350px] text-center">
                     <Zap size={32} className="text-[#6B6660] mb-3" />
-                    <p className="text-[#9E9B96]">描述产品构想后生成</p>
-          <p className="text-sm text-[#6B6660]">系统将输出多维评分、SWOT 与 MVP 清单</p>
+                    <p className="text-[#9E9B96]">描述原型后生成</p>
+          <p className="text-sm text-[#6B6660]">输出风险、复核点和下一版 MVP 清单</p>
                   </div>
                 ) : (
                   <div className="p-5 border border-[#E5E1D8] bg-white max-h-[500px] overflow-y-auto">
@@ -356,12 +356,12 @@ export default function ResearchPage() {
           </div>
         )}
 
-        {/* ═══════════════ 市场研判 (Gemini Canvas 式) ═══════════════ */}
+        {/* ═══════════════ 市场线索 (Gemini Canvas 式) ═══════════════ */}
         {activeTab === "market" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="border border-[#E5E1D8] bg-[#FAF9F6] p-6 mb-6 rounded-xl">
-              <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">市场趋势研判</h2>
-              <p className="text-[#666] mb-8">点击数据卡片展开详情面板</p>
+              <h2 className="text-2xl font-bold text-[#2D2A26] mb-2">市场线索研判</h2>
+              <p className="text-[#666] mb-8">先看需求、替代方案和落地风险，再决定是否继续投入原型。</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {MARKET_CARDS.map((item, i) => (
@@ -399,8 +399,8 @@ export default function ResearchPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-[#2D2A26]">数字资产盘点</h2>
-                <p className="text-xs text-[#6B6660] mt-1">Notion 式数据表格 · 行内编辑 · 状态管理 · localStorage 持久化</p>
+                <h2 className="text-xl font-bold text-[#2D2A26]">企业资料盘点</h2>
+                <p className="text-xs text-[#6B6660] mt-1">先确认材料分散在哪里、是否过期、能不能进入原型验证</p>
               </div>
               <button onClick={addAsset} className="px-4 py-2 border border-[#E5E1D8] text-[#666] text-sm hover:border-[#22d665] hover:text-[#2D2A26] transition-colors flex items-center gap-1">
                 <Plus size={14} /> 新增资产

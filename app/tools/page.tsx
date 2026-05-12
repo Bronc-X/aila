@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import {
+  ClipboardList,
+  FileImage,
   Target,
   MessageSquare,
   FlaskConical,
@@ -25,7 +27,7 @@ const modules = [
     icon: Target,
     title: "获客中心",
     subtitle: "MARKETING",
-    desc: "海报出图 · 短视频脚本 · 分发文案 · 素材处理",
+    desc: "海报、短视频脚本、分发文案和素材处理，集中成一条内容出品线",
     tools: ["批量海报", "短视频", "文案矩阵", "素材编辑"],
     href: "/tools/acquisition",
     gradient: "from-lime-500/10 to-emerald-500/5",
@@ -35,7 +37,7 @@ const modules = [
     icon: MessageSquare,
     title: "销售助手",
     subtitle: "SALES",
-    desc: "对话跟进 · 话术提示 · 回访节奏 · 追问线索",
+    desc: "整理对话重点、客户异议、回访节奏和下一步动作",
     tools: ["实时对话", "话术提示", "智能回访", "灵感追问"],
     href: "/tools/sales",
     gradient: "from-blue-500/10 to-indigo-500/5",
@@ -43,10 +45,10 @@ const modules = [
   {
     id: "research",
     icon: FlaskConical,
-    title: "研发工坊",
+    title: "验证工坊",
     subtitle: "RESEARCH",
-    desc: "想法推演 · 原型验证 · 市场研判 · 资产盘点",
-    tools: ["头脑风暴", "快速原型", "市场研判", "资产盘点"],
+    desc: "把想法、原型假设、市场线索和企业资料放在一起验证",
+    tools: ["多角色评审", "原型验证", "市场线索", "资产盘点"],
     href: "/tools/research",
     gradient: "from-purple-500/10 to-violet-500/5",
   },
@@ -55,7 +57,7 @@ const modules = [
     icon: BarChart3,
     title: "老板仪表盘",
     subtitle: "DASHBOARD",
-    desc: "经营看板 · 日报周报 · 回访进度 · 成交分析",
+    desc: "把日报、回访进度和成交变化整理成经营视图",
     tools: ["经营看板", "经营报告", "回访追踪", "成交分析"],
     href: "/tools/operations",
     gradient: "from-emerald-500/10 to-green-500/5",
@@ -65,7 +67,7 @@ const modules = [
     icon: Building2,
     title: "行政效率",
     subtitle: "ADMIN",
-    desc: "合同文档助手 · 会议纪要 · 排班优化 · 流程自动化诊断",
+    desc: "合同、纪要、排班和流程诊断，先接住高频行政任务",
     tools: ["合同助手", "会议纪要", "排班优化", "流程诊断"],
     href: "/tools/admin",
     gradient: "from-sky-500/10 to-cyan-500/5",
@@ -75,10 +77,32 @@ const modules = [
     icon: Headphones,
     title: "智能客服",
     subtitle: "SERVICE",
-    desc: "客服配置 · 回访话术 · 舆情监控 · 客户反馈",
+    desc: "常见问答、回访话术、舆情波动和客户反馈集中处理",
     tools: ["智能客服", "回访话术", "舆情监控", "客户之声"],
     href: "/tools/service",
     gradient: "from-rose-500/10 to-pink-500/5",
+  },
+  {
+    id: "activity-plan",
+    icon: ClipboardList,
+    title: "海报方案助手",
+    subtitle: "PROPOSAL",
+    desc: "把活动信息、品牌物料和预算人数整理成方案页、宣传文案和海报提示词",
+    tools: ["活动方案", "宣传文案", "海报提示词", "PPTX 导出"],
+    href: "https://github.com/xiahui001/Activity-plan.git",
+    gradient: "from-amber-500/10 to-yellow-500/5",
+    external: true,
+  },
+  {
+    id: "auto-red-book",
+    icon: FileImage,
+    title: "小红书自动二创",
+    subtitle: "XHS MATRIX",
+    desc: "围绕 5 个账号生成候选图文草稿，保留人工挑选、审核和发布确认",
+    tools: ["矩阵草稿", "热点参考", "质量检查", "客服线索"],
+    href: "https://github.com/xiahui001/auto-red-book.git",
+    gradient: "from-fuchsia-500/10 to-rose-500/5",
+    external: true,
   },
 ];
 
@@ -119,6 +143,113 @@ function ToolCard({
   const { ref, tilt, handleMouseMove, handleMouseLeave } = useCardTilt();
   const isDimmed = hoveredId !== null && hoveredId !== mod.id;
   const isActive = hoveredId === mod.id;
+  const isExternal = mod.href.startsWith("http");
+
+  const card = (
+    <motion.div
+      ref={ref}
+      animate={{
+        scale: isDimmed ? 0.96 : isActive ? 1.02 : 1,
+        y: isActive ? -6 : 0,
+        filter: isDimmed ? "blur(1.5px)" : "blur(0px)",
+        opacity: isDimmed ? 0.35 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      style={{
+        rotateX: tilt.rotateX,
+        rotateY: tilt.rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className={`p-8 h-full border bg-white transition-shadow duration-300 relative group flex flex-col rounded-2xl overflow-hidden ${
+        isActive
+          ? "border-[#22d665] shadow-[0_8px_40px_-8px_rgba(34, 214, 101,0.25)]"
+          : "border-[#E5E1D8] hover:shadow-lg"
+      }`}
+    >
+      <motion.div
+        className={`absolute inset-0 bg-gradient-to-br ${mod.gradient} pointer-events-none`}
+        animate={{ opacity: isActive ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      />
+
+      {isActive && (
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#22d665] to-transparent"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.5 }}
+        />
+      )}
+
+      <div className="flex justify-between items-start mb-10 relative z-10">
+        <motion.div
+          animate={{
+            scale: isActive ? 1.15 : 1,
+            rotate: isActive ? 5 : 0,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+        >
+          <mod.icon
+            size={32}
+            className={`${
+              isActive ? "text-[#22d665]" : "text-[#9E9B96]"
+            } transition-colors duration-300`}
+          />
+        </motion.div>
+        <div className="flex flex-col items-end gap-2">
+          <motion.span
+            className={`text-[10px] font-mono tracking-[0.2em] font-bold transition-colors duration-300 ${
+              isActive ? "text-[#22d665]" : "text-[#9E9B96]"
+            }`}
+            animate={{ y: isActive ? -2 : 0 }}
+          >
+            {mod.subtitle}
+          </motion.span>
+          {isExternal && (
+            <span className="text-[9px] uppercase tracking-[0.18em] text-[#D97706]">
+              GitHub
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-auto relative z-10">
+        <motion.h3
+          className="text-2xl font-black tracking-normal text-[#2D2A26] mb-3"
+          animate={{ x: isActive ? 4 : 0 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
+          {mod.title}
+        </motion.h3>
+        <p className="text-xs text-[#9E9B96] leading-relaxed mb-8">
+          {mod.desc}
+        </p>
+
+        <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#E5E1D8] group-hover:border-[#22d665]/30 transition-colors">
+          {mod.tools.map((tool, ti) => (
+            <motion.span
+              key={tool}
+              className={`text-[10px] uppercase tracking-wide px-2.5 py-1 font-semibold rounded-full border transition-all duration-200 ${
+                isActive
+                  ? "bg-[#22d665] text-white border-[#22d665]"
+                  : "border-[#E5E1D8] text-[#9E9B96]"
+              }`}
+              animate={{
+                scale: isActive ? 1 : 1,
+                opacity: isActive ? 1 : 0.7,
+              }}
+              transition={{
+                delay: isActive ? ti * 0.06 : 0,
+                duration: 0.2,
+              }}
+            >
+              {tool}
+            </motion.span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
 
   return (
     <motion.div
@@ -138,107 +269,15 @@ function ToolCard({
       onMouseMove={handleMouseMove}
       style={{ perspective: 800 }}
     >
-      <Link href={mod.href} className="block h-full">
-        <motion.div
-          ref={ref}
-          animate={{
-            scale: isDimmed ? 0.96 : isActive ? 1.02 : 1,
-            y: isActive ? -6 : 0,
-            filter: isDimmed ? "blur(1.5px)" : "blur(0px)",
-            opacity: isDimmed ? 0.35 : 1,
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          style={{
-            rotateX: tilt.rotateX,
-            rotateY: tilt.rotateY,
-            transformStyle: "preserve-3d",
-          }}
-          className={`p-8 h-full border bg-white transition-shadow duration-300 relative group flex flex-col rounded-2xl overflow-hidden ${
-            isActive
-              ? "border-[#22d665] shadow-[0_8px_40px_-8px_rgba(34, 214, 101,0.25)]"
-              : "border-[#E5E1D8] hover:shadow-lg"
-          }`}
-        >
-          {/* 背景渐变光效 */}
-          <motion.div
-            className={`absolute inset-0 bg-gradient-to-br ${mod.gradient} pointer-events-none`}
-            animate={{ opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-          />
-
-          {/* 顶部光线效果 */}
-          {isActive && (
-            <motion.div
-              className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#22d665] to-transparent"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.5 }}
-            />
-          )}
-
-          <div className="flex justify-between items-start mb-10 relative z-10">
-            <motion.div
-              animate={{
-                scale: isActive ? 1.15 : 1,
-                rotate: isActive ? 5 : 0,
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            >
-              <mod.icon
-                size={32}
-                className={`${
-                  isActive ? "text-[#22d665]" : "text-[#9E9B96]"
-                } transition-colors duration-300`}
-              />
-            </motion.div>
-            <motion.span
-              className={`text-[10px] font-mono tracking-[0.2em] font-bold transition-colors duration-300 ${
-                isActive ? "text-[#22d665]" : "text-[#9E9B96]"
-              }`}
-              animate={{ y: isActive ? -2 : 0 }}
-            >
-              {mod.subtitle}
-            </motion.span>
-          </div>
-
-          <div className="mt-auto relative z-10">
-            <motion.h3
-              className="text-2xl font-black tracking-normal text-[#2D2A26] mb-3"
-              animate={{ x: isActive ? 4 : 0 }}
-              transition={{ type: "spring", stiffness: 200 }}
-            >
-              {mod.title}
-            </motion.h3>
-            <p className="text-xs text-[#9E9B96] leading-relaxed mb-8">
-              {mod.desc}
-            </p>
-
-            {/* 底部标签 — hover 时逐个亮起 */}
-            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#E5E1D8] group-hover:border-[#22d665]/30 transition-colors">
-              {mod.tools.map((tool, ti) => (
-                <motion.span
-                  key={tool}
-                  className={`text-[10px] uppercase tracking-wide px-2.5 py-1 font-semibold rounded-full border transition-all duration-200 ${
-                    isActive
-                      ? "bg-[#22d665] text-white border-[#22d665]"
-                      : "border-[#E5E1D8] text-[#9E9B96]"
-                  }`}
-                  animate={{
-                    scale: isActive ? 1 : 1,
-                    opacity: isActive ? 1 : 0.7,
-                  }}
-                  transition={{
-                    delay: isActive ? ti * 0.06 : 0,
-                    duration: 0.2,
-                  }}
-                >
-                  {tool}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </Link>
+      {isExternal ? (
+        <a href={mod.href} target="_blank" rel="noopener noreferrer" className="block h-full">
+          {card}
+        </a>
+      ) : (
+        <Link href={mod.href} className="block h-full">
+          {card}
+        </Link>
+      )}
     </motion.div>
   );
 }
@@ -266,7 +305,7 @@ export default function ToolsPage() {
               A
             </div>
             <span className="font-bold tracking-wide text-[#9E9B96] uppercase text-xs">
-              AI Camp · Control Center
+              AILA · Tool Console
             </span>
           </Link>
 
@@ -302,13 +341,17 @@ export default function ToolsPage() {
           className="mb-20 flex flex-col md:flex-row items-end justify-between gap-8 border-b-2 border-[#22d665] pb-12"
         >
           <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#22d665]/40 bg-[#22d665]/10 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-[#2D2A26] mb-5">
+              <span className="text-[#22d665] text-lg leading-none">8</span>
+              Tool Modules · upgraded from 6
+            </div>
             <h1 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal leading-tight mb-4 uppercase">
-              Super
+              8 大
               <br />
-              <span className="text-[#6B6660]">Center.</span>
+              <span className="text-[#6B6660]">工具模块.</span>
             </h1>
             <p className="text-lg text-[#9E9B96] tracking-normal max-w-2xl font-medium">
-              企业工具控制台。获客、销售、研发、运营和客服在这里汇合。
+              当前已升级为八大模块：新增海报方案助手和小红书自动二创，内容项目入口现在单独展示。
             </p>
           </div>
 
@@ -326,7 +369,7 @@ export default function ToolsPage() {
         </motion.div>
 
         {/* 3D 交互卡片网格 */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
           {modules.map((mod, i) => (
             <ToolCard
               key={mod.id}

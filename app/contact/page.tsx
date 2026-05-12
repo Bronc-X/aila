@@ -56,9 +56,9 @@ const qrChannels: QrChannel[] = [
 ];
 
 const principles = [
-  ["先到现场", "从一张表、一段对话、一次交付卡顿开始，看清事情真正发生的地方。"],
-  ["先见雏形", "能点、能试、能被追问的版本，往往比厚厚一份方案更接近答案。"],
-  ["先让人用住", "交付之后还要有人愿意打开、敢于判断，并能把结果带回日常工作。"],
+  ["先看现场", "从一张表、一段对话、一次交付卡顿开始，确认问题到底发生在哪个动作里。"],
+  ["先做雏形", "能点、能试、能被追问的版本，往往比一份厚方案更快暴露真实答案。"],
+  ["先让人用", "交付之后还要有人愿意打开、敢于判断，并能把结果带回日常工作。"],
 ];
 
 async function getLotusRepo(): Promise<GitHubRepo | null> {
@@ -94,8 +94,8 @@ export default async function ContactPage() {
         </Link>
         <div className={styles.links}>
           <Link href="/work">作品</Link>
-          <Link href="/aila">AILA</Link>
           <Link href="/tools">工具</Link>
+          <Link href="/work/training-system">陪跑</Link>
           <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
@@ -104,11 +104,11 @@ export default async function ContactPage() {
         <div className={styles.contactCopy}>
           <p className={styles.eyebrow}>
             <Moon size={16} />
-            Toni / AI product companion
+            Toni / AI workflow companion
           </p>
-          <h1>把想法、现场和卡住的地方发给我。</h1>
+          <h1>把你卡住的业务现场发给我。</h1>
           <p>
-            我做 AI 产品陪跑、Agent 编排和工程交付。合作通常从一个真实场景开始：谁使用，输入什么，输出给谁，错了怎么复核。
+            我做 AI 工具陪跑、Agent 工作流和企业系统原型。合作从一个真实场景开始：谁使用，输入什么，输出给谁，错了怎么复核。
           </p>
         </div>
 
@@ -129,8 +129,8 @@ export default async function ContactPage() {
 
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>工作方式很简单：先把混乱理出骨架。</h2>
-          <p>不是先写一份漂亮方案，而是先把能跑起来的最短链路找出来。</p>
+          <h2>先把问题拆小，再把工具跑起来。</h2>
+          <p>我不会先写一份漂亮方案。先找一条能验证价值的最短链路，再决定要不要扩成系统。</p>
         </div>
         <div className={styles.grid}>
           {principles.map(([title, text]) => (
@@ -160,7 +160,7 @@ export default async function ContactPage() {
             <small>Lotus</small>
             <strong>{lotusRepo?.full_name ?? "Bronc-X/Lotus"}</strong>
             <p>
-              Lotus 是我维护的开源 AI Agent 规则项目：把工程协议写一次，部署到不同 IDE 与编码 Agent。
+              Lotus 是我维护的开源 AI Agent 规则项目：把工程协议、质量门禁和协作规则写一次，再部署到不同 IDE 与编码 Agent。
             </p>
           </div>
           <span className={styles.starCount}>

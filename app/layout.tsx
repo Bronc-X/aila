@@ -20,12 +20,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Toni | 产品、流程与企业系统设计",
-  description: "Toni 的个人官网：展示企业工具、工作流改造、系统原型和课程训练能力。",
-  keywords: ["Toni", "产品设计", "企业系统", "系统设计", "工作流改造", "企业培训"],
+  title: "Toni | AI 工具陪跑与企业流程原型",
+  description: "把业务卡点拆成可演示、可复核、可交给团队试用的 AI 工具、工作流和企业系统原型。",
+  keywords: ["Toni", "AI 工具陪跑", "企业流程原型", "Agent 工作流", "企业培训"],
   openGraph: {
-    title: "Toni | 产品、流程与企业系统设计",
-    description: "把产品判断和业务流程做成可演示、可训练、可交付的系统。",
+    title: "Toni | AI 工具陪跑与企业流程原型",
+    description: "从真实业务现场出发，把问题做成可运行、可验证、可训练的系统。",
     type: "website",
   },
 };

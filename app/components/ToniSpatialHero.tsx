@@ -57,6 +57,7 @@ type Gate = {
   id: string;
   href: string;
   title: string;
+  english: string;
   eyebrow: string;
   copy: string;
   x: number;
@@ -95,11 +96,12 @@ const backgroundVideos: BackgroundVideo[] = [
 
 const gates: Gate[] = [
   {
-    id: "toni",
-    href: "/contact",
-    title: "TONI",
-    eyebrow: "联系 / 关于",
-    copy: "AI 产品陪跑、Agent 编排与合作入口",
+    id: "work",
+    href: "/work",
+    title: "案例",
+    english: "WORK",
+    eyebrow: "自己的作品",
+    copy: "Cosic、智能招标、Lotus 和产品档案",
     x: 20,
     y: -116,
     z: 260,
@@ -112,11 +114,12 @@ const gates: Gate[] = [
     warp: 24,
   },
   {
-    id: "work",
-    href: "/work",
-    title: "WORK",
-    eyebrow: "项目宇宙",
-    copy: "公开产品、陪跑案例与企业交付",
+    id: "tools",
+    href: "/tools",
+    title: "工具",
+    english: "TOOLS",
+    eyebrow: "八大工具",
+    copy: "AILA 工具矩阵和两个新增内容工具",
     x: 486,
     y: -18,
     z: -190,
@@ -129,11 +132,12 @@ const gates: Gate[] = [
     warp: 32,
   },
   {
-    id: "services",
-    href: "/tools",
-    title: "TOOLS",
-    eyebrow: "工具大厅",
-    copy: "可进入、可复现、可检查的业务工作台",
+    id: "plan",
+    href: "/work/training-system",
+    title: "方案",
+    english: "PLAN",
+    eyebrow: "陪跑方案",
+    copy: "闭门训练、企业陪跑和落地路线图",
     x: -540,
     y: 94,
     z: -150,
@@ -146,11 +150,12 @@ const gates: Gate[] = [
     warp: 28,
   },
   {
-    id: "aila",
-    href: "/aila",
-    title: "AILA",
-    eyebrow: "企业工作台",
-    copy: "面向经营流程的 AI 工具矩阵",
+    id: "contact",
+    href: "/contact",
+    title: "合作",
+    english: "CONTACT",
+    eyebrow: "关于 / 联系",
+    copy: "发来业务现场，先判断哪里值得动",
     x: 20,
     y: 228,
     z: -318,
@@ -162,30 +167,22 @@ const gates: Gate[] = [
     kind: "cube",
     warp: 22,
   },
-  {
-    id: "training",
-    href: "/work/training-system",
-    title: "TRAINING",
-    eyebrow: "课程训练",
-    copy: "系统化工程组织、Agent 编排和市场验证",
-    x: 566,
-    y: 148,
-    z: -552,
-    width: 282,
-    height: 282,
-    depth: 282,
-    rotY: -0.34,
-    tint: "#b7f36f",
-    kind: "panel",
-    warp: 22,
-  },
 ];
 
 const proofStats: ProofStat[] = [
-  { value: "40+", label: "近一个月陪跑", shortLabel: "陪跑", detail: "陪到原型、流程和复盘都落地。" },
-  { value: "110+", label: "Lotus 超过 110 stars", shortLabel: "GitHub stars", detail: "开源一键冷启动 coding 工具包，更多是学员真实克隆留下的痕迹。" },
-  { value: "6个", label: "个人产品已上线", shortLabel: "已上线产品", detail: "公开可访问，持续维护和迭代。" },
+  { value: "看案例", label: "自己的作品", shortLabel: "作品档案", detail: "Cosic、智能招标、Lotus、AntiAnxiety 和公开产品档案。" },
+  { value: "试工具", label: "工具模块", shortLabel: "8 个模块", detail: "AILA 工具矩阵和新增内容工具统一进入 /tools。" },
+  { value: "做方案", label: "陪跑方案", shortLabel: "训练陪跑", detail: "闭门训练、企业陪跑和落地路线图。" },
+  { value: "聊合作", label: "关于联系", shortLabel: "发来场景", detail: "发来业务现场，先判断哪里值得动。" },
 ];
+
+const heroWordLines = [
+  { text: "欢迎来到", scale: 0.44, offset: -0.72, accent: false },
+  { text: "Toni", scale: 1, offset: 0, accent: true },
+  { text: "的主页", scale: 0.38, offset: 0.72, accent: false },
+];
+
+const lusieAiUrl = "/lusie";
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -775,41 +772,77 @@ export default function ToniSpatialHero() {
     const center = project(resolved, width, height);
     if (!center.visible) return;
 
-    const fontSize = clamp(gate.height * center.scale * 1.38, 88, 250);
+    const wordText = heroWordLines.map((line) => line.text).join("");
+    const baseSize = clamp(gate.height * center.scale * 0.96, 72, 178);
     const active = activeId === gate.id;
-    const depthOffset = clamp(fontSize * 0.12, 9, 28);
+    const depthOffset = clamp(baseSize * 0.12, 10, 30);
     const alpha = clamp(1 - center.z / 2000, 0.2, 1);
+    const lineY = (offset: number) => center.y + offset * baseSize;
+    const emerald = "34, 214, 101";
+    const cream = "255, 246, 229";
+    const underlineY = lineY(0.54);
+    const underlineW = baseSize * 2.2;
 
     ctx.save();
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = `900 ${fontSize}px Arial Black, Impact, sans-serif`;
 
     ctx.globalCompositeOperation = "screen";
-    ctx.filter = `blur(${clamp(fontSize * 0.065, 7, 18)}px)`;
-    ctx.fillStyle = `rgba(34, 214, 101, ${0.28 * alpha})`;
-    ctx.fillText(gate.title, center.x - depthOffset * 0.3, center.y + depthOffset * 0.12);
+    ctx.filter = `blur(${clamp(baseSize * 0.075, 9, 22)}px)`;
+    ctx.font = `900 ${baseSize * 0.74}px Arial Black, Impact, sans-serif`;
+    ctx.fillStyle = `rgba(${emerald}, ${0.22 * alpha})`;
+    ctx.fillText(wordText, center.x - depthOffset * 0.22, center.y + depthOffset * 0.08);
     ctx.filter = "none";
     ctx.globalCompositeOperation = "source-over";
 
-    for (let i = 34; i >= 1; i -= 1) {
-      const shade = i / 34;
-      ctx.fillStyle = `rgba(69, 18, 8, ${0.18 + shade * 0.3})`;
-      ctx.fillText(
-        gate.title,
-        center.x + depthOffset * shade * (0.8 + Math.sin(time * 0.00035) * 0.08),
-        center.y + depthOffset * shade * 0.42,
-      );
+    for (let i = 28; i >= 1; i -= 1) {
+      const shade = i / 28;
+      heroWordLines.forEach((line) => {
+        const size = baseSize * line.scale;
+        ctx.font = `900 ${size}px Arial Black, Impact, sans-serif`;
+        ctx.fillStyle = line.accent
+          ? `rgba(7, 33, 19, ${0.08 + shade * 0.13})`
+          : `rgba(9, 18, 14, ${0.14 + shade * 0.16})`;
+        ctx.fillText(
+          line.text,
+          center.x + depthOffset * shade * (0.72 + Math.sin(time * 0.00035) * 0.06),
+          lineY(line.offset) + depthOffset * shade * 0.34,
+        );
+      });
     }
 
+    const underline = ctx.createLinearGradient(center.x - underlineW / 2, underlineY, center.x + underlineW / 2, underlineY);
+    underline.addColorStop(0, "rgba(34, 214, 101, 0)");
+    underline.addColorStop(0.24, `rgba(${emerald}, ${0.34 * alpha})`);
+    underline.addColorStop(0.5, `rgba(${emerald}, ${0.78 * alpha})`);
+    underline.addColorStop(0.76, `rgba(${emerald}, ${0.34 * alpha})`);
+    underline.addColorStop(1, "rgba(34, 214, 101, 0)");
+    ctx.save();
+    ctx.globalCompositeOperation = "screen";
     ctx.shadowColor = "#22d665";
     ctx.shadowBlur = active ? 24 : 16;
-    ctx.fillStyle = `rgba(34, 214, 101, ${0.96 * alpha})`;
-    ctx.fillText(gate.title, center.x, center.y);
-    ctx.shadowBlur = 0;
-    ctx.lineWidth = Math.max(1, 2.2 * center.scale);
-    ctx.strokeStyle = "rgba(255, 183, 105, 0.26)";
-    ctx.strokeText(gate.title, center.x, center.y);
+    ctx.strokeStyle = underline;
+    ctx.lineWidth = Math.max(2, baseSize * 0.025);
+    ctx.beginPath();
+    ctx.moveTo(center.x - underlineW / 2, underlineY);
+    ctx.lineTo(center.x + underlineW / 2, underlineY);
+    ctx.stroke();
+    ctx.restore();
+
+    heroWordLines.forEach((line) => {
+      const size = baseSize * line.scale;
+      ctx.font = `900 ${size}px Arial Black, Impact, sans-serif`;
+      ctx.shadowColor = line.accent ? "#22d665" : "rgba(255, 246, 229, 0.22)";
+      ctx.shadowBlur = line.accent ? (active ? 34 : 24) : 6;
+      ctx.fillStyle = line.accent
+        ? "#22d665"
+        : `rgba(${cream}, ${0.5 * alpha})`;
+      ctx.fillText(line.text, center.x, lineY(line.offset));
+      ctx.shadowBlur = 0;
+      ctx.lineWidth = Math.max(1, 2.2 * center.scale);
+      ctx.strokeStyle = line.accent ? "rgba(168, 240, 106, 0.42)" : `rgba(${cream}, 0.07)`;
+      ctx.strokeText(line.text, center.x, lineY(line.offset));
+    });
     ctx.restore();
 
     const hitW = gate.width * center.scale;
@@ -1042,15 +1075,20 @@ export default function ToniSpatialHero() {
       ctx.globalCompositeOperation = "source-over";
       ctx.shadowColor = "rgba(0, 0, 0, 0.88)";
       ctx.shadowBlur = 10;
-      ctx.fillStyle = "rgba(255, 246, 229, 0.82)";
-      ctx.font = `800 ${clamp(gate.height * 0.086, 12, 19)}px Bahnschrift, Arial Narrow, Arial, sans-serif`;
-      drawFittedText(ctx, gate.eyebrow.toUpperCase(), gate.width / 2, gate.height * 0.32, gate.width * 0.72);
+      const labelFont = '"DIN Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif';
+      const titleFont = '"Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif';
+      const titleSize = clamp(Math.min(gate.width / (gate.title.length * 0.78), gate.height * 0.34), 42, 68);
+      const englishSize = clamp(gate.height * 0.105, 15, 24);
+      const labelSize = clamp(gate.height * 0.07, 11, 16);
 
-      const titleSize = clamp(Math.min(gate.width / (gate.title.length * 0.42), gate.height * 0.42), 42, 78);
-      ctx.font = `800 ${titleSize}px "Bodoni 72", "Bodoni MT", Didot, "Didot LT STD", "Iowan Old Style", Georgia, serif`;
-      ctx.lineWidth = Math.max(1, titleSize * 0.045);
+      ctx.fillStyle = "rgba(255, 246, 229, 0.72)";
+      ctx.font = `800 ${labelSize}px ${labelFont}`;
+      drawFittedText(ctx, gate.eyebrow.toUpperCase(), gate.width / 2, gate.height * 0.26, gate.width * 0.72);
+
+      ctx.font = `900 ${titleSize}px ${titleFont}`;
+      ctx.lineWidth = Math.max(1, titleSize * 0.055);
       ctx.strokeStyle = "rgba(0, 0, 0, 0.76)";
-      drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.54, gate.width * 0.82, true);
+      drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.52, gate.width * 0.82, true);
       ctx.shadowColor = gate.tint;
       ctx.shadowBlur = active ? 17 : 9;
       const titleGradient = ctx.createLinearGradient(gate.width * 0.16, gate.height * 0.39, gate.width * 0.84, gate.height * 0.61);
@@ -1059,7 +1097,11 @@ export default function ToniSpatialHero() {
       titleGradient.addColorStop(0.68, "#e8f7dc");
       titleGradient.addColorStop(1, gate.tint);
       ctx.fillStyle = titleGradient;
-      drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.54, gate.width * 0.82);
+      drawFittedText(ctx, gate.title, gate.width / 2, gate.height * 0.52, gate.width * 0.82);
+      ctx.shadowBlur = active ? 12 : 7;
+      ctx.font = `900 ${englishSize}px ${labelFont}`;
+      ctx.fillStyle = `rgba(255, 246, 229, ${active ? 0.86 : 0.68})`;
+      drawFittedText(ctx, gate.english, gate.width / 2, gate.height * 0.72, gate.width * 0.68);
       ctx.restore();
     }
 
@@ -1327,9 +1369,15 @@ export default function ToniSpatialHero() {
         ))}
       </div>
       <nav className={styles.nav} aria-label="Primary">
-        <Link href="/" className={styles.brand}>
-          Toni
-        </Link>
+        <div className={styles.topLeftActions}>
+          <Link href="/" className={styles.brand}>
+            Toni
+          </Link>
+          <Link href={lusieAiUrl} className={styles.lusieTopButton}>
+            航模项目
+            <ArrowUpRight size={14} />
+          </Link>
+        </div>
         <div className={styles.links}>
           <Link href="/work">作品</Link>
           <Link href="/tools">工具</Link>
@@ -1338,65 +1386,37 @@ export default function ToniSpatialHero() {
         </div>
       </nav>
 
-      <div className={styles.heroCopy}>
-        <p className={styles.kicker}>
-          <Rocket size={16} />
-          AI product companion / agent workflow
-        </p>
-        <h1>
-          <span className={styles.titleLead}>在 AI 时代</span>
-          <span>把问题</span>
-          <span className={styles.titleFinal}>变成可运行产品</span>
-        </h1>
-        <p>
-          你只需要学会一件事：这个问题，该用怎样的 AI 工具、怎样的方式达成。
-          我陪你从想法、原型、Agent 编排、工程组织，一路跑到可以验证的结果。
-        </p>
-        <div className={styles.heroActions}>
-          <Link href="/work" onClick={(event) => event.stopPropagation()}>
-            看完整档案
-            <ArrowUpRight size={16} />
-          </Link>
-          <Link href="/contact" onClick={(event) => event.stopPropagation()}>
-            联系我
-          </Link>
-        </div>
-      </div>
-
-      <div className={styles.proofDock} aria-label="Trust signals">
-        {proofStats.map((stat) => (
-          <div key={stat.label}>
-            <strong>{stat.value}</strong>
-            <span>{stat.shortLabel}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.controls} aria-label="Spatial gates">
-        {gates.map((gate) => (
-          <Link
-            key={gate.id}
-            href={gate.href}
-            aria-label={`Open ${gate.title}`}
-            className={activeId === gate.id ? styles.active : ""}
-            onMouseEnter={() => focusGate(gate)}
-            onFocus={() => focusGate(gate)}
-            onClick={(event) => {
-              event.stopPropagation();
-              focusGate(gate);
-            }}
-          >
-            {gate.title}
-          </Link>
-        ))}
-      </div>
-      <Link
-        href="/contact"
-        className={styles.contactButton}
+      <div
+        className={styles.entryDock}
+        aria-label="入口导航"
+        onMouseDown={(event) => event.stopPropagation()}
         onClick={(event) => event.stopPropagation()}
       >
-        联系陪跑
-      </Link>
+        <div className={styles.entryButtons}>
+          <button type="button" className={styles.entryTrigger} aria-haspopup="true" aria-label="显示入口卡片">
+            <Rocket size={16} />
+            入口
+          </button>
+        </div>
+        <div className={styles.entryPanel} aria-label="四个入口">
+          {proofStats.map((stat, index) => {
+            const gate = gates[index];
+
+            return (
+              <Link
+                key={stat.label}
+                href={gate.href}
+                className={activeId === gate.id ? styles.entryActive : ""}
+                onMouseEnter={() => focusGate(gate)}
+                onFocus={() => focusGate(gate)}
+              >
+                <strong>{stat.value}</strong>
+                <span>{stat.shortLabel}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
       <Link
         href="/pet/taiga"
         className={styles.taigaSignal}

@@ -154,7 +154,7 @@ export default function OperationsPage() {
   }, [trackingRows]);
 
   const subTabs = [
-    { id: "dashboard" as const, label: "智能仪表盘", icon: BarChart3 },
+    { id: "dashboard" as const, label: "经营仪表盘", icon: BarChart3 },
     { id: "analysis" as const, label: "成交分析", icon: TrendingUp },
   { id: "report" as const, label: "经营报告", icon: FileText },
     { id: "tracking" as const, label: "回访追踪", icon: CalendarDays },
@@ -210,7 +210,7 @@ export default function OperationsPage() {
       }
       setDbData(parsed);
     } catch (e) {
-      alert(e instanceof Error ? e.message : "全盘数据生成失败，请重试");
+      alert(e instanceof Error ? e.message : "演示数据生成失败，请重试");
     } finally {
       setDbGenerating(false);
     }
@@ -322,7 +322,7 @@ export default function OperationsPage() {
                     <Sparkles size={24} />
                   </div>
               <h2 className="text-2xl font-bold text-[#2D2A26]">初始化经营数据大屏</h2>
-              <p className="text-[#6B6660] text-sm mt-2">填写业务规模与目标，系统会推演并监控实时数据指标。</p>
+              <p className="text-[#6B6660] text-sm mt-2">填写业务规模与目标，生成一组可用于演示和复盘的经营指标。</p>
                 </div>
                 
                 <div className="space-y-4">
@@ -387,7 +387,7 @@ export default function OperationsPage() {
                 <div className="pt-4">
                   <button onClick={handleGenerateDashboard} disabled={dbGenerating}
                     className="w-full bg-[#22d665] text-white font-bold tracking-widest py-3.5 rounded-xl hover:bg-[#15803d] transition-all flex justify-center items-center gap-2 disabled:opacity-50">
-              {dbGenerating ? <><RefreshCw size={18} className="animate-spin"/> 深度推演中...</> : <><BarChart3 size={18}/> 生成高维数据大屏</>}
+              {dbGenerating ? <><RefreshCw size={18} className="animate-spin"/> 生成中...</> : <><BarChart3 size={18}/> 生成经营数据大屏</>}
                   </button>
                 </div>
               </div>
@@ -584,12 +584,12 @@ export default function OperationsPage() {
         {/* ═══════════════════ 成交分析 (AI 洞察) ═══════════════════ */}
         {activeSubTab === "analysis" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
-            <h2 className="text-xl font-bold text-[#2D2A26] mb-6">高维数据洞察与建议</h2>
+            <h2 className="text-xl font-bold text-[#2D2A26] mb-6">经营数据洞察与建议</h2>
             {!dbData ? (
               <div className="flex flex-col items-center justify-center h-[350px] text-center border-2 border-dashed border-[#E5E1D8] bg-[#FAF9F6] rounded-xl m-2">
                 <TrendingUp size={28} className="text-[#A3A3A3] mb-3" />
-                <p className="text-[#6B6660] font-medium">请先在【智能仪表盘】配置大盘数据</p>
-              <p className="text-sm text-[#9E9B96] mt-2">系统将根据最新推演数据，深挖异动指标并提供决断建议</p>
+                <p className="text-[#6B6660] font-medium">请先在【经营仪表盘】配置大盘数据</p>
+              <p className="text-sm text-[#9E9B96] mt-2">根据最新演示数据，识别异动指标并给出复盘建议</p>
               </div>
             ) : (
               <div className="space-y-6">
@@ -644,7 +644,7 @@ export default function OperationsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={() => {
-                      if (!dbData) { alert("请先生成智能仪表盘数据"); return; }
+                      if (!dbData) { alert("请先生成经营仪表盘数据"); return; }
                       const newRows = (dbData.deals || []).map((deal: any, i: number) => ({
                         id: `ai-${Date.now()}-${i}`,
                         name: deal.client,
