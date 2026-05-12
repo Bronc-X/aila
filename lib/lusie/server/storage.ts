@@ -55,8 +55,7 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
 
       return {
         ...concept,
-        imageUrl: publicRunFile(runId, fileName),
-        imageDataUrl: concept.imageUrl
+        imageUrl: publicRunFile(runId, fileName)
       };
     })
   );
@@ -92,7 +91,7 @@ async function saveRunToSupabase(run: ModelRun) {
         label: run.input.label || run.runId.slice(0, 8),
         status: run.status === "Ready" ? "ready" : run.status === "Failed" ? "failed" : "concept",
         input: run.input,
-        concepts: run.concepts,
+        concepts: run.concepts.map(({ imageDataUrl: _imageDataUrl, ...concept }) => concept),
         selected_concept_id: run.selectedConceptId ?? null,
         preview_image_url: run.concepts[0]?.imageUrl ?? null,
         created_at: run.createdAt,

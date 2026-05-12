@@ -42,7 +42,8 @@ export async function createConcepts(input: ModelRequest) {
   try {
     const runId = randomUUID();
     await ensureRunDir(runId);
-    const concepts = await persistConceptImages(runId, await openAiConcepts(input, runId));
+    const generatedConcepts = await openAiConcepts(input, runId);
+    const concepts = await persistConceptImages(runId, generatedConcepts);
     const now = new Date().toISOString();
     const run: ModelRun = {
       runId,
@@ -55,7 +56,7 @@ export async function createConcepts(input: ModelRequest) {
     };
 
     await saveRun(run);
-    return Response.json({ runId, concepts } satisfies ConceptResponse);
+    return Response.json({ runId, concepts: generatedConcepts } satisfies ConceptResponse);
   } catch (error) {
     return jsonError(500, "Concept generation failed", error instanceof Error ? error.message : "Unknown error");
   }
@@ -90,13 +91,14 @@ export function createConceptProgressStream(input: ModelRequest) {
         }
 
         send({ phase: "image", progress: 22, message: "正在生成第 1 张概念图。", runId, conceptIndex: 1, totalConcepts: 2 });
-        const concepts = await persistConceptImages(runId, await openAiConcepts(input, runId, {
+        const generatedConcepts = await openAiConcepts(input, runId, {
           onConceptDone: (_concept, index, total) => {
             const progress = index === 1 ? 56 : 84;
             const message = index < total ? `第 ${index} 张已完成，正在生成第 ${index + 1} 张。` : "两张概念图已生成，正在保存结果。";
             send({ phase: "image", progress, message, runId, conceptIndex: index, totalConcepts: total });
           }
-        }));
+        });
+        const concepts = await persistConceptImages(runId, generatedConcepts);
 
         send({ phase: "saving", progress: 92, message: "正在保存概念图和生成记录。", runId, totalConcepts: concepts.length });
 
@@ -112,7 +114,7 @@ export function createConceptProgressStream(input: ModelRequest) {
         };
 
         await saveRun(run);
-        const response: ConceptResponse = { runId, concepts };
+        const response: ConceptResponse = { runId, concepts: generatedConcepts };
         send({ phase: "complete", progress: 100, message: "概念图已生成。", runId, totalConcepts: concepts.length, response });
       } catch (error) {
         send({
