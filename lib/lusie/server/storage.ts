@@ -195,8 +195,7 @@ async function uploadConceptImage(
     headers: {
       apikey: config.supabaseStorageKey,
       Authorization: `Bearer ${config.supabaseStorageKey}`,
-      "Content-Type": image.contentType,
-      "x-upsert": "true"
+      "Content-Type": image.contentType
     },
     body: new Uint8Array(image.bytes)
   });
