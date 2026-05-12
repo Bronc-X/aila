@@ -31,6 +31,7 @@ export interface Concept {
   imageUrl: string;
   prompt: string;
   feedback?: string;
+  imageDataUrl?: string;
 }
 
 export interface ModelRun {

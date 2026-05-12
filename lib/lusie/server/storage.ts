@@ -45,7 +45,8 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
 
       return {
         ...concept,
-        imageUrl: publicRunFile(runId, fileName)
+        imageUrl: publicRunFile(runId, fileName),
+        imageDataUrl: concept.imageUrl
       };
     })
   );
