@@ -7,6 +7,9 @@ export const runsDir = process.env.LUSIE_RUNS_DIR ?? path.join(os.tmpdir(), "ton
 
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
+const supabaseStorageKey = supabaseServiceRoleKey || supabaseKey;
+const lusieStorageBucket = process.env.LUSIE_STORAGE_BUCKET?.trim() || "lusie-runs";
 
 export function getRunDir(runId: string) {
   return path.join(runsDir, runId);
@@ -52,10 +55,11 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
 
       const fileName = `concept-${index + 1}.${image.extension}`;
       await writeFile(path.join(getRunDir(runId), fileName), image.bytes);
+      const storageUrl = await uploadConceptImage(runId, fileName, image);
 
       return {
         ...concept,
-        imageUrl: publicRunFile(runId, fileName)
+        imageUrl: storageUrl ?? publicRunFile(runId, fileName)
       };
     })
   );
@@ -66,10 +70,65 @@ function parseDataImage(imageUrl: string) {
   if (!match) return null;
 
   const mimeSubtype = match[1].toLowerCase();
+  const extension = mimeSubtype === "jpeg" ? "jpg" : mimeSubtype;
   return {
-    extension: mimeSubtype === "jpeg" ? "jpg" : mimeSubtype,
+    contentType: `image/${mimeSubtype}`,
+    extension,
     bytes: Buffer.from(match[2], "base64")
   };
+}
+
+async function uploadConceptImage(
+  runId: string,
+  fileName: string,
+  image: { bytes: Buffer; contentType: string }
+) {
+  if (!supabaseUrl || !supabaseStorageKey) return null;
+
+  await ensureStorageBucket();
+
+  const objectPath = `${runId}/${fileName}`;
+  const response = await fetch(`${supabaseUrl}/storage/v1/object/${lusieStorageBucket}/${objectPath}`, {
+    method: "POST",
+    headers: {
+      apikey: supabaseStorageKey,
+      Authorization: `Bearer ${supabaseStorageKey}`,
+      "Content-Type": image.contentType,
+      "x-upsert": "true"
+    },
+    body: new Uint8Array(image.bytes)
+  });
+
+  if (!response.ok) {
+    console.warn(`Lusie Supabase image upload failed: ${response.status} ${await response.text()}`);
+    return null;
+  }
+
+  return `${supabaseUrl}/storage/v1/object/public/${lusieStorageBucket}/${objectPath}`;
+}
+
+async function ensureStorageBucket() {
+  if (!supabaseUrl || !supabaseServiceRoleKey) return;
+
+  const response = await fetch(`${supabaseUrl}/storage/v1/bucket`, {
+    method: "POST",
+    headers: {
+      apikey: supabaseServiceRoleKey,
+      Authorization: `Bearer ${supabaseServiceRoleKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: lusieStorageBucket,
+      name: lusieStorageBucket,
+      public: true,
+      file_size_limit: 10485760,
+      allowed_mime_types: ["image/png", "image/jpeg", "image/webp"]
+    })
+  });
+
+  if (!response.ok && response.status !== 409) {
+    console.warn(`Lusie Supabase bucket ensure failed: ${response.status} ${await response.text()}`);
+  }
 }
 
 async function saveRunToSupabase(run: ModelRun) {
