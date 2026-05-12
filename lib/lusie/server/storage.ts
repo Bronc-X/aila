@@ -77,9 +77,10 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
 
       const fileName = `concept-${index + 1}.${image.extension}`;
       await writeFile(path.join(getRunDir(runId), fileName), image.bytes);
-      const storageUrl = await uploadConceptImage(runId, fileName, image);
+      const upload = await uploadConceptImage(runId, fileName, image);
+      const storageUrl = upload.url;
       if (!storageUrl && process.env.NODE_ENV === "production") {
-        throw new Error(getStorageFailureMessage());
+        throw new Error(getStorageFailureMessage(upload.error));
       }
 
       return {
@@ -90,7 +91,7 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
   );
 }
 
-function getStorageFailureMessage() {
+function getStorageFailureMessage(uploadError?: string) {
   const config = getStorageConfig();
 
   if (!config.supabaseUrl) {
@@ -101,7 +102,7 @@ function getStorageFailureMessage() {
     return "Lusie concept image storage is not configured. Set NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY in Vercel and redeploy Production.";
   }
 
-  return "Lusie concept image storage upload failed. Check the Supabase Storage bucket and upload policy for LUSIE_STORAGE_BUCKET.";
+  return uploadError || "Lusie concept image storage upload failed. Check the Supabase Storage bucket and upload policy for LUSIE_STORAGE_BUCKET.";
 }
 
 function parseDataImage(imageUrl: string) {
@@ -124,10 +125,11 @@ async function uploadConceptImage(
 ) {
   const config = getStorageConfig();
 
-  if (!config.supabaseUrl || !config.supabaseStorageKey) return null;
+  if (!config.supabaseUrl || !config.supabaseStorageKey) return {};
 
   if (config.supabaseServiceRoleKey) {
-    await ensureStorageBucket();
+    const bucketError = await ensureStorageBucket();
+    if (bucketError) return { error: bucketError };
   }
 
   const objectPath = `${runId}/${fileName}`;
@@ -143,17 +145,19 @@ async function uploadConceptImage(
   });
 
   if (!response.ok) {
-    console.warn(`Lusie Supabase image upload failed: ${response.status} ${await response.text()}`);
-    return null;
+    const detail = await response.text();
+    const error = `Lusie Supabase Storage upload failed: ${response.status} ${detail}`;
+    console.warn(error);
+    return { error };
   }
 
-  return `${config.supabaseUrl}/storage/v1/object/public/${config.lusieStorageBucket}/${objectPath}`;
+  return { url: `${config.supabaseUrl}/storage/v1/object/public/${config.lusieStorageBucket}/${objectPath}` };
 }
 
 async function ensureStorageBucket() {
   const config = getStorageConfig();
 
-  if (!config.supabaseUrl || !config.supabaseServiceRoleKey) return;
+  if (!config.supabaseUrl || !config.supabaseServiceRoleKey) return null;
 
   const response = await fetch(`${config.supabaseUrl}/storage/v1/bucket`, {
     method: "POST",
@@ -172,8 +176,13 @@ async function ensureStorageBucket() {
   });
 
   if (!response.ok && response.status !== 409) {
-    console.warn(`Lusie Supabase bucket ensure failed: ${response.status} ${await response.text()}`);
+    const detail = await response.text();
+    const error = `Lusie Supabase bucket ensure failed: ${response.status} ${detail}`;
+    console.warn(error);
+    return error;
   }
+
+  return null;
 }
 
 async function saveRunToSupabase(run: ModelRun) {
