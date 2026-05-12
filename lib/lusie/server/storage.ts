@@ -5,11 +5,33 @@ import type { Concept, ModelRun } from "./types";
 
 export const runsDir = process.env.LUSIE_RUNS_DIR ?? path.join(os.tmpdir(), "toni-lusie-runs");
 
-const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
-const supabaseStorageKey = supabaseServiceRoleKey || supabaseKey;
-const lusieStorageBucket = process.env.LUSIE_STORAGE_BUCKET?.trim() || "lusie-runs";
+function getStorageConfig() {
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
+  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "").trim();
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
+  const supabaseStorageKey = supabaseServiceRoleKey || supabaseKey;
+  const lusieStorageBucket = process.env.LUSIE_STORAGE_BUCKET?.trim() || "lusie-runs";
+
+  return {
+    supabaseKey,
+    supabaseServiceRoleKey,
+    supabaseStorageKey,
+    supabaseUrl,
+    lusieStorageBucket
+  };
+}
+
+export function getStorageConfigState() {
+  const config = getStorageConfig();
+
+  return {
+    ready: Boolean(config.supabaseUrl && config.supabaseStorageKey),
+    hasUrl: Boolean(config.supabaseUrl),
+    hasKey: Boolean(config.supabaseStorageKey),
+    hasServiceRoleKey: Boolean(config.supabaseServiceRoleKey),
+    bucket: config.lusieStorageBucket
+  };
+}
 
 export function getRunDir(runId: string) {
   return path.join(runsDir, runId);
@@ -57,11 +79,7 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
       await writeFile(path.join(getRunDir(runId), fileName), image.bytes);
       const storageUrl = await uploadConceptImage(runId, fileName, image);
       if (!storageUrl && process.env.NODE_ENV === "production") {
-        throw new Error(
-          supabaseStorageKey
-            ? "Lusie concept image storage upload failed. Check the Supabase Storage bucket and upload policy for LUSIE_STORAGE_BUCKET."
-            : "Lusie concept image storage is not configured. Set NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY in Vercel."
-        );
+        throw new Error(getStorageFailureMessage());
       }
 
       return {
@@ -70,6 +88,20 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
       };
     })
   );
+}
+
+function getStorageFailureMessage() {
+  const config = getStorageConfig();
+
+  if (!config.supabaseUrl) {
+    return "Lusie concept image storage is not configured. Set NEXT_PUBLIC_SUPABASE_URL in Vercel and redeploy Production.";
+  }
+
+  if (!config.supabaseStorageKey) {
+    return "Lusie concept image storage is not configured. Set NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY in Vercel and redeploy Production.";
+  }
+
+  return "Lusie concept image storage upload failed. Check the Supabase Storage bucket and upload policy for LUSIE_STORAGE_BUCKET.";
 }
 
 function parseDataImage(imageUrl: string) {
@@ -90,18 +122,20 @@ async function uploadConceptImage(
   fileName: string,
   image: { bytes: Buffer; contentType: string }
 ) {
-  if (!supabaseUrl || !supabaseStorageKey) return null;
+  const config = getStorageConfig();
 
-  if (supabaseServiceRoleKey) {
+  if (!config.supabaseUrl || !config.supabaseStorageKey) return null;
+
+  if (config.supabaseServiceRoleKey) {
     await ensureStorageBucket();
   }
 
   const objectPath = `${runId}/${fileName}`;
-  const response = await fetch(`${supabaseUrl}/storage/v1/object/${lusieStorageBucket}/${objectPath}`, {
+  const response = await fetch(`${config.supabaseUrl}/storage/v1/object/${config.lusieStorageBucket}/${objectPath}`, {
     method: "POST",
     headers: {
-      apikey: supabaseStorageKey,
-      Authorization: `Bearer ${supabaseStorageKey}`,
+      apikey: config.supabaseStorageKey,
+      Authorization: `Bearer ${config.supabaseStorageKey}`,
       "Content-Type": image.contentType,
       "x-upsert": "true"
     },
@@ -113,22 +147,24 @@ async function uploadConceptImage(
     return null;
   }
 
-  return `${supabaseUrl}/storage/v1/object/public/${lusieStorageBucket}/${objectPath}`;
+  return `${config.supabaseUrl}/storage/v1/object/public/${config.lusieStorageBucket}/${objectPath}`;
 }
 
 async function ensureStorageBucket() {
-  if (!supabaseUrl || !supabaseServiceRoleKey) return;
+  const config = getStorageConfig();
 
-  const response = await fetch(`${supabaseUrl}/storage/v1/bucket`, {
+  if (!config.supabaseUrl || !config.supabaseServiceRoleKey) return;
+
+  const response = await fetch(`${config.supabaseUrl}/storage/v1/bucket`, {
     method: "POST",
     headers: {
-      apikey: supabaseServiceRoleKey,
-      Authorization: `Bearer ${supabaseServiceRoleKey}`,
+      apikey: config.supabaseServiceRoleKey,
+      Authorization: `Bearer ${config.supabaseServiceRoleKey}`,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      id: lusieStorageBucket,
-      name: lusieStorageBucket,
+      id: config.lusieStorageBucket,
+      name: config.lusieStorageBucket,
       public: true,
       file_size_limit: 10485760,
       allowed_mime_types: ["image/png", "image/jpeg", "image/webp"]
@@ -141,14 +177,16 @@ async function ensureStorageBucket() {
 }
 
 async function saveRunToSupabase(run: ModelRun) {
-  if (!supabaseUrl || !supabaseKey) return;
+  const config = getStorageConfig();
+
+  if (!config.supabaseUrl || !config.supabaseKey) return;
 
   try {
-    const response = await fetch(`${supabaseUrl}/rest/v1/toybox_history`, {
+    const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history`, {
       method: "POST",
       headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
+        apikey: config.supabaseKey,
+        Authorization: `Bearer ${config.supabaseKey}`,
         "Content-Type": "application/json",
         Prefer: "resolution=merge-duplicates,return=minimal"
       },
@@ -176,12 +214,14 @@ async function saveRunToSupabase(run: ModelRun) {
 }
 
 async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
-  if (!supabaseUrl || !supabaseKey) return null;
+  const config = getStorageConfig();
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/toybox_history?run_id=eq.${encodeURIComponent(runId)}&select=input,concepts,selected_concept_id,status,created_at,updated_at&limit=1`, {
+  if (!config.supabaseUrl || !config.supabaseKey) return null;
+
+  const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history?run_id=eq.${encodeURIComponent(runId)}&select=input,concepts,selected_concept_id,status,created_at,updated_at&limit=1`, {
     headers: {
-      apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`
+      apikey: config.supabaseKey,
+      Authorization: `Bearer ${config.supabaseKey}`
     }
   });
 
