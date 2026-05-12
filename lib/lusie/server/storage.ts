@@ -8,8 +8,9 @@ export const runsDir = process.env.LUSIE_RUNS_DIR ?? path.join(os.tmpdir(), "ton
 function getStorageConfig() {
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
   const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "").trim();
-  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
-  const supabaseStorageKey = supabaseServiceRoleKey || supabaseKey;
+  const supabaseServiceRoleEnv = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
+  const supabaseServiceRoleKey = isSupabaseAdminKey(supabaseServiceRoleEnv) ? supabaseServiceRoleEnv : "";
+  const supabaseStorageKey = supabaseServiceRoleKey || supabaseKey || supabaseServiceRoleEnv;
   const lusieStorageBucket = process.env.LUSIE_STORAGE_BUCKET?.trim() || "lusie-runs";
 
   return {
@@ -19,6 +20,24 @@ function getStorageConfig() {
     supabaseUrl,
     lusieStorageBucket
   };
+}
+
+function isSupabaseAdminKey(key: string) {
+  if (!key) return false;
+  if (key.startsWith("sb_secret_")) return true;
+  return getSupabaseJwtRole(key) === "service_role";
+}
+
+function getSupabaseJwtRole(key: string) {
+  const [, payload] = key.split(".");
+  if (!payload) return null;
+
+  try {
+    const claims = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { role?: string };
+    return claims.role ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export function getStorageConfigState() {
@@ -65,6 +84,42 @@ export async function loadRun(runId: string): Promise<ModelRun> {
 
 export function publicRunFile(runId: string, fileName: string) {
   return `/api/lusie/runs/${runId}/files/${fileName}`;
+}
+
+export async function probeStorageUpload() {
+  const config = getStorageConfig();
+  if (!config.supabaseUrl) {
+    return {
+      ok: false,
+      status: 0,
+      message: "NEXT_PUBLIC_SUPABASE_URL is missing."
+    };
+  }
+
+  if (!config.supabaseStorageKey) {
+    return {
+      ok: false,
+      status: 0,
+      message: "NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY is missing."
+    };
+  }
+
+  const runId = `probe-${Date.now()}`;
+  const upload = await uploadConceptImage(runId, "pixel.png", {
+    bytes: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p94AAAAASUVORK5CYII=", "base64"),
+    contentType: "image/png"
+  });
+
+  return {
+    ok: Boolean(upload.url),
+    status: upload.status ?? 0,
+    message: upload.url ? "Storage upload is ready." : upload.error ?? "Storage upload failed.",
+    url: upload.url,
+    bucket: config.lusieStorageBucket,
+    hasUrl: Boolean(config.supabaseUrl),
+    hasKey: Boolean(config.supabaseStorageKey),
+    hasAdminKey: Boolean(config.supabaseServiceRoleKey)
+  };
 }
 
 export async function persistConceptImages(runId: string, concepts: Concept[]) {
@@ -129,7 +184,9 @@ async function uploadConceptImage(
 
   if (config.supabaseServiceRoleKey) {
     const bucketError = await ensureStorageBucket();
-    if (bucketError) return { error: bucketError };
+    if (bucketError) {
+      console.warn(bucketError);
+    }
   }
 
   const objectPath = `${runId}/${fileName}`;
@@ -148,10 +205,10 @@ async function uploadConceptImage(
     const detail = await response.text();
     const error = `Lusie Supabase Storage upload failed: ${response.status} ${detail}`;
     console.warn(error);
-    return { error };
+    return { error, status: response.status };
   }
 
-  return { url: `${config.supabaseUrl}/storage/v1/object/public/${config.lusieStorageBucket}/${objectPath}` };
+  return { status: response.status, url: `${config.supabaseUrl}/storage/v1/object/public/${config.lusieStorageBucket}/${objectPath}` };
 }
 
 async function ensureStorageBucket() {
