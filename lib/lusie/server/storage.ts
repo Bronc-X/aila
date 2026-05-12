@@ -316,6 +316,7 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
     runId,
     input: row.input,
     concepts: row.concepts,
+    storage: inferStorageDiagnostics(row.concepts),
     selectedConceptId: row.selected_concept_id ?? undefined,
     status: row.status === "ready" ? "Ready" : row.status === "failed" ? "Failed" : undefined,
     reasons: [],
@@ -323,4 +324,10 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
+}
+
+function inferStorageDiagnostics(concepts: Concept[]): StorageDiagnostics {
+  return concepts.some((concept) => concept.imageUrl.startsWith("data:image/"))
+    ? { mode: "embedded", warning: "Concept images are embedded in the run record." }
+    : { mode: "supabase" };
 }
