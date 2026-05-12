@@ -56,6 +56,9 @@ export async function persistConceptImages(runId: string, concepts: Concept[]) {
       const fileName = `concept-${index + 1}.${image.extension}`;
       await writeFile(path.join(getRunDir(runId), fileName), image.bytes);
       const storageUrl = await uploadConceptImage(runId, fileName, image);
+      if (!storageUrl && process.env.NODE_ENV === "production") {
+        throw new Error("Lusie concept image storage is not configured. Set SUPABASE_SERVICE_ROLE_KEY in Vercel.");
+      }
 
       return {
         ...concept,
@@ -83,7 +86,7 @@ async function uploadConceptImage(
   fileName: string,
   image: { bytes: Buffer; contentType: string }
 ) {
-  if (!supabaseUrl || !supabaseStorageKey) return null;
+  if (!supabaseUrl || !supabaseStorageKey || !supabaseServiceRoleKey) return null;
 
   await ensureStorageBucket();
 

@@ -56,7 +56,7 @@ export async function createConcepts(input: ModelRequest) {
     };
 
     await saveRun(run);
-    return Response.json({ runId, concepts: generatedConcepts } satisfies ConceptResponse);
+    return Response.json({ runId, concepts } satisfies ConceptResponse);
   } catch (error) {
     return jsonError(500, "Concept generation failed", error instanceof Error ? error.message : "Unknown error");
   }
@@ -114,7 +114,7 @@ export function createConceptProgressStream(input: ModelRequest) {
         };
 
         await saveRun(run);
-        const response: ConceptResponse = { runId, concepts: generatedConcepts };
+        const response: ConceptResponse = { runId, concepts };
         send({ phase: "complete", progress: 100, message: "概念图已生成。", runId, totalConcepts: concepts.length, response });
       } catch (error) {
         send({
