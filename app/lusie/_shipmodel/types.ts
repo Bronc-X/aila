@@ -34,10 +34,16 @@ export interface Concept {
   imageDataUrl?: string;
 }
 
+export interface StorageDiagnostics {
+  mode: "supabase" | "embedded";
+  warning?: string;
+}
+
 export interface ModelRun {
   runId: string;
   input: ModelRequest;
   concepts: Concept[];
+  storage?: StorageDiagnostics;
   selectedConceptId?: string;
   status?: RunStatus;
   reasons: string[];
@@ -61,6 +67,7 @@ export interface ConceptProgressEvent {
   response?: {
     runId: string;
     concepts: Concept[];
+    storage?: StorageDiagnostics;
   };
 }
 

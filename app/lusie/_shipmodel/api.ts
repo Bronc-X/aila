@@ -83,7 +83,7 @@ export async function generateModel(runId: string, conceptId: string) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ runId, conceptId })
+    body: JSON.stringify({ runId, conceptId, concepts: getConceptFallbacks() })
   });
 
   if (!response.ok) {
@@ -91,6 +91,23 @@ export async function generateModel(runId: string, conceptId: string) {
   }
 
   return (await response.json()) as { run: ModelRun };
+}
+
+let conceptFallbacks: Concept[] = [];
+
+export function setConceptFallbacks(concepts: Concept[]) {
+  conceptFallbacks = concepts;
+}
+
+function getConceptFallbacks() {
+  return conceptFallbacks.map((concept) => ({
+    id: concept.id,
+    title: concept.title,
+    imageUrl: concept.imageUrl,
+    imageDataUrl: concept.imageDataUrl,
+    prompt: concept.prompt,
+    feedback: concept.feedback
+  }));
 }
 
 export async function getRun(runId: string) {

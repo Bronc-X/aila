@@ -29,7 +29,7 @@ import {
   Wand2
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { generateConcepts, generateModel, getHandshake, getRun } from "../api";
+import { generateConcepts, generateModel, getHandshake, getRun, setConceptFallbacks } from "../api";
 import { ModelViewer } from "../components/ModelViewer";
 import type { Concept, ConceptProgressEvent, HandshakeResponse, ModelCategory, ModelRequest, ModelRun, ModelSubtype } from "../types";
 import { categories, colors, defaultInput, defaultInputForSubtype, defaultPrompts, firstStyle, firstSubtype, stylesByCategory } from "./catalog";
@@ -209,6 +209,7 @@ export function ToyBoxApp() {
     setRunId(restoredRun.runId);
     setInput(restoredRun.input);
     setConcepts(restoredRun.concepts);
+    setConceptFallbacks(restoredRun.concepts);
     setSelectedConceptId(restoredRun.selectedConceptId ?? restoredRun.concepts[0]?.id ?? null);
   }
 
@@ -256,6 +257,7 @@ export function ToyBoxApp() {
     setConceptProgress({ phase: "queued", progress: 3, message: "正在提交概念图生成请求。" });
     try {
       const response = await generateConcepts(input, setConceptProgress);
+      setConceptFallbacks(response.concepts);
       setRunId(response.runId);
       setConcepts(response.concepts);
       setSelectedConceptId(response.concepts[0]?.id ?? null);
@@ -286,6 +288,7 @@ export function ToyBoxApp() {
 
     setBusy(true);
     setAlert(null);
+    setConceptFallbacks(concepts);
     navigate("generating");
 
     try {

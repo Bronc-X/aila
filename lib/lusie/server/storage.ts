@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
-import type { Concept, ModelRun } from "./types";
+import type { Concept, ModelRun, StorageDiagnostics } from "./types";
 
 export const runsDir = process.env.LUSIE_RUNS_DIR ?? path.join(os.tmpdir(), "toni-lusie-runs");
 
@@ -124,26 +124,35 @@ export async function probeStorageUpload() {
 
 export async function persistConceptImages(runId: string, concepts: Concept[]) {
   await ensureRunDir(runId);
+  let storage: StorageDiagnostics = { mode: "supabase" };
 
-  return Promise.all(
-    concepts.map(async (concept, index) => {
+  const persisted = await Promise.all(
+    concepts.map(async (concept, index): Promise<Concept> => {
       const image = parseDataImage(concept.imageUrl);
       if (!image) return concept;
 
       const fileName = `concept-${index + 1}.${image.extension}`;
       await writeFile(path.join(getRunDir(runId), fileName), image.bytes);
       const upload = await uploadConceptImage(runId, fileName, image);
-      const storageUrl = upload.url;
-      if (!storageUrl && process.env.NODE_ENV === "production") {
-        throw new Error(getStorageFailureMessage(upload.error));
+      if (!upload.url) {
+        storage = {
+          mode: "embedded",
+          warning: upload.error ?? getStorageFailureMessage()
+        };
       }
 
       return {
         ...concept,
-        imageUrl: storageUrl ?? publicRunFile(runId, fileName)
+        imageDataUrl: concept.imageUrl,
+        imageUrl: upload.url ?? concept.imageUrl
       };
     })
   );
+
+  return {
+    concepts: persisted,
+    storage
+  };
 }
 
 function getStorageFailureMessage(uploadError?: string) {

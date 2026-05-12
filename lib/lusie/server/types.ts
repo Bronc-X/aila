@@ -34,9 +34,15 @@ export interface Concept {
   imageDataUrl?: string;
 }
 
+export interface StorageDiagnostics {
+  mode: "supabase" | "embedded";
+  warning?: string;
+}
+
 export interface ConceptResponse {
   runId: string;
   concepts: Concept[];
+  storage?: StorageDiagnostics;
 }
 
 export type ConceptProgressPhase = "queued" | "validating" | "image" | "saving" | "complete";
@@ -55,6 +61,7 @@ export interface ModelRun {
   runId: string;
   input: ModelRequest;
   concepts: Concept[];
+  storage?: StorageDiagnostics;
   selectedConceptId?: string;
   status?: RunStatus;
   reasons: string[];
@@ -69,6 +76,7 @@ export interface ModelRun {
 export interface GenerateModelRequest {
   runId: string;
   conceptId: string;
+  concepts?: Concept[];
 }
 
 export interface GenerateModelResponse {

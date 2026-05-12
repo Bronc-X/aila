@@ -46,12 +46,13 @@ export async function createConcepts(input: ModelRequest) {
     const runId = randomUUID();
     await ensureRunDir(runId);
     const generatedConcepts = await openAiConcepts(input, runId);
-    const concepts = await persistConceptImages(runId, generatedConcepts);
+    const persisted = await persistConceptImages(runId, generatedConcepts);
     const now = new Date().toISOString();
     const run: ModelRun = {
       runId,
       input,
-      concepts,
+      concepts: persisted.concepts,
+      storage: persisted.storage,
       reasons: [],
       files: {},
       createdAt: now,
@@ -59,7 +60,7 @@ export async function createConcepts(input: ModelRequest) {
     };
 
     await saveRun(run);
-    return Response.json({ runId, concepts } satisfies ConceptResponse);
+    return Response.json({ runId, concepts: persisted.concepts, storage: persisted.storage } satisfies ConceptResponse);
   } catch (error) {
     return jsonError(500, "Concept generation failed", error instanceof Error ? error.message : "Unknown error");
   }
@@ -75,7 +76,7 @@ export function createConceptProgressStream(input: ModelRequest) {
       };
 
       try {
-        send({ phase: "queued", progress: 5, message: "已接收概念图生成请求。" });
+        send({ phase: "queued", progress: 5, message: "Concept request received." });
 
         const validation = validateInput(input);
         if (validation.length > 0) {
@@ -83,33 +84,34 @@ export function createConceptProgressStream(input: ModelRequest) {
           return;
         }
 
-        send({ phase: "validating", progress: 12, message: "参数校验通过，正在创建生成记录。" });
+        send({ phase: "validating", progress: 12, message: "Input validated. Creating generation run." });
 
         const runId = randomUUID();
         await ensureRunDir(runId);
 
         if (!hasOpenAiKey()) {
-          send({ phase: "complete", progress: 100, message: "生成概念图前，请先设置 OPENAI_API_KEY 或 GPT_API_KEY。", runId });
+          send({ phase: "complete", progress: 100, message: "Set OPENAI_API_KEY or GPT_API_KEY before generating concepts.", runId });
           return;
         }
 
-        send({ phase: "image", progress: 22, message: "正在生成第 1 张概念图。", runId, conceptIndex: 1, totalConcepts: 2 });
+        send({ phase: "image", progress: 22, message: "Generating concept image 1.", runId, conceptIndex: 1, totalConcepts: 2 });
         const generatedConcepts = await openAiConcepts(input, runId, {
           onConceptDone: (_concept, index, total) => {
             const progress = index === 1 ? 56 : 84;
-            const message = index < total ? `第 ${index} 张已完成，正在生成第 ${index + 1} 张。` : "两张概念图已生成，正在保存结果。";
+            const message = index < total ? `Concept ${index} finished. Generating concept ${index + 1}.` : "Concept images generated. Saving run.";
             send({ phase: "image", progress, message, runId, conceptIndex: index, totalConcepts: total });
           }
         });
-        const concepts = await persistConceptImages(runId, generatedConcepts);
+        const persisted = await persistConceptImages(runId, generatedConcepts);
 
-        send({ phase: "saving", progress: 92, message: "正在保存概念图和生成记录。", runId, totalConcepts: concepts.length });
+        send({ phase: "saving", progress: 92, message: "Saving concepts and run data.", runId, totalConcepts: persisted.concepts.length });
 
         const now = new Date().toISOString();
         const run: ModelRun = {
           runId,
           input,
-          concepts,
+          concepts: persisted.concepts,
+          storage: persisted.storage,
           reasons: [],
           files: {},
           createdAt: now,
@@ -117,8 +119,8 @@ export function createConceptProgressStream(input: ModelRequest) {
         };
 
         await saveRun(run);
-        const response: ConceptResponse = { runId, concepts };
-        send({ phase: "complete", progress: 100, message: "概念图已生成。", runId, totalConcepts: concepts.length, response });
+        const response: ConceptResponse = { runId, concepts: persisted.concepts, storage: persisted.storage };
+        send({ phase: "complete", progress: 100, message: "Concept images are ready.", runId, totalConcepts: persisted.concepts.length, response });
       } catch (error) {
         send({
           phase: "complete",
@@ -142,7 +144,7 @@ export function createConceptProgressStream(input: ModelRequest) {
 
 export async function createModel(body: GenerateModelRequest) {
   try {
-    const run = await loadRun(body.runId);
+    const run = await loadRunOrFallback(body);
     const concept = run.concepts.find((item) => item.id === body.conceptId);
     if (!concept) {
       return jsonError(404, "Concept not found", "没有找到选中的概念图。");
@@ -181,6 +183,46 @@ export async function createModel(body: GenerateModelRequest) {
   } catch (error) {
     return jsonError(500, "Model generation failed", error instanceof Error ? error.message : "Unknown error");
   }
+}
+
+async function loadRunOrFallback(body: GenerateModelRequest) {
+  try {
+    return await loadRun(body.runId);
+  } catch (error) {
+    if (!body.concepts?.length) throw error;
+
+    const now = new Date().toISOString();
+    return {
+      runId: body.runId,
+      input: body.concepts[0]?.prompt ? fallbackInputFromPrompt(body.concepts[0].prompt) : fallbackInput(),
+      concepts: body.concepts,
+      storage: { mode: "embedded", warning: "Run record was rebuilt from the current browser session." },
+      reasons: [],
+      files: {},
+      createdAt: now,
+      updatedAt: now
+    } satisfies ModelRun;
+  }
+}
+
+function fallbackInputFromPrompt(prompt: string): ModelRequest {
+  return {
+    ...fallbackInput(),
+    description: prompt.slice(0, 400)
+  };
+}
+
+function fallbackInput(): ModelRequest {
+  return {
+    category: "aircraft",
+    subtype: "jet",
+    style: "Lusie",
+    primaryColor: "#0fbf84",
+    accentColor: "#f3ead7",
+    label: "AI",
+    description: "Recovered from the current concept selection.",
+    targetLengthMm: 120
+  };
 }
 
 function hasOpenAiKey() {
