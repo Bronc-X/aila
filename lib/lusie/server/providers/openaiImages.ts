@@ -23,13 +23,15 @@ export async function openAiConcepts(input: ModelRequest, runId: string, options
   }
 
   const variants: Array<"A" | "B"> = ["A", "B"];
-  const concepts: Concept[] = [];
-
-  for (const [index, variant] of variants.entries()) {
-    const concept = await generateConcept(input, variant, baseUrl, apiKey, model);
-    concepts.push(concept);
-    options.onConceptDone?.(concept, index + 1, variants.length);
-  }
+  let completed = 0;
+  const concepts = await Promise.all(
+    variants.map(async (variant) => {
+      const concept = await generateConcept(input, variant, baseUrl, apiKey, model);
+      completed += 1;
+      options.onConceptDone?.(concept, completed, variants.length);
+      return concept;
+    })
+  );
 
   return concepts.map((concept) => ({ ...concept, id: `${concept.id}-${runId.slice(0, 6)}` }));
 }
