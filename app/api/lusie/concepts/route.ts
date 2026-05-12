@@ -2,7 +2,7 @@ import { createConceptProgressStream, createConcepts, jsonError } from "@/lib/lu
 import type { ModelRequest } from "@/lib/lusie/server/types";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export async function POST(request: Request) {
   let input: ModelRequest;
