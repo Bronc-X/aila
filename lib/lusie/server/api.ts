@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { ensureRunDir, loadRun, saveRun } from "./storage";
+import { ensureRunDir, loadRun, persistConceptImages, saveRun } from "./storage";
 import type { ConceptProgressEvent, ConceptResponse, GenerateModelRequest, HandshakeResponse, ModelRequest, ModelRun } from "./types";
 import { openAiConcepts } from "./providers/openaiImages";
 import { generateTripoModel } from "./providers/tripoModel";
@@ -42,7 +42,7 @@ export async function createConcepts(input: ModelRequest) {
   try {
     const runId = randomUUID();
     await ensureRunDir(runId);
-    const concepts = await openAiConcepts(input, runId);
+    const concepts = await persistConceptImages(runId, await openAiConcepts(input, runId));
     const now = new Date().toISOString();
     const run: ModelRun = {
       runId,
@@ -90,13 +90,13 @@ export function createConceptProgressStream(input: ModelRequest) {
         }
 
         send({ phase: "image", progress: 22, message: "正在生成第 1 张概念图。", runId, conceptIndex: 1, totalConcepts: 2 });
-        const concepts = await openAiConcepts(input, runId, {
+        const concepts = await persistConceptImages(runId, await openAiConcepts(input, runId, {
           onConceptDone: (_concept, index, total) => {
             const progress = index === 1 ? 56 : 84;
             const message = index < total ? `第 ${index} 张已完成，正在生成第 ${index + 1} 张。` : "两张概念图已生成，正在保存结果。";
             send({ phase: "image", progress, message, runId, conceptIndex: index, totalConcepts: total });
           }
-        });
+        }));
 
         send({ phase: "saving", progress: 92, message: "正在保存概念图和生成记录。", runId, totalConcepts: concepts.length });
 
