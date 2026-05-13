@@ -278,7 +278,7 @@ async function saveRunToSupabase(run: ModelRun) {
         title: `${run.input.style || run.input.subtype} ${run.input.label || ""}`.trim(),
         label: run.input.label || run.runId.slice(0, 8),
         status: run.status === "Ready" ? "ready" : run.status === "Failed" ? "failed" : "concept",
-        input: run.input,
+        input: { ...run.input, _files: run.files },
         concepts: run.concepts.map(({ imageDataUrl: _imageDataUrl, ...concept }) => concept),
         selected_concept_id: run.selectedConceptId ?? null,
         preview_image_url: run.concepts[0]?.imageUrl ?? null,
@@ -319,16 +319,17 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
   }>;
   const row = rows[0];
   if (!row) return null;
+  const { _files, ...input } = row.input as ModelRun["input"] & { _files?: ModelRun["files"] };
 
   return {
     runId,
-    input: row.input,
+    input,
     concepts: row.concepts,
     storage: inferStorageDiagnostics(row.concepts),
     selectedConceptId: row.selected_concept_id ?? undefined,
     status: row.status === "ready" ? "Ready" : row.status === "failed" ? "Failed" : undefined,
     reasons: [],
-    files: {},
+    files: _files ?? {},
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
