@@ -692,6 +692,7 @@
 }
 
 .lusie-ai-scope .viewer-canvas {
+  position: relative;
   width: min(92%, 980px);
   height: min(72vh, 620px);
   min-height: 420px;
@@ -704,6 +705,30 @@
 
 .lusie-ai-scope .viewer-canvas canvas {
   display: block;
+}
+
+.lusie-ai-scope .viewer-load-error {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  background: rgba(238, 241, 237, 0.9);
+  color: var(--tb-muted);
+  padding: 24px;
+  text-align: center;
+}
+
+.lusie-ai-scope .viewer-load-error strong {
+  color: var(--tb-ink);
+  font-size: 16px;
+}
+
+.lusie-ai-scope .viewer-load-error span {
+  max-width: 360px;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .lusie-ai-scope .concept-preview-stage {

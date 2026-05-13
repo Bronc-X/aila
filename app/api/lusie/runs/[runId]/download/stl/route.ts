@@ -14,11 +14,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ run
 
     const fileName = path.basename(run.files.stl ?? "model.stl");
     const safeFileName = fileName === "stl" ? "model.stl" : fileName;
-    if (run.files.stlSourceUrl) {
-      return Response.redirect(run.files.stlSourceUrl, 302);
-    }
-
-    const bytes = await readFile(path.join(getRunDir(run.runId), safeFileName));
+    const bytes = await readStlBytes(run.runId, safeFileName, run.files.stlSourceUrl);
     return new Response(bytes, {
       headers: {
         "Content-Disposition": `attachment; filename="${run.runId}.stl"`,
@@ -28,4 +24,19 @@ export async function GET(_request: Request, { params }: { params: Promise<{ run
   } catch {
     return Response.json({ error: "Run not found" }, { status: 404 });
   }
+}
+
+async function readStlBytes(runId: string, fileName: string, sourceUrl?: string) {
+  try {
+    return await readFile(path.join(getRunDir(runId), fileName));
+  } catch (error) {
+    if (!sourceUrl) throw error;
+  }
+
+  const response = await fetch(sourceUrl);
+  if (!response.ok) {
+    throw new Error(`Remote STL fetch failed: ${response.status}`);
+  }
+
+  return Buffer.from(await response.arrayBuffer());
 }

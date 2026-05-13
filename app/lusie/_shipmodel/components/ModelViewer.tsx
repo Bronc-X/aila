@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
@@ -23,10 +23,13 @@ interface ModelViewerProps {
 
 export function ModelViewer({ category, primaryColor, accentColor, status, stlUrl, dimensions, wireframe = false, pending = false, viewMode = "front" }: ModelViewerProps) {
   const mountRef = useRef<HTMLDivElement | null>(null);
+  const [stlLoadState, setStlLoadState] = useState<"idle" | "loading" | "ready" | "failed">("idle");
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+    let disposed = false;
+    setStlLoadState(stlUrl && !pending ? "loading" : "idle");
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("#eef1ed");
@@ -85,12 +88,14 @@ export function ModelViewer({ category, primaryColor, accentColor, status, stlUr
       loader.load(
         stlUrl,
         (geometry) => {
+          if (disposed) return;
           geometry.computeVertexNormals();
           prepareLoadedStlPreview(group, geometry, mainMaterial);
+          setStlLoadState("ready");
         },
         undefined,
         () => {
-          addParametricPreview(group, category, mainMaterial, accentMaterial, darkMaterial, dimensions);
+          if (!disposed) setStlLoadState("failed");
         }
       );
     } else {
@@ -139,6 +144,7 @@ export function ModelViewer({ category, primaryColor, accentColor, status, stlUr
     resizeObserver.observe(mount);
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(animationId);
       resizeObserver.disconnect();
       controls.dispose();
@@ -147,7 +153,16 @@ export function ModelViewer({ category, primaryColor, accentColor, status, stlUr
     };
   }, [accentColor, category, dimensions, pending, primaryColor, status, stlUrl, viewMode, wireframe]);
 
-  return <div className="viewer-canvas" ref={mountRef} aria-label="3D model preview" />;
+  return (
+    <div className="viewer-canvas" ref={mountRef} aria-label="3D model preview">
+      {stlLoadState === "failed" ? (
+        <div className="viewer-load-error" role="status">
+          <strong>STL preview failed</strong>
+          <span>The generated file is ready, but the browser could not load the STL preview.</span>
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 export function prepareLoadedStlPreview(
