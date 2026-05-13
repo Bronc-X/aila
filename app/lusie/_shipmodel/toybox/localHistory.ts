@@ -1,4 +1,4 @@
-import type { Concept, ModelRequest, RunStatus } from "../types";
+import type { Concept, ModelRequest, ModelRun, RunStatus } from "../types";
 
 export const historyStorageKey = "toybox:history";
 export const lastProjectStorageKey = "toybox:last-project";
@@ -19,6 +19,7 @@ export interface LocalHistoryEntry {
   concepts: Concept[];
   selectedConceptId: string | null;
   status: LocalHistoryStatus;
+  files?: ModelRun["files"];
   createdAt: string;
   updatedAt: string;
   title: string;
@@ -32,6 +33,7 @@ export interface HistoryEntryInput {
   concepts?: Concept[];
   selectedConceptId?: string | null;
   status: LocalHistoryStatus;
+  files?: ModelRun["files"];
 }
 
 export interface MembershipSnapshot {
@@ -72,6 +74,7 @@ export function appendHistoryEntry(
     concepts: sanitizeConcepts(entryInput.concepts ?? previous?.concepts ?? []),
     selectedConceptId: entryInput.selectedConceptId ?? previous?.selectedConceptId ?? null,
     status: entryInput.status,
+    files: entryInput.files ?? previous?.files,
     createdAt: previous?.createdAt ?? now,
     updatedAt: now,
     title: buildHistoryTitle(entryInput.input),

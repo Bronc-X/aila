@@ -49,6 +49,7 @@ export interface ModelRun {
   reasons: string[];
   files: {
     stl?: string;
+    stlSourceUrl?: string;
     threeMf?: string;
   };
   createdAt: string;

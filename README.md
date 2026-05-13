@@ -68,7 +68,9 @@ Before and after changing this surface, run:
 npm run test:baseline
 ```
 
-The baseline builds Next.js, starts a production server on a temporary local port, and checks the Lusie routes plus the handshake and validation API guard.
+The baseline first verifies the STL download route serves same-origin `model/stl` bytes instead of redirecting to a remote Tripo URL, and that Supabase history sync keeps the STL source metadata needed by online downloads. It then builds Next.js, starts a production server on a temporary local port, and checks the Lusie routes plus the handshake and validation API guard.
+
+Future Lusie 3D, STL, Tripo, run storage, or download-page changes must run this baseline before and after the change. The protected golden behavior is: a Ready run's STL endpoint must not 302 out of the app, Supabase sync must not erase `_files.stlSourceUrl`, and the browser preview must not silently replace a failed STL load with the parametric placeholder model.
 
 ---
 *Developed with supreme aesthetic precision by Toni.*

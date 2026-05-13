@@ -299,7 +299,8 @@ export function ToyBoxApp() {
         runId: response.run.runId,
         concepts: response.run.concepts,
         selectedConceptId: response.run.selectedConceptId ?? null,
-        status: entryFromRunStatus(response.run.status)
+        status: entryFromRunStatus(response.run.status),
+        files: response.run.files
       });
       navigate(response.run.status === "Ready" ? "download" : "failed", true, response.run.runId);
     } catch (error) {
@@ -383,7 +384,8 @@ export function ToyBoxApp() {
       runId,
       concepts,
       selectedConceptId,
-      status: readyRun ? "ready" : concepts.length ? "concept" : "saved"
+      status: readyRun ? "ready" : concepts.length ? "concept" : "saved",
+      files: readyRun?.files
     });
     navigate("files");
     showToast("当前配置已保存到此浏览器。");

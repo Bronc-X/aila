@@ -1,3 +1,4 @@
+import type { ModelRequest } from "../types";
 import type { LocalHistoryEntry } from "./localHistory";
 
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
@@ -27,7 +28,7 @@ export async function syncHistoryEntry(entry: LocalHistoryEntry) {
         title: entry.title,
         label: entry.label,
         status: entry.status,
-        input: entry.input,
+        input: buildSyncedInput(entry),
         concepts: entry.concepts,
         selected_concept_id: entry.selectedConceptId,
         preview_image_url: entry.previewImageUrl,
@@ -44,4 +45,9 @@ export async function syncHistoryEntry(entry: LocalHistoryEntry) {
   } catch (error) {
     return { ok: false, reason: error instanceof Error ? error.message : "supabase_sync_failed" };
   }
+}
+
+function buildSyncedInput(entry: LocalHistoryEntry): ModelRequest & { _files?: LocalHistoryEntry["files"] } {
+  if (!entry.files || Object.keys(entry.files).length === 0) return entry.input;
+  return { ...entry.input, _files: entry.files };
 }
