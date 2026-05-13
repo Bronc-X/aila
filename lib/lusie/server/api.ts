@@ -145,6 +145,7 @@ export function createConceptProgressStream(input: ModelRequest) {
 export async function createModel(body: GenerateModelRequest) {
   try {
     const run = await loadRunOrFallback(body);
+    await ensureRunDir(run.runId);
     const concept = run.concepts.find((item) => item.id === body.conceptId);
     if (!concept) {
       return jsonError(404, "Concept not found", "没有找到选中的概念图。");
