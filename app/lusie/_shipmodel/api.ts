@@ -122,10 +122,11 @@ export async function getRun(runId: string) {
 
 async function getErrorMessage(response: Response) {
   try {
-    const json = (await response.json()) as { message?: string; error?: string; reasons?: string[] };
+    const json = (await response.clone().json()) as { message?: string; error?: string; reasons?: string[] };
     return json.message ?? formatReasons(json.reasons) ?? json.error ?? "Request failed";
   } catch {
-    return "Request failed";
+    const text = await response.text().catch(() => "");
+    return text ? `Request failed: ${response.status} ${text.slice(0, 500)}` : `Request failed: ${response.status}`;
   }
 }
 

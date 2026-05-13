@@ -303,11 +303,36 @@ export function ToyBoxApp() {
       });
       navigate(response.run.status === "Ready" ? "download" : "failed", true, response.run.runId);
     } catch (error) {
-      showAlert(error instanceof Error ? error.message : "模型生成失败。");
+      const message = error instanceof Error ? error.message : "Model generation request failed.";
+      const failedRun = buildClientFailedRun(runId, message);
+      setRun(failedRun);
+      saveHistory({
+        input: failedRun.input,
+        runId: failedRun.runId,
+        concepts: failedRun.concepts,
+        selectedConceptId: failedRun.selectedConceptId ?? null,
+        status: "failed"
+      });
+      showAlert(message);
       navigate("failed", true, runId);
     } finally {
       setBusy(false);
     }
+  }
+
+  function buildClientFailedRun(failedRunId: string, message: string): ModelRun {
+    const now = new Date().toISOString();
+    return {
+      runId: failedRunId,
+      input,
+      concepts,
+      selectedConceptId: selectedConceptId ?? undefined,
+      status: "Failed",
+      reasons: [message],
+      files: {},
+      createdAt: now,
+      updatedAt: now
+    };
   }
 
   function handleNav(name: RouteName) {
