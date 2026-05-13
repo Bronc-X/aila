@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fetch as undiciFetch, FormData, ProxyAgent, type Dispatcher } from "undici";
+import { fetch as undiciFetch, ProxyAgent, type Dispatcher } from "undici";
 import type { ModelRun } from "../types";
 import { getRunDir } from "../storage";
 
@@ -34,6 +34,11 @@ type TripoImageInput = {
   url?: string;
   file_token?: string;
 };
+
+interface ImageFormat {
+  extension: string;
+  contentType: string;
+}
 
 const defaultBaseUrl = "https://api.tripo3d.ai/v2/openapi";
 const pollIntervalMs = 5000;
@@ -179,24 +184,22 @@ async function toTripoImageInput(baseUrl: string, apiKey: string, imageUrl: stri
     throw new Error("Concept image data URL must be base64 encoded");
   }
 
-  const token = await uploadImage(baseUrl, apiKey, Buffer.from(base64, "base64"), extensionForMime(match[1]));
+  const format = imageFormatFromMime(match[1]);
+  const token = await uploadImage(baseUrl, apiKey, Buffer.from(base64, "base64"), format);
   return { type: "jpg", file_token: token };
 }
 
-async function uploadImage(baseUrl: string, apiKey: string, bytes: Buffer, extension: string) {
-  const form = new FormData();
-  const uploadBytes = new Uint8Array(bytes.byteLength);
-  uploadBytes.set(bytes);
-  const blob = new Blob([uploadBytes]);
-  form.append("file", blob, `concept.${extension}`);
+async function uploadImage(baseUrl: string, apiKey: string, bytes: Buffer, format: ImageFormat) {
+  const multipart = buildMultipartImageBody(bytes, format);
 
   const response = await tripoHttpFetch(joinUrl(baseUrl, ["upload"]), {
     method: "POST",
     dispatcher: tripoDispatcher,
     headers: {
-      Authorization: `Bearer ${apiKey}`
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": multipart.contentType
     },
-    body: form
+    body: new Uint8Array(multipart.body)
   } as unknown as TripoRequestInit).catch((error) => {
     throw new Error(`Tripo image upload failed before response: ${describeFetchFailure(error)}`);
   });
@@ -213,6 +216,27 @@ async function uploadImage(baseUrl: string, apiKey: string, bytes: Buffer, exten
   }
 
   return token;
+}
+
+function buildMultipartImageBody(bytes: Buffer, format: ImageFormat) {
+  const boundary = `----lusie-tripo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const fileName = `concept.${format.extension}`;
+  const header = Buffer.from(
+    [
+      `--${boundary}`,
+      `Content-Disposition: form-data; name="file"; filename="${fileName}"`,
+      `Content-Type: ${format.contentType}`,
+      "",
+      ""
+    ].join("\r\n"),
+    "utf8"
+  );
+  const footer = Buffer.from(`\r\n--${boundary}--\r\n`, "utf8");
+
+  return {
+    body: Buffer.concat([header, bytes, footer]),
+    contentType: `multipart/form-data; boundary=${boundary}`
+  };
 }
 
 async function downloadModel(modelUrl: string, runId: string, fileName: string) {
@@ -263,10 +287,19 @@ function joinUrl(baseUrl: string, segments: string[]) {
   return `${baseUrl}/${segments.map((segment) => encodeURIComponent(segment)).join("/")}`;
 }
 
-function extensionForMime(mime: string) {
-  if (mime === "image/png") return "png";
-  if (mime === "image/webp") return "webp";
-  return "jpg";
+function imageFormatFromMime(mime: string): ImageFormat {
+  const normalized = mime.toLowerCase();
+  if (normalized === "image/png") {
+    return { extension: "png", contentType: "image/png" };
+  }
+  if (normalized === "image/webp") {
+    return { extension: "webp", contentType: "image/webp" };
+  }
+  if (normalized === "image/jpeg" || normalized === "image/jpg") {
+    return { extension: "jpg", contentType: "image/jpeg" };
+  }
+
+  throw new Error(`Tripo does not support concept image MIME type: ${mime}`);
 }
 
 function extensionFromUrl(url: string) {
