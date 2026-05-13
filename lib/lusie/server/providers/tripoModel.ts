@@ -29,6 +29,11 @@ interface TripoTaskStatus {
   message?: string;
 }
 
+export interface GeneratedTripoModelFile {
+  fileName: string;
+  sourceUrl: string;
+}
+
 type TripoImageInput = {
   type: "jpg";
   url?: string;
@@ -106,7 +111,11 @@ async function convertTripoModel(baseUrl: string, apiKey: string, originalTaskId
     throw new Error("Tripo STL conversion succeeded but returned no STL URL");
   }
 
-  return downloadModel(stlUrl, runId, "model.stl");
+  const fileName = await downloadModel(stlUrl, runId, "model.stl");
+  return {
+    fileName,
+    sourceUrl: stlUrl
+  } satisfies GeneratedTripoModelFile;
 }
 
 async function pollTripoTask(baseUrl: string, apiKey: string, taskId: string): Promise<TripoTaskStatus> {

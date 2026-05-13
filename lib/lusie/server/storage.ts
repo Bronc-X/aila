@@ -187,6 +187,14 @@ async function uploadConceptImage(
   fileName: string,
   image: { bytes: Buffer; contentType: string }
 ) {
+  return uploadStorageObject(runId, fileName, image);
+}
+
+async function uploadStorageObject(
+  runId: string,
+  fileName: string,
+  file: { bytes: Buffer; contentType: string }
+) {
   const config = getStorageConfig();
 
   if (!config.supabaseUrl || !config.supabaseStorageKey) return {};
@@ -204,9 +212,9 @@ async function uploadConceptImage(
     headers: {
       apikey: config.supabaseStorageKey,
       Authorization: `Bearer ${config.supabaseStorageKey}`,
-      "Content-Type": image.contentType
+      "Content-Type": file.contentType
     },
-    body: new Uint8Array(image.bytes)
+    body: new Uint8Array(file.bytes)
   });
 
   if (!response.ok) {

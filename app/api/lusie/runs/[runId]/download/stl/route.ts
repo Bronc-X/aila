@@ -14,6 +14,10 @@ export async function GET(_request: Request, { params }: { params: Promise<{ run
 
     const fileName = path.basename(run.files.stl ?? "model.stl");
     const safeFileName = fileName === "stl" ? "model.stl" : fileName;
+    if (run.files.stlSourceUrl) {
+      return Response.redirect(run.files.stlSourceUrl, 302);
+    }
+
     const bytes = await readFile(path.join(getRunDir(run.runId), safeFileName));
     return new Response(bytes, {
       headers: {

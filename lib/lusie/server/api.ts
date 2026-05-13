@@ -160,7 +160,7 @@ export async function createModel(body: GenerateModelRequest) {
       }
 
       const stlFile = await generateTripoModel(run);
-      const reasons = await validateStl(run.runId, stlFile);
+      const reasons = await validateStl(run.runId, stlFile.fileName);
 
       if (reasons.length > 0) {
         run.status = "Failed";
@@ -170,7 +170,8 @@ export async function createModel(body: GenerateModelRequest) {
         run.status = "Ready";
         run.reasons = [];
         run.files = {
-          stl: `/api/lusie/runs/${run.runId}/download/stl`
+          stl: `/api/lusie/runs/${run.runId}/download/stl`,
+          stlSourceUrl: stlFile.sourceUrl
         };
       }
     } catch (error) {
