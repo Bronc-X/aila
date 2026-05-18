@@ -31,7 +31,7 @@ import {
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { generateConcepts, generateModel, getHandshake, getRun, setConceptFallbacks } from "../api";
 import { ModelViewer } from "../components/ModelViewer";
-import type { Concept, ConceptProgressEvent, HandshakeResponse, ModelCategory, ModelRequest, ModelRun, ModelSubtype } from "../types";
+import type { Concept, ConceptProgressEvent, HandshakeResponse, ModelCategory, ModelJobEvent, ModelRequest, ModelRun, ModelSubtype } from "../types";
 import { categories, colors, defaultInput, defaultInputForSubtype, defaultPrompts, firstStyle, firstSubtype, stylesByCategory } from "./catalog";
 import { conceptPreviewAssets } from "./conceptPreviewAssets";
 import {
@@ -43,7 +43,7 @@ import {
   type LocalHistoryEntry,
   type MembershipSnapshot
 } from "./localHistory";
-import { getModelBuildMockState } from "./modelBuildProgress";
+import { buildModelTimeline } from "./modelJobProgress";
 import { parseRoute, routePaths, toyboxBasePath, type RouteName, type RouteState } from "./routes";
 import { getSupabaseSyncState, syncHistoryEntry } from "./supabaseSync";
 
@@ -63,13 +63,6 @@ const previewModeLabels: Record<PreviewMode, string> = {
   wireframe: "尺寸网格"
 };
 
-type ModelBuildLog = {
-  tag: string;
-  message: string;
-  detail: string;
-  tone: "queued" | "active" | "done" | "warn";
-};
-
 type DetailRenderView = "front" | "side" | "top" | "joint";
 
 type InspectionProfile = {
@@ -77,24 +70,6 @@ type InspectionProfile = {
   renders: Array<{ label: string; note: string; view: DetailRenderView }>;
   advice: string[];
 };
-
-const modelBuildLogs: ModelBuildLog[] = [
-  { tag: "QUEUE", message: "已接收 STL 生成请求。", detail: "锁定 runId、conceptId 和目标尺寸。", tone: "done" },
-  { tag: "INPUT", message: "读取推荐概念图与色彩参数。", detail: "保留主体轮廓、双色涂装和打印尺寸。", tone: "done" },
-  { tag: "UPLOAD", message: "正在准备 Tripo image-to-model 输入。", detail: "校验图片类型、大小和可访问性。", tone: "active" },
-  { tag: "TRIPO", message: "已提交图像转模型任务。", detail: "等待远端返回 task_id。", tone: "done" },
-  { tag: "POLL", message: "轮询 Tripo 任务状态：queued。", detail: "几何体生成队列已进入等待区。", tone: "active" },
-  { tag: "POLL", message: "轮询 Tripo 任务状态：running。", detail: "正在推断主体体块和可闭合表面。", tone: "active" },
-  { tag: "MESH", message: "检测到初始网格资产。", detail: "开始整理壳体、边界和悬空细节。", tone: "active" },
-  { tag: "MESH", message: "正在合并小型装饰件。", detail: "减少孤立零件，提高后续切片稳定性。", tone: "active" },
-  { tag: "CONVERT", message: "提交 STL 转换任务。", detail: "把模型资产转换成可下载打印格式。", tone: "done" },
-  { tag: "POLL", message: "轮询 STL 转换状态：running。", detail: "等待远端写出 STL 文件 URL。", tone: "active" },
-  { tag: "RENDER", message: "生成局部渲染与细节取样。", detail: "准备正视、侧视、俯视和连接位检查样张。", tone: "active" },
-  { tag: "RENDER", message: "写入模型检查台拆解视图。", detail: "模型拆解图会和 STL 一起进入检查台。", tone: "done" },
-  { tag: "CHECK", message: "预检下载地址和文件响应。", detail: "确认返回内容不是空文件或错误页。", tone: "active" },
-  { tag: "CHECK", message: "记录模型检查台所需元数据。", detail: "尺寸、分类和打印建议准备就绪。", tone: "done" },
-  { tag: "WAIT", message: "保持连接，等待最终完成信号。", detail: "最近日志会持续刷新，不会中断当前任务。", tone: "warn" }
-];
 
 const modelBuildTokens = [
   "queue", "task", "image", "token", "upload", "Tripo", "poll", "mesh", "shell", "surface",
@@ -116,6 +91,7 @@ export function ToyBoxApp() {
   const [handshake, setHandshake] = useState<HandshakeResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [conceptProgress, setConceptProgress] = useState<ConceptProgressEvent | null>(null);
+  const [modelEvents, setModelEvents] = useState<ModelJobEvent[]>([]);
   const [toast, setToast] = useState<{ tone: ToastTone; message: string } | null>(null);
   const [alert, setAlert] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>("applied");
@@ -220,6 +196,7 @@ export function ToyBoxApp() {
     setSelectedConceptId(null);
     setRun(null);
     setConceptProgress(null);
+    setModelEvents([]);
     setAlert(null);
     navigate("configure");
     showToast("已清空画布，可以开始下一版。");
@@ -288,11 +265,14 @@ export function ToyBoxApp() {
 
     setBusy(true);
     setAlert(null);
+    setModelEvents([]);
     setConceptFallbacks(concepts);
     navigate("generating");
 
     try {
-      const response = await generateModel(runId, selectedConceptId);
+      const response = await generateModel(runId, selectedConceptId, (event) => {
+        setModelEvents((current) => [...current, event].slice(-30));
+      });
       restoreRun(response.run);
       saveHistory({
         input: response.run.input,
@@ -414,7 +394,7 @@ export function ToyBoxApp() {
 
       {route.name === "generating" ? (
         <ProjectLayout routeName={route.name} onNew={resetWorkspace} onNavigate={handleNav}>
-          <ProgressPage busy={busy} ready={Boolean(readyRun)} onCancel={() => showToast("请求已提交，完成后会自动进入下载页。")} />
+          <ProgressPage busy={busy} ready={Boolean(readyRun)} events={modelEvents} onCancel={() => showToast("请求已提交，完成后会自动进入下载页。")} />
         </ProjectLayout>
       ) : route.name === "concept" ? (
         <ProjectLayout routeName={route.name} onNew={resetWorkspace} onNavigate={handleNav}>
@@ -842,37 +822,17 @@ function ConceptPage({
 
 const imageWaveDots = Array.from({ length: 84 }, (_, index) => index);
 
-function ProgressPage({ busy, ready, onCancel }: { busy: boolean; ready: boolean; onCancel: () => void }) {
-  const [startedAt, setStartedAt] = useState(() => Date.now());
-  const [now, setNow] = useState(() => Date.now());
+function ProgressPage({ busy, ready, events, onCancel }: { busy: boolean; ready: boolean; events: ModelJobEvent[]; onCancel: () => void }) {
   const displayBusy = busy && !ready;
-  const elapsedMs = displayBusy ? now - startedAt : 0;
-  const progressState = getModelBuildMockState(elapsedMs, displayBusy);
-  const progressValue = progressState.progress;
-  const activeLogIndex = Math.min(modelBuildLogs.length - 1, progressState.logIndex);
-  const recentLogs = modelBuildLogs.slice(Math.max(0, activeLogIndex - 5), activeLogIndex + 1);
-  const activeTokens = Array.from({ length: 54 }, (_, index) => modelBuildTokens[(progressState.tokenOffset + index * 7) % modelBuildTokens.length]);
+  const progressValue = getModelEventProgress(events, displayBusy);
+  const recentLogs = buildModelTimeline(events, displayBusy);
+  const activeTokens = Array.from({ length: 54 }, (_, index) => modelBuildTokens[((events.length || 1) + index * 7) % modelBuildTokens.length]);
   const pipelineStages = [
     { label: "图像提交", copy: "所选概念图已送入 Tripo image-to-model。", threshold: 18 },
     { label: "网格推断", copy: "生成主体体块、闭合表面和可打印轮廓。", threshold: 42 },
     { label: "STL 转换", copy: "输出可下载的 STL 文件并检查响应。", threshold: 68 },
     { label: "局部渲染与细节取样", copy: "3D 渲染过程中同步输出局部视角。模型拆解图会和 STL 一起进入检查台。", threshold: 88 }
   ];
-
-  useEffect(() => {
-    if (!displayBusy) {
-      return;
-    }
-
-    const start = Date.now();
-    setStartedAt(start);
-    setNow(start);
-    const timer = window.setInterval(() => {
-      setNow(Date.now());
-    }, 1000);
-
-    return () => window.clearInterval(timer);
-  }, [displayBusy]);
 
   return (
     <main className="progress-page">
@@ -936,7 +896,7 @@ function ProgressPage({ busy, ready, onCancel }: { busy: boolean; ready: boolean
             {recentLogs.map((log, index) => {
               const latest = index === recentLogs.length - 1;
               return (
-                <div className={latest ? `log-line latest ${log.tone}` : `log-line ${log.tone}`} key={`${log.tag}-${log.message}`}>
+                <div className={latest ? `log-line latest ${log.state}` : `log-line ${log.state}`} key={log.id}>
                   <span>[{log.tag}]</span>
                   <span>{log.message}</span>
                   <em>{log.detail}</em>
@@ -951,6 +911,19 @@ function ProgressPage({ busy, ready, onCancel }: { busy: boolean; ready: boolean
       </section>
     </main>
   );
+}
+
+function getModelEventProgress(events: ModelJobEvent[], busy: boolean) {
+  if (events.some((event) => event.type === "job.completed" && event.response?.run.status === "Ready")) return 100;
+  if (events.some((event) => event.type === "artifact.created")) return 92;
+  if (events.some((event) => event.type === "tool.completed" && event.name === "validate_stl")) return 88;
+  if (events.some((event) => event.type === "tool.started" && event.name.includes("validate"))) return 76;
+  if (events.some((event) => event.type === "tool.completed" && event.name.includes("stl"))) return 72;
+  if (events.some((event) => event.type === "tool.started" && event.name.includes("stl"))) return 62;
+  if (events.some((event) => event.type === "tool.completed" && event.name.includes("model"))) return 54;
+  if (events.some((event) => event.type === "tool.started")) return 30;
+  if (events.some((event) => event.type === "job.started")) return 12;
+  return busy ? 8 : 100;
 }
 
 function DownloadPage({ run, stlHref, onNew, onBack }: { run: ModelRun | null; stlHref: string; onNew: () => void; onBack: () => void }) {

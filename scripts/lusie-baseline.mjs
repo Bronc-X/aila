@@ -10,6 +10,7 @@ const nextBin = path.join("node_modules", "next", "dist", "bin", "next");
 await run(process.execPath, [
   "--test",
   path.join("lib", "lusie", "server", "stl-download-route.test.mjs"),
+  path.join("lib", "lusie", "server", "model-progress-stream.test.mjs"),
   path.join("lib", "lusie", "server", "supabase-sync.test.mjs")
 ]);
 await run(process.execPath, [nextBin, "build"]);

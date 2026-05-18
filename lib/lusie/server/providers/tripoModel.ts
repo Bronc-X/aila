@@ -40,6 +40,12 @@ type TripoImageInput = {
   file_token?: string;
 };
 
+export type TripoModelProgressEvent =
+  | { type: "tool.started"; callId: string; name: string; inputSummary?: string }
+  | { type: "tool.completed"; callId: string; name: string; outputSummary?: string };
+
+type TripoModelProgress = (event: TripoModelProgressEvent) => Promise<void> | void;
+
 interface ImageFormat {
   extension: string;
   contentType: string;
@@ -51,7 +57,7 @@ const pollTimeoutMs = 1000 * 60 * 10;
 const tripoProxyUrl = process.env.TRIPO_PROXY_URL || process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
 const tripoDispatcher = tripoProxyUrl ? new ProxyAgent(tripoProxyUrl) : undefined;
 
-export async function generateTripoModel(run: ModelRun) {
+export async function generateTripoModel(run: ModelRun, emit?: TripoModelProgress) {
   const apiKey = process.env.TRIPO_API_KEY;
   const concept = run.concepts.find((item) => item.id === run.selectedConceptId);
   if (!apiKey) {
@@ -62,7 +68,16 @@ export async function generateTripoModel(run: ModelRun) {
   }
 
   const baseUrl = normalizeBaseUrl(process.env.TRIPO_BASE_URL ?? defaultBaseUrl);
-  const file = await toTripoImageInput(baseUrl, apiKey, concept.imageUrl);
+  await emitProgress(emit, { type: "tool.started", callId: "tripo_prepare_image", name: "prepare_tripo_image", inputSummary: concept.title });
+  const file = await toTripoImageInput(baseUrl, apiKey, concept.imageUrl, emit);
+  await emitProgress(emit, {
+    type: "tool.completed",
+    callId: "tripo_prepare_image",
+    name: "prepare_tripo_image",
+    outputSummary: file.url ? "Using remote concept image URL" : "Concept image uploaded as Tripo file_token"
+  });
+
+  await emitProgress(emit, { type: "tool.started", callId: "tripo_create_model_task", name: "tripo_create_model_task", inputSummary: "image_to_model" });
   const createResponse = await tripoFetch<TripoTaskResponse>(baseUrl, apiKey, ["task"], {
     method: "POST",
     body: JSON.stringify({
@@ -78,18 +93,22 @@ export async function generateTripoModel(run: ModelRun) {
   if (!taskId) {
     throw new Error("Tripo returned no task id");
   }
+  await emitProgress(emit, { type: "tool.completed", callId: "tripo_create_model_task", name: "tripo_create_model_task", outputSummary: `Model task ${taskId}` });
 
-  const completed = await pollTripoTask(baseUrl, apiKey, taskId);
+  const completed = await pollTripoTask(baseUrl, apiKey, taskId, "tripo_poll_model_task", "tripo_poll_model_task", emit);
   const modelUrl = completed.output?.model ?? completed.output?.base_model ?? completed.output?.pbr_model;
   if (!modelUrl) {
     throw new Error("Tripo task succeeded but returned no model URL");
   }
 
+  await emitProgress(emit, { type: "tool.started", callId: "tripo_download_model_asset", name: "tripo_download_model_asset", inputSummary: "GLB source asset" });
   await downloadModel(modelUrl, run.runId, "model.glb");
-  return convertTripoModel(baseUrl, apiKey, taskId, run.runId);
+  await emitProgress(emit, { type: "tool.completed", callId: "tripo_download_model_asset", name: "tripo_download_model_asset", outputSummary: "model.glb" });
+  return convertTripoModel(baseUrl, apiKey, taskId, run.runId, emit);
 }
 
-async function convertTripoModel(baseUrl: string, apiKey: string, originalTaskId: string, runId: string) {
+async function convertTripoModel(baseUrl: string, apiKey: string, originalTaskId: string, runId: string, emit?: TripoModelProgress) {
+  await emitProgress(emit, { type: "tool.started", callId: "tripo_create_stl_task", name: "tripo_create_stl_task", inputSummary: originalTaskId });
   const createResponse = await tripoFetch<TripoTaskResponse>(baseUrl, apiKey, ["task"], {
     method: "POST",
     body: JSON.stringify({
@@ -104,28 +123,42 @@ async function convertTripoModel(baseUrl: string, apiKey: string, originalTaskId
   if (!taskId) {
     throw new Error("Tripo STL conversion returned no task id");
   }
+  await emitProgress(emit, { type: "tool.completed", callId: "tripo_create_stl_task", name: "tripo_create_stl_task", outputSummary: `STL conversion task ${taskId}` });
 
-  const completed = await pollTripoTask(baseUrl, apiKey, taskId);
+  const completed = await pollTripoTask(baseUrl, apiKey, taskId, "tripo_poll_stl_task", "tripo_poll_stl_task", emit);
   const stlUrl = completed.output?.model ?? completed.output?.base_model ?? completed.output?.pbr_model;
   if (!stlUrl) {
     throw new Error("Tripo STL conversion succeeded but returned no STL URL");
   }
 
+  await emitProgress(emit, { type: "tool.started", callId: "tripo_download_stl", name: "tripo_download_stl", inputSummary: "STL asset" });
   const fileName = await downloadModel(stlUrl, runId, "model.stl");
+  await emitProgress(emit, { type: "tool.completed", callId: "tripo_download_stl", name: "tripo_download_stl", outputSummary: fileName });
   return {
     fileName,
     sourceUrl: stlUrl
   } satisfies GeneratedTripoModelFile;
 }
 
-async function pollTripoTask(baseUrl: string, apiKey: string, taskId: string): Promise<TripoTaskStatus> {
+async function pollTripoTask(baseUrl: string, apiKey: string, taskId: string, callId: string, name: string, emit?: TripoModelProgress): Promise<TripoTaskStatus> {
   const deadline = Date.now() + pollTimeoutMs;
+  let pollCount = 0;
+
+  await emitProgress(emit, { type: "tool.started", callId, name, inputSummary: taskId });
 
   while (Date.now() < deadline) {
     const task = await tripoFetch<TripoTaskStatus>(baseUrl, apiKey, ["task", taskId]);
     const status = task.status?.toLowerCase();
+    pollCount += 1;
+    await emitProgress(emit, {
+      type: "tool.completed",
+      callId: `${callId}:${pollCount}`,
+      name: `${name}_status`,
+      outputSummary: `${taskId}: ${task.status ?? "unknown"}`
+    });
 
     if (status === "success" || status === "succeeded" || status === "completed") {
+      await emitProgress(emit, { type: "tool.completed", callId, name, outputSummary: `${taskId}: ${task.status ?? "success"}` });
       return task;
     }
     if (status === "failed" || status === "cancelled" || status === "canceled" || status === "banned" || status === "expired") {
@@ -174,7 +207,7 @@ async function tripoFetch<T>(baseUrl: string, apiKey: string, segments: string[]
   return json as T;
 }
 
-async function toTripoImageInput(baseUrl: string, apiKey: string, imageUrl: string): Promise<TripoImageInput> {
+async function toTripoImageInput(baseUrl: string, apiKey: string, imageUrl: string, emit?: TripoModelProgress): Promise<TripoImageInput> {
   if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
     return { type: "jpg", url: imageUrl };
   }
@@ -194,13 +227,14 @@ async function toTripoImageInput(baseUrl: string, apiKey: string, imageUrl: stri
   }
 
   const format = imageFormatFromMime(match[1]);
-  const token = await uploadImage(baseUrl, apiKey, Buffer.from(base64, "base64"), format);
+  const token = await uploadImage(baseUrl, apiKey, Buffer.from(base64, "base64"), format, emit);
   return { type: "jpg", file_token: token };
 }
 
-async function uploadImage(baseUrl: string, apiKey: string, bytes: Buffer, format: ImageFormat) {
+async function uploadImage(baseUrl: string, apiKey: string, bytes: Buffer, format: ImageFormat, emit?: TripoModelProgress) {
   const multipart = buildMultipartImageBody(bytes, format);
 
+  await emitProgress(emit, { type: "tool.started", callId: "tripo_upload_image", name: "tripo_upload_image", inputSummary: `concept.${format.extension}` });
   const response = await tripoHttpFetch(joinUrl(baseUrl, ["upload"]), {
     method: "POST",
     dispatcher: tripoDispatcher,
@@ -224,6 +258,7 @@ async function uploadImage(baseUrl: string, apiKey: string, bytes: Buffer, forma
     throw new Error("Tripo image upload returned no token");
   }
 
+  await emitProgress(emit, { type: "tool.completed", callId: "tripo_upload_image", name: "tripo_upload_image", outputSummary: "file_token ready" });
   return token;
 }
 
@@ -328,6 +363,10 @@ function describeFetchFailure(error: unknown) {
   }
 
   return error.message;
+}
+
+async function emitProgress(emit: TripoModelProgress | undefined, event: TripoModelProgressEvent) {
+  await emit?.(event);
 }
 
 function wait(ms: number) {
