@@ -25,6 +25,7 @@ patchIntegratedApi();
 patchToyBoxApp();
 patchRoutes();
 patchConceptPreviewAssets();
+patchSupabaseSync();
 
 function copyFile(from, to) {
   const source = path.join(shipModelRoot, from);
@@ -196,6 +197,37 @@ function patchConceptPreviewAssets() {
   const assetsPath = path.join(integratedRoot, "toybox/conceptPreviewAssets.ts");
   const text = readText(assetsPath).replaceAll('"/assets/concept-previews"', '"/lusie/concept-previews"');
   writeText(assetsPath, text);
+}
+
+function patchSupabaseSync() {
+  const syncPath = path.join(integratedRoot, "toybox/supabaseSync.ts");
+  if (!existsSync(syncPath)) return;
+
+  let text = readText(syncPath);
+  if (!text.includes('import type { ModelRequest } from "../types";')) {
+    text = text.replace(
+      'import type { LocalHistoryEntry } from "./localHistory";',
+      'import type { ModelRequest } from "../types";\nimport type { LocalHistoryEntry } from "./localHistory";'
+    );
+  }
+
+  text = text.replace(
+    'const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL ?? "").replace(/\\/+$/, "");\nconst supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "";',
+    'const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\\/+$/, "");\nconst supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";'
+  );
+  text = text.replaceAll(/input:\s*entry\.input/g, "input: buildSyncedInput(entry)");
+
+  if (!text.includes("function buildSyncedInput")) {
+    text += `
+
+function buildSyncedInput(entry: LocalHistoryEntry): ModelRequest & { _files?: LocalHistoryEntry["files"] } {
+  if (!entry.files || Object.keys(entry.files).length === 0) return entry.input;
+  return { ...entry.input, _files: entry.files };
+}
+`;
+  }
+
+  writeText(syncPath, text);
 }
 
 function insertAfterOnce(text, marker, insertion) {
