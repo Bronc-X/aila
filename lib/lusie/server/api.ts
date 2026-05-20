@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { ensureRunDir, getStorageConfigState, loadRun, persistConceptImages, saveRun } from "./storage";
-import type { ConceptProgressEvent, ConceptResponse, GenerateModelRequest, GenerateModelResponse, HandshakeResponse, ModelJobEvent, ModelRequest, ModelRun } from "./types";
-import { openAiConcepts } from "./providers/openaiImages";
+import type { ConceptProgressEvent, ConceptResponse, GenerateModelRequest, GenerateModelResponse, HandshakeResponse, ModelJobEvent, ModelRequest, ModelRun, ReviseConceptRequest, ReviseConceptResponse } from "./types";
+import { openAiConcepts, reviseOpenAiConcept } from "./providers/openaiImages";
 import { generateTripoModel } from "./providers/tripoModel";
 import { validateStl } from "./validate";
 import { formatValidationReasons, validateInput } from "./validation";
@@ -140,6 +140,38 @@ export function createConceptProgressStream(input: ModelRequest) {
       "X-Accel-Buffering": "no"
     }
   });
+}
+
+export async function reviseConcept(body: ReviseConceptRequest) {
+  try {
+    const instruction = body.instruction.trim();
+    if (!instruction) {
+      return jsonError(400, "Invalid input", "请先写下想修改的地方。");
+    }
+
+    const run = await loadRun(body.runId);
+    const concept = run.concepts.find((item) => item.id === body.conceptId);
+    if (!concept) {
+      return jsonError(404, "Concept not found", "没有找到选中的概念图。");
+    }
+
+    if (!hasOpenAiKey()) {
+      return jsonError(503, "OpenAI is not configured", "修改概念图前，请先设置 OPENAI_API_KEY 或 GPT_API_KEY。");
+    }
+
+    const revised = await reviseOpenAiConcept(run.input, concept, instruction);
+    const persisted = await persistConceptImages(run.runId, [revised]);
+    const persistedConcept = persisted.concepts[0] ?? revised;
+
+    run.concepts = [persistedConcept, ...run.concepts.filter((item) => item.id !== concept.id)];
+    run.selectedConceptId = persistedConcept.id;
+    run.storage = persisted.storage;
+    await saveRun(run);
+
+    return Response.json({ run, concept: persistedConcept } satisfies ReviseConceptResponse);
+  } catch (error) {
+    return jsonError(500, "Concept revision failed", error instanceof Error ? error.message : "Unknown error");
+  }
 }
 
 export async function createModel(body: GenerateModelRequest) {

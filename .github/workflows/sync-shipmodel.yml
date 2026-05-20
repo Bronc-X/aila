@@ -1,0 +1,90 @@
+name: Sync ShipModel
+
+on:
+  repository_dispatch:
+    types:
+      - shipmodel-updated
+  workflow_dispatch:
+    inputs:
+      shipmodel_ref:
+        description: "ShipModel branch, tag, or commit to sync"
+        required: false
+        default: "main"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-shipmodel-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync ShipModel into aila
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resolve ShipModel ref
+        id: ref
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_SHA: ${{ github.event.client_payload.sha }}
+          MANUAL_REF: ${{ inputs.shipmodel_ref }}
+        run: |
+          if [ "$EVENT_NAME" = "repository_dispatch" ] && [ -n "$DISPATCH_SHA" ]; then
+            echo "ref=$DISPATCH_SHA" >> "$GITHUB_OUTPUT"
+          elif [ -n "$MANUAL_REF" ]; then
+            echo "ref=$MANUAL_REF" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=main" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout aila
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Checkout ShipModel
+        uses: actions/checkout@v4
+        with:
+          repository: Bronc-X/ShipModel
+          ref: ${{ steps.ref.outputs.ref }}
+          path: .tmp/ShipModel
+
+      - name: Derive short SHA
+        id: shipmodel
+        working-directory: .tmp/ShipModel
+        run: |
+          echo "short_sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Sync integrated ShipModel sources
+        run: node scripts/sync-shipmodel.mjs .tmp/ShipModel
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run baseline tests
+        run: npm run test:baseline
+
+      - name: Build
+        run: npm run build
+
+      - name: Commit changes
+        env:
+          SHORT_SHA: ${{ steps.shipmodel.outputs.short_sha }}
+        run: |
+          set -euo pipefail
+
+          git add app/lusie/_shipmodel public/lusie/concept-previews app/api/lusie lib/lusie/server scripts/sync-shipmodel.mjs
+
+          if git diff --cached --quiet; then
+            echo "No ShipModel changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: sync ShipModel from $SHORT_SHA"
+          git push origin HEAD:main

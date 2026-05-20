@@ -21,6 +21,7 @@ export interface ModelRequest {
   primaryColor: string;
   accentColor: string;
   label: string;
+  markingText?: string;
   description: string;
   targetLengthMm: number;
 }
@@ -82,6 +83,17 @@ export interface GenerateModelRequest {
 
 export interface GenerateModelResponse {
   run: ModelRun;
+}
+
+export interface ReviseConceptRequest {
+  runId: string;
+  conceptId: string;
+  instruction: string;
+}
+
+export interface ReviseConceptResponse {
+  run: ModelRun;
+  concept: Concept;
 }
 
 export type ModelJobEvent =
