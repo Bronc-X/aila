@@ -22,7 +22,7 @@ test("sync script keeps toybox TSX/CSS files while syncing generated TS sources"
   writeFixture(tempShipModel, "src/components/ModelViewer.tsx", "export function ModelViewer() { return null; }\n");
   writeFixture(tempShipModel, "src/lusie/LusieApp.tsx", "export function App() { return null; }\n");
   writeFixture(tempShipModel, "src/lusie/lusie.css", ".site-shell {}\n");
-  writeFixture(tempShipModel, "src/toybox/ToyBoxApp.tsx", 'import { generateConcepts, generateModel, getHandshake, getRun } from "../api";\nimport { parseRoute, routePaths, type RouteName, type RouteState } from "./routes";\nconst stlDownloadHref = readyRun ? `/api/runs/${encodeURIComponent(readyRun.runId)}/download/stl` : "";\nif (window.location.pathname === "/") {}\nconst inviteLink = `${window.location.origin}/?ref=${inviteCode}`;\nsetConcepts(restoredRun.concepts);\nconst response = await generateConcepts(input, setConceptProgress);\nsetModelEvents([]);\n');
+  writeFixture(tempShipModel, "src/toybox/ToyBoxApp.tsx", 'import { generateConcepts, generateModel, getHandshake, getRun } from "../api";\nimport { parseRoute, routePaths, type RouteName, type RouteState } from "./routes";\nconst stlDownloadHref = readyRun ? `/api/runs/${encodeURIComponent(readyRun.runId)}/download/stl` : "";\nif (window.location.pathname === "/") {}\nconst inviteLink = `${window.location.origin}/?ref=${inviteCode}`;\n    setConcepts(restoredRun.concepts);\n      const response = await generateConcepts(input, setConceptProgress);\n    setModelEvents([]);\n');
   writeFixture(tempShipModel, "src/toybox/toybox.css", ".toybox-app {}\n");
   writeFixture(tempShipModel, "src/toybox/catalog.ts", "export const catalog = [];\n");
   writeFixture(tempShipModel, "src/toybox/routes.ts", 'export type RouteName = "configure" | "concept" | "generating" | "download" | "failed" | "settings";\nexport interface RouteState { name: RouteName; runId?: string; }\nexport const routePaths: Record<RouteName, string> = {\n  configure: "/configure",\n  concept: "/concept",\n  generating: "/generate",\n  download: "/download",\n  failed: "/failed",\n  settings: "/settings"\n};\nexport function parseRoute(pathname: string): RouteState {\n  if (pathname === "/" || pathname === routePaths.configure) return { name: "configure" };\n  if (pathname === routePaths.concept) return { name: "concept" };\n  if (pathname === routePaths.generating) return { name: "generating" };\n  const downloadMatch = /^\\/download\\/([^/]+)$/.exec(pathname);\n  if (downloadMatch) return { name: "download", runId: decodeURIComponent(downloadMatch[1]) };\n  const utilityRoute = Object.entries(routePaths).find(([name, path]) => path === pathname && !["download", "failed"].includes(name));\n  if (utilityRoute) return { name: utilityRoute[0] as RouteName };\n  return { name: "configure" };\n}\n');
@@ -42,7 +42,8 @@ test("sync script keeps toybox TSX/CSS files while syncing generated TS sources"
   const api = readFileSync(apiPath, "utf8");
   const supabaseSync = readFileSync(supabaseSyncPath, "utf8");
 
-  assert.match(readFileSync(toyBoxPath, "utf8"), /setConceptFallbacks/);
+  const toyBox = readFileSync(toyBoxPath, "utf8");
+  assert.equal((toyBox.match(/setConceptFallbacks/g) ?? []).length, 4);
   assert.match(api, /getConceptImageDataUrl\(concept\)/);
   assert.doesNotMatch(api, /imageDataUrl: concept\.imageDataUrl/);
   const routes = readFileSync(routesPath, "utf8");

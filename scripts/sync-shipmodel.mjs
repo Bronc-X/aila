@@ -177,8 +177,8 @@ function patchToyBoxApp() {
     );
 
   text = insertAfterOnce(text, "setConcepts(restoredRun.concepts);\n", "    setConceptFallbacks(restoredRun.concepts);\n");
-  text = insertAfterOnce(text, "const response = await generateConcepts(input, setConceptProgress);\n", "      setConceptFallbacks(response.concepts);\n");
-  text = insertAfterOnce(text, "setModelEvents([]);\n", "    setConceptFallbacks(concepts);\n");
+  text = insertAfterOnce(text, "      const response = await generateConcepts(input, setConceptProgress);\n", "      setConceptFallbacks(response.concepts);\n");
+  text = insertAfterOnce(text, "    setModelEvents([]);\n", "    setConceptFallbacks(concepts);\n");
   writeText(toyBoxPath, text);
 }
 
