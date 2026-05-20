@@ -47,6 +47,7 @@ test("sync script keeps toybox TSX/CSS files while syncing generated TS sources"
   assert.match(supabaseSync, /_files/);
   assert.equal(readFileSync(path.join(tempRepo, "app/lusie/_shipmodel/toybox/toybox-scoped.css"), "utf8"), ".toybox-app {}\n");
   assert.equal(readFileSync(path.join(tempRepo, "app/lusie/_shipmodel/toybox/catalog.ts"), "utf8"), "export const catalog = [];\n");
+  assert.equal(readFileSync(path.join(tempRepo, "app/lusie/_shipmodel/toybox/assets/concept-previews/sample.png"), "utf8"), "png");
   assert.equal(readFileSync(path.join(tempRepo, "public/lusie/concept-previews/sample.png"), "utf8"), "png");
 });
 

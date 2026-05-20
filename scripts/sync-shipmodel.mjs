@@ -6,6 +6,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const shipModelRoot = path.resolve(repoRoot, process.argv[2] ?? ".tmp/ShipModel");
 const integratedRoot = path.join(repoRoot, "app/lusie/_shipmodel");
 const previewRoot = path.join(repoRoot, "public/lusie/concept-previews");
+const integratedPreviewRoot = path.join(integratedRoot, "toybox/assets/concept-previews");
 
 if (!existsSync(path.join(shipModelRoot, "src"))) {
   throw new Error(`ShipModel source directory not found: ${shipModelRoot}`);
@@ -19,7 +20,7 @@ copyFile("src/lusie/lusie.css", "lusie/lusie-scoped.css");
 syncToyboxSources();
 copyFile("src/toybox/ToyBoxApp.tsx", "toybox/ToyBoxApp.tsx");
 copyFile("src/toybox/toybox.css", "toybox/toybox-scoped.css");
-copyTree(path.join(shipModelRoot, "src/toybox/assets/concept-previews"), previewRoot, () => true);
+copyConceptPreviewAssets();
 
 patchIntegratedApi();
 patchToyBoxApp();
@@ -53,6 +54,12 @@ function syncToyboxSources() {
   }
 
   copyTreeEntries(sourceRoot, targetRoot, (entry) => entry.endsWith(".ts"));
+}
+
+function copyConceptPreviewAssets() {
+  const sourceRoot = path.join(shipModelRoot, "src/toybox/assets/concept-previews");
+  copyTree(sourceRoot, previewRoot, () => true);
+  copyTree(sourceRoot, integratedPreviewRoot, () => true);
 }
 
 function copyTreeEntries(sourceDir, targetDir, shouldCopy) {
