@@ -36,25 +36,12 @@ const routeSlugs: Record<RouteName, string> = {
   invite: "/invite"
 };
 
-export const routePaths: Record<RouteName, string> = {
-  configure: `${toyboxBasePath}${routeSlugs.configure}`,
-  concept: `${toyboxBasePath}${routeSlugs.concept}`,
-  generating: `${toyboxBasePath}${routeSlugs.generating}`,
-  download: `${toyboxBasePath}${routeSlugs.download}`,
-  failed: `${toyboxBasePath}${routeSlugs.failed}`,
-  missing: `${toyboxBasePath}${routeSlugs.missing}`,
-  files: `${toyboxBasePath}${routeSlugs.files}`,
-  settings: `${toyboxBasePath}${routeSlugs.settings}`,
-  help: `${toyboxBasePath}${routeSlugs.help}`,
-  profile: `${toyboxBasePath}${routeSlugs.profile}`,
-  history: `${toyboxBasePath}${routeSlugs.history}`,
-  storage: `${toyboxBasePath}${routeSlugs.storage}`,
-  invite: `${toyboxBasePath}${routeSlugs.invite}`
-};
+export const routePaths: Record<RouteName, string> = Object.fromEntries(
+  Object.entries(routeSlugs).map(([name, slug]) => [name, `${toyboxBasePath}${slug}`])
+) as Record<RouteName, string>;
 
 export function parseRoute(pathname: string): RouteState {
   const normalizedPath = stripToyboxBasePath(pathname);
-
   if (normalizedPath === "/" || normalizedPath === routeSlugs.configure) return { name: "configure" };
   if (normalizedPath === routeSlugs.concept) return { name: "concept" };
   if (normalizedPath === routeSlugs.generating) return { name: "generating" };
@@ -74,6 +61,7 @@ export function parseRoute(pathname: string): RouteState {
 
   return { name: "configure" };
 }
+
 
 function stripToyboxBasePath(pathname: string) {
   if (pathname === toyboxBasePath) return "/";

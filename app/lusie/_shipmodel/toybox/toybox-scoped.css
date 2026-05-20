@@ -1,4 +1,4 @@
-.lusie-ai-scope {
+:root {
   color-scheme: light;
   --tb-background: #f4fbf4;
   --tb-surface: #ffffff;
@@ -20,53 +20,53 @@
   --tb-mono: "JetBrains Mono", "Cascadia Mono", monospace;
 }
 
-.lusie-ai-scope * {
+* {
   box-sizing: border-box;
 }
 
-.lusie-ai-scope,
-.lusie-ai-scope,
-.lusie-ai-scope {
+html,
+body,
+#root {
   width: 100%;
   min-width: 320px;
   min-height: 100dvh;
   margin: 0;
 }
 
-.lusie-ai-scope {
+body {
   background: var(--tb-background);
   color: var(--tb-ink);
   font-family: var(--tb-font);
   -webkit-font-smoothing: antialiased;
 }
 
-.lusie-ai-scope button,
-.lusie-ai-scope input,
-.lusie-ai-scope select,
-.lusie-ai-scope textarea {
+button,
+input,
+select,
+textarea {
   font: inherit;
 }
 
-.lusie-ai-scope button {
+button {
   cursor: pointer;
 }
 
-.lusie-ai-scope button:disabled {
+button:disabled {
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-.lusie-ai-scope a {
+a {
   color: inherit;
   text-decoration: none;
 }
 
-.lusie-ai-scope img {
+img {
   max-width: 100%;
   display: block;
 }
 
-.lusie-ai-scope .sr-only {
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -78,14 +78,14 @@
   border: 0;
 }
 
-.lusie-ai-scope .toybox-app {
+.toybox-app {
   display: flex;
   min-height: 100dvh;
   flex-direction: column;
   background: var(--tb-background);
 }
 
-.lusie-ai-scope .toybox-header {
+.toybox-header {
   z-index: 20;
   display: flex;
   height: 64px;
@@ -97,28 +97,28 @@
   padding: 0 24px;
 }
 
-.lusie-ai-scope .brand-row,
-.lusie-ai-scope .header-actions,
-.lusie-ai-scope .nav-row,
-.lusie-ai-scope .side-link,
-.lusie-ai-scope .button,
-.lusie-ai-scope .icon-button,
-.lusie-ai-scope .status-chip,
-.lusie-ai-scope .field-row,
-.lusie-ai-scope .metric-row,
-.lusie-ai-scope .concept-actions,
-.lusie-ai-scope .tabs,
-.lusie-ai-scope .spec-title,
-.lusie-ai-scope .toast {
+.brand-row,
+.header-actions,
+.nav-row,
+.side-link,
+.button,
+.icon-button,
+.status-chip,
+.field-row,
+.metric-row,
+.concept-actions,
+.tabs,
+.spec-title,
+.toast {
   display: flex;
   align-items: center;
 }
 
-.lusie-ai-scope .brand-row {
+.brand-row {
   gap: 32px;
 }
 
-.lusie-ai-scope .brand-title {
+.brand-title {
   border: 0;
   background: transparent;
   color: var(--tb-primary);
@@ -131,22 +131,22 @@
   text-align: left;
 }
 
-.lusie-ai-scope .brand-title:hover,
-.lusie-ai-scope .brand-title:focus-visible {
+.brand-title:hover,
+.brand-title:focus-visible {
   color: #004f36;
   outline: 0;
 }
 
-.lusie-ai-scope .nav-row {
+.nav-row {
   gap: 10px;
 }
 
-.lusie-ai-scope .shell-button,
-.lusie-ai-scope .icon-button,
-.lusie-ai-scope .side-link,
-.lusie-ai-scope .tab-button,
-.lusie-ai-scope .tool-button,
-.lusie-ai-scope .button {
+.shell-button,
+.icon-button,
+.side-link,
+.tab-button,
+.tool-button,
+.button {
   border-radius: 8px;
   transition:
     background-color 150ms ease,
@@ -156,30 +156,30 @@
     box-shadow 150ms ease;
 }
 
-.lusie-ai-scope .shell-button,
-.lusie-ai-scope .tool-button {
+.shell-button,
+.tool-button {
   border: 0;
   background: transparent;
   color: var(--tb-muted);
   padding: 8px 10px;
 }
 
-.lusie-ai-scope .shell-button:hover,
-.lusie-ai-scope .tool-button:hover {
+.shell-button:hover,
+.tool-button:hover {
   background: var(--tb-surface-high);
   color: var(--tb-ink);
 }
 
-.lusie-ai-scope .tool-button.active {
+.tool-button.active {
   background: var(--tb-primary);
   color: white;
 }
 
-.lusie-ai-scope .header-actions {
+.header-actions {
   gap: 12px;
 }
 
-.lusie-ai-scope .button {
+.button {
   min-height: 40px;
   justify-content: center;
   gap: 8px;
@@ -192,29 +192,29 @@
   letter-spacing: 0.04em;
 }
 
-.lusie-ai-scope .button.primary {
+.button.primary {
   border-color: var(--tb-primary);
   background: var(--tb-primary);
   color: white;
   box-shadow: 0 8px 20px rgba(0, 108, 73, 0.16);
 }
 
-.lusie-ai-scope .button.secondary {
+.button.secondary {
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .button.danger {
+.button.danger {
   border-color: var(--tb-danger);
   background: var(--tb-danger);
   color: white;
 }
 
-.lusie-ai-scope .button:hover {
+.button:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 22px rgba(20, 31, 24, 0.09);
 }
 
-.lusie-ai-scope .icon-button {
+.icon-button {
   display: grid;
   width: 38px;
   height: 38px;
@@ -224,12 +224,12 @@
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .icon-button:hover {
+.icon-button:hover {
   background: var(--tb-surface-high);
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .avatar {
+.avatar {
   display: grid;
   width: 34px;
   height: 34px;
@@ -242,13 +242,13 @@
   font-weight: 800;
 }
 
-.lusie-ai-scope .app-body {
+.app-body {
   display: flex;
   flex: 1;
   min-height: 0;
 }
 
-.lusie-ai-scope .sidebar {
+.sidebar {
   display: flex;
   width: 236px;
   flex-shrink: 0;
@@ -259,7 +259,7 @@
   padding: 16px 8px;
 }
 
-.lusie-ai-scope .workspace-card {
+.workspace-card {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -267,7 +267,7 @@
   border-bottom: 1px solid var(--tb-line);
 }
 
-.lusie-ai-scope .workspace-icon {
+.workspace-icon {
   display: grid;
   width: 40px;
   height: 40px;
@@ -278,41 +278,41 @@
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .workspace-card h2 {
+.workspace-card h2 {
   margin: 0;
   color: var(--tb-primary);
   font-size: 16px;
 }
 
-.lusie-ai-scope .mono {
+.mono {
   font-family: var(--tb-mono);
 }
 
-.lusie-ai-scope .workspace-card p,
-.lusie-ai-scope .tiny-label {
+.workspace-card p,
+.tiny-label {
   margin: 0;
   color: var(--tb-muted);
   font-family: var(--tb-mono);
   font-size: 11px;
 }
 
-.lusie-ai-scope .side-nav,
-.lusie-ai-scope .side-footer {
+.side-nav,
+.side-footer {
   display: grid;
   gap: 6px;
 }
 
-.lusie-ai-scope .side-nav {
+.side-nav {
   flex: 0 0 auto;
   overflow-y: auto;
 }
 
-.lusie-ai-scope .side-footer {
+.side-footer {
   border-top: 1px solid var(--tb-line);
   padding-top: 12px;
 }
 
-.lusie-ai-scope .side-link {
+.side-link {
   width: 100%;
   min-height: 42px;
   gap: 10px;
@@ -324,17 +324,17 @@
   text-align: left;
 }
 
-.lusie-ai-scope .side-link.active {
+.side-link.active {
   background: rgba(16, 185, 129, 0.16);
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .side-link:hover {
+.side-link:hover {
   background: var(--tb-surface-high);
   color: var(--tb-ink);
 }
 
-.lusie-ai-scope .config-panel {
+.config-panel {
   width: 420px;
   flex-shrink: 0;
   overflow-y: auto;
@@ -343,31 +343,31 @@
   box-shadow: 6px 0 24px rgba(0, 0, 0, 0.03);
 }
 
-.lusie-ai-scope .panel-content {
+.panel-content {
   display: grid;
   gap: 26px;
   padding: 24px;
 }
 
-.lusie-ai-scope .panel-title h2,
-.lusie-ai-scope .page-title h1 {
+.panel-title h2,
+.page-title h1 {
   margin: 0;
   font-size: 24px;
   line-height: 1.2;
 }
 
-.lusie-ai-scope .panel-title p,
-.lusie-ai-scope .page-title p {
+.panel-title p,
+.page-title p {
   margin: 8px 0 0;
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .form-section {
+.form-section {
   display: grid;
   gap: 10px;
 }
 
-.lusie-ai-scope .section-label {
+.section-label {
   color: var(--tb-muted);
   font-size: 11px;
   font-weight: 800;
@@ -375,7 +375,7 @@
   text-transform: uppercase;
 }
 
-.lusie-ai-scope .tabs {
+.tabs {
   gap: 4px;
   border: 1px solid rgba(187, 202, 191, 0.6);
   border-radius: 8px;
@@ -383,7 +383,7 @@
   padding: 4px;
 }
 
-.lusie-ai-scope .tab-button {
+.tab-button {
   flex: 1;
   min-height: 38px;
   border: 0;
@@ -393,32 +393,32 @@
   font-weight: 800;
 }
 
-.lusie-ai-scope .tab-button.active {
+.tab-button.active {
   background: var(--tb-surface);
   color: var(--tb-ink);
   box-shadow: 0 3px 10px rgba(20, 31, 24, 0.08);
 }
 
-.lusie-ai-scope .archetype-grid,
-.lusie-ai-scope .color-grid,
-.lusie-ai-scope .concept-grid,
-.lusie-ai-scope .spec-grid,
-.lusie-ai-scope .dimension-grid {
+.archetype-grid,
+.color-grid,
+.concept-grid,
+.spec-grid,
+.dimension-grid {
   display: grid;
   gap: 10px;
 }
 
-.lusie-ai-scope .archetype-grid,
-.lusie-ai-scope .concept-grid,
-.lusie-ai-scope .spec-grid {
+.archetype-grid,
+.concept-grid,
+.spec-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.lusie-ai-scope .dimension-grid {
+.dimension-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.lusie-ai-scope .archetype-card {
+.archetype-card {
   position: relative;
   display: block;
   min-height: 158px;
@@ -431,13 +431,13 @@
   text-align: left;
 }
 
-.lusie-ai-scope .archetype-card.active {
+.archetype-card.active {
   border: 2px solid var(--tb-primary);
   color: white;
   box-shadow: 0 0 0 3px rgba(0, 108, 73, 0.16);
 }
 
-.lusie-ai-scope .archetype-card img {
+.archetype-card img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -449,24 +449,24 @@
     transform 150ms ease;
 }
 
-.lusie-ai-scope .archetype-card::after {
+.archetype-card::after {
   position: absolute;
   inset: 0;
   content: "";
   background: linear-gradient(135deg, rgba(8, 13, 13, 0.08) 0%, rgba(8, 13, 13, 0.12) 48%, rgba(8, 13, 13, 0.72) 100%);
 }
 
-.lusie-ai-scope .archetype-card:hover img {
+.archetype-card:hover img {
   opacity: 0.9;
   transform: scale(1.03);
 }
 
-.lusie-ai-scope .archetype-card > :not(img) {
+.archetype-card > :not(img) {
   position: relative;
   z-index: 1;
 }
 
-.lusie-ai-scope .archetype-icon {
+.archetype-icon {
   position: absolute;
   left: 12px;
   bottom: 44px;
@@ -481,7 +481,7 @@
   backdrop-filter: blur(8px);
 }
 
-.lusie-ai-scope .archetype-card strong {
+.archetype-card strong {
   position: absolute;
   left: 12px;
   bottom: 22px;
@@ -491,7 +491,7 @@
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
 }
 
-.lusie-ai-scope .archetype-card span:not(.archetype-icon) {
+.archetype-card span:not(.archetype-icon) {
   position: absolute;
   left: 12px;
   bottom: 8px;
@@ -502,13 +502,13 @@
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
 }
 
-.lusie-ai-scope .field-card {
+.field-card {
   overflow: hidden;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
 }
 
-.lusie-ai-scope .field-card label {
+.field-card label {
   display: block;
   border-bottom: 1px solid var(--tb-line);
   background: var(--tb-surface-mid);
@@ -518,7 +518,7 @@
   font-size: 10px;
 }
 
-.lusie-ai-scope .field-card input {
+.field-card input {
   width: 100%;
   border: 0;
   background: var(--tb-surface);
@@ -529,9 +529,9 @@
   outline: 0;
 }
 
-.lusie-ai-scope .text-area,
-.lusie-ai-scope .text-input,
-.lusie-ai-scope .select-input {
+.text-area,
+.text-input,
+.select-input {
   width: 100%;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
@@ -540,36 +540,36 @@
   outline: 0;
 }
 
-.lusie-ai-scope .text-area {
+.text-area {
   min-height: 128px;
   resize: vertical;
   padding: 14px;
 }
 
-.lusie-ai-scope .text-input,
-.lusie-ai-scope .select-input {
+.text-input,
+.select-input {
   min-height: 40px;
   padding: 0 12px;
 }
 
-.lusie-ai-scope .field-row {
+.field-row {
   gap: 10px;
 }
 
-.lusie-ai-scope .field-row > * {
+.field-row > * {
   min-width: 0;
   flex: 1;
 }
 
-.lusie-ai-scope .color-grid {
+.color-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.lusie-ai-scope .color-grid.compact {
+.color-grid.compact {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.lusie-ai-scope .swatch-button {
+.swatch-button {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -582,12 +582,12 @@
   font-size: 11px;
 }
 
-.lusie-ai-scope .swatch-button.active {
+.swatch-button.active {
   border-color: var(--tb-primary);
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .swatch {
+.swatch {
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
@@ -595,7 +595,7 @@
   border-radius: 50%;
 }
 
-.lusie-ai-scope .sticky-action {
+.sticky-action {
   position: sticky;
   bottom: 0;
   border-top: 1px solid var(--tb-line);
@@ -604,18 +604,19 @@
   backdrop-filter: blur(14px);
 }
 
-.lusie-ai-scope .sticky-action .button,
-.lusie-ai-scope .full-width {
+.sticky-action .button,
+.full-width {
   width: 100%;
 }
 
-.lusie-ai-scope .concept-progress {
+.concept-progress {
   display: grid;
+  position: relative;
   gap: 8px;
   margin: 12px 0 18px;
 }
 
-.lusie-ai-scope .concept-progress-meta {
+.concept-progress-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -624,12 +625,12 @@
   font-size: 12px;
 }
 
-.lusie-ai-scope .concept-progress-meta strong {
+.concept-progress-meta strong {
   color: var(--tb-primary);
   font-family: var(--tb-mono);
 }
 
-.lusie-ai-scope .concept-progress-track {
+.concept-progress-track {
   overflow: hidden;
   height: 10px;
   border: 1px solid rgba(187, 202, 191, 0.7);
@@ -637,14 +638,26 @@
   background: var(--tb-surface-high);
 }
 
-.lusie-ai-scope .concept-progress-track div {
+.concept-progress-track div {
+  position: relative;
   height: 100%;
   border-radius: inherit;
-  background: var(--tb-primary);
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--tb-primary), color-mix(in srgb, var(--tb-primary-soft) 72%, var(--tb-primary)));
+  box-shadow: 0 0 16px rgba(0, 108, 73, 0.18);
   transition: width 220ms ease;
 }
 
-.lusie-ai-scope .viewport {
+.concept-progress-track div::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  animation: progress-breathing-sheen 2.8s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  opacity: 0.72;
+}
+
+.viewport {
   position: relative;
   flex: 1;
   min-width: 0;
@@ -652,7 +665,7 @@
   background: var(--tb-background);
 }
 
-.lusie-ai-scope .progress-line {
+.progress-line {
   position: absolute;
   z-index: 4;
   top: 0;
@@ -662,14 +675,24 @@
   background: var(--tb-surface-high);
 }
 
-.lusie-ai-scope .progress-line div {
+.progress-line div {
+  position: relative;
+  overflow: hidden;
   height: 100%;
   border-radius: 0 999px 999px 0;
   background: var(--tb-primary);
   box-shadow: 0 0 8px rgba(0, 108, 73, 0.45);
 }
 
-.lusie-ai-scope .viewport-toolbar {
+.progress-line div::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  animation: progress-breathing-sheen 2.6s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
+}
+
+.viewport-toolbar {
   position: absolute;
   z-index: 5;
   top: 16px;
@@ -683,7 +706,7 @@
   box-shadow: var(--tb-shadow);
 }
 
-.lusie-ai-scope .viewport-center {
+.viewport-center {
   display: grid;
   width: 100%;
   min-height: 100%;
@@ -691,8 +714,7 @@
   padding: 40px;
 }
 
-.lusie-ai-scope .viewer-canvas {
-  position: relative;
+.viewer-canvas {
   width: min(92%, 980px);
   height: min(72vh, 620px);
   min-height: 420px;
@@ -703,35 +725,11 @@
   box-shadow: var(--tb-shadow);
 }
 
-.lusie-ai-scope .viewer-canvas canvas {
+.viewer-canvas canvas {
   display: block;
 }
 
-.lusie-ai-scope .viewer-load-error {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: grid;
-  place-content: center;
-  gap: 8px;
-  background: rgba(238, 241, 237, 0.9);
-  color: var(--tb-muted);
-  padding: 24px;
-  text-align: center;
-}
-
-.lusie-ai-scope .viewer-load-error strong {
-  color: var(--tb-ink);
-  font-size: 16px;
-}
-
-.lusie-ai-scope .viewer-load-error span {
-  max-width: 360px;
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-.lusie-ai-scope .concept-preview-stage {
+.concept-preview-stage {
   position: relative;
   isolation: isolate;
   width: min(92%, 980px);
@@ -744,7 +742,7 @@
   box-shadow: var(--tb-shadow);
 }
 
-.lusie-ai-scope .preview-image-shell {
+.preview-image-shell {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -752,7 +750,7 @@
   perspective: 1100px;
 }
 
-.lusie-ai-scope .concept-preview-stage img {
+.concept-preview-stage img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -767,7 +765,7 @@
   will-change: transform;
 }
 
-.lusie-ai-scope .blueprint-layer {
+.blueprint-layer {
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -780,17 +778,17 @@
   transition: opacity 180ms ease;
 }
 
-.lusie-ai-scope .concept-preview-stage.wireframe .blueprint-layer,
-.lusie-ai-scope .blueprint-layer.visible {
+.concept-preview-stage.wireframe .blueprint-layer,
+.blueprint-layer.visible {
   opacity: 1;
 }
 
-.lusie-ai-scope .wireframe-preview {
+.wireframe-preview {
   position: absolute;
   inset: 0;
 }
 
-.lusie-ai-scope .wireframe-preview .viewer-canvas {
+.wireframe-preview .viewer-canvas {
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -801,7 +799,7 @@
   opacity: 0.28;
 }
 
-.lusie-ai-scope .outline-box {
+.outline-box {
   position: absolute;
   top: 30%;
   left: 24%;
@@ -814,7 +812,7 @@
     inset 0 0 0 1px rgba(255, 255, 255, 0.46);
 }
 
-.lusie-ai-scope .outline-box::before {
+.outline-box::before {
   position: absolute;
   content: "";
   inset: -2px;
@@ -823,7 +821,7 @@
   animation: waiting-scan 1.8s ease-in-out infinite;
 }
 
-.lusie-ai-scope .measure {
+.measure {
   position: absolute;
   z-index: 2;
   border: 1px solid rgba(0, 108, 73, 0.35);
@@ -836,24 +834,24 @@
   font-weight: 800;
 }
 
-.lusie-ai-scope .measure-x {
+.measure-x {
   right: 50%;
   bottom: -34px;
   transform: translateX(50%);
 }
 
-.lusie-ai-scope .measure-y {
+.measure-y {
   right: -54px;
   top: 50%;
   transform: translateY(-50%) rotate(90deg);
 }
 
-.lusie-ai-scope .measure-z {
+.measure-z {
   top: -34px;
   left: -6px;
 }
 
-.lusie-ai-scope .preview-status-stack {
+.preview-status-stack {
   position: absolute;
   z-index: 4;
   top: 24px;
@@ -864,7 +862,7 @@
   pointer-events: none;
 }
 
-.lusie-ai-scope .preview-status-stack span {
+.preview-status-stack span {
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.28);
@@ -876,7 +874,7 @@
   backdrop-filter: blur(8px);
 }
 
-.lusie-ai-scope .preview-overlay {
+.preview-overlay {
   position: absolute;
   z-index: 3;
   right: 18px;
@@ -889,7 +887,7 @@
   pointer-events: none;
 }
 
-.lusie-ai-scope .preview-overlay::before {
+.preview-overlay::before {
   position: absolute;
   inset: -10px;
   z-index: 0;
@@ -899,36 +897,36 @@
   backdrop-filter: blur(6px);
 }
 
-.lusie-ai-scope .preview-overlay > * {
+.preview-overlay > * {
   position: relative;
   z-index: 1;
 }
 
-.lusie-ai-scope .preview-overlay .section-label {
+.preview-overlay .section-label {
   color: rgba(255, 255, 255, 0.72);
 }
 
-.lusie-ai-scope .preview-overlay h2 {
+.preview-overlay h2 {
   margin: 6px 0 4px;
   font-size: 18px;
   line-height: 1.16;
 }
 
-.lusie-ai-scope .preview-overlay p {
+.preview-overlay p {
   margin: 0;
   color: rgba(255, 255, 255, 0.84);
   font-size: 12px;
   line-height: 1.45;
 }
 
-.lusie-ai-scope .preview-specs {
+.preview-specs {
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
   gap: 6px;
 }
 
-.lusie-ai-scope .preview-specs span {
+.preview-specs span {
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.28);
@@ -939,7 +937,7 @@
   backdrop-filter: blur(8px);
 }
 
-.lusie-ai-scope .active-preview-note {
+.active-preview-note {
   display: grid;
   gap: 3px;
   margin-bottom: 12px;
@@ -947,12 +945,12 @@
   font-size: 12px;
 }
 
-.lusie-ai-scope .active-preview-note strong {
+.active-preview-note strong {
   color: var(--tb-ink);
   font-size: 13px;
 }
 
-.lusie-ai-scope .status-chip {
+.status-chip {
   width: fit-content;
   border: 1px solid rgba(187, 202, 191, 0.6);
   border-radius: 4px;
@@ -963,7 +961,7 @@
   font-size: 10px;
 }
 
-.lusie-ai-scope .status-region {
+.status-region {
   position: fixed;
   z-index: 60;
   right: 18px;
@@ -972,7 +970,7 @@
   gap: 8px;
 }
 
-.lusie-ai-scope .toast {
+.toast {
   max-width: 420px;
   gap: 10px;
   border: 1px solid var(--tb-line);
@@ -984,39 +982,39 @@
   box-shadow: var(--tb-shadow);
 }
 
-.lusie-ai-scope .toast.error {
+.toast.error {
   border-left-color: var(--tb-danger);
 }
 
-.lusie-ai-scope .concept-page,
-.lusie-ai-scope .progress-page,
-.lusie-ai-scope .result-page,
-.lusie-ai-scope .failed-page,
-.lusie-ai-scope .download-missing,
-.lusie-ai-scope .utility-page {
+.concept-page,
+.progress-page,
+.result-page,
+.failed-page,
+.download-missing,
+.utility-page {
   flex: 1;
   min-width: 0;
   overflow-y: auto;
   background: var(--tb-background);
 }
 
-.lusie-ai-scope .page-frame {
+.page-frame {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
   padding: 32px 0 56px;
 }
 
-.lusie-ai-scope .page-title {
+.page-title {
   margin-bottom: 24px;
 }
 
-.lusie-ai-scope .concept-grid {
+.concept-grid {
   align-items: stretch;
   grid-template-columns: minmax(0, 1.18fr) minmax(280px, 0.82fr);
   gap: 12px;
 }
 
-.lusie-ai-scope .concept-card {
+.concept-card {
   position: relative;
   display: flex;
   overflow: hidden;
@@ -1036,43 +1034,43 @@
     transform 160ms ease;
 }
 
-.lusie-ai-scope .concept-card:hover {
+.concept-card:hover {
   border-color: color-mix(in srgb, var(--tb-primary) 55%, var(--tb-line));
   box-shadow: 0 14px 32px rgba(20, 31, 24, 0.1);
   transform: translateY(-1px);
 }
 
-.lusie-ai-scope .concept-card:focus-visible {
+.concept-card:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--tb-primary) 28%, transparent);
   outline-offset: 3px;
 }
 
-.lusie-ai-scope .concept-card.selected {
+.concept-card.selected {
   border: 2px solid var(--tb-primary);
 }
 
-.lusie-ai-scope .concept-card img {
+.concept-card img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   background: var(--tb-surface-mid);
 }
 
-.lusie-ai-scope .concept-card:first-child img {
+.concept-card:first-child img {
   aspect-ratio: 1.08 / 1;
 }
 
-.lusie-ai-scope .concept-card-body {
+.concept-card-body {
   display: grid;
   gap: 12px;
   padding: 16px;
 }
 
-.lusie-ai-scope .concept-card:first-child .concept-card-body {
+.concept-card:first-child .concept-card-body {
   padding: 18px;
 }
 
-.lusie-ai-scope .concept-card-kicker {
+.concept-card-kicker {
   position: absolute;
   z-index: 1;
   top: 12px;
@@ -1089,27 +1087,27 @@
   padding: 0 10px;
 }
 
-.lusie-ai-scope .concept-card-kicker.recommended {
+.concept-card-kicker.recommended {
   background: var(--tb-primary);
   color: white;
 }
 
-.lusie-ai-scope .concept-card-body h2 {
+.concept-card-body h2 {
   margin: 0;
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .concept-card-body p {
+.concept-card-body p {
   margin: 0;
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .concept-actions {
+.concept-actions {
   justify-content: space-between;
   gap: 12px;
 }
 
-.lusie-ai-scope .concept-select-label {
+.concept-select-label {
   display: inline-flex;
   min-height: 34px;
   align-items: center;
@@ -1121,25 +1119,55 @@
   padding: 0 14px;
 }
 
-.lusie-ai-scope .concept-card.selected .concept-select-label {
+.concept-card.selected .concept-select-label {
   border-color: var(--tb-primary);
   background: color-mix(in srgb, var(--tb-primary) 10%, var(--tb-surface));
 }
 
-.lusie-ai-scope .progress-page {
+.concept-revision {
   display: grid;
+  gap: 12px;
+  width: min(720px, 100%);
+  border: 1px solid var(--tb-line);
+  border-radius: 8px;
+  background: var(--tb-surface);
+  padding: 16px;
+}
+
+.concept-revision p {
+  margin: 4px 0 0;
+  color: var(--tb-muted);
+}
+
+.concept-revision .button {
+  justify-self: start;
+}
+
+.progress-page {
+  display: grid;
+  position: relative;
+  isolation: isolate;
   place-items: center;
   padding: 32px;
 }
 
-.lusie-ai-scope .progress-stack {
+.progress-stack {
   display: grid;
   width: min(920px, 100%);
   justify-items: center;
   gap: 24px;
 }
 
-.lusie-ai-scope .progress-preview {
+.workspace-breathing,
+.progress-stack {
+  transform-origin: center;
+}
+
+.workspace-breathing {
+  animation: workspace-breathe 7.2s ease-in-out infinite;
+}
+
+.progress-preview {
   position: relative;
   display: grid;
   width: 100%;
@@ -1152,10 +1180,11 @@
     radial-gradient(circle at 50% 50%, rgba(0, 108, 73, 0.07), transparent 32%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 251, 247, 0.94));
   box-shadow: var(--tb-shadow);
+  animation: workspace-surface-breathe 6s ease-in-out infinite;
 }
 
-.lusie-ai-scope .progress-preview::before,
-.lusie-ai-scope .progress-preview::after {
+.progress-preview::before,
+.progress-preview::after {
   position: absolute;
   content: "";
   inset: 18%;
@@ -1165,12 +1194,12 @@
   animation: image-wave-ring 4.8s ease-in-out infinite;
 }
 
-.lusie-ai-scope .progress-preview::after {
+.progress-preview::after {
   inset: 29%;
   animation-delay: -1.6s;
 }
 
-.lusie-ai-scope .image-wave-field {
+.image-wave-field {
   position: absolute;
   inset: 14%;
   display: grid;
@@ -1180,7 +1209,7 @@
   mask-image: radial-gradient(circle at center, black 0%, black 48%, transparent 78%);
 }
 
-.lusie-ai-scope .image-wave-field span {
+.image-wave-field span {
   align-self: center;
   justify-self: center;
   width: 5px;
@@ -1191,7 +1220,7 @@
   animation: image-wave-dot 2.7s ease-in-out infinite;
 }
 
-.lusie-ai-scope .image-wave-core {
+.image-wave-core {
   position: relative;
   display: grid;
   width: 118px;
@@ -1199,7 +1228,7 @@
   place-items: center;
 }
 
-.lusie-ai-scope .image-wave-core span {
+.image-wave-core span {
   position: absolute;
   inset: 0;
   border: 1px solid rgba(0, 108, 73, 0.22);
@@ -1207,17 +1236,17 @@
   animation: image-wave-pulse 3.2s ease-in-out infinite;
 }
 
-.lusie-ai-scope .image-wave-core span:nth-child(2) {
+.image-wave-core span:nth-child(2) {
   inset: 18px;
   animation-delay: -1s;
 }
 
-.lusie-ai-scope .image-wave-core span:nth-child(3) {
+.image-wave-core span:nth-child(3) {
   inset: 34px;
   animation-delay: -1.8s;
 }
 
-.lusie-ai-scope .image-wave-core i {
+.image-wave-core i {
   width: 10px;
   height: 10px;
   border-radius: 999px;
@@ -1228,31 +1257,31 @@
   animation: image-wave-center 1.8s ease-in-out infinite;
 }
 
-.lusie-ai-scope .progress-copy {
+.progress-copy {
   text-align: center;
 }
 
-.lusie-ai-scope .progress-copy h1 {
+.progress-copy h1 {
   margin: 0;
   font-size: 34px;
 }
 
-.lusie-ai-scope .progress-copy p {
+.progress-copy p {
   margin: 8px 0 0;
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .segmented-progress {
+.segmented-progress {
   display: grid;
   width: min(680px, 100%);
   gap: 10px;
 }
 
-.lusie-ai-scope .metric-row {
+.metric-row {
   justify-content: space-between;
 }
 
-.lusie-ai-scope .progress-track {
+.progress-track {
   overflow: hidden;
   height: 16px;
   border: 1px solid rgba(187, 202, 191, 0.5);
@@ -1260,54 +1289,115 @@
   background: var(--tb-surface-high);
 }
 
-.lusie-ai-scope .progress-fill {
+.progress-fill {
   position: relative;
+  overflow: hidden;
   height: 100%;
   transition: width 0.7s ease;
-  background: var(--tb-primary);
+  background: linear-gradient(90deg, var(--tb-primary), color-mix(in srgb, var(--tb-primary-soft) 72%, var(--tb-primary)));
+  box-shadow: 0 0 18px rgba(0, 108, 73, 0.2);
 }
 
-.lusie-ai-scope .progress-fill::after {
+.progress-fill::after {
   position: absolute;
   inset: 0;
   content: "";
-  animation: shimmer 1.6s linear infinite;
+  animation: progress-breathing-sheen 2.8s ease-in-out infinite;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
 }
 
-.lusie-ai-scope .render-pipeline {
+.event-pulse-track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.event-pulse-track span {
+  height: 12px;
+  border: 1px solid rgba(187, 202, 191, 0.62);
+  border-radius: 999px;
+  background: var(--tb-surface-high);
+}
+
+.event-pulse-track.active span {
+  border-color: color-mix(in srgb, var(--tb-primary) 28%, var(--tb-line));
+  background: color-mix(in srgb, var(--tb-primary) 9%, var(--tb-surface));
+  animation: event-state-breathe 3.6s ease-in-out infinite;
+}
+
+.event-pulse-track.active span:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.event-pulse-track.active span:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.event-pulse-track.active span:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+.event-pulse-track.active span:nth-child(5) {
+  animation-delay: 1s;
+}
+
+.event-pulse-track.done span {
+  border-color: rgba(0, 108, 73, 0.22);
+  background: var(--tb-surface-low);
+}
+
+.event-pulse-track.error span {
+  border-color: rgba(186, 26, 26, 0.34);
+  background: color-mix(in srgb, var(--tb-danger-soft) 34%, var(--tb-surface));
+}
+
+.render-pipeline {
   display: grid;
   width: min(860px, 100%);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 
-.lusie-ai-scope .pipeline-step {
+.pipeline-step {
   display: grid;
+  position: relative;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 10px;
   min-height: 108px;
+  overflow: hidden;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface);
   padding: 12px;
 }
 
-.lusie-ai-scope .pipeline-step.active {
+.pipeline-step.active {
   border-color: color-mix(in srgb, var(--tb-primary) 58%, var(--tb-line));
   background: color-mix(in srgb, var(--tb-primary) 8%, var(--tb-surface));
+  animation: event-state-breathe 3.8s ease-in-out infinite;
 }
 
-.lusie-ai-scope .pipeline-step.done {
+.pipeline-step.active::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(120deg, transparent 8%, rgba(255, 255, 255, 0.34) 46%, transparent 72%);
+  opacity: 0.42;
+  transform: translateX(-100%);
+  animation: progress-event-scan 4.2s ease-in-out infinite;
+}
+
+.pipeline-step.done {
   border-color: rgba(0, 108, 73, 0.26);
   background: var(--tb-surface-low);
 }
 
-.lusie-ai-scope .pipeline-step.pending {
+.pipeline-step.pending {
   opacity: 0.72;
 }
 
-.lusie-ai-scope .pipeline-index {
+.pipeline-index {
   display: grid;
   width: 30px;
   height: 30px;
@@ -1320,58 +1410,116 @@
   font-weight: 900;
 }
 
-.lusie-ai-scope .pipeline-step.active .pipeline-index,
-.lusie-ai-scope .pipeline-step.done .pipeline-index {
+.pipeline-step.active .pipeline-index,
+.pipeline-step.done .pipeline-index {
   background: var(--tb-primary);
   color: white;
 }
 
-.lusie-ai-scope .pipeline-step strong {
+.pipeline-step strong {
   display: block;
   color: var(--tb-ink);
   font-size: 13px;
   line-height: 1.35;
 }
 
-.lusie-ai-scope .pipeline-step p {
+.pipeline-step p {
   margin: 6px 0 0;
   color: var(--tb-muted);
   font-size: 12px;
   line-height: 1.5;
 }
 
-.lusie-ai-scope .system-log,
-.lusie-ai-scope .failure-card,
-.lusie-ai-scope .success-card,
-.lusie-ai-scope .missing-card,
-.lusie-ai-scope .utility-panel {
+.system-log,
+.failure-card,
+.success-card,
+.missing-card,
+.utility-panel {
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface);
   box-shadow: var(--tb-shadow);
 }
 
-.lusie-ai-scope .system-log {
+.system-log {
   width: min(680px, 100%);
   display: grid;
   gap: 12px;
   padding: 16px;
 }
 
-.lusie-ai-scope .log-head {
+.progress-event,
+.event-state,
+.tool-event,
+.workspace-event {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(187, 202, 191, 0.72);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.progress-event[data-state="active"],
+.progress-event.active,
+.event-state.active,
+.event-state.running,
+.tool-event.active,
+.tool-event.running,
+.workspace-event.active {
+  border-color: color-mix(in srgb, var(--tb-primary) 42%, var(--tb-line));
+  background: color-mix(in srgb, var(--tb-primary) 7%, var(--tb-surface));
+  animation: event-state-breathe 3.8s ease-in-out infinite;
+}
+
+.progress-event[data-state="active"]::after,
+.progress-event.active::after,
+.event-state.active::after,
+.event-state.running::after,
+.tool-event.active::after,
+.tool-event.running::after,
+.workspace-event.active::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(120deg, transparent 10%, rgba(255, 255, 255, 0.4), transparent 74%);
+  opacity: 0.45;
+  transform: translateX(-100%);
+  animation: progress-event-scan 4.2s ease-in-out infinite;
+}
+
+.progress-event[data-state="done"],
+.progress-event.done,
+.event-state.done,
+.tool-event.done,
+.workspace-event.done {
+  border-color: rgba(0, 108, 73, 0.22);
+  background: var(--tb-surface-low);
+}
+
+.progress-event[data-state="error"],
+.progress-event.error,
+.event-state.error,
+.tool-event.error,
+.workspace-event.error {
+  border-color: rgba(186, 26, 26, 0.34);
+  background: color-mix(in srgb, var(--tb-danger-soft) 32%, var(--tb-surface));
+}
+
+.log-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
-.lusie-ai-scope .log-head > span {
+.log-head > span {
   color: var(--tb-muted);
   font-family: var(--tb-mono);
   font-size: 11px;
 }
 
-.lusie-ai-scope .token-stream {
+.token-stream {
   display: flex;
   max-height: 70px;
   flex-wrap: wrap;
@@ -1383,7 +1531,7 @@
   padding: 10px;
 }
 
-.lusie-ai-scope .token-stream span {
+.token-stream span {
   display: inline-flex;
   min-height: 22px;
   align-items: center;
@@ -1398,7 +1546,7 @@
   animation: token-blink 1.4s ease-in-out infinite;
 }
 
-.lusie-ai-scope .log-lines {
+.log-lines {
   display: grid;
   max-height: 210px;
   gap: 6px;
@@ -1408,67 +1556,80 @@
   font-size: 12px;
 }
 
-.lusie-ai-scope .log-line {
+.log-line {
   display: grid;
+  position: relative;
   grid-template-columns: 74px minmax(0, 1fr);
   gap: 6px 12px;
+  overflow: hidden;
   border-left: 3px solid transparent;
   border-radius: 6px;
   padding: 6px 8px;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-.lusie-ai-scope .log-line > span:first-child {
+.log-line > span:first-child {
   color: var(--tb-secondary);
   font-weight: 900;
 }
 
-.lusie-ai-scope .log-line > span:nth-child(2) {
+.log-line > span:nth-child(2) {
   color: var(--tb-ink);
   font-weight: 800;
 }
 
-.lusie-ai-scope .log-line em {
+.log-line em {
   grid-column: 2;
   color: var(--tb-muted);
   font-style: normal;
   line-height: 1.45;
 }
 
-.lusie-ai-scope .log-line.active {
+.log-line.active {
   border-color: rgba(0, 108, 73, 0.35);
+  animation: event-state-breathe 3.8s ease-in-out infinite;
 }
 
-.lusie-ai-scope .log-line.done {
+.log-line.done {
   border-color: rgba(16, 185, 129, 0.36);
 }
 
-.lusie-ai-scope .log-line.warn {
+.log-line.warn {
   border-color: rgba(164, 58, 58, 0.35);
 }
 
-.lusie-ai-scope .log-line.latest {
+.log-line.latest {
   background: rgba(232, 240, 233, 0.82);
-  animation: log-flash 1.1s ease-in-out infinite;
+  animation: log-flash 2.4s ease-in-out infinite;
 }
 
-.lusie-ai-scope .result-page,
-.lusie-ai-scope .failed-page,
-.lusie-ai-scope .download-missing,
-.lusie-ai-scope .utility-page {
+.log-line.latest::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(120deg, transparent 16%, rgba(255, 255, 255, 0.45), transparent 76%);
+  transform: translateX(-100%);
+  animation: progress-event-scan 4.4s ease-in-out infinite;
+}
+
+.result-page,
+.failed-page,
+.download-missing,
+.utility-page {
   display: grid;
   place-items: center;
   padding: 32px;
 }
 
-.lusie-ai-scope .success-card {
+.success-card {
   display: grid;
   width: min(1280px, 100%);
   grid-template-columns: minmax(420px, 1.1fr) minmax(360px, 0.9fr);
   overflow: hidden;
 }
 
-.lusie-ai-scope .success-view {
+.success-view {
   position: relative;
   min-height: 640px;
   border-right: 1px solid var(--tb-line);
@@ -1479,7 +1640,7 @@
   background-size: 22px 22px;
 }
 
-.lusie-ai-scope .success-view .viewer-canvas {
+.success-view .viewer-canvas {
   width: 100%;
   height: 100%;
   min-height: 640px;
@@ -1488,23 +1649,23 @@
   box-shadow: none;
 }
 
-.lusie-ai-scope .inspection-toolbar,
-.lusie-ai-scope .inspection-readout {
+.inspection-toolbar,
+.inspection-readout {
   position: absolute;
   z-index: 2;
   display: flex;
   gap: 8px;
 }
 
-.lusie-ai-scope .inspection-toolbar {
+.inspection-toolbar {
   top: 18px;
   left: 18px;
   flex-wrap: wrap;
 }
 
-.lusie-ai-scope .inspection-toolbar span,
-.lusie-ai-scope .inspection-toolbar button,
-.lusie-ai-scope .inspection-readout span {
+.inspection-toolbar span,
+.inspection-toolbar button,
+.inspection-readout span {
   display: inline-flex;
   min-height: 30px;
   align-items: center;
@@ -1518,49 +1679,49 @@
   backdrop-filter: blur(10px);
 }
 
-.lusie-ai-scope .inspection-toolbar button {
+.inspection-toolbar button {
   cursor: pointer;
   font-family: inherit;
 }
 
-.lusie-ai-scope .inspection-toolbar span:first-child {
+.inspection-toolbar span:first-child {
   background: var(--tb-primary);
   color: white;
 }
 
-.lusie-ai-scope .inspection-toolbar button[aria-pressed="true"] {
+.inspection-toolbar button[aria-pressed="true"] {
   border-color: var(--tb-primary);
   background: rgba(0, 108, 73, 0.12);
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .inspection-toolbar button:focus-visible,
-.lusie-ai-scope .detail-render-card:focus-visible {
+.inspection-toolbar button:focus-visible,
+.detail-render-card:focus-visible {
   outline: 3px solid rgba(0, 108, 73, 0.22);
   outline-offset: 2px;
 }
 
-.lusie-ai-scope .inspection-readout {
+.inspection-readout {
   right: 18px;
   bottom: 18px;
 }
 
-.lusie-ai-scope .inspection-panel {
+.inspection-panel {
   display: grid;
   align-content: start;
   gap: 22px;
   padding: 34px;
 }
 
-.lusie-ai-scope .inspection-head {
+.inspection-head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 14px;
   align-items: start;
 }
 
-.lusie-ai-scope .success-icon,
-.lusie-ai-scope .failure-icon {
+.success-icon,
+.failure-icon {
   display: grid;
   width: 62px;
   height: 62px;
@@ -1569,46 +1730,46 @@
   margin-bottom: 18px;
 }
 
-.lusie-ai-scope .success-icon {
+.success-icon {
   background: var(--tb-primary-soft);
   color: #00422b;
 }
 
-.lusie-ai-scope .inspection-head .success-icon {
+.inspection-head .success-icon {
   margin-bottom: 0;
 }
 
-.lusie-ai-scope .failure-icon {
+.failure-icon {
   background: var(--tb-danger-soft);
   color: var(--tb-danger);
 }
 
-.lusie-ai-scope .inspection-panel h1,
-.lusie-ai-scope .failure-card h1,
-.lusie-ai-scope .missing-card h1 {
+.inspection-panel h1,
+.failure-card h1,
+.missing-card h1 {
   margin: 0;
   font-size: 34px;
 }
 
-.lusie-ai-scope .inspection-panel p,
-.lusie-ai-scope .failure-card p,
-.lusie-ai-scope .missing-card p {
+.inspection-panel p,
+.failure-card p,
+.missing-card p {
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .inspection-panel p {
+.inspection-panel p {
   margin: 8px 0 0;
 }
 
-.lusie-ai-scope .spec-grid {
+.spec-grid {
   margin: 16px 0 24px;
 }
 
-.lusie-ai-scope .inspection-panel .spec-grid {
+.inspection-panel .spec-grid {
   margin: 0;
 }
 
-.lusie-ai-scope .inspection-section {
+.inspection-section {
   display: grid;
   gap: 12px;
   border: 1px solid var(--tb-line);
@@ -1617,19 +1778,19 @@
   padding: 16px;
 }
 
-.lusie-ai-scope .inspection-section h2 {
+.inspection-section h2 {
   margin: 0;
   color: var(--tb-ink);
   font-size: 16px;
 }
 
-.lusie-ai-scope .detail-render-grid {
+.detail-render-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 
-.lusie-ai-scope .detail-render-card {
+.detail-render-card {
   display: grid;
   gap: 7px;
   width: 100%;
@@ -1643,12 +1804,12 @@
   text-align: left;
 }
 
-.lusie-ai-scope .detail-render-card.active {
+.detail-render-card.active {
   border-color: var(--tb-primary);
   background: rgba(0, 108, 73, 0.08);
 }
 
-.lusie-ai-scope .detail-render {
+.detail-render {
   position: relative;
   overflow: hidden;
   aspect-ratio: 4 / 3;
@@ -1661,36 +1822,36 @@
   background-size: 18px 18px;
 }
 
-.lusie-ai-scope .detail-body,
-.lusie-ai-scope .detail-marker,
-.lusie-ai-scope .detail-ruler {
+.detail-body,
+.detail-marker,
+.detail-ruler {
   position: absolute;
   display: block;
 }
 
-.lusie-ai-scope .detail-body {
+.detail-body {
   inset: 34% 16% 28%;
   border-radius: 999px;
   background: linear-gradient(90deg, #252d2a, #59665f);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-.lusie-ai-scope .detail-render.front .detail-body {
+.detail-render.front .detail-body {
   inset: 25% 22% 25%;
   border-radius: 14px;
 }
 
-.lusie-ai-scope .detail-render.top .detail-body {
+.detail-render.top .detail-body {
   inset: 18% 18% 22%;
   border-radius: 42% 42% 20% 20%;
 }
 
-.lusie-ai-scope .detail-render.joint .detail-body {
+.detail-render.joint .detail-body {
   inset: 26% 24% 22%;
   border-radius: 8px;
 }
 
-.lusie-ai-scope .detail-marker {
+.detail-marker {
   top: 14px;
   right: 14px;
   width: 18px;
@@ -1699,7 +1860,7 @@
   border-radius: 50%;
 }
 
-.lusie-ai-scope .detail-ruler {
+.detail-ruler {
   right: 14px;
   bottom: 14px;
   left: 14px;
@@ -1707,8 +1868,8 @@
   background: var(--tb-primary);
 }
 
-.lusie-ai-scope .detail-ruler::before,
-.lusie-ai-scope .detail-ruler::after {
+.detail-ruler::before,
+.detail-ruler::after {
   position: absolute;
   top: -4px;
   width: 2px;
@@ -1717,26 +1878,26 @@
   content: "";
 }
 
-.lusie-ai-scope .detail-ruler::before {
+.detail-ruler::before {
   left: 0;
 }
 
-.lusie-ai-scope .detail-ruler::after {
+.detail-ruler::after {
   right: 0;
 }
 
-.lusie-ai-scope .detail-render-card strong {
+.detail-render-card strong {
   color: var(--tb-ink);
   font-size: 13px;
 }
 
-.lusie-ai-scope .detail-render-card > span {
+.detail-render-card > span {
   color: var(--tb-muted);
   font-size: 12px;
   line-height: 1.45;
 }
 
-.lusie-ai-scope .inspection-current {
+.inspection-current {
   margin: 0;
   border-radius: 8px;
   background: rgba(0, 108, 73, 0.07);
@@ -1746,11 +1907,11 @@
   padding: 10px 12px;
 }
 
-.lusie-ai-scope .inspection-current strong {
+.inspection-current strong {
   color: var(--tb-ink);
 }
 
-.lusie-ai-scope .print-advice {
+.print-advice {
   display: grid;
   gap: 10px;
   margin: 0;
@@ -1758,7 +1919,7 @@
   list-style: none;
 }
 
-.lusie-ai-scope .print-advice li {
+.print-advice li {
   position: relative;
   color: var(--tb-muted);
   font-size: 13px;
@@ -1766,7 +1927,7 @@
   padding-left: 18px;
 }
 
-.lusie-ai-scope .print-advice li::before {
+.print-advice li::before {
   position: absolute;
   top: 0.7em;
   left: 2px;
@@ -1777,28 +1938,28 @@
   content: "";
 }
 
-.lusie-ai-scope .spec-card {
+.spec-card {
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface-low);
   padding: 14px;
 }
 
-.lusie-ai-scope .spec-title {
+.spec-title {
   gap: 8px;
   color: var(--tb-secondary);
   font-size: 12px;
   font-weight: 800;
 }
 
-.lusie-ai-scope .spec-card strong {
+.spec-card strong {
   display: block;
   margin-top: 8px;
   font-family: var(--tb-mono);
   font-size: 13px;
 }
 
-.lusie-ai-scope .action-row {
+.action-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -1806,23 +1967,23 @@
   padding-top: 18px;
 }
 
-.lusie-ai-scope .action-row .button {
+.action-row .button {
   flex: 1;
   min-width: 170px;
 }
 
-.lusie-ai-scope .failure-card,
-.lusie-ai-scope .missing-card {
+.failure-card,
+.missing-card {
   width: min(760px, 100%);
   border-top: 4px solid var(--tb-danger);
   padding: 28px;
 }
 
-.lusie-ai-scope .missing-card {
+.missing-card {
   border-top-color: var(--tb-primary);
 }
 
-.lusie-ai-scope .utility-panel {
+.utility-panel {
   display: grid;
   width: min(760px, 100%);
   gap: 18px;
@@ -1830,11 +1991,11 @@
   padding: 28px;
 }
 
-.lusie-ai-scope .utility-panel.wide {
+.utility-panel.wide {
   width: min(1040px, 100%);
 }
 
-.lusie-ai-scope .utility-icon {
+.utility-icon {
   display: grid;
   width: 62px;
   height: 62px;
@@ -1844,22 +2005,22 @@
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .utility-panel h1 {
+.utility-panel h1 {
   margin: 6px 0 0;
   font-size: 34px;
 }
 
-.lusie-ai-scope .utility-panel p {
+.utility-panel p {
   margin: 10px 0 0;
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .utility-list {
+.utility-list {
   display: grid;
   gap: 10px;
 }
 
-.lusie-ai-scope .utility-list div {
+.utility-list div {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1871,18 +2032,18 @@
   font-size: 13px;
 }
 
-.lusie-ai-scope .utility-list svg {
+.utility-list svg {
   flex: 0 0 auto;
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .utility-feature-grid {
+.utility-feature-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
-.lusie-ai-scope .utility-option {
+.utility-option {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 10px;
@@ -1893,22 +2054,22 @@
   padding: 14px;
 }
 
-.lusie-ai-scope .utility-option:has(input:checked) {
+.utility-option:has(input:checked) {
   border-color: var(--tb-primary);
   background: color-mix(in srgb, var(--tb-primary) 10%, var(--tb-surface));
 }
 
-.lusie-ai-scope .utility-option input {
+.utility-option input {
   margin-top: 2px;
 }
 
-.lusie-ai-scope .utility-option strong {
+.utility-option strong {
   display: block;
   color: var(--tb-primary);
   font-size: 15px;
 }
 
-.lusie-ai-scope .utility-option small {
+.utility-option small {
   display: block;
   margin-top: 7px;
   color: var(--tb-muted);
@@ -1916,7 +2077,7 @@
   line-height: 1.55;
 }
 
-.lusie-ai-scope .utility-form {
+.utility-form {
   display: grid;
   gap: 12px;
   border: 1px solid var(--tb-line);
@@ -1925,7 +2086,7 @@
   padding: 14px;
 }
 
-.lusie-ai-scope .utility-form label {
+.utility-form label {
   display: grid;
   gap: 7px;
   color: var(--tb-muted);
@@ -1933,8 +2094,8 @@
   font-weight: 800;
 }
 
-.lusie-ai-scope .utility-form textarea,
-.lusie-ai-scope .utility-form select {
+.utility-form textarea,
+.utility-form select {
   width: 100%;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
@@ -1943,17 +2104,17 @@
   padding: 10px 12px;
 }
 
-.lusie-ai-scope .utility-form textarea {
+.utility-form textarea {
   min-height: 86px;
   resize: vertical;
 }
 
-.lusie-ai-scope .utility-check {
+.utility-check {
   grid-template-columns: auto 1fr;
   align-items: center;
 }
 
-.lusie-ai-scope .utility-task-status {
+.utility-task-status {
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface);
@@ -1963,27 +2124,27 @@
   font-weight: 800;
 }
 
-.lusie-ai-scope .utility-task-status.done {
+.utility-task-status.done {
   border-color: color-mix(in srgb, var(--tb-primary) 50%, var(--tb-line));
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .history-summary,
-.lusie-ai-scope .storage-status-grid,
-.lusie-ai-scope .plan-grid,
-.lusie-ai-scope .invite-grid {
+.history-summary,
+.storage-status-grid,
+.plan-grid,
+.invite-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
-.lusie-ai-scope .history-list,
-.lusie-ai-scope .invite-ledger {
+.history-list,
+.invite-ledger {
   display: grid;
   gap: 10px;
 }
 
-.lusie-ai-scope .history-card {
+.history-card {
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
   gap: 14px;
@@ -1993,7 +2154,7 @@
   padding: 12px;
 }
 
-.lusie-ai-scope .history-thumb {
+.history-thumb {
   display: grid;
   overflow: hidden;
   min-height: 76px;
@@ -2004,30 +2165,30 @@
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .history-thumb img {
+.history-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.lusie-ai-scope .history-card-head,
-.lusie-ai-scope .history-meta {
+.history-card-head,
+.history-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
 
-.lusie-ai-scope .history-card-head {
+.history-card-head {
   justify-content: space-between;
 }
 
-.lusie-ai-scope .history-card-head strong {
+.history-card-head strong {
   color: var(--tb-ink);
 }
 
-.lusie-ai-scope .history-card-head span,
-.lusie-ai-scope .history-meta span {
+.history-card-head span,
+.history-meta span {
   border: 1px solid rgba(187, 202, 191, 0.7);
   border-radius: 4px;
   background: var(--tb-surface);
@@ -2038,14 +2199,14 @@
   font-weight: 800;
 }
 
-.lusie-ai-scope .history-card p {
+.history-card p {
   margin: 8px 0 10px;
   color: var(--tb-muted);
   font-size: 13px;
   line-height: 1.55;
 }
 
-.lusie-ai-scope .empty-state {
+.empty-state {
   display: grid;
   justify-items: center;
   gap: 8px;
@@ -2057,38 +2218,38 @@
   text-align: center;
 }
 
-.lusie-ai-scope .empty-state strong {
+.empty-state strong {
   color: var(--tb-ink);
 }
 
-.lusie-ai-scope .plan-card,
-.lusie-ai-scope .invite-tier,
-.lusie-ai-scope .supabase-panel,
-.lusie-ai-scope .invite-hero {
+.plan-card,
+.invite-tier,
+.supabase-panel,
+.invite-hero {
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface-low);
   padding: 16px;
 }
 
-.lusie-ai-scope .plan-card {
+.plan-card {
   display: grid;
   gap: 14px;
 }
 
-.lusie-ai-scope .plan-card.active {
+.plan-card.active {
   border-color: var(--tb-primary);
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
 }
 
-.lusie-ai-scope .plan-card strong {
+.plan-card strong {
   display: block;
   margin-top: 6px;
   color: var(--tb-primary);
   font-size: 28px;
 }
 
-.lusie-ai-scope .plan-card ul {
+.plan-card ul {
   display: grid;
   gap: 8px;
   margin: 0;
@@ -2096,21 +2257,21 @@
   list-style: none;
 }
 
-.lusie-ai-scope .plan-card li {
+.plan-card li {
   color: var(--tb-muted);
   font-size: 13px;
 }
 
-.lusie-ai-scope .supabase-panel,
-.lusie-ai-scope .invite-hero {
+.supabase-panel,
+.invite-hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
-.lusie-ai-scope .supabase-panel strong,
-.lusie-ai-scope .invite-hero strong {
+.supabase-panel strong,
+.invite-hero strong {
   display: block;
   margin-top: 6px;
   color: var(--tb-primary);
@@ -2118,30 +2279,30 @@
   font-size: 20px;
 }
 
-.lusie-ai-scope .supabase-panel p,
-.lusie-ai-scope .invite-hero p {
+.supabase-panel p,
+.invite-hero p {
   margin: 0;
   color: var(--tb-muted);
   font-size: 13px;
   line-height: 1.55;
 }
 
-.lusie-ai-scope .invite-tier {
+.invite-tier {
   display: grid;
   gap: 8px;
 }
 
-.lusie-ai-scope .invite-tier strong {
+.invite-tier strong {
   color: var(--tb-primary);
   font-size: 18px;
 }
 
-.lusie-ai-scope .invite-tier span {
+.invite-tier span {
   color: var(--tb-muted);
   font-size: 13px;
 }
 
-.lusie-ai-scope .invite-ledger div {
+.invite-ledger div {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 10px;
@@ -2151,20 +2312,20 @@
   padding: 12px;
 }
 
-.lusie-ai-scope .invite-ledger svg {
+.invite-ledger svg {
   color: var(--tb-primary);
 }
 
-.lusie-ai-scope .invite-ledger span {
+.invite-ledger span {
   display: grid;
   gap: 3px;
 }
 
-.lusie-ai-scope .invite-ledger small {
+.invite-ledger small {
   color: var(--tb-muted);
 }
 
-.lusie-ai-scope .error-log {
+.error-log {
   overflow-x: auto;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
@@ -2243,6 +2404,68 @@
   }
 }
 
+@keyframes workspace-breathe {
+  0%,
+  100% {
+    opacity: 0.48;
+    transform: scale(0.985);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.015);
+  }
+}
+
+@keyframes workspace-surface-breathe {
+  0%,
+  100% {
+    border-color: rgba(187, 202, 191, 0.82);
+    box-shadow: 0 18px 42px rgba(20, 31, 24, 0.08);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--tb-primary) 24%, var(--tb-line));
+    box-shadow: 0 22px 58px rgba(0, 108, 73, 0.13);
+  }
+}
+
+@keyframes progress-breathing-sheen {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: translateX(-105%);
+  }
+  48% {
+    opacity: 0.72;
+    transform: translateX(105%);
+  }
+}
+
+@keyframes event-state-breathe {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 1px rgba(0, 108, 73, 0.03), 0 0 0 rgba(0, 108, 73, 0);
+  }
+  50% {
+    box-shadow: inset 0 0 0 1px rgba(0, 108, 73, 0.12), 0 10px 28px rgba(0, 108, 73, 0.1);
+  }
+}
+
+@keyframes progress-event-scan {
+  0%,
+  24% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  48% {
+    opacity: 0.48;
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
 @keyframes waiting-scan {
   0%,
   100% {
@@ -2277,177 +2500,209 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .concept-progress-track div,
+  .progress-line div,
+  .workspace-breathing,
+  .progress-preview,
+  .image-wave-field span,
+  .image-wave-core span,
+  .image-wave-core i,
+  .progress-fill::after,
+  .concept-progress-track div::after,
+  .progress-line div::after,
+  .progress-preview::before,
+  .progress-preview::after,
+  .pipeline-step.active,
+  .pipeline-step.active::after,
+  .event-pulse-track.active span,
+  .progress-event,
+  .progress-event::after,
+  .event-state,
+  .event-state::after,
+  .tool-event,
+  .tool-event::after,
+  .workspace-event,
+  .workspace-event::after,
+  .token-stream span,
+  .log-line.active,
+  .log-line.latest,
+  .log-line.latest::after {
+    animation: none;
+  }
+}
+
 @media (max-width: 1100px) {
-  .lusie-ai-scope .app-body {
+  .app-body {
     flex-direction: column;
   }
 
-  .lusie-ai-scope .sidebar,
-.lusie-ai-scope .config-panel {
+  .sidebar,
+  .config-panel {
     width: 100%;
   }
 
-  .lusie-ai-scope .sidebar {
+  .sidebar {
     display: block;
     padding: 12px;
   }
 
-  .lusie-ai-scope .workspace-card,
-.lusie-ai-scope .side-footer {
+  .workspace-card,
+  .side-footer {
     display: none;
   }
 
-  .lusie-ai-scope .side-nav {
+  .side-nav {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .lusie-ai-scope .side-link {
+  .side-link {
     justify-content: center;
   }
 
-  .lusie-ai-scope .config-panel {
+  .config-panel {
     border-right: 0;
     border-bottom: 1px solid var(--tb-line);
   }
 
-  .lusie-ai-scope .panel-content {
+  .panel-content {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
   }
 
-  .lusie-ai-scope .panel-title,
-.lusie-ai-scope .sticky-action {
+  .panel-title,
+  .sticky-action {
     grid-column: 1 / -1;
   }
 
-  .lusie-ai-scope .success-card {
+  .success-card {
     grid-template-columns: 1fr;
   }
 
-  .lusie-ai-scope .success-view {
+  .success-view {
     border-right: 0;
     border-bottom: 1px solid var(--tb-line);
   }
 }
 
 @media (max-width: 760px) {
-  .lusie-ai-scope .toybox-header {
+  .toybox-header {
     height: auto;
     flex-wrap: wrap;
     gap: 12px;
     padding: 14px;
   }
 
-  .lusie-ai-scope .brand-row {
+  .brand-row {
     width: 100%;
     justify-content: space-between;
     gap: 12px;
   }
 
-  .lusie-ai-scope .nav-row {
+  .nav-row {
     display: none;
   }
 
-  .lusie-ai-scope .header-actions {
+  .header-actions {
     width: 100%;
     flex-wrap: wrap;
   }
 
-  .lusie-ai-scope .side-nav,
-.lusie-ai-scope .panel-content,
-.lusie-ai-scope .archetype-grid,
-.lusie-ai-scope .concept-grid,
-.lusie-ai-scope .spec-grid,
-.lusie-ai-scope .history-summary,
-.lusie-ai-scope .storage-status-grid,
-.lusie-ai-scope .plan-grid,
-.lusie-ai-scope .invite-grid,
-.lusie-ai-scope .render-pipeline,
-.lusie-ai-scope .detail-render-grid,
-.lusie-ai-scope .utility-feature-grid {
+  .side-nav,
+  .panel-content,
+  .archetype-grid,
+  .concept-grid,
+  .spec-grid,
+  .history-summary,
+  .storage-status-grid,
+  .plan-grid,
+  .invite-grid,
+  .render-pipeline,
+  .detail-render-grid,
+  .utility-feature-grid {
     grid-template-columns: 1fr;
   }
 
-  .lusie-ai-scope .history-card {
+  .history-card {
     grid-template-columns: 1fr;
   }
 
-  .lusie-ai-scope .supabase-panel,
-.lusie-ai-scope .invite-hero {
+  .supabase-panel,
+  .invite-hero {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .lusie-ai-scope .dimension-grid,
-.lusie-ai-scope .color-grid,
-.lusie-ai-scope .color-grid.compact {
+  .dimension-grid,
+  .color-grid,
+  .color-grid.compact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .lusie-ai-scope .viewport-center,
-.lusie-ai-scope .page-frame,
-.lusie-ai-scope .result-page,
-.lusie-ai-scope .failed-page,
-.lusie-ai-scope .download-missing,
-.lusie-ai-scope .utility-page,
-.lusie-ai-scope .progress-page {
+  .viewport-center,
+  .page-frame,
+  .result-page,
+  .failed-page,
+  .download-missing,
+  .utility-page,
+  .progress-page {
     padding-inline: 16px;
   }
 
-  .lusie-ai-scope .viewer-canvas {
+  .viewer-canvas {
     width: 100%;
     min-height: 360px;
   }
 
-  .lusie-ai-scope .log-head {
+  .log-head {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .lusie-ai-scope .token-stream {
+  .token-stream {
     max-height: 96px;
   }
 
-  .lusie-ai-scope .log-line {
+  .log-line {
     grid-template-columns: 1fr;
   }
 
-  .lusie-ai-scope .log-line em {
+  .log-line em {
     grid-column: auto;
   }
 
-  .lusie-ai-scope .success-view,
-.lusie-ai-scope .success-view .viewer-canvas {
+  .success-view,
+  .success-view .viewer-canvas {
     min-height: 420px;
   }
 
-  .lusie-ai-scope .inspection-readout {
+  .inspection-readout {
     right: 16px;
     bottom: 16px;
     left: 16px;
     flex-wrap: wrap;
   }
 
-  .lusie-ai-scope .concept-preview-stage {
+  .concept-preview-stage {
     width: 100%;
     min-height: 360px;
   }
 
-  .lusie-ai-scope .preview-overlay {
+  .preview-overlay {
     right: 16px;
     bottom: 16px;
     width: min(230px, calc(100% - 32px));
   }
 
-  .lusie-ai-scope .preview-specs {
+  .preview-specs {
     justify-content: start;
   }
 
-  .lusie-ai-scope .inspection-panel,
-.lusie-ai-scope .failure-card,
-.lusie-ai-scope .missing-card,
-.lusie-ai-scope .utility-panel {
+  .inspection-panel,
+  .failure-card,
+  .missing-card,
+  .utility-panel {
     padding: 22px;
   }
 }

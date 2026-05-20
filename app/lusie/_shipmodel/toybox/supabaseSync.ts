@@ -4,6 +4,8 @@ import type { LocalHistoryEntry } from "./localHistory";
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
 const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
 
+type SyncedHistoryEntry = LocalHistoryEntry & { files?: { stl?: string; stlSourceUrl?: string; threeMf?: string } };
+
 export type SupabaseSyncState = "disabled" | "ready";
 
 export function getSupabaseSyncState(): SupabaseSyncState {
@@ -47,7 +49,8 @@ export async function syncHistoryEntry(entry: LocalHistoryEntry) {
   }
 }
 
-function buildSyncedInput(entry: LocalHistoryEntry): ModelRequest & { _files?: LocalHistoryEntry["files"] } {
+
+function buildSyncedInput(entry: SyncedHistoryEntry): ModelRequest & { _files?: NonNullable<SyncedHistoryEntry["files"]> } {
   if (!entry.files || Object.keys(entry.files).length === 0) return entry.input;
   return { ...entry.input, _files: entry.files };
 }

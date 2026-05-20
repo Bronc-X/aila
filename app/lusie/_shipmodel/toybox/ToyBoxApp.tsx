@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AlertTriangle,
   Box,
@@ -29,7 +27,7 @@ import {
   Wand2
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { generateConcepts, generateModel, getHandshake, getRun, setConceptFallbacks } from "../api";
+import { generateConcepts, generateModel, getHandshake, getRun, reviseConcept, setConceptFallbacks } from "../api";
 import { ModelViewer } from "../components/ModelViewer";
 import type { Concept, ConceptProgressEvent, HandshakeResponse, ModelCategory, ModelJobEvent, ModelRequest, ModelRun, ModelSubtype } from "../types";
 import { categories, colors, defaultInput, defaultInputForSubtype, defaultPrompts, firstStyle, firstSubtype, stylesByCategory } from "./catalog";
@@ -43,7 +41,7 @@ import {
   type LocalHistoryEntry,
   type MembershipSnapshot
 } from "./localHistory";
-import { buildModelTimeline } from "./modelJobProgress";
+import { buildModelTimeline, getPipelineState } from "./modelJobProgress";
 import { parseRoute, routePaths, toyboxBasePath, type RouteName, type RouteState } from "./routes";
 import { getSupabaseSyncState, syncHistoryEntry } from "./supabaseSync";
 
@@ -92,6 +90,8 @@ export function ToyBoxApp() {
   const [busy, setBusy] = useState(false);
   const [conceptProgress, setConceptProgress] = useState<ConceptProgressEvent | null>(null);
   const [modelEvents, setModelEvents] = useState<ModelJobEvent[]>([]);
+  const [conceptRevisionText, setConceptRevisionText] = useState("");
+  const [revisionBusy, setRevisionBusy] = useState(false);
   const [toast, setToast] = useState<{ tone: ToastTone; message: string } | null>(null);
   const [alert, setAlert] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>("applied");
@@ -125,6 +125,7 @@ export function ToyBoxApp() {
 
   useEffect(() => {
     if ((route.name !== "download" && route.name !== "failed") || !route.runId) return;
+    if (run?.runId === route.runId && (run.status === "Ready" || run.status === "Failed")) return;
     let cancelled = false;
     setBusy(true);
     setAlert(null);
@@ -156,7 +157,7 @@ export function ToyBoxApp() {
     return () => {
       cancelled = true;
     };
-  }, [route.name, route.runId]);
+  }, [route.name, route.runId, run]);
 
   function showToast(message: string, tone: ToastTone = "info") {
     setToast({ message, tone });
@@ -185,7 +186,6 @@ export function ToyBoxApp() {
     setRunId(restoredRun.runId);
     setInput(restoredRun.input);
     setConcepts(restoredRun.concepts);
-    setConceptFallbacks(restoredRun.concepts);
     setSelectedConceptId(restoredRun.selectedConceptId ?? restoredRun.concepts[0]?.id ?? null);
   }
 
@@ -196,7 +196,7 @@ export function ToyBoxApp() {
     setSelectedConceptId(null);
     setRun(null);
     setConceptProgress(null);
-    setModelEvents([]);
+    setConceptRevisionText("");
     setAlert(null);
     navigate("configure");
     showToast("已清空画布，可以开始下一版。");
@@ -234,10 +234,10 @@ export function ToyBoxApp() {
     setConceptProgress({ phase: "queued", progress: 3, message: "正在提交概念图生成请求。" });
     try {
       const response = await generateConcepts(input, setConceptProgress);
-      setConceptFallbacks(response.concepts);
       setRunId(response.runId);
       setConcepts(response.concepts);
       setSelectedConceptId(response.concepts[0]?.id ?? null);
+      setConceptRevisionText("");
       setRun(null);
       saveHistory({
         input,
@@ -266,12 +266,11 @@ export function ToyBoxApp() {
     setBusy(true);
     setAlert(null);
     setModelEvents([]);
-    setConceptFallbacks(concepts);
     navigate("generating");
 
     try {
       const response = await generateModel(runId, selectedConceptId, (event) => {
-        setModelEvents((current) => [...current, event].slice(-30));
+        setModelEvents((events) => [...events, event]);
       });
       restoreRun(response.run);
       saveHistory({
@@ -279,41 +278,48 @@ export function ToyBoxApp() {
         runId: response.run.runId,
         concepts: response.run.concepts,
         selectedConceptId: response.run.selectedConceptId ?? null,
-        status: entryFromRunStatus(response.run.status),
-        files: response.run.files
+        status: entryFromRunStatus(response.run.status)
       });
       navigate(response.run.status === "Ready" ? "download" : "failed", true, response.run.runId);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Model generation request failed.";
-      const failedRun = buildClientFailedRun(runId, message);
-      setRun(failedRun);
-      saveHistory({
-        input: failedRun.input,
-        runId: failedRun.runId,
-        concepts: failedRun.concepts,
-        selectedConceptId: failedRun.selectedConceptId ?? null,
-        status: "failed"
-      });
-      showAlert(message);
+      showAlert(error instanceof Error ? error.message : "模型生成失败。");
       navigate("failed", true, runId);
     } finally {
       setBusy(false);
     }
   }
 
-  function buildClientFailedRun(failedRunId: string, message: string): ModelRun {
-    const now = new Date().toISOString();
-    return {
-      runId: failedRunId,
-      input,
-      concepts,
-      selectedConceptId: selectedConceptId ?? undefined,
-      status: "Failed",
-      reasons: [message],
-      files: {},
-      createdAt: now,
-      updatedAt: now
-    };
+  async function handleReviseConcept() {
+    if (!runId || !selectedConceptId) {
+      showAlert("请先生成概念图，再提交修改。");
+      return;
+    }
+    const instruction = conceptRevisionText.trim();
+    if (!instruction) {
+      showAlert("请先写下想修改的地方。");
+      return;
+    }
+
+    setRevisionBusy(true);
+    setAlert(null);
+    try {
+      const response = await reviseConcept(runId, selectedConceptId, instruction);
+      restoreRun(response.run);
+      setSelectedConceptId(response.concept.id);
+      setConceptRevisionText("");
+      saveHistory({
+        input: response.run.input,
+        runId: response.run.runId,
+        concepts: response.run.concepts,
+        selectedConceptId: response.concept.id,
+        status: "concept"
+      });
+      showToast("概念图已按你的描述更新。");
+    } catch (error) {
+      showAlert(error instanceof Error ? error.message : "概念图修改失败。");
+    } finally {
+      setRevisionBusy(false);
+    }
   }
 
   function handleNav(name: RouteName) {
@@ -364,8 +370,7 @@ export function ToyBoxApp() {
       runId,
       concepts,
       selectedConceptId,
-      status: readyRun ? "ready" : concepts.length ? "concept" : "saved",
-      files: readyRun?.files
+      status: readyRun ? "ready" : concepts.length ? "concept" : "saved"
     });
     navigate("files");
     showToast("当前配置已保存到此浏览器。");
@@ -394,7 +399,7 @@ export function ToyBoxApp() {
 
       {route.name === "generating" ? (
         <ProjectLayout routeName={route.name} onNew={resetWorkspace} onNavigate={handleNav}>
-          <ProgressPage busy={busy} ready={Boolean(readyRun)} events={modelEvents} onCancel={() => showToast("请求已提交，完成后会自动进入下载页。")} />
+          <ProgressPage events={modelEvents} busy={busy} ready={Boolean(readyRun)} onCancel={() => showToast("请求已提交，完成后会自动进入下载页。")} />
         </ProjectLayout>
       ) : route.name === "concept" ? (
         <ProjectLayout routeName={route.name} onNew={resetWorkspace} onNavigate={handleNav}>
@@ -403,8 +408,12 @@ export function ToyBoxApp() {
             selectedConceptId={selectedConceptId}
             progress={conceptProgress}
             busy={busy}
+            revisionBusy={revisionBusy}
+            revisionText={conceptRevisionText}
             onSelect={setSelectedConceptId}
             onCreate={handleCreateModel}
+            onRevisionText={setConceptRevisionText}
+            onRevise={handleReviseConcept}
             onBack={() => navigate("configure")}
           />
         </ProjectLayout>
@@ -595,7 +604,7 @@ function ConfigPanel({
           <h2>先定模型方向</h2>
           <p>选原型、尺寸、涂装和打印约束，生成更接近真实载具的概念图。</p>
           <p className="tiny-label">
-            openai:{handshake?.configured.openai ? "已连接" : "缺失"} · storage:{handshake?.configured.storage ? "已连接" : "缺失"} · tripo:{handshake?.configured.tripo ? "已连接" : "缺失"}
+            openai:{handshake?.configured.openai ? "已连接" : "缺失"} · tripo:{handshake?.configured.tripo ? "已连接" : "缺失"}
           </p>
         </div>
 
@@ -656,14 +665,14 @@ function ConfigPanel({
         </div>
 
         <div className="form-section">
-          <span className="section-label">风格 / 编号</span>
+          <span className="section-label">风格 / 模型标志</span>
           <div className="field-row">
             <select className="select-input" aria-label="样式" value={input.style} onChange={(event) => onInput((current) => ({ ...current, style: event.target.value }))}>
               {stylesByCategory[input.category].map((style) => (
                 <option key={style}>{style}</option>
               ))}
             </select>
-            <input className="text-input" aria-label="编号" maxLength={8} value={input.label} onChange={(event) => onInput((current) => ({ ...current, label: event.target.value }))} />
+            <input className="text-input" aria-label="模型标志文字" maxLength={24} placeholder="可选，例如 TONI ASIA" value={input.markingText ?? ""} onChange={(event) => onInput((current) => ({ ...current, markingText: event.target.value }))} />
           </div>
         </div>
 
@@ -683,7 +692,7 @@ function ConfigPanel({
         </div>
         <button className="button primary full-width" type="button" onClick={onGenerate}>
           <Wand2 size={18} />
-          {busy ? "正在生成概念图..." : "生成 2 张概念图"}
+          {busy ? "正在生成概念图..." : "生成概念图"}
         </button>
         {progress ? <ConceptProgressMeter progress={progress} /> : null}
       </div>
@@ -764,55 +773,79 @@ function ConceptPage({
   selectedConceptId,
   progress,
   busy,
+  revisionBusy,
+  revisionText,
   onSelect,
   onCreate,
+  onRevisionText,
+  onRevise,
   onBack
 }: {
   concepts: Concept[];
   selectedConceptId: string | null;
   progress: ConceptProgressEvent | null;
   busy: boolean;
+  revisionBusy: boolean;
+  revisionText: string;
   onSelect: (id: string) => void;
   onCreate: () => void;
+  onRevisionText: (value: string) => void;
+  onRevise: () => void;
   onBack: () => void;
 }) {
   const selectedConcept = concepts.find((concept) => concept.id === selectedConceptId) ?? concepts[0];
-  const selectedIsRecommended = Boolean(selectedConcept && concepts[0]?.id === selectedConcept.id);
 
   return (
     <main className="concept-page">
       <div className="page-frame">
         <header className="page-title">
           <h1>确认建模输入图</h1>
-          <p>系统默认选中更适合建模的一张图，另一张保留作备选参考。</p>
+          <p>系统默认选中这张建模图。你也可以继续用一句话调整外形、颜色或局部结构。</p>
         </header>
         {progress ? <ConceptProgressMeter progress={progress} /> : null}
         <section className="concept-grid" aria-label="概念图方案">
           {concepts.map((concept, index) => {
             const selected = selectedConceptId === concept.id;
-            const recommended = index === 0;
             return (
               <button className={selected ? "concept-card selected" : "concept-card"} key={concept.id} type="button" onClick={() => onSelect(concept.id)} aria-pressed={selected}>
-                <span className={recommended ? "concept-card-kicker recommended" : "concept-card-kicker"}>{recommended ? "推荐用于建模" : "备选参考图"}</span>
+                <span className={index === 0 ? "concept-card-kicker recommended" : "concept-card-kicker"}>{index === 0 ? "当前建模图" : "历史修改版"}</span>
                 <img alt={concept.title} src={concept.imageUrl} />
                 <div className="concept-card-body">
                   <h2>{concept.title}</h2>
-                  <p>{concept.feedback ?? "已生成候选图。请以外形比例、细节清晰度和可打印结构为准选择。"}</p>
+                  <p>{concept.feedback ?? "已生成建模图。请以外形比例、细节清晰度和可打印结构为准。"}</p>
                   <div className="concept-actions">
-                    <span className="concept-select-label">{selected ? "当前使用" : "改用这张"}</span>
+                    <span className="concept-select-label">{selected ? "当前使用" : "改用这一版"}</span>
                   </div>
                 </div>
               </button>
             );
           })}
         </section>
+        <section className="concept-revision" aria-label="继续修改概念图">
+          <div>
+            <span className="section-label">继续修改概念图</span>
+            <p>可以写“机颈再往上调 8 到 10 度”“把船锚展示出来”“调成绿色和白色”等。</p>
+          </div>
+          <textarea
+            className="text-area"
+            aria-label="继续修改概念图"
+            maxLength={260}
+            placeholder="写下想改的外形、颜色或局部细节。"
+            value={revisionText}
+            onChange={(event) => onRevisionText(event.target.value)}
+          />
+          <button className="button secondary" type="button" disabled={busy || revisionBusy || !selectedConcept} onClick={onRevise}>
+            <Wand2 size={18} />
+            {revisionBusy ? "正在修改..." : "提交修改"}
+          </button>
+        </section>
         <div className="action-row">
           <button className="button secondary" type="button" onClick={onBack}>
             返回修改参数
           </button>
-          <button className="button primary" type="button" onClick={onCreate}>
+          <button className="button primary" type="button" disabled={revisionBusy} onClick={onCreate}>
             <Sparkles size={18} />
-            {busy ? "正在提交给 Tripo..." : selectedIsRecommended ? "使用推荐图生成 STL" : "使用备选图生成 STL"}
+            {busy ? "正在提交给 Tripo..." : "使用这张图生成 STL"}
           </button>
         </div>
       </div>
@@ -822,22 +855,28 @@ function ConceptPage({
 
 const imageWaveDots = Array.from({ length: 84 }, (_, index) => index);
 
-function ProgressPage({ busy, ready, events, onCancel }: { busy: boolean; ready: boolean; events: ModelJobEvent[]; onCancel: () => void }) {
+function ProgressPage({ events, busy, ready, onCancel }: { events: ModelJobEvent[]; busy: boolean; ready: boolean; onCancel: () => void }) {
   const displayBusy = busy && !ready;
-  const progressValue = getModelEventProgress(events, displayBusy);
-  const recentLogs = buildModelTimeline(events, displayBusy);
-  const activeTokens = Array.from({ length: 54 }, (_, index) => modelBuildTokens[((events.length || 1) + index * 7) % modelBuildTokens.length]);
+  const timeline = buildModelTimeline(events, displayBusy);
+  const completedEvents = events.filter((event) =>
+    event.type === "tool.completed" ||
+    event.type === "artifact.created" ||
+    event.type === "artifact.patch" ||
+    (event.type === "job.completed" && event.response?.run.status === "Ready")
+  ).length;
+  const failedSteps = timeline.filter((item) => item.state === "error").length;
+  const activeTokens = Array.from({ length: 54 }, (_, index) => modelBuildTokens[(events.length + index * 7) % modelBuildTokens.length]);
   const pipelineStages = [
-    { label: "图像提交", copy: "所选概念图已送入 Tripo image-to-model。", threshold: 18 },
-    { label: "网格推断", copy: "生成主体体块、闭合表面和可打印轮廓。", threshold: 42 },
-    { label: "STL 转换", copy: "输出可下载的 STL 文件并检查响应。", threshold: 68 },
-    { label: "局部渲染与细节取样", copy: "3D 渲染过程中同步输出局部视角。模型拆解图会和 STL 一起进入检查台。", threshold: 88 }
+    { label: "图像提交", copy: "锁定所选概念图和打印参数。", keys: ["select_concept", "job.started"] },
+    { label: "Tripo 建模", copy: "调用 Tripo image-to-model，等待外部任务返回模型资产。", keys: ["tripo_generate_model"] },
+    { label: "STL 校验", copy: "下载 STL 并执行基础可打印文件校验。", keys: ["validate_stl"] },
+    { label: "局部渲染与细节取样", copy: "3D 渲染过程中同步准备局部视角，模型拆解图会和 STL 一起进入检查台。", keys: ["artifact.created", "save_run"] }
   ];
 
   return (
     <main className="progress-page">
       <section className="progress-stack">
-        <div className="progress-preview" aria-label="Image 2 生成波纹预览">
+        <div className="progress-preview workspace-breathing" aria-label="AI 工作区呼吸预览">
           <div className="image-wave-field" aria-hidden="true">
             {imageWaveDots.map((dot) => (
               <span key={dot} style={{ animationDelay: `${(dot % 12) * 0.08 + Math.floor(dot / 12) * 0.05}s` }} />
@@ -852,20 +891,25 @@ function ProgressPage({ busy, ready, events, onCancel }: { busy: boolean; ready:
         </div>
         <div className="progress-copy">
           <h1>正在生成 STL 模型</h1>
-          <p>Tripo 正在把所选图像转换为可下载几何体，同时准备检查台需要的拆解视角和局部细节。</p>
+          <p>这里显示真实任务事件：外部工具调用、STL 校验、文件保存和产物创建。Tripo 运行中会保持连接，不展示无法验证的精确百分比。</p>
         </div>
-        <div className="segmented-progress">
+        <div className="segmented-progress event-summary" role="status" aria-live="polite">
           <div className="metric-row">
-            <span className="section-label">模型生成进度</span>
-            <strong className="mono">{progressValue}%</strong>
+            <span className="section-label">真实任务进度</span>
+            <strong className="mono">{completedEvents} 个事件完成</strong>
           </div>
-          <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${progressValue}%` }} />
+          <div className={displayBusy ? "event-pulse-track active" : failedSteps ? "event-pulse-track error" : "event-pulse-track done"} aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
           </div>
+          <p>{failedSteps ? "检测到失败事件，请查看日志详情。" : displayBusy ? "任务正在运行，等待下一个工具事件。" : "任务事件已收束。"}</p>
         </div>
         <section className="render-pipeline" aria-label="模型生成阶段">
           {pipelineStages.map((stage, index) => {
-            const state = progressValue >= stage.threshold ? "done" : progressValue >= (pipelineStages[index - 1]?.threshold ?? 0) ? "active" : "pending";
+            const state = getPipelineState(events, stage.keys, displayBusy, index);
             return (
               <article className={`pipeline-step ${state}`} key={stage.label}>
                 <span className="pipeline-index">{String(index + 1).padStart(2, "0")}</span>
@@ -883,7 +927,7 @@ function ProgressPage({ busy, ready, events, onCancel }: { busy: boolean; ready:
               <Terminal size={18} />
               生成日志
             </div>
-            <span>{displayBusy ? "tail -f /tripo/model-build.log" : "complete"}</span>
+            <span>{displayBusy ? "event stream connected" : "complete"}</span>
           </div>
           <div className="token-stream" aria-label="活跃任务词元">
             {activeTokens.map((token, index) => (
@@ -892,11 +936,11 @@ function ProgressPage({ busy, ready, events, onCancel }: { busy: boolean; ready:
               </span>
             ))}
           </div>
-          <div className="log-lines" role="log" aria-live="polite" aria-label="最近生成日志">
-            {recentLogs.map((log, index) => {
-              const latest = index === recentLogs.length - 1;
+          <div className="log-lines progress-events" role="log" aria-live="polite" aria-label="最近生成日志">
+            {timeline.map((log, index) => {
+              const latest = index === timeline.length - 1;
               return (
-                <div className={latest ? `log-line latest ${log.state}` : `log-line ${log.state}`} key={log.id}>
+                <div className={latest ? `log-line progress-event latest ${log.state}` : `log-line progress-event ${log.state}`} key={log.id}>
                   <span>[{log.tag}]</span>
                   <span>{log.message}</span>
                   <em>{log.detail}</em>
@@ -911,19 +955,6 @@ function ProgressPage({ busy, ready, events, onCancel }: { busy: boolean; ready:
       </section>
     </main>
   );
-}
-
-function getModelEventProgress(events: ModelJobEvent[], busy: boolean) {
-  if (events.some((event) => event.type === "job.completed" && event.response?.run.status === "Ready")) return 100;
-  if (events.some((event) => event.type === "artifact.created")) return 92;
-  if (events.some((event) => event.type === "tool.completed" && event.name === "validate_stl")) return 88;
-  if (events.some((event) => event.type === "tool.started" && event.name.includes("validate"))) return 76;
-  if (events.some((event) => event.type === "tool.completed" && event.name.includes("stl"))) return 72;
-  if (events.some((event) => event.type === "tool.started" && event.name.includes("stl"))) return 62;
-  if (events.some((event) => event.type === "tool.completed" && event.name.includes("model"))) return 54;
-  if (events.some((event) => event.type === "tool.started")) return 30;
-  if (events.some((event) => event.type === "job.started")) return 12;
-  return busy ? 8 : 100;
 }
 
 function DownloadPage({ run, stlHref, onNew, onBack }: { run: ModelRun | null; stlHref: string; onNew: () => void; onBack: () => void }) {
@@ -963,7 +994,7 @@ function DownloadPage({ run, stlHref, onNew, onBack }: { run: ModelRun | null; s
           </div>
           <div className="inspection-section fidelity-note">
             <h2>概念图仅作建模参考</h2>
-            <p>最终 STL 只保留可打印网格，不包含概念图里的贴图、车窗材质、轮胎黑色、编号贴花或真实 PBR 材质。高保真外观预览需要改用 GLB/PBR 模型通道。</p>
+            <p>最终 STL 只保留可打印网格，不包含概念图里的贴图、车窗材质、轮胎黑色、标志文字色彩或真实 PBR 材质。想在 3D 打印时接近效果图，可以后期喷涂、贴水贴纸，或改走 GLB/PBR 与多材料打印通道。</p>
           </div>
           <div className="spec-grid">
             <Spec icon={<Ruler size={18} />} label="尺寸 (X, Y, Z)" value={`${dimensions.length} x ${dimensions.width} x ${dimensions.height} mm`} />

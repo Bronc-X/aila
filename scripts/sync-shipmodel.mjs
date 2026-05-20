@@ -107,10 +107,26 @@ function getConceptFallbacks() {
     id: concept.id,
     title: concept.title,
     imageUrl: concept.imageUrl,
-    imageDataUrl: concept.imageDataUrl,
+    imageDataUrl: getConceptImageDataUrl(concept),
     prompt: concept.prompt,
     feedback: concept.feedback
   }));
+}
+
+function getConceptImageDataUrl(concept: Concept) {
+  return "imageDataUrl" in concept && typeof concept.imageDataUrl === "string" ? concept.imageDataUrl : undefined;
+}
+
+export async function getRun(runId: string) {`
+    );
+  }
+  text = text.replace("imageDataUrl: concept.imageDataUrl,", "imageDataUrl: getConceptImageDataUrl(concept),");
+  if (!text.includes("function getConceptImageDataUrl")) {
+    text = text.replace(
+      "\nexport async function getRun(runId: string) {",
+      `
+function getConceptImageDataUrl(concept: Concept) {
+  return "imageDataUrl" in concept && typeof concept.imageDataUrl === "string" ? concept.imageDataUrl : undefined;
 }
 
 export async function getRun(runId: string) {`
@@ -169,6 +185,7 @@ function patchToyBoxApp() {
 function patchRoutes() {
   const routesPath = path.join(integratedRoot, "toybox/routes.ts");
   let text = readText(routesPath);
+
   if (!text.includes("toyboxBasePath")) {
     text = text.replace(
       "export const routePaths: Record<RouteName, string> = {",
@@ -178,13 +195,20 @@ function patchRoutes() {
       /};\s*\n\s*export function parseRoute/s,
       "};\n\nexport const routePaths: Record<RouteName, string> = Object.fromEntries(\n  Object.entries(routeSlugs).map(([name, slug]) => [name, `${toyboxBasePath}${slug}`])\n) as Record<RouteName, string>;\n\nexport function parseRoute"
     );
-    text = text.replace(
-      "export function parseRoute(pathname: string): RouteState {\n",
-      "export function parseRoute(pathname: string): RouteState {\n  const normalizedPath = stripToyboxBasePath(pathname);\n"
-    );
-    text = text.replaceAll("pathname ===", "normalizedPath ===");
-    text = text.replaceAll(".exec(pathname)", ".exec(normalizedPath)");
-    text = text.replaceAll("path === pathname", "path === normalizedPath");
+  }
+
+  text = text.replace(
+    /export function parseRoute\(pathname: string\): RouteState \{\r?\n(?!\s*const normalizedPath = stripToyboxBasePath\(pathname\);)/,
+    "export function parseRoute(pathname: string): RouteState {\n  const normalizedPath = stripToyboxBasePath(pathname);\n"
+  );
+  text = text
+    .replaceAll("pathname ===", "normalizedPath ===")
+    .replaceAll(".exec(pathname)", ".exec(normalizedPath)")
+    .replaceAll("path === pathname", "path === normalizedPath")
+    .replaceAll("normalizedPath === routePaths.", "normalizedPath === routeSlugs.")
+    .replaceAll("Object.entries(routePaths).find(", "Object.entries(routeSlugs).find(");
+
+  if (!text.includes("function stripToyboxBasePath")) {
     text += `
 
 function stripToyboxBasePath(pathname: string) {
@@ -197,12 +221,27 @@ function stripToyboxBasePath(pathname: string) {
 }
 `;
   }
+
   writeText(routesPath, text);
 }
 
 function patchConceptPreviewAssets() {
   const assetsPath = path.join(integratedRoot, "toybox/conceptPreviewAssets.ts");
-  const text = readText(assetsPath).replaceAll('"/assets/concept-previews"', '"/lusie/concept-previews"');
+  let text = readText(assetsPath).replaceAll('"/assets/concept-previews"', '"/lusie/concept-previews"');
+  text = text.replaceAll(/imageUrl:\s*([A-Za-z_$][\w$]*)\s*,/g, "imageUrl: getPreviewAssetUrl($1),");
+
+  if (!text.includes("function getPreviewAssetUrl")) {
+    text = text.replace(
+      "\nexport const conceptPreviewAssets:",
+      `
+function getPreviewAssetUrl(asset: string | { src: string }) {
+  return typeof asset === "string" ? asset : asset.src;
+}
+
+export const conceptPreviewAssets:`
+    );
+  }
+
   writeText(assetsPath, text);
 }
 
@@ -217,9 +256,15 @@ function patchSupabaseSync() {
       'import type { ModelRequest } from "../types";\nimport type { LocalHistoryEntry } from "./localHistory";'
     );
   }
+  if (!text.includes("type SyncedHistoryEntry")) {
+    const syncedHistoryEntryType = 'type SyncedHistoryEntry = LocalHistoryEntry & { files?: { stl?: string; stlSourceUrl?: string; threeMf?: string } };\n';
+    text = text.includes("export type SupabaseSyncState")
+      ? text.replace("export type SupabaseSyncState", `${syncedHistoryEntryType}\nexport type SupabaseSyncState`)
+      : text.replace('import type { LocalHistoryEntry } from "./localHistory";\n', `import type { LocalHistoryEntry } from "./localHistory";\n\n${syncedHistoryEntryType}`);
+  }
 
   text = text.replace(
-    'const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL ?? "").replace(/\\/+$/, "");\nconst supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "";',
+    /const supabaseUrl = .*;\r?\nconst supabasePublishableKey = .*;/,
     'const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\\/+$/, "");\nconst supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";'
   );
   text = text.replaceAll(/input:\s*entry\.input/g, "input: buildSyncedInput(entry)");
@@ -227,7 +272,7 @@ function patchSupabaseSync() {
   if (!text.includes("function buildSyncedInput")) {
     text += `
 
-function buildSyncedInput(entry: LocalHistoryEntry): ModelRequest & { _files?: LocalHistoryEntry["files"] } {
+function buildSyncedInput(entry: SyncedHistoryEntry): ModelRequest & { _files?: NonNullable<SyncedHistoryEntry["files"]> } {
   if (!entry.files || Object.keys(entry.files).length === 0) return entry.input;
   return { ...entry.input, _files: entry.files };
 }

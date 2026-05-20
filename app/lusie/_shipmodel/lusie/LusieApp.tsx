@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ArrowRight,
   Award,
@@ -103,7 +101,6 @@ interface FAQItem {
 }
 
 const NavigateContext = createContext<(to: string) => void>(() => undefined);
-const showcaseBasePath = "/lusie/showcase";
 
 const legacyUrls = {
   login: "/index/common/login.html",
@@ -441,14 +438,13 @@ export function App() {
   }, []);
 
   const navigate = (to: string) => {
-    if (to.startsWith("http")) {
+    if (to.startsWith("http") || to.startsWith("/index/") || to.startsWith("/user/") || to.startsWith("/merchants/")) {
       window.location.href = to;
       return;
     }
 
-    const target = toShowcasePath(to);
-    if (`${window.location.pathname}${window.location.search}` !== target) {
-      window.history.pushState(null, "", target);
+    if (`${window.location.pathname}${window.location.search}` !== to) {
+      window.history.pushState(null, "", to);
     }
     setRoute(readRoute());
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -471,25 +467,7 @@ export function App() {
 }
 
 function readRoute(): RouteState {
-  return {
-    pathname: fromShowcasePath(window.location.pathname),
-    search: window.location.search
-  };
-}
-
-function toShowcasePath(path: string) {
-  if (path === "/" || path === "") return showcaseBasePath;
-  if (path.startsWith(`${showcaseBasePath}/`) || path === showcaseBasePath) return path;
-  return `${showcaseBasePath}${path}`;
-}
-
-function fromShowcasePath(pathname: string) {
-  if (pathname === showcaseBasePath) return "/";
-  if (pathname.startsWith(`${showcaseBasePath}/`)) {
-    const stripped = pathname.slice(showcaseBasePath.length);
-    return stripped || "/";
-  }
-  return pathname;
+  return { pathname: window.location.pathname, search: window.location.search };
 }
 
 function normalizeLegacyRoute(route: RouteState) {
@@ -566,14 +544,13 @@ function AppLink({
   ariaCurrent?: "page";
 }) {
   const navigate = useContext(NavigateContext);
-  const isExternal = to.startsWith("http");
-  const href = isExternal ? to : toShowcasePath(to);
+  const isExternal = to.startsWith("http") || to.startsWith("/index/") || to.startsWith("/user/") || to.startsWith("/merchants/");
 
   return (
     <a
       aria-current={ariaCurrent}
       className={className}
-      href={href}
+      href={to}
       onClick={(event) => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
         event.preventDefault();

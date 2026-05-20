@@ -21,6 +21,7 @@ export interface ModelRequest {
   primaryColor: string;
   accentColor: string;
   label: string;
+  markingText?: string;
   description: string;
   targetLengthMm: number;
 }
@@ -31,25 +32,17 @@ export interface Concept {
   imageUrl: string;
   prompt: string;
   feedback?: string;
-  imageDataUrl?: string;
-}
-
-export interface StorageDiagnostics {
-  mode: "supabase" | "embedded";
-  warning?: string;
 }
 
 export interface ModelRun {
   runId: string;
   input: ModelRequest;
   concepts: Concept[];
-  storage?: StorageDiagnostics;
   selectedConceptId?: string;
   status?: RunStatus;
   reasons: string[];
   files: {
     stl?: string;
-    stlSourceUrl?: string;
     threeMf?: string;
   };
   createdAt: string;
@@ -82,7 +75,6 @@ export interface ConceptProgressEvent {
   response?: {
     runId: string;
     concepts: Concept[];
-    storage?: StorageDiagnostics;
   };
 }
 
@@ -96,7 +88,6 @@ export interface HandshakeResponse {
   };
   configured: {
     openai: boolean;
-    storage: boolean;
     tripo: boolean;
   };
   capabilities: {
