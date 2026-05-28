@@ -1,0 +1,212 @@
+{
+  "name": "Toni",
+  "headline": "企业专家模型搭建与 AI 项目落地",
+  "updatedAt": "2026-05-28",
+  "intro": [
+    "NUS 算法本科，NVIDIA AI 课程认证。",
+    "上线 6 个自有全功能项目：Lotus、AntiAnxiety、Cosic、ViolinMaster、招标智能体、小红书自动化工具。",
+    "深耕大湾区 B 端 AI 转型 2 年，把企业业务经验、SOP、销售话术、投标知识和运营流程做成可复用的专家模型与 AI 工具。",
+    "面向个人与企业陪跑落地：从真实业务现场出发，拆需求、接数据、做系统、跑测试、部署上线，持续迭代。"
+  ],
+  "weeklyUpdates": [
+    {
+      "date": "2026.05.28",
+      "title": "AntiAnxiety 产品截图更新",
+      "body": "补充训练看板、OS Hub、科学方案和 Max 对话截图，展示健身智能体从记录、计划到反馈的完整链路。"
+    },
+    {
+      "date": "2026.05.22",
+      "title": "ShipModel 自动同步主站",
+      "body": "航模项目 push 后自动同步到主站并触发生产部署，让公开展示保持最新版本。"
+    },
+    {
+      "date": "2026.05.06",
+      "title": "陪跑案例上架",
+      "body": "整理 PathPilot、MoviePainter 等交付案例，用真实界面展示从需求拆解到线上访问的结果。"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Lotus",
+      "type": "Open Source",
+      "summary": "AI coding 项目启动工具。把工程协议、质量门禁和 agent 使用规范沉淀成可复用模板，帮助新项目更快进入可协作、可验证的开发节奏。",
+      "href": "https://github.com/Bronc-X/Lotus",
+      "image": "/now/lotus-github.png",
+      "imageLabel": "Lotus GitHub repository",
+      "stars": 216
+    },
+    {
+      "name": "AntiAnxiety",
+      "type": "AI Fitness Agent",
+      "summary": "健身智能体 app。围绕训练计划、身体状态、复盘反馈和行动提醒，构建个人健康管理闭环。",
+      "href": "https://www.antianxiety.app",
+      "image": "/now/antianxiety-01-dashboard.png",
+      "images": [
+        "/now/antianxiety-01-dashboard.png",
+        "/now/antianxiety-02-os-hub.png",
+        "/now/antianxiety-03-science.png",
+        "/now/antianxiety-04-max-chat.png"
+      ],
+      "imageLabel": "AntiAnxiety product screenshots"
+    },
+    {
+      "name": "Cosic",
+      "type": "Agent Music",
+      "summary": "Agent Music 桌面音乐系统。支持音乐理解、歌单策划和本地播放控制，让 AI 参与听歌、选歌和场景推荐。",
+      "href": "https://github.com/Bronc-X/Cosic",
+      "image": "/now/cosic-01-home.png",
+      "images": [
+        "/now/cosic-01-home.png",
+        "/now/cosic-02-weather.png"
+      ],
+      "imageLabel": "Cosic GitHub repository"
+    },
+    {
+      "name": "ViolinMaster",
+      "type": "Expert Model",
+      "summary": "音乐教授模型 MVP。把练习录音、曲谱理解和教师反馈结合，形成可复核的练习诊断工作台。",
+      "href": "https://github.com/Bronc-X/violinmaster",
+      "image": "/now/violinmaster-desktop.png",
+      "imageLabel": "Violin practice workstation"
+    },
+    {
+      "name": "招标智能体",
+      "type": "B2B Agent",
+      "summary": "投标资料与标书处理智能体。覆盖招标文件解析、评分规则梳理、强制条款识别和方案生成，降低漏项风险。",
+      "href": "https://github.com/raoyiyi4-blip/bid_data_management",
+      "image": "/now/bid-data-management-desktop.png",
+      "imageLabel": "Bid document workflow"
+    },
+    {
+      "name": "小红书自动化工具",
+      "type": "Content Agent",
+      "summary": "小红书内容自动化工具。围绕选题、素材、笔记草稿、质量检查和发布确认，形成可控的内容生产流程。",
+      "href": "https://github.com/xiahui001/auto-red-book",
+      "image": "/now/auto-red-book-github.png",
+      "imageLabel": "XHS automation repository"
+    }
+  ],
+  "companionCases": [
+    {
+      "title": "MoviePainter",
+      "label": "电影海报风格生图",
+      "summary": "海报生成工具，支持风格选择、提示词组织与结果展示，适合快速做电影感视觉方案。",
+      "image": "/now/moviepainter-01-workspace.png",
+      "images": [
+        "/now/moviepainter-01-workspace.png",
+        "/now/moviepainter-02-generation.png"
+      ],
+      "href": "https://www.moviepainter.xyz"
+    },
+    {
+      "title": "PathPilot",
+      "label": "小红书高精准职位投递",
+      "summary": "求职投递工具，整合职位线索、简历材料和投递节奏，帮助用户把求职动作可视化、可复盘。",
+      "image": "/now/pathpilot-01-home.png",
+      "images": [
+        "/now/pathpilot-01-home.png",
+        "/now/pathpilot-02-plaza.png",
+        "/now/pathpilot-03-resume-lab.png"
+      ],
+      "href": "https://www.pathpilot.space"
+    },
+    {
+      "title": "JobPath",
+      "label": "职场天赋定位产品",
+      "summary": "职业定位产品，基于问答路径生成结果页，适合做分享、引流和后续咨询承接。",
+      "image": "/now/jobpath-site.png",
+      "href": "https://jobpath-seven.vercel.app"
+    },
+    {
+      "title": "Sparkooo",
+      "label": "宠物防走失小程序",
+      "summary": "宠物防走失入口，围绕二维码、联系人信息和找回流程，压缩走失后的联系时间。",
+      "image": "/now/sparkooo-qr-generator.png",
+      "href": ""
+    },
+    {
+      "title": "GROUD",
+      "label": "中俄物流集散管理平台",
+      "summary": "跨境物流管理平台，把订单、节点、角色和状态流转放进系统，降低人工交接成本。",
+      "image": "/now/groud-logistics-home.jpg",
+      "href": ""
+    },
+    {
+      "title": "AlphaPai RPA Agent",
+      "label": "PRD 与执行文档编写",
+      "summary": "RPA Agent 文档交付，将业务讨论、知识库材料和执行步骤整理成可审阅 PRD 与执行计划。",
+      "image": "/now/alphapai-rpa-agent-docs.jpg",
+      "href": ""
+    },
+    {
+      "title": "量化策略分析",
+      "label": "券商纪要与策略表格",
+      "summary": "量化策略分析样例，展示信号解释、候选筛选、边际影响和可读化结果，不展示敏感策略核心。",
+      "image": "/now/quant-strategy-analysis.jpg",
+      "href": ""
+    },
+    {
+      "title": "全国门店管理系统",
+      "label": "门店填报与顾问复盘",
+      "summary": "门店管理系统，覆盖填报、汇总和顾问复盘，帮助总部快速看见门店执行情况。",
+      "image": "/cases/toni/5.1.png",
+      "href": ""
+    }
+  ],
+  "services": [
+    {
+      "title": "企业专家模型搭建",
+      "body": "梳理专家经验、SOP、销售话术和知识库，做成能被团队反复调用的模型与工具。"
+    },
+    {
+      "title": "Agentic Coding 陪跑",
+      "body": "陪你用一个真实项目练完整流程：拆需求、写任务、用 agent 编码、验收、部署、迭代。"
+    },
+    {
+      "title": "AI 项目从 0 到上线",
+      "body": "用 Next.js、Vercel、Supabase 快速做出可访问版本，让团队和客户尽早真实试用。"
+    },
+    {
+      "title": "业务流程 AI 化",
+      "body": "从获客、客服、投标、内容或运营流程里挑一个高频环节，先做最短可验证链路。"
+    }
+  ],
+  "credentials": [
+    {
+      "title": "NVIDIA AI for All: From Basics to GenAI Practice",
+      "issuer": "NVIDIA",
+      "date": "2026.05.07",
+      "summary": "NVIDIA 官方 Deep Learning Institute 课程认证，覆盖 AI 基础、生成式 AI 应用和落地实践；这是面向产业应用的国际级技术背书，不是普通平台打卡证书。",
+      "image": "/now/nvidia-ai-for-all-certificate.jpg",
+      "imageLabel": "NVIDIA AI for All certificate"
+    }
+  ],
+  "proofs": [
+    "自有全功能项目 6 个",
+    "B 端 AI 赋能 2 年",
+    "NVIDIA AI 课程认证",
+    "从业务现场到线上产品"
+  ],
+  "links": [
+    {
+      "label": "WeChat",
+      "href": "/wechat-qr-toni.png",
+      "text": "扫码或私聊"
+    },
+    {
+      "label": "GitHub",
+      "href": "https://github.com/Bronc-X",
+      "text": "github.com/Bronc-X"
+    },
+    {
+      "label": "Website",
+      "href": "https://www.toni.asia",
+      "text": "www.toni.asia"
+    },
+    {
+      "label": "Email",
+      "href": "mailto:Broncin@163.com",
+      "text": "Broncin@163.com"
+    }
+  ]
+}

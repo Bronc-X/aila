@@ -13,7 +13,8 @@ await run(process.execPath, [
   path.join("lib", "lusie", "server", "model-progress-stream.test.mjs"),
   path.join("lib", "lusie", "server", "supabase-sync.test.mjs"),
   path.join("lib", "lusie", "server", "concept-revision.test.mjs"),
-  path.join("scripts", "sync-shipmodel.test.mjs")
+  path.join("scripts", "sync-shipmodel.test.mjs"),
+  path.join("scripts", "now-page.test.mjs")
 ]);
 await run(process.execPath, [nextBin, "build"]);
 

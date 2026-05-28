@@ -1,0 +1,795 @@
+.page {
+  --paper: #f2f5d1;
+  --cream: #fff9ea;
+  --ink: #050806;
+  --ink-2: #0d2319;
+  --muted: #637065;
+  --line: rgba(5, 8, 6, 0.14);
+  --line-dark: rgba(255, 249, 234, 0.16);
+  --lime: #a8f06a;
+  --green: #22d665;
+  --accent: #22d665;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    linear-gradient(180deg, var(--cream) 0 38rem, var(--paper) 38rem 100%);
+  color: var(--ink);
+  font-family: var(--font-primary), "Avenir Next", "Trebuchet MS", sans-serif;
+  letter-spacing: 0;
+}
+
+.page button {
+  font: inherit;
+}
+
+.nav {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 249, 234, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.brand,
+.navLinks,
+.primaryButton,
+.secondaryButton,
+.cardLink,
+.caseCard a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 0.65rem;
+  color: var(--ink);
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.brand span {
+  display: grid;
+  width: 2.1rem;
+  height: 2.1rem;
+  place-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.navLinks {
+  gap: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.navLinks a {
+  border-radius: 999px;
+  padding: 0.62rem 0.9rem;
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.navLinks a:hover,
+.navLinks a:focus-visible {
+  background: var(--ink);
+  color: var(--cream);
+  outline: none;
+}
+
+.hero {
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto 2.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 18px;
+  background:
+    linear-gradient(115deg, rgba(34, 214, 101, 0.18), transparent 35%),
+    radial-gradient(circle at 76% 24%, rgba(168, 240, 106, 0.24), transparent 25rem),
+    linear-gradient(135deg, #06110e 0%, #020605 58%, #10261d 100%);
+  color: var(--cream);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(37.5rem, 37.5rem);
+  gap: 1rem;
+  align-items: stretch;
+  min-height: min(43rem, calc(100svh - 7rem));
+}
+
+.heroCopy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.eyebrow,
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  border: 1px solid rgba(255, 249, 234, 0.22);
+  border-radius: 999px;
+  padding: 0.52rem 0.76rem;
+  background: rgba(255, 249, 234, 0.08);
+  color: rgba(255, 249, 234, 0.82);
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.heroCopy h1 {
+  max-width: 62rem;
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(3.2rem, 6vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.introList {
+  display: grid;
+  gap: 0.82rem;
+  max-width: 43rem;
+  margin: 1.45rem 0 0;
+}
+
+.introList p {
+  margin: 0;
+  color: rgba(255, 249, 234, 0.76);
+  font-size: 1.02rem;
+  font-weight: 680;
+  line-height: 1.75;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.65rem;
+}
+
+.primaryButton,
+.secondaryButton,
+.cardLink,
+.caseCard a {
+  min-height: 3.16rem;
+  gap: 0.45rem;
+  border-radius: 8px;
+  padding: 0 1.05rem;
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.primaryButton {
+  background: var(--green);
+  color: var(--ink);
+}
+
+.primaryButton:hover,
+.primaryButton:focus-visible {
+  background: var(--lime);
+  outline: none;
+}
+
+.secondaryButton,
+.cardLink,
+.caseCard a {
+  border: 1px solid rgba(255, 249, 234, 0.24);
+  background: rgba(255, 249, 234, 0.08);
+  color: var(--cream);
+}
+
+.secondaryButton:hover,
+.secondaryButton:focus-visible,
+.cardLink:hover,
+.cardLink:focus-visible,
+.caseCard a:hover,
+.caseCard a:focus-visible {
+  border-color: var(--green);
+  background: rgba(34, 214, 101, 0.18);
+  outline: none;
+}
+
+.signalPanel {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  margin: 1rem;
+  border: 1px solid rgba(255, 249, 234, 0.14);
+  border-radius: 12px;
+  padding: 1rem;
+  background: rgba(255, 249, 234, 0.08);
+}
+
+.avatarFrame,
+.qrCard {
+  display: grid;
+  justify-items: center;
+  border: 0.42rem solid #fff;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.avatarFrame img,
+.qrCard img {
+  display: block;
+  width: min(100%, 650px);
+  height: auto;
+  border-radius: 4px;
+}
+
+.proofGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.proofGrid span {
+  min-height: 3.2rem;
+  border: 1px solid var(--line-dark);
+  border-radius: 8px;
+  padding: 0.72rem;
+  background: rgba(0, 0, 0, 0.26);
+  color: rgba(255, 249, 234, 0.76);
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.section,
+.band,
+.contact,
+.credentialBand {
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 4.8rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.sectionHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(18rem, 0.4fr);
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 1.4rem;
+}
+
+.sectionHeader h2,
+.band h2,
+.contact h2,
+.credentialBand h2 {
+  max-width: 56rem;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.8rem, 5vw, 5.8rem);
+  font-weight: 900;
+  line-height: 0.92;
+  overflow-wrap: normal;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.section .kicker,
+.band .kicker,
+.contact .kicker,
+.credentialBand .kicker {
+  border-color: rgba(5, 8, 6, 0.14);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--green);
+}
+
+.updateRail,
+.projectGrid,
+.caseGrid,
+.serviceGrid,
+.credentialGrid,
+.linkGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.updateRail {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.projectGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.caseGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.serviceGrid,
+.linkGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.credentialGrid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.updateCard,
+.projectCard,
+.caseCard,
+.serviceCard,
+.credentialCard,
+.linkGrid a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 249, 234, 0.82);
+  color: var(--ink);
+}
+
+.updateCard,
+.projectCard,
+.caseCard,
+.serviceCard,
+.linkGrid a {
+  display: grid;
+  align-content: start;
+  min-height: 17rem;
+  padding: 1.15rem;
+}
+
+.projectCard,
+.caseCard {
+  overflow: hidden;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.projectCard:hover,
+.caseCard:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+
+.updateCard span,
+.projectCard small,
+.caseCard small,
+.credentialCard small,
+.linkGrid small {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.28rem 0.48rem;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.updateCard h3,
+.projectCard h3,
+.caseCard h3,
+.serviceCard h3,
+.credentialCard h3 {
+  margin: 1.1rem 0 0.65rem;
+  color: var(--ink);
+  font-size: clamp(1.75rem, 3vw, 2.7rem);
+  font-weight: 900;
+  line-height: 0.98;
+}
+
+.updateCard p,
+.projectCard p,
+.caseCard p,
+.serviceCard p,
+.contact p,
+.credentialCard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.68;
+}
+
+.projectMedia {
+  position: relative;
+  display: grid;
+  aspect-ratio: 16 / 10;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 6, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(5, 8, 6, 0.035) 1px, transparent 1px),
+    #fffdf5;
+  background-size: 28px 28px;
+  margin: 0 0 1rem;
+}
+
+.projectMedia img,
+.projectMedia video,
+.mediaButton img,
+.slideThumb img,
+.lightboxImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.projectMedia video {
+  object-fit: cover;
+}
+
+.projectPlaceholder {
+  padding: 1.25rem;
+}
+
+.projectPlaceholder span {
+  display: grid;
+  width: 3.9rem;
+  height: 3.9rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.projectPlaceholder strong {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.gallery {
+  display: grid;
+  gap: 0.62rem;
+  margin-bottom: 1rem;
+}
+
+.mediaButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 6, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(5, 8, 6, 0.035) 1px, transparent 1px),
+    #fffdf5;
+  background-size: 28px 28px;
+  cursor: zoom-in;
+}
+
+.mediaButton > span {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  z-index: 1;
+  border: 1px solid rgba(255, 249, 234, 0.18);
+  border-radius: 999px;
+  background: rgba(5, 8, 6, 0.72);
+  color: var(--cream);
+  padding: 0.42rem 0.58rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  backdrop-filter: blur(12px);
+}
+
+.slideStrip {
+  display: grid;
+  grid-auto-columns: minmax(4.5rem, 31%);
+  grid-auto-flow: column;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 0 0.125rem 0.25rem;
+  scrollbar-width: thin;
+}
+
+.slideThumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf5;
+  cursor: zoom-in;
+}
+
+.mediaButton:focus-visible,
+.slideThumb:focus-visible {
+  outline: 3px solid rgba(34, 214, 101, 0.56);
+  outline-offset: -3px;
+}
+
+.starBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.42rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid rgba(5, 8, 6, 0.16);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 0.55rem 0.68rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.cardLink,
+.caseCard a {
+  width: fit-content;
+  margin-top: 1rem;
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--ink);
+}
+
+.cardLink:hover,
+.cardLink:focus-visible,
+.caseCard a:hover,
+.caseCard a:focus-visible {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.band {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  gap: 1rem;
+}
+
+.credentialBand {
+  border-top: 0;
+}
+
+.credentialCard {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.78fr) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: center;
+  padding: 1.15rem;
+}
+
+.credentialCard .gallery {
+  margin: 0;
+}
+
+.credentialCard .mediaButton {
+  aspect-ratio: 4 / 3;
+  background: #fffdf5;
+}
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+  gap: 2rem;
+  align-items: center;
+}
+
+.contactCopy > p {
+  max-width: 40rem;
+  margin-top: 1.25rem;
+  font-size: 1.02rem;
+  font-weight: 680;
+}
+
+.linkGrid {
+  margin-top: 1.4rem;
+}
+
+.linkGrid a {
+  min-height: 8rem;
+  text-decoration: none;
+}
+
+.linkGrid strong {
+  margin-top: 0.45rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.1rem, 4vw, 3rem);
+}
+
+.lightboxBackdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(2, 6, 5, 0.86);
+  cursor: zoom-out;
+  backdrop-filter: blur(18px);
+}
+
+.lightboxStage {
+  position: relative;
+  z-index: 1;
+  width: min(94vw, 80rem);
+  height: min(86vh, 51.25rem);
+}
+
+.lightboxMeta {
+  position: absolute;
+  left: 0;
+  top: -3.4rem;
+  z-index: 2;
+  color: var(--cream);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.lightboxMeta small {
+  display: block;
+  color: var(--lime);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.lightboxMeta strong {
+  display: block;
+  color: var(--cream);
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.lightboxImage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 28px 80px rgba(0, 0, 0, 0.42));
+}
+
+.lightboxCounter {
+  position: absolute;
+  left: 50%;
+  bottom: -2.75rem;
+  z-index: 2;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 249, 234, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 249, 234, 0.12);
+  color: var(--cream);
+  padding: 0.5rem 0.88rem;
+  font-size: 0.82rem;
+  font-weight: 900;
+  backdrop-filter: blur(18px);
+}
+
+@media (max-width: 1180px) {
+  .heroGrid,
+  .band,
+  .contact,
+  .credentialCard,
+  .sectionHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .caseGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .navLinks {
+    max-width: calc(100vw - 2rem);
+    overflow-x: auto;
+  }
+
+  .hero,
+  .section,
+  .band,
+  .contact,
+  .credentialBand {
+    width: calc(100% - 2rem);
+    max-width: calc(100vw - 2rem);
+  }
+
+  .heroGrid,
+  .updateRail,
+  .projectGrid,
+  .caseGrid,
+  .serviceGrid,
+  .linkGrid,
+  .proofGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroGrid {
+    min-height: auto;
+  }
+
+  .heroCopy {
+    padding: 2rem 1.2rem;
+  }
+
+  .heroCopy h1,
+  .sectionHeader h2,
+  .band h2,
+  .contact h2,
+  .credentialBand h2 {
+    max-width: 100%;
+    font-size: clamp(2rem, 8.9vw, 2.8rem);
+    line-height: 1.04;
+  }
+
+  .introList p,
+  .updateCard p,
+  .projectCard p,
+  .caseCard p,
+  .serviceCard p,
+  .credentialCard p,
+  .contact p {
+    overflow-wrap: anywhere;
+  }
+
+  .signalPanel {
+    margin: 0 1rem 1rem;
+  }
+
+  .section,
+  .band,
+  .contact,
+  .credentialBand {
+    padding: 3.6rem 0;
+  }
+
+  .lightbox {
+    padding: 4.25rem 0.9rem 3.6rem;
+  }
+
+  .lightboxStage {
+    width: 100%;
+    height: 72vh;
+  }
+
+  .lightboxMeta {
+    left: 0;
+    top: -3rem;
+    max-width: calc(100% - 4rem);
+  }
+}
