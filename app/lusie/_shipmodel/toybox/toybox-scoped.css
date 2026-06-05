@@ -1183,6 +1183,19 @@ img {
   animation: workspace-surface-breathe 6s ease-in-out infinite;
 }
 
+.progress-loop-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.progress-preview.video-preview::before,
+.progress-preview.video-preview::after {
+  content: none;
+}
+
 .progress-preview::before,
 .progress-preview::after {
   position: absolute;

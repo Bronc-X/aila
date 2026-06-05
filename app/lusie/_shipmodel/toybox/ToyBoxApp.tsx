@@ -875,18 +875,11 @@ function ProgressPage({ events, busy, ready, onCancel }: { events: ModelJobEvent
   return (
     <main className="progress-page">
       <section className="progress-stack">
-        <div className="progress-preview workspace-breathing" aria-label="AI 工作区呼吸预览">
-          <div className="image-wave-field" aria-hidden="true">
-            {imageWaveDots.map((dot) => (
-              <span key={dot} style={{ animationDelay: `${(dot % 12) * 0.08 + Math.floor(dot / 12) * 0.05}s` }} />
-            ))}
-          </div>
-          <div className="image-wave-core" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <i />
-          </div>
+        <div className="progress-preview workspace-breathing video-preview" aria-label="STL generation waiting video">
+          <video className="progress-loop-video" autoPlay muted loop playsInline preload="auto" poster="/print-loading-animation/print-loading-poster.jpg">
+            <source src="/print-loading-animation/print-loading-loop.webm" type="video/webm" />
+            <source src="/print-loading-animation/print-loading-loop.mp4" type="video/mp4" />
+          </video>
         </div>
         <div className="progress-copy">
           <h1>正在生成 STL 模型</h1>
