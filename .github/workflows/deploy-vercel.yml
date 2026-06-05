@@ -21,9 +21,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || vars.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID || vars.VERCEL_PROJECT_ID }}
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || vars.VERCEL_ORG_ID || 'team_k1J4m9vcNlbXhtEsI75GJfnM' }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID || vars.VERCEL_PROJECT_ID || 'prj_CceS2Hj0KEGcqic7y5AS8zZABjyH' }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN || secrets.VERCEL_API_KEY }}
 
 jobs:
   deploy:
@@ -45,7 +45,7 @@ jobs:
 
       - name: Validate Vercel credentials
         run: |
-          test -n "$VERCEL_TOKEN" || (echo "Missing VERCEL_TOKEN secret" && exit 1)
+          test -n "$VERCEL_TOKEN" || (echo "Missing VERCEL_TOKEN or VERCEL_API_KEY secret" && exit 1)
           test -n "$VERCEL_ORG_ID" || (echo "Missing VERCEL_ORG_ID secret or variable" && exit 1)
           test -n "$VERCEL_PROJECT_ID" || (echo "Missing VERCEL_PROJECT_ID secret or variable" && exit 1)
 
