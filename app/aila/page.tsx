@@ -32,6 +32,13 @@ const modules = [
     href: "/tools/operations",
   },
   {
+    title: "图生 3D 等待态",
+    sub: "ACTION",
+    text: "用于漫长模型生成过程的进度展示，包含 3D 打印循环视频、WebM/MP4 兜底和羽化边缘。",
+    tags: ["生成等待", "3D 打印", "循环视频", "Vercel 探针"],
+    href: "/aila/print-loading-animation",
+  },
+  {
     title: "行政效率",
     sub: "ADMIN",
     text: "合同、纪要、排班和流程诊断，先接住每天都在消耗人的行政任务。",
