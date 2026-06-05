@@ -41,7 +41,7 @@ import {
   type LocalHistoryEntry,
   type MembershipSnapshot
 } from "./localHistory";
-import { buildModelTimeline, getPipelineState, summarizeModelFailure } from "./modelJobProgress";
+import { buildModelTimeline, summarizeModelFailure } from "./modelJobProgress";
 import { parseRoute, routePaths, toyboxBasePath, type RouteName, type RouteState } from "./routes";
 import { getSupabaseSyncState, syncHistoryEntry } from "./supabaseSync";
 
@@ -68,16 +68,6 @@ type InspectionProfile = {
   renders: Array<{ label: string; note: string; view: DetailRenderView }>;
   advice: string[];
 };
-
-const modelBuildTokens = [
-  "queue", "task", "image", "token", "upload", "Tripo", "poll", "mesh", "shell", "surface",
-  "watertight", "normal", "edge", "repair", "merge", "scale", "bbox", "axis", "units", "mm",
-  "support", "overhang", "thin-wall", "detail", "decimate", "smooth", "convert", "asset", "glb", "stl",
-  "download", "checksum", "cache", "metadata", "preview", "viewer", "bounds", "status", "running", "queued",
-  "retry", "timeout", "heartbeat", "inspect", "slice", "bed", "raft", "nozzle", "layer", "infill",
-  "bridge", "island", "manifold", "waterline", "orientation", "render", "crop", "front-view", "top-view", "joint",
-  "export", "ready", "handoff", "console", "tail"
-];
 
 export function ToyBoxApp() {
   const [route, setRoute] = useState<RouteState>(() => parseRoute(window.location.pathname));
@@ -913,8 +903,6 @@ function ConceptPage({
   );
 }
 
-const imageWaveDots = Array.from({ length: 84 }, (_, index) => index);
-
 function ProgressPage({ events, busy, ready, onCancel }: { events: ModelJobEvent[]; busy: boolean; ready: boolean; onCancel: () => void }) {
   const displayBusy = busy && !ready;
   const timeline = buildModelTimeline(events, displayBusy);
@@ -925,80 +913,64 @@ function ProgressPage({ events, busy, ready, onCancel }: { events: ModelJobEvent
     (event.type === "job.completed" && event.response?.run.status === "Ready")
   ).length;
   const failedSteps = timeline.filter((item) => item.state === "error").length;
-  const activeTokens = Array.from({ length: 54 }, (_, index) => modelBuildTokens[(events.length + index * 7) % modelBuildTokens.length]);
-  const pipelineStages = [
-    { label: "图像提交", copy: "锁定所选概念图和打印参数。", keys: ["select_concept", "job.started"] },
-    { label: "Tripo 建模", copy: "调用 Tripo image-to-model，等待外部任务返回模型资产。", keys: ["tripo_generate_model"] },
-    { label: "STL 校验", copy: "下载 STL 并执行基础可打印文件校验。", keys: ["validate_stl"] },
-    { label: "局部渲染与细节取样", copy: "3D 渲染过程中同步准备局部视角，模型拆解图会和 STL 一起进入检查台。", keys: ["artifact.created", "save_run"] }
-  ];
+  const activeItem = [...timeline].reverse().find((item) => item.state === "active") ?? timeline.at(-1);
+  const latestItem = timeline.at(-1);
+  const modelReturn = [...events]
+    .reverse()
+    .find((event): event is Extract<ModelJobEvent, { type: "tool.completed" }> => event.type === "tool.completed" && Boolean(event.outputSummary));
+  const artifactReady = events.some((event) => event.type === "artifact.created" || (event.type === "job.completed" && event.response?.run.status === "Ready"));
+  const statusCopy = failedSteps
+    ? "生成失败。"
+    : displayBusy
+      ? "生成中。"
+      : artifactReady
+        ? "STL 已保存。"
+        : "已结束。";
 
   return (
     <main className="progress-page">
       <section className="progress-stack">
-        <div className="progress-preview workspace-breathing" aria-label="STL generation waiting preview">
+        <div className="progress-preview" aria-label="STL generation waiting preview">
           <video className="progress-loop-video" autoPlay muted loop playsInline preload="auto">
             <source src="/print-loading-animation/print-loading-loop.webm" type="video/webm" />
             <source src="/print-loading-animation/print-loading-loop.mp4" type="video/mp4" />
           </video>
-          <div className="image-wave-field" aria-hidden="true">
-            {imageWaveDots.map((dot) => (
-              <span key={dot} style={{ animationDelay: `${(dot % 12) * 0.08 + Math.floor(dot / 12) * 0.05}s` }} />
-            ))}
-          </div>
-          <div className="image-wave-core" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <i />
-          </div>
         </div>
         <div className="progress-copy">
           <h1>正在生成 STL 模型</h1>
-          <p>这里显示真实任务事件：外部工具调用、STL 校验、文件保存和产物创建。Tripo 运行中会保持连接，不展示无法验证的精确百分比。</p>
+          <p>实时生成事件。</p>
         </div>
-        <div className="segmented-progress event-summary" role="status" aria-live="polite">
+        <div className="event-summary" role="status" aria-live="polite">
           <div className="metric-row">
-            <span className="section-label">真实任务进度</span>
+            <span className="section-label">真实事件流</span>
             <strong className="mono">{completedEvents} 个事件完成</strong>
           </div>
-          <div className={displayBusy ? "event-pulse-track active" : failedSteps ? "event-pulse-track error" : "event-pulse-track done"} aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-          <p>{failedSteps ? "检测到失败事件，请查看日志详情。" : displayBusy ? "任务正在运行，等待下一个工具事件。" : "任务事件已收束。"}</p>
+          <p>{statusCopy}</p>
         </div>
-        <section className="render-pipeline" aria-label="模型生成阶段">
-          {pipelineStages.map((stage, index) => {
-            const state = getPipelineState(events, stage.keys, displayBusy, index);
-            return (
-              <article className={`pipeline-step ${state}`} key={stage.label}>
-                <span className="pipeline-index">{String(index + 1).padStart(2, "0")}</span>
-                <div>
-                  <strong>{stage.label}</strong>
-                  <p>{stage.copy}</p>
-                </div>
-              </article>
-            );
-          })}
+        <section className="progress-intelligence" aria-label="真实模型生成状态">
+          <article className={`progress-insight ${failedSteps ? "error" : displayBusy ? "active" : "done"}`}>
+            <span>当前执行</span>
+            <strong>{activeItem?.message ?? "等待任务启动"}</strong>
+            <p>{activeItem?.detail ?? "等待事件。"}</p>
+          </article>
+          <article className="progress-insight done">
+            <span>模型返回</span>
+            <strong>{modelReturn?.outputSummary ?? "等待 Tripo 返回"}</strong>
+            <p>真实返回内容。</p>
+          </article>
+          <article className={artifactReady ? "progress-insight done" : "progress-insight"}>
+            <span>产物交付</span>
+            <strong>{artifactReady ? "STL 文件已写入检查台" : "等待 STL 产物"}</strong>
+            <p>{latestItem?.state === "error" ? latestItem.detail : "等待校验。"}</p>
+          </article>
         </section>
         <div className="system-log">
           <div className="log-head">
             <div className="spec-title">
               <Terminal size={18} />
-              生成日志
+              真实返回时间线
             </div>
             <span>{displayBusy ? "event stream connected" : "complete"}</span>
-          </div>
-          <div className="token-stream" aria-label="活跃任务词元">
-            {activeTokens.map((token, index) => (
-              <span key={`${token}-${index}`} style={{ animationDelay: `${(index % 10) * 0.08}s` }}>
-                {token}
-              </span>
-            ))}
           </div>
           <div className="log-lines progress-events" role="log" aria-live="polite" aria-label="最近生成日志">
             {timeline.map((log, index) => {
