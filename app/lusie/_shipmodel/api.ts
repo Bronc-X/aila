@@ -100,7 +100,7 @@ export async function generateModel(runId: string, conceptId: string, onEvent?: 
       "Accept": onEvent ? "application/x-ndjson" : "application/json",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ runId, conceptId, concepts: getConceptFallbacks(conceptId) })
+    body: JSON.stringify({ runId, conceptId, concepts: getConceptFallbacks() })
   });
 
   if (onEvent) {
@@ -175,11 +175,12 @@ export function setConceptFallbacks(concepts: Concept[]) {
   conceptFallbacks = concepts;
 }
 
-function getConceptFallbacks(conceptId: string) {
-  return conceptFallbacks.filter((concept) => concept.id === conceptId).map((concept) => ({
+function getConceptFallbacks() {
+  return conceptFallbacks.map((concept) => ({
     id: concept.id,
     title: concept.title,
-    imageUrl: concept.imageUrl || getConceptImageDataUrl(concept) || "",
+    imageUrl: concept.imageUrl,
+    imageDataUrl: getConceptImageDataUrl(concept),
     prompt: concept.prompt,
     feedback: concept.feedback
   }));

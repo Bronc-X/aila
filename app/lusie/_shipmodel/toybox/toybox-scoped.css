@@ -566,64 +566,33 @@ img {
 }
 
 .color-grid.compact {
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .swatch-button {
-  display: grid;
-  min-height: 30px;
-  min-width: 0;
-  place-items: center;
-  border: 1px solid var(--tb-line);
-  border-radius: 8px;
-  background: var(--tb-surface);
-  padding: 4px;
-}
-
-.swatch-button.active {
-  border-color: var(--tb-primary);
-  background: color-mix(in srgb, var(--tb-primary) 8%, var(--tb-surface));
-  box-shadow: 0 0 0 2px rgba(0, 108, 73, 0.14);
-}
-
-.swatch {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 50%;
-}
-
-.color-section {
-  gap: 8px;
-}
-
-.custom-color-field {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: 8px;
+  display: flex;
   align-items: center;
+  gap: 8px;
   min-height: 34px;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface);
-  padding: 5px 8px;
+  color: var(--tb-muted);
+  padding: 0 8px;
+  font-size: 11px;
 }
 
-.custom-preview {
-  width: 20px;
-  height: 20px;
+.swatch-button.active {
+  border-color: var(--tb-primary);
+  color: var(--tb-primary);
 }
 
-.custom-color-field input {
-  width: 100%;
-  min-width: 0;
-  height: 22px;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
+.swatch {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
 }
 
 .sticky-action {
@@ -1032,17 +1001,17 @@ img {
 .page-frame {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 24px 0 40px;
+  padding: 32px 0 56px;
 }
 
 .page-title {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .concept-grid {
   align-items: stretch;
-  grid-template-columns: minmax(0, 0.98fr) minmax(300px, 0.72fr);
-  gap: 10px;
+  grid-template-columns: minmax(0, 1.18fr) minmax(280px, 0.82fr);
+  gap: 12px;
 }
 
 .concept-card {
@@ -1082,24 +1051,23 @@ img {
 
 .concept-card img {
   width: 100%;
-  aspect-ratio: 1.18 / 1;
-  max-height: clamp(300px, 44dvh, 440px);
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   background: var(--tb-surface-mid);
 }
 
 .concept-card:first-child img {
-  aspect-ratio: 1.18 / 1;
+  aspect-ratio: 1.08 / 1;
 }
 
 .concept-card-body {
   display: grid;
-  gap: 8px;
-  padding: 12px;
+  gap: 12px;
+  padding: 16px;
 }
 
 .concept-card:first-child .concept-card-body {
-  padding: 12px;
+  padding: 18px;
 }
 
 .concept-card-kicker {
@@ -1127,14 +1095,11 @@ img {
 .concept-card-body h2 {
   margin: 0;
   color: var(--tb-primary);
-  font-size: 18px;
 }
 
 .concept-card-body p {
   margin: 0;
   color: var(--tb-muted);
-  font-size: 13px;
-  line-height: 1.45;
 }
 
 .concept-actions {
@@ -1144,14 +1109,14 @@ img {
 
 .concept-select-label {
   display: inline-flex;
-  min-height: 30px;
+  min-height: 34px;
   align-items: center;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   color: var(--tb-primary);
   font-size: 12px;
   font-weight: 900;
-  padding: 0 12px;
+  padding: 0 14px;
 }
 
 .concept-card.selected .concept-select-label {
@@ -1161,108 +1126,21 @@ img {
 
 .concept-revision {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(184px, auto);
-  gap: 10px;
-  align-items: end;
+  gap: 12px;
+  width: min(720px, 100%);
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface);
-  margin-top: 10px;
-  padding: 12px;
+  padding: 16px;
 }
 
 .concept-revision p {
   margin: 4px 0 0;
   color: var(--tb-muted);
-  font-size: 13px;
-  line-height: 1.45;
 }
 
 .concept-revision .button {
-  justify-self: stretch;
-}
-
-.concept-revision .text-area {
-  grid-column: 1 / 2;
-  min-height: 78px;
-  resize: vertical;
-  padding: 10px 12px;
-}
-
-.concept-revision .revision-progress {
-  grid-column: 1 / -1;
-}
-
-.revision-progress {
-  display: grid;
-  gap: 8px;
-  padding: 10px;
-}
-
-.revision-progress-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.revision-progress-head strong {
-  color: var(--tb-primary);
-  font-family: var(--tb-mono);
-  font-size: 12px;
-}
-
-.revision-progress > p {
-  margin: 0;
-  color: var(--tb-muted);
-  font-size: 12px;
-}
-
-.revision-steps {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
-}
-
-.revision-step {
-  display: grid;
-  min-height: 62px;
-  align-content: start;
-  gap: 2px;
-  border: 1px solid rgba(187, 202, 191, 0.72);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.64);
-  padding: 6px;
-}
-
-.revision-step span {
-  color: var(--tb-secondary);
-  font-family: var(--tb-mono);
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.revision-step strong {
-  color: var(--tb-ink);
-  font-size: 12px;
-}
-
-.revision-step em {
-  color: var(--tb-muted);
-  font-size: 11px;
-  font-style: normal;
-  line-height: 1.35;
-}
-
-.revision-step.active {
-  border-color: color-mix(in srgb, var(--tb-primary) 42%, var(--tb-line));
-  background: color-mix(in srgb, var(--tb-primary) 7%, var(--tb-surface));
-  animation: event-state-breathe 3.8s ease-in-out infinite;
-}
-
-.revision-step.done {
-  border-color: rgba(0, 108, 73, 0.22);
-  background: var(--tb-surface-low);
+  justify-self: start;
 }
 
 .progress-page {
@@ -1280,8 +1158,13 @@ img {
   gap: 24px;
 }
 
+.workspace-breathing,
 .progress-stack {
   transform-origin: center;
+}
+
+.workspace-breathing {
+  animation: workspace-breathe 7.2s ease-in-out infinite;
 }
 
 .progress-preview {
@@ -1300,12 +1183,78 @@ img {
   animation: workspace-surface-breathe 6s ease-in-out infinite;
 }
 
-.progress-loop-video {
+.progress-preview::before,
+.progress-preview::after {
+  position: absolute;
+  content: "";
+  inset: 18%;
+  border: 1px solid rgba(0, 108, 73, 0.11);
+  border-radius: 50%;
+  filter: blur(0.2px);
+  animation: image-wave-ring 4.8s ease-in-out infinite;
+}
+
+.progress-preview::after {
+  inset: 29%;
+  animation-delay: -1.6s;
+}
+
+.image-wave-field {
+  position: absolute;
+  inset: 14%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  opacity: 0.82;
+  mask-image: radial-gradient(circle at center, black 0%, black 48%, transparent 78%);
+}
+
+.image-wave-field span {
+  align-self: center;
+  justify-self: center;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0, 108, 73, 0.36);
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.18);
+  animation: image-wave-dot 2.7s ease-in-out infinite;
+}
+
+.image-wave-core {
+  position: relative;
+  display: grid;
+  width: 118px;
+  height: 118px;
+  place-items: center;
+}
+
+.image-wave-core span {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  border: 1px solid rgba(0, 108, 73, 0.22);
+  border-radius: 50%;
+  animation: image-wave-pulse 3.2s ease-in-out infinite;
+}
+
+.image-wave-core span:nth-child(2) {
+  inset: 18px;
+  animation-delay: -1s;
+}
+
+.image-wave-core span:nth-child(3) {
+  inset: 34px;
+  animation-delay: -1.8s;
+}
+
+.image-wave-core i {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--tb-primary);
+  box-shadow:
+    0 0 0 8px rgba(0, 108, 73, 0.08),
+    0 0 34px rgba(16, 185, 129, 0.42);
+  animation: image-wave-center 1.8s ease-in-out infinite;
 }
 
 .progress-copy {
@@ -1322,46 +1271,113 @@ img {
   color: var(--tb-muted);
 }
 
-.event-summary {
+.segmented-progress {
   display: grid;
   width: min(680px, 100%);
   gap: 10px;
-  border-top: 1px solid rgba(187, 202, 191, 0.62);
-  border-bottom: 1px solid rgba(187, 202, 191, 0.62);
-  padding: 14px 0;
 }
 
 .metric-row {
   justify-content: space-between;
 }
 
-.progress-intelligence {
-  display: grid;
-  width: min(920px, 100%);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+.progress-track {
+  overflow: hidden;
+  height: 16px;
+  border: 1px solid rgba(187, 202, 191, 0.5);
+  border-radius: 999px;
+  background: var(--tb-surface-high);
 }
 
-.progress-insight {
+.progress-fill {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  transition: width 0.7s ease;
+  background: linear-gradient(90deg, var(--tb-primary), color-mix(in srgb, var(--tb-primary-soft) 72%, var(--tb-primary)));
+  box-shadow: 0 0 18px rgba(0, 108, 73, 0.2);
+}
+
+.progress-fill::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  animation: progress-breathing-sheen 2.8s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+}
+
+.event-pulse-track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.event-pulse-track span {
+  height: 12px;
+  border: 1px solid rgba(187, 202, 191, 0.62);
+  border-radius: 999px;
+  background: var(--tb-surface-high);
+}
+
+.event-pulse-track.active span {
+  border-color: color-mix(in srgb, var(--tb-primary) 28%, var(--tb-line));
+  background: color-mix(in srgb, var(--tb-primary) 9%, var(--tb-surface));
+  animation: event-state-breathe 3.6s ease-in-out infinite;
+}
+
+.event-pulse-track.active span:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.event-pulse-track.active span:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.event-pulse-track.active span:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+.event-pulse-track.active span:nth-child(5) {
+  animation-delay: 1s;
+}
+
+.event-pulse-track.done span {
+  border-color: rgba(0, 108, 73, 0.22);
+  background: var(--tb-surface-low);
+}
+
+.event-pulse-track.error span {
+  border-color: rgba(186, 26, 26, 0.34);
+  background: color-mix(in srgb, var(--tb-danger-soft) 34%, var(--tb-surface));
+}
+
+.render-pipeline {
+  display: grid;
+  width: min(860px, 100%);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pipeline-step {
   display: grid;
   position: relative;
-  align-content: start;
-  gap: 8px;
-  min-height: 132px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  min-height: 108px;
   overflow: hidden;
   border: 1px solid var(--tb-line);
   border-radius: 8px;
   background: var(--tb-surface);
-  padding: 16px;
+  padding: 12px;
 }
 
-.progress-insight.active {
+.pipeline-step.active {
   border-color: color-mix(in srgb, var(--tb-primary) 58%, var(--tb-line));
   background: color-mix(in srgb, var(--tb-primary) 8%, var(--tb-surface));
   animation: event-state-breathe 3.8s ease-in-out infinite;
 }
 
-.progress-insight.active::after {
+.pipeline-step.active::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -1372,33 +1388,43 @@ img {
   animation: progress-event-scan 4.2s ease-in-out infinite;
 }
 
-.progress-insight.done {
+.pipeline-step.done {
   border-color: rgba(0, 108, 73, 0.26);
   background: var(--tb-surface-low);
 }
 
-.progress-insight.error {
-  border-color: rgba(186, 26, 26, 0.34);
-  background: color-mix(in srgb, var(--tb-danger-soft) 32%, var(--tb-surface));
+.pipeline-step.pending {
+  opacity: 0.72;
 }
 
-.progress-insight > span {
-  color: var(--tb-secondary);
+.pipeline-index {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--tb-surface-high);
+  color: var(--tb-muted);
   font-family: var(--tb-mono);
   font-size: 11px;
   font-weight: 900;
-  text-transform: uppercase;
 }
 
-.progress-insight strong {
+.pipeline-step.active .pipeline-index,
+.pipeline-step.done .pipeline-index {
+  background: var(--tb-primary);
+  color: white;
+}
+
+.pipeline-step strong {
   display: block;
   color: var(--tb-ink);
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.35;
 }
 
-.progress-insight p {
-  margin: 0;
+.pipeline-step p {
+  margin: 6px 0 0;
   color: var(--tb-muted);
   font-size: 12px;
   line-height: 1.5;
@@ -1491,6 +1517,33 @@ img {
   color: var(--tb-muted);
   font-family: var(--tb-mono);
   font-size: 11px;
+}
+
+.token-stream {
+  display: flex;
+  max-height: 70px;
+  flex-wrap: wrap;
+  gap: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(108, 122, 113, 0.15);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(238, 246, 238, 0.8), rgba(255, 255, 255, 0.82));
+  padding: 10px;
+}
+
+.token-stream span {
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  border: 1px solid rgba(0, 108, 73, 0.15);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.74);
+  color: rgba(22, 29, 25, 0.72);
+  font-family: var(--tb-mono);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0 7px;
+  animation: token-blink 1.4s ease-in-out infinite;
 }
 
 .log-lines {
@@ -2296,6 +2349,52 @@ img {
   }
 }
 
+@keyframes image-wave-dot {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(0.72);
+  }
+  45% {
+    opacity: 0.92;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes image-wave-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.88);
+  }
+  48% {
+    opacity: 0.72;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes image-wave-ring {
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: scale(0.72);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes image-wave-center {
+  0%,
+  100% {
+    transform: scale(0.86);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
 @keyframes shimmer {
   from {
     transform: translateX(-100%);
@@ -2404,11 +2503,19 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .concept-progress-track div,
   .progress-line div,
+  .workspace-breathing,
   .progress-preview,
+  .image-wave-field span,
+  .image-wave-core span,
+  .image-wave-core i,
+  .progress-fill::after,
   .concept-progress-track div::after,
   .progress-line div::after,
-  .progress-insight.active,
-  .progress-insight.active::after,
+  .progress-preview::before,
+  .progress-preview::after,
+  .pipeline-step.active,
+  .pipeline-step.active::after,
+  .event-pulse-track.active span,
   .progress-event,
   .progress-event::after,
   .event-state,
@@ -2417,6 +2524,7 @@ img {
   .tool-event::after,
   .workspace-event,
   .workspace-event::after,
+  .token-stream span,
   .log-line.active,
   .log-line.latest,
   .log-line.latest::after {
@@ -2510,19 +2618,10 @@ img {
   .storage-status-grid,
   .plan-grid,
   .invite-grid,
-  .progress-intelligence,
+  .render-pipeline,
   .detail-render-grid,
   .utility-feature-grid {
     grid-template-columns: 1fr;
-  }
-
-  .concept-revision {
-    grid-template-columns: 1fr;
-  }
-
-  .concept-revision .text-area,
-  .concept-revision .revision-progress {
-    grid-column: auto;
   }
 
   .history-card {
@@ -2559,6 +2658,10 @@ img {
   .log-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .token-stream {
+    max-height: 96px;
   }
 
   .log-line {
