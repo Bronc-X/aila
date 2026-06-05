@@ -936,7 +936,11 @@ function ProgressPage({ events, busy, ready, onCancel }: { events: ModelJobEvent
   return (
     <main className="progress-page">
       <section className="progress-stack">
-        <div className="progress-preview workspace-breathing" aria-label="AI 工作区呼吸预览">
+        <div className="progress-preview workspace-breathing" aria-label="STL generation waiting preview">
+          <video className="progress-loop-video" autoPlay muted loop playsInline preload="auto">
+            <source src="/print-loading-animation/print-loading-loop.webm" type="video/webm" />
+            <source src="/print-loading-animation/print-loading-loop.mp4" type="video/mp4" />
+          </video>
           <div className="image-wave-field" aria-hidden="true">
             {imageWaveDots.map((dot) => (
               <span key={dot} style={{ animationDelay: `${(dot % 12) * 0.08 + Math.floor(dot / 12) * 0.05}s` }} />

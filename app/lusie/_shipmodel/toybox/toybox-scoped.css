@@ -1305,6 +1305,14 @@ img {
   animation: workspace-surface-breathe 6s ease-in-out infinite;
 }
 
+.progress-loop-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .progress-preview::before,
 .progress-preview::after {
   position: absolute;
@@ -1323,11 +1331,12 @@ img {
 
 .image-wave-field {
   position: absolute;
+  z-index: 1;
   inset: 14%;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(7, 1fr);
-  opacity: 0.82;
+  opacity: 0.26;
   mask-image: radial-gradient(circle at center, black 0%, black 48%, transparent 78%);
 }
 
@@ -1344,6 +1353,7 @@ img {
 
 .image-wave-core {
   position: relative;
+  z-index: 1;
   display: grid;
   width: 118px;
   height: 118px;
