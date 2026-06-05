@@ -101,9 +101,9 @@ export function ToyBoxApp() {
 
   const activeCategory = useMemo(() => categories.find((category) => category.id === input.category) ?? categories[0], [input.category]);
   const activePreview = conceptPreviewAssets[input.subtype];
-  const selectedConcept = concepts.find((concept) => concept.id === selectedConceptId) ?? concepts[0];
   const readyRun = run?.status === "Ready" ? run : null;
-  const stlDownloadHref = readyRun ? `/api/lusie/runs/${encodeURIComponent(readyRun.runId)}/download/stl` : "";
+  const stlDownloadHref = readyRun ? readyRun.files.stlSourceUrl || `/api/lusie/runs/${encodeURIComponent(readyRun.runId)}/download/stl` : "";
+  const stlPreviewHref = readyRun ? getStlPreviewHref(readyRun) : "";
   const supabaseSyncState = getSupabaseSyncState();
 
   useEffect(() => {
@@ -432,7 +432,7 @@ export function ToyBoxApp() {
         </ProjectLayout>
       ) : route.name === "download" ? (
         <ProjectLayout routeName={route.name} onNew={resetWorkspace} onNavigate={handleNav}>
-          <DownloadPage run={readyRun} stlHref={stlDownloadHref} onNew={resetWorkspace} onBack={() => navigate("configure")} />
+          <DownloadPage run={readyRun} stlHref={stlDownloadHref} previewHref={stlPreviewHref} onNew={resetWorkspace} onBack={() => navigate("configure")} />
         </ProjectLayout>
       ) : route.name === "failed" ? (
         <FailedPage isLoading={busy && Boolean(route.runId) && run?.runId !== route.runId} run={run?.runId === route.runId || !route.runId ? run : null} onRetry={() => navigate("configure")} onBack={() => navigate("configure")} />
@@ -480,7 +480,7 @@ export function ToyBoxApp() {
             </div>
             <div className="viewport-center">
               {readyRun ? (
-                <ModelViewer category={input.category} primaryColor={input.primaryColor} accentColor={input.accentColor} stlUrl={stlDownloadHref} />
+                <ModelViewer category={input.category} primaryColor={input.primaryColor} accentColor={input.accentColor} stlUrl={stlPreviewHref} />
               ) : (
                 <ConceptPreview input={input} preview={activePreview} mode={previewMode} />
               )}
@@ -492,6 +492,11 @@ export function ToyBoxApp() {
       <StatusMessages toast={toast} alert={alert} />
     </div>
   );
+}
+
+function getStlPreviewHref(run: ModelRun) {
+  const base = `/api/lusie/runs/${encodeURIComponent(run.runId)}/download/stl`;
+  return run.files.stlSourceUrl ? `${base}?source=${encodeURIComponent(run.files.stlSourceUrl)}` : base;
 }
 
 function Header({
@@ -1012,11 +1017,11 @@ function ProgressPage({ events, busy, ready, onCancel }: { events: ModelJobEvent
   );
 }
 
-function DownloadPage({ run, stlHref, onNew, onBack }: { run: ModelRun | null; stlHref: string; onNew: () => void; onBack: () => void }) {
+function DownloadPage({ run, stlHref, previewHref, onNew, onBack }: { run: ModelRun | null; stlHref: string; previewHref: string; onNew: () => void; onBack: () => void }) {
+  const [activeView, setActiveView] = useState<DetailRenderView>("front");
   if (!run) return <MissingRunPage onBack={onBack} />;
   const dimensions = getModelDimensions(run.input.targetLengthMm);
   const inspection = getInspectionProfile(run.input.category, dimensions);
-  const [activeView, setActiveView] = useState<DetailRenderView>(inspection.renders[0]?.view ?? "front");
   const activeRender = inspection.renders.find((render) => render.view === activeView) ?? inspection.renders[0];
 
   return (
@@ -1031,7 +1036,7 @@ function DownloadPage({ run, stlHref, onNew, onBack }: { run: ModelRun | null; s
               </button>
             ))}
           </div>
-          <ModelViewer category={run.input.category} primaryColor={run.input.primaryColor} accentColor={run.input.accentColor} status="Ready" stlUrl={stlHref} dimensions={dimensions} viewMode={activeView} />
+          <ModelViewer category={run.input.category} primaryColor={run.input.primaryColor} accentColor={run.input.accentColor} status="Ready" stlUrl={previewHref} dimensions={dimensions} viewMode={activeView} />
           <div className="inspection-readout" aria-label="模型读数">
             <span>{`${dimensions.length}mm X-axis`}</span>
             <span>{activeRender?.label ?? "局部视图"}</span>

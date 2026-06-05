@@ -32,17 +32,25 @@ export interface Concept {
   imageUrl: string;
   prompt: string;
   feedback?: string;
+  imageDataUrl?: string;
+}
+
+export interface StorageDiagnostics {
+  mode: "supabase" | "embedded";
+  warning?: string;
 }
 
 export interface ModelRun {
   runId: string;
   input: ModelRequest;
   concepts: Concept[];
+  storage?: StorageDiagnostics;
   selectedConceptId?: string;
   status?: RunStatus;
   reasons: string[];
   files: {
     stl?: string;
+    stlSourceUrl?: string;
     threeMf?: string;
   };
   createdAt: string;

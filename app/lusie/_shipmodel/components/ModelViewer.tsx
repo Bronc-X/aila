@@ -81,17 +81,17 @@ export function ModelViewer({ category, primaryColor, accentColor, status, stlUr
     if (pending) {
       addPendingPreview(group, primaryColor, accentColor, dimensions);
     } else if (stlUrl) {
+      addPendingPreview(group, primaryColor, accentColor, dimensions);
       const loader = new STLLoader();
       loader.load(
         stlUrl,
         (geometry) => {
+          group.clear();
           geometry.computeVertexNormals();
           prepareLoadedStlPreview(group, geometry, mainMaterial);
         },
         undefined,
-        () => {
-          addParametricPreview(group, category, mainMaterial, accentMaterial, darkMaterial, dimensions);
-        }
+        () => addStlLoadErrorPreview(group, darkMaterial, dimensions)
       );
     } else {
       addParametricPreview(group, category, mainMaterial, accentMaterial, darkMaterial, dimensions);
@@ -175,6 +175,27 @@ function getCameraPosition(viewMode: NonNullable<ModelViewerProps["viewMode"]>) 
   if (viewMode === "top") return new THREE.Vector3(0.05, 7.2, 0.05);
   if (viewMode === "joint") return new THREE.Vector3(3.2, 2.2, 3.4);
   return new THREE.Vector3(4.6, 3.2, 6.2);
+}
+
+function addStlLoadErrorPreview(
+  group: THREE.Group,
+  material: THREE.Material,
+  dimensions?: { length: number; width: number; height: number }
+) {
+  group.clear();
+  const marker = new THREE.Mesh(new THREE.OctahedronGeometry(0.82, 0), material);
+  marker.position.y = 0.18;
+  marker.castShadow = true;
+  group.add(marker);
+
+  const edges = new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.BoxGeometry(2.4, 1.3, 1.3)),
+    new THREE.LineBasicMaterial({ color: "#006c49" })
+  );
+  edges.position.y = 0.18;
+  group.add(edges);
+
+  applyDimensionScale(group, dimensions);
 }
 
 function addParametricPreview(

@@ -2,7 +2,10 @@ const fetch = require('node-fetch');
 
 (async () => {
     const apiUrl = process.env.IMAGE_API_BASE_URL || "https://aicanapi.com/v1/images/generations";
-    const apiKey = process.env.IMAGE_API_KEY || "sk-XuqhFyRVFTCubKOpxZAj711oBZy79XjtbVhWMOjMxxXLlwbV";
+    const apiKey = process.env.IMAGE_API_KEY;
+    if (!apiKey) {
+      throw new Error("IMAGE_API_KEY is required");
+    }
 
     const prompt = "A cute dog, 商业级摄影, 棚拍质感, 顶级模特, 8k分辨率, 极致细节, 高级感, 柔和立体打光, 徕卡镜头, 极简背景设计, RAW photo, masterpiece, best quality";
 

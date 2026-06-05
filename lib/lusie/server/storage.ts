@@ -122,6 +122,12 @@ export async function probeStorageUpload() {
   };
 }
 
+type StorageUploadResult = {
+  error?: string;
+  status?: number;
+  url?: string;
+};
+
 export async function persistConceptImages(runId: string, concepts: Concept[]) {
   await ensureRunDir(runId);
   let storage: StorageDiagnostics = { mode: "supabase" };
@@ -194,7 +200,7 @@ async function uploadStorageObject(
   runId: string,
   fileName: string,
   file: { bytes: Buffer; contentType: string }
-) {
+): Promise<StorageUploadResult> {
   const config = getStorageConfig();
 
   if (!config.supabaseUrl || !config.supabaseStorageKey) return {};
@@ -215,7 +221,15 @@ async function uploadStorageObject(
       "Content-Type": file.contentType
     },
     body: new Uint8Array(file.bytes)
+  }).catch((error) => {
+    const detail = error instanceof Error ? error.message : "unknown network error";
+    return { error: `Lusie Supabase Storage upload failed before response: ${detail}`, status: 0 };
   });
+
+  if ("error" in response) {
+    console.warn(response.error);
+    return response;
+  }
 
   if (!response.ok) {
     const detail = await response.text();
@@ -246,7 +260,14 @@ async function ensureStorageBucket() {
       file_size_limit: 10485760,
       allowed_mime_types: ["image/png", "image/jpeg", "image/webp"]
     })
+  }).catch((error) => {
+    const detail = error instanceof Error ? error.message : "unknown network error";
+    return { error: `Lusie Supabase bucket ensure failed before response: ${detail}` };
   });
+
+  if ("error" in response) {
+    return response.error;
+  }
 
   if (!response.ok && response.status !== 409) {
     const detail = await response.text();
@@ -260,15 +281,16 @@ async function ensureStorageBucket() {
 
 async function saveRunToSupabase(run: ModelRun) {
   const config = getStorageConfig();
+  const restKey = config.supabaseServiceRoleKey || config.supabaseKey;
 
-  if (!config.supabaseUrl || !config.supabaseKey) return;
+  if (!config.supabaseUrl || !restKey) return;
 
   try {
     const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history`, {
       method: "POST",
       headers: {
-        apikey: config.supabaseKey,
-        Authorization: `Bearer ${config.supabaseKey}`,
+        apikey: restKey,
+        Authorization: `Bearer ${restKey}`,
         "Content-Type": "application/json",
         Prefer: "resolution=merge-duplicates,return=minimal"
       },
@@ -278,8 +300,8 @@ async function saveRunToSupabase(run: ModelRun) {
         title: `${run.input.style || run.input.subtype} ${run.input.label || ""}`.trim(),
         label: run.input.label || run.runId.slice(0, 8),
         status: run.status === "Ready" ? "ready" : run.status === "Failed" ? "failed" : "concept",
-        input: { ...run.input, _files: run.files },
-        concepts: run.concepts.map(({ imageDataUrl: _imageDataUrl, ...concept }) => concept),
+        input: { ...run.input, _files: run.files, _reasons: run.reasons },
+        concepts: run.concepts.map(toPersistedConcept),
         selected_concept_id: run.selectedConceptId ?? null,
         preview_image_url: run.concepts[0]?.imageUrl ?? null,
         created_at: run.createdAt,
@@ -295,15 +317,22 @@ async function saveRunToSupabase(run: ModelRun) {
   }
 }
 
+function toPersistedConcept(concept: Concept) {
+  const persisted = { ...concept };
+  delete persisted.imageDataUrl;
+  return persisted;
+}
+
 async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
   const config = getStorageConfig();
+  const restKey = config.supabaseServiceRoleKey || config.supabaseKey;
 
-  if (!config.supabaseUrl || !config.supabaseKey) return null;
+  if (!config.supabaseUrl || !restKey) return null;
 
   const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history?run_id=eq.${encodeURIComponent(runId)}&select=input,concepts,selected_concept_id,status,created_at,updated_at&limit=1`, {
     headers: {
-      apikey: config.supabaseKey,
-      Authorization: `Bearer ${config.supabaseKey}`
+      apikey: restKey,
+      Authorization: `Bearer ${restKey}`
     }
   });
 
@@ -319,7 +348,10 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
   }>;
   const row = rows[0];
   if (!row) return null;
-  const { _files, ...input } = row.input as ModelRun["input"] & { _files?: ModelRun["files"] };
+  const { _files, _reasons, ...input } = row.input as ModelRun["input"] & {
+    _files?: ModelRun["files"];
+    _reasons?: string[];
+  };
 
   return {
     runId,
@@ -328,7 +360,7 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
     storage: inferStorageDiagnostics(row.concepts),
     selectedConceptId: row.selected_concept_id ?? undefined,
     status: row.status === "ready" ? "Ready" : row.status === "failed" ? "Failed" : undefined,
-    reasons: [],
+    reasons: _reasons ?? [],
     files: _files ?? {},
     createdAt: row.created_at,
     updatedAt: row.updated_at

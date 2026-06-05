@@ -1,0 +1,9 @@
+.git
+.next
+.playwright-mcp
+.tmp-*
+.vercel
+ShipModel
+ShipModel-main.zip
+aila-action-check
+node_modules
