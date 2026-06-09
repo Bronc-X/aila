@@ -965,8 +965,8 @@ function DownloadPageContent({ run, stlHref, onNew }: { run: ModelRun; stlHref: 
     <main className="result-page">
       <section className="success-card">
         <div className="success-view">
-          <div className="inspection-toolbar" aria-label="检查台视角">
-            <span>STL 几何预览</span>
+          <div className="inspection-toolbar" aria-label="成品预览视角">
+            <span>成品 STL 预览</span>
             {inspection.renders.map((render) => (
               <button className="view-chip" key={render.view} type="button" aria-pressed={activeView === render.view} onClick={() => setActiveView(render.view)}>
                 {viewLabel(render.view)}
@@ -985,10 +985,23 @@ function DownloadPageContent({ run, stlHref, onNew }: { run: ModelRun; stlHref: 
               <CheckCircle2 size={34} />
             </div>
             <div>
-              <h1>模型检查台</h1>
-              <p>当前显示的是 STL 几何预览，不是概念图材质还原。预览色只是单色检查材质，不代表 STL 自带颜色。</p>
+              <h1>STL 文件已生成</h1>
+              <p>成品文件已经准备好，可以直接下载。左侧模型只用于打印前快速预览和尺寸核对，不再作为下载流程的中间检查页。</p>
             </div>
           </div>
+          <section className="inspection-section download-ready-card" aria-label="STL 下载">
+            <h2>下载成品文件</h2>
+            <p>点击下载后会获取本次生成的 STL 文件；文件只包含可打印几何网格，贴图和颜色需要在打印或后处理阶段完成。</p>
+            <div className="action-row">
+              <a className="button primary" href={stlHref}>
+                <Download size={19} />
+                下载 STL 文件
+              </a>
+              <button className="button secondary" type="button" onClick={onNew}>
+                再做一版
+              </button>
+            </div>
+          </section>
           <div className="inspection-section fidelity-note">
             <h2>概念图仅作建模参考</h2>
             <p>最终 STL 只保留可打印网格，不包含概念图里的贴图、车窗材质、轮胎黑色、标志文字色彩或真实 PBR 材质。想在 3D 打印时接近效果图，可以后期喷涂、贴水贴纸，或改走 GLB/PBR 与多材料打印通道。</p>
@@ -996,7 +1009,7 @@ function DownloadPageContent({ run, stlHref, onNew }: { run: ModelRun; stlHref: 
           <div className="spec-grid">
             <Spec icon={<Ruler size={18} />} label="尺寸 (X, Y, Z)" value={`${dimensions.length} x ${dimensions.width} x ${dimensions.height} mm`} />
             <Spec icon={<Clock size={18} />} label="预计打印时长" value={inspection.printTime} />
-            <Spec icon={<Sparkles size={18} />} label="输出格式" value="STL geometry only" />
+            <Spec icon={<Sparkles size={18} />} label="输出格式" value="可下载 STL 文件" />
             <Spec icon={<Box size={18} />} label="runId" value={run.runId.slice(0, 8)} />
           </div>
           <section className="inspection-section">
@@ -1026,15 +1039,6 @@ function DownloadPageContent({ run, stlHref, onNew }: { run: ModelRun; stlHref: 
               ))}
             </ul>
           </section>
-          <div className="action-row">
-            <a className="button primary" href={stlHref}>
-              <Download size={19} />
-              下载 STL 文件
-            </a>
-            <button className="button secondary" type="button" onClick={onNew}>
-              再做一版
-            </button>
-          </div>
         </aside>
       </section>
     </main>
