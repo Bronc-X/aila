@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import type { ModelSubtype } from "../types";
 
 const previewFloorY = -0.58;
 
 interface ModelViewerProps {
   category: string;
+  subtype?: ModelSubtype;
   primaryColor: string;
   accentColor: string;
   status?: "Ready" | "Failed";
@@ -21,7 +23,7 @@ interface ModelViewerProps {
   viewMode?: "front" | "side" | "top" | "joint";
 }
 
-export function ModelViewer({ category, primaryColor, accentColor, status, stlUrl, dimensions, wireframe = false, pending = false, viewMode = "front" }: ModelViewerProps) {
+export function ModelViewer({ category, subtype, primaryColor, accentColor, status, stlUrl, dimensions, wireframe = false, pending = false, viewMode = "front" }: ModelViewerProps) {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -90,11 +92,11 @@ export function ModelViewer({ category, primaryColor, accentColor, status, stlUr
         },
         undefined,
         () => {
-          addParametricPreview(group, category, mainMaterial, accentMaterial, darkMaterial, dimensions);
+          addParametricPreview(group, category, subtype, mainMaterial, accentMaterial, darkMaterial, dimensions);
         }
       );
     } else {
-      addParametricPreview(group, category, mainMaterial, accentMaterial, darkMaterial, dimensions);
+      addParametricPreview(group, category, subtype, mainMaterial, accentMaterial, darkMaterial, dimensions);
     }
 
     if (wireframe) {
@@ -145,7 +147,7 @@ export function ModelViewer({ category, primaryColor, accentColor, status, stlUr
       renderer.dispose();
       mount.removeChild(renderer.domElement);
     };
-  }, [accentColor, category, dimensions, pending, primaryColor, status, stlUrl, viewMode, wireframe]);
+  }, [accentColor, category, dimensions, pending, primaryColor, status, stlUrl, subtype, viewMode, wireframe]);
 
   return <div className="viewer-canvas" ref={mountRef} aria-label="3D model preview" />;
 }
@@ -180,13 +182,14 @@ function getCameraPosition(viewMode: NonNullable<ModelViewerProps["viewMode"]>) 
 function addParametricPreview(
   group: THREE.Group,
   category: string,
+  subtype: ModelSubtype | undefined,
   mainMaterial: THREE.Material,
   accentMaterial: THREE.Material,
   darkMaterial: THREE.Material,
   dimensions?: { length: number; width: number; height: number }
 ) {
   if (category === "aircraft") {
-    addAircraft(group, mainMaterial, accentMaterial, darkMaterial);
+    addAircraft(group, subtype, mainMaterial, accentMaterial, darkMaterial);
   } else if (category === "ship") {
     addShip(group, mainMaterial, accentMaterial, darkMaterial);
   } else {
@@ -288,16 +291,22 @@ function addVehicle(
 
 function addAircraft(
   group: THREE.Group,
+  subtype: ModelSubtype | undefined,
   main: THREE.Material,
   accent: THREE.Material,
   dark: THREE.Material
 ) {
-  const fuselage = new THREE.Mesh(new THREE.CapsuleGeometry(0.36, 2.4, 8, 24), main);
+  if (subtype === "biplane") {
+    addBiplane(group, main, accent, dark);
+    return;
+  }
+
+  const fuselage = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 2.55, 8, 28), main);
   fuselage.rotation.z = Math.PI / 2;
   fuselage.castShadow = true;
   group.add(fuselage);
 
-  const wing = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.12, 3.6), accent);
+  const wing = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.1, 3.95), accent);
   wing.position.set(0.05, 0, 0);
   wing.castShadow = true;
   group.add(wing);
@@ -317,6 +326,90 @@ function addAircraft(
   nose.position.set(1.55, 0, 0);
   nose.castShadow = true;
   group.add(nose);
+}
+
+function addBiplane(
+  group: THREE.Group,
+  main: THREE.Material,
+  accent: THREE.Material,
+  dark: THREE.Material
+) {
+  const fuselage = new THREE.Mesh(new THREE.CapsuleGeometry(0.28, 2.35, 8, 28), main);
+  fuselage.rotation.z = Math.PI / 2;
+  fuselage.position.y = 0.02;
+  fuselage.castShadow = true;
+  group.add(fuselage);
+
+  const upperWing = new THREE.Mesh(new THREE.BoxGeometry(2.82, 0.08, 3.65), accent);
+  upperWing.position.set(0.08, 0.62, 0);
+  upperWing.castShadow = true;
+  group.add(upperWing);
+
+  const lowerWing = new THREE.Mesh(new THREE.BoxGeometry(2.55, 0.08, 3.18), accent);
+  lowerWing.position.set(0.02, -0.03, 0);
+  lowerWing.castShadow = true;
+  group.add(lowerWing);
+
+  [-0.72, 0.72].forEach((x) => {
+    [-1.34, 1.34].forEach((z) => {
+      const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.72, 10), dark);
+      strut.position.set(x, 0.3, z);
+      strut.rotation.z = x > 0 ? 0.12 : -0.12;
+      strut.castShadow = true;
+      group.add(strut);
+    });
+  });
+
+  const tailPlane = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.07, 1.18), accent);
+  tailPlane.position.set(-1.26, 0.25, 0);
+  tailPlane.castShadow = true;
+  group.add(tailPlane);
+
+  const fin = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.62, 0.1), accent);
+  fin.position.set(-1.38, 0.55, 0);
+  fin.castShadow = true;
+  group.add(fin);
+
+  const nose = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.3, 28), dark);
+  nose.rotation.z = Math.PI / 2;
+  nose.position.set(1.32, 0.02, 0);
+  nose.castShadow = true;
+  group.add(nose);
+
+  const propHub = new THREE.Mesh(new THREE.SphereGeometry(0.12, 18, 12), dark);
+  propHub.position.set(1.54, 0.02, 0);
+  propHub.castShadow = true;
+  group.add(propHub);
+
+  const propeller = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.82, 0.12), dark);
+  propeller.position.set(1.62, 0.02, 0);
+  propeller.castShadow = true;
+  group.add(propeller);
+
+  [-0.72, 0.72].forEach((z) => {
+    const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.1, 24), dark);
+    wheel.rotation.x = Math.PI / 2;
+    wheel.position.set(0.72, -0.52, z);
+    wheel.castShadow = true;
+    group.add(wheel);
+
+    const gear = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.62, 8), dark);
+    gear.position.set(0.52, -0.28, z);
+    gear.rotation.z = 0.34;
+    gear.castShadow = true;
+    group.add(gear);
+  });
+
+  const axle = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 1.58, 8), dark);
+  axle.rotation.x = Math.PI / 2;
+  axle.position.set(0.72, -0.52, 0);
+  axle.castShadow = true;
+  group.add(axle);
+
+  const cockpit = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.018, 8, 20), dark);
+  cockpit.rotation.x = Math.PI / 2;
+  cockpit.position.set(-0.28, 0.34, 0);
+  group.add(cockpit);
 }
 
 function addShip(

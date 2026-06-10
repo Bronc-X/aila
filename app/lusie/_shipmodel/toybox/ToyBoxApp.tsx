@@ -466,7 +466,7 @@ export function ToyBoxApp() {
             </div>
             <div className="viewport-center">
               {readyRun ? (
-                <ModelViewer category={input.category} primaryColor={input.primaryColor} accentColor={input.accentColor} stlUrl={stlDownloadHref} />
+                <ModelViewer category={input.category} subtype={input.subtype} primaryColor={input.primaryColor} accentColor={input.accentColor} stlUrl={stlDownloadHref} />
               ) : (
                 <ConceptPreview input={input} preview={activePreview} mode={previewMode} />
               )}
@@ -737,7 +737,7 @@ function ConceptPreview({ input, preview, mode }: { input: ModelRequest; preview
     <section className={`concept-preview-stage ${mode}`} aria-label={preview.title}>
       {mode === "wireframe" ? (
         <div className="wireframe-preview">
-          <ModelViewer category={input.category} primaryColor={input.primaryColor} accentColor={input.accentColor} dimensions={{ length: input.targetLengthMm, width: yAxis, height: zAxis }} wireframe pending />
+          <ModelViewer category={input.category} subtype={input.subtype} primaryColor={input.primaryColor} accentColor={input.accentColor} dimensions={{ length: input.targetLengthMm, width: yAxis, height: zAxis }} wireframe pending />
           <div className="blueprint-layer visible" aria-hidden="true">
             <div className="outline-box">
               <span className="measure measure-x">{input.targetLengthMm} mm</span>
@@ -973,7 +973,7 @@ function DownloadPageContent({ run, stlHref, onNew }: { run: ModelRun; stlHref: 
               </button>
             ))}
           </div>
-          <ModelViewer category={run.input.category} primaryColor={run.input.primaryColor} accentColor={run.input.accentColor} status="Ready" stlUrl={stlHref} dimensions={dimensions} viewMode={activeView} />
+          <ModelViewer category={run.input.category} subtype={run.input.subtype} primaryColor={run.input.primaryColor} accentColor={run.input.accentColor} status="Ready" stlUrl={stlHref} dimensions={dimensions} viewMode={activeView} />
           <div className="inspection-readout" aria-label="模型读数">
             <span>{`${dimensions.length}mm X-axis`}</span>
             <span>{activeRender?.label ?? "局部视图"}</span>
