@@ -5,6 +5,7 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import type { ModelSubtype } from "../types";
 
 const previewFloorY = -0.58;
+const stlGeometryCache = new Map<string, Promise<THREE.BufferGeometry>>();
 
 interface ModelViewerProps {
   category: string;
@@ -60,6 +61,7 @@ export function ModelViewer({ category, subtype, primaryColor, accentColor, stat
 
     const group = new THREE.Group();
     scene.add(group);
+    let disposed = false;
 
     const mainMaterial = new THREE.MeshStandardMaterial({
       color: status === "Failed" ? "#6d7476" : primaryColor,
@@ -83,18 +85,15 @@ export function ModelViewer({ category, subtype, primaryColor, accentColor, stat
     if (pending) {
       addPendingPreview(group, primaryColor, accentColor, dimensions);
     } else if (stlUrl) {
-      const loader = new STLLoader();
-      loader.load(
-        stlUrl,
-        (geometry) => {
-          geometry.computeVertexNormals();
+      loadStlGeometry(stlUrl)
+        .then((geometry) => {
+          if (disposed) return;
           prepareLoadedStlPreview(group, geometry, mainMaterial);
-        },
-        undefined,
-        () => {
+        })
+        .catch(() => {
+          if (disposed) return;
           addParametricPreview(group, category, subtype, mainMaterial, accentMaterial, darkMaterial, dimensions);
-        }
-      );
+        });
     } else {
       addParametricPreview(group, category, subtype, mainMaterial, accentMaterial, darkMaterial, dimensions);
     }
@@ -141,6 +140,7 @@ export function ModelViewer({ category, subtype, primaryColor, accentColor, stat
     resizeObserver.observe(mount);
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(animationId);
       resizeObserver.disconnect();
       controls.dispose();
@@ -150,6 +150,28 @@ export function ModelViewer({ category, subtype, primaryColor, accentColor, stat
   }, [accentColor, category, dimensions, pending, primaryColor, status, stlUrl, subtype, viewMode, wireframe]);
 
   return <div className="viewer-canvas" ref={mountRef} aria-label="3D model preview" />;
+}
+
+function loadStlGeometry(stlUrl: string) {
+  const cached = stlGeometryCache.get(stlUrl);
+  if (cached) return cached.then((geometry) => geometry.clone());
+
+  const geometryPromise = new Promise<THREE.BufferGeometry>((resolve, reject) => {
+    const loader = new STLLoader();
+    loader.load(
+      stlUrl,
+      (geometry) => {
+        geometry.computeVertexNormals();
+        resolve(geometry);
+      },
+      undefined,
+      reject
+    );
+  });
+
+  stlGeometryCache.set(stlUrl, geometryPromise);
+  geometryPromise.catch(() => stlGeometryCache.delete(stlUrl));
+  return geometryPromise.then((geometry) => geometry.clone());
 }
 
 export function prepareLoadedStlPreview(

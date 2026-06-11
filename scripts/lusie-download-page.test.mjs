@@ -19,3 +19,10 @@ test("Lusie download preview keeps subtype-specific fallback geometry", () => {
   assert.match(modelViewerSource, /subtype === "biplane"/);
   assert.match(modelViewerSource, /addBiplane/);
 });
+
+test("Lusie STL preview caches loaded geometry across view changes", () => {
+  assert.match(modelViewerSource, /const stlGeometryCache = new Map/);
+  assert.match(modelViewerSource, /loadStlGeometry\(stlUrl\)/);
+  assert.match(modelViewerSource, /geometry\.clone\(\)/);
+  assert.match(modelViewerSource, /stlGeometryCache\.delete\(stlUrl\)/);
+});
