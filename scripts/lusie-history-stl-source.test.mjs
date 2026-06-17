@@ -8,6 +8,7 @@ const apiSource = readFileSync(new URL("../app/lusie/_shipmodel/api.ts", import.
 const clientTypesSource = readFileSync(new URL("../app/lusie/_shipmodel/types.ts", import.meta.url), "utf8");
 const storageSource = readFileSync(new URL("../lib/lusie/server/storage.ts", import.meta.url), "utf8");
 const historyRouteSource = readFileSync(new URL("../app/api/lusie/history/route.ts", import.meta.url), "utf8");
+const historyPageSource = readFileSync(new URL("../app/lusie/ai/LusieHistoryClient.tsx", import.meta.url), "utf8");
 
 test("Lusie history preserves and reuses STL source URLs for 3D rendering", () => {
   assert.match(historySource, /stlSourceUrl\?: string/);
@@ -47,6 +48,12 @@ test("Lusie Supabase history list avoids loading heavy concept payloads before S
   assert.match(storageSource, /loadHistoryRowFromSupabase\(row/);
   assert.match(storageSource, /stripEmbeddedConceptImages/);
   assert.doesNotMatch(storageSource, /select=run_id,input,concepts,selected_concept_id,status,created_at,updated_at&order=updated_at\.desc/);
+});
+
+test("Lusie history page keeps the Tripo STL source URL on preview and download links", () => {
+  assert.match(historyPageSource, /withStlSource\(run\.files\.stl/);
+  assert.match(historyPageSource, /run\.files\.stlSourceUrl/);
+  assert.match(historyPageSource, /source=\$\{encodeURIComponent\(sourceUrl\)\}/);
 });
 
 test("Lusie local generated runs persist in the project during development", () => {

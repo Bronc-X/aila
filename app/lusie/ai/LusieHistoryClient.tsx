@@ -69,7 +69,7 @@ function HistoryRecordCard({ run }: { run: ModelRun }) {
   const selectedConcept = run.concepts.find((concept) => concept.id === run.selectedConceptId) ?? run.concepts[0];
   const dimensions = useMemo(() => getModelDimensions(run.input.targetLengthMm), [run.input.targetLengthMm]);
   const inspection = getInspectionProfile(run.input.category);
-  const stlHref = run.files.stl ?? `/api/lusie/runs/${encodeURIComponent(run.runId)}/download/stl`;
+  const stlHref = withStlSource(run.files.stl ?? `/api/lusie/runs/${encodeURIComponent(run.runId)}/download/stl`, run.files.stlSourceUrl);
   const stlSourceLabel = run.files.stlSourceUrl ? "Tripo source" : "local STL";
   const stlState = stlLoadFailed ? "STL 预览待恢复" : "STL 可下载";
 
@@ -164,6 +164,11 @@ function Spec({ icon, label, value }: { icon: React.ReactNode; label: string; va
 
 function isDeliverableRun(run: ModelRun) {
   return run.status === "Ready" && Boolean(run.runId && run.files.stl && (run.files.stlSourceUrl || run.files.stlPersisted));
+}
+
+function withStlSource(href: string, sourceUrl?: string) {
+  if (!sourceUrl) return href;
+  return `${href}${href.includes("?") ? "&" : "?"}source=${encodeURIComponent(sourceUrl)}`;
 }
 
 function getModelDimensions(length: number) {
