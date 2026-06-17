@@ -27,7 +27,7 @@ import {
   Wand2
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { generateConcepts, generateModel, getHandshake, getRun, reviseConcept } from "../api";
+import { generateConcepts, generateModel, getHandshake, getHistoryRuns, getRun, reviseConcept } from "../api";
 import { ModelViewer } from "../components/ModelViewer";
 import type { Concept, ConceptProgressEvent, HandshakeResponse, ModelCategory, ModelJobEvent, ModelRequest, ModelRun, ModelSubtype } from "../types";
 import { categories, colors, defaultInput, defaultInputForSubtype, defaultPrompts, firstStyle, firstSubtype, stylesByCategory } from "./catalog";
@@ -37,6 +37,7 @@ import {
   entryFromRunStatus,
   getHistoryEntries,
   getMembership,
+  historyEntryFromRun,
   setMembership,
   type LocalHistoryEntry,
   type MembershipSnapshot
@@ -109,6 +110,22 @@ export function ToyBoxApp() {
     getHandshake()
       .then(setHandshake)
       .catch((error) => showToast(error instanceof Error ? error.message : "API 连接失败，请检查本地服务。", "error"));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    getHistoryRuns()
+      .then(({ runs }) => {
+        if (cancelled) return;
+        setHistoryEntries(mergeHistoryEntries(runs.map(historyEntryFromRun), getHistoryEntries()));
+      })
+      .catch(() => {
+        if (!cancelled) setHistoryEntries(filterRecoverableLocalHistory(getHistoryEntries()));
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -186,8 +203,13 @@ export function ToyBoxApp() {
         return null;
       }
     })).then((restoredEntries) => {
-      if (!cancelled && restoredEntries.some(Boolean)) {
-        setHistoryEntries(getHistoryEntries());
+      if (!cancelled) {
+        const restored = restoredEntries.filter((entry): entry is LocalHistoryEntry => Boolean(entry));
+        if (restored.length) {
+          setHistoryEntries(mergeHistoryEntries(restored, getHistoryEntries()));
+        } else {
+          setHistoryEntries(filterRecoverableLocalHistory(getHistoryEntries()));
+        }
       }
     });
 
@@ -418,7 +440,7 @@ export function ToyBoxApp() {
 
   function saveHistory(entry: Parameters<typeof appendHistoryEntry>[1]) {
     const saved = appendHistoryEntry(localStorage, entry);
-    setHistoryEntries(getHistoryEntries());
+    setHistoryEntries((current) => mergeHistoryEntries([saved], current));
     void syncHistoryEntry(saved);
     return saved;
   }
@@ -1374,6 +1396,22 @@ function getHistoryStlHref(entry: LocalHistoryEntry) {
 function withStlSource(href: string, sourceUrl?: string) {
   if (!sourceUrl) return href;
   return `${href}${href.includes("?") ? "&" : "?"}source=${encodeURIComponent(sourceUrl)}`;
+}
+
+function mergeHistoryEntries(primary: LocalHistoryEntry[], secondary: LocalHistoryEntry[]) {
+  const byId = new Map<string, LocalHistoryEntry>();
+  for (const entry of [...primary, ...filterRecoverableLocalHistory(secondary)]) {
+    const key = entry.runId ?? entry.id;
+    if (!byId.has(key)) byId.set(key, entry);
+  }
+  return Array.from(byId.values()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+function filterRecoverableLocalHistory(entries: LocalHistoryEntry[]) {
+  return entries.filter((entry) => {
+    if (entry.status !== "ready") return true;
+    return Boolean(entry.files.stlSourceUrl);
+  });
 }
 
 function StoragePage({

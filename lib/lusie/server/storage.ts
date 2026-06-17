@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
 import type { Concept, ModelRun, StorageDiagnostics } from "./types";
@@ -120,6 +120,22 @@ export async function probeStorageUpload() {
     hasKey: Boolean(config.supabaseStorageKey),
     hasAdminKey: Boolean(config.supabaseServiceRoleKey)
   };
+}
+
+export async function listRuns(limit = 30): Promise<ModelRun[]> {
+  const byRunId = new Map<string, ModelRun>();
+
+  for (const run of await listRunsFromSupabase(limit)) {
+    byRunId.set(run.runId, run);
+  }
+
+  for (const run of await listRunsFromDisk(limit)) {
+    if (!byRunId.has(run.runId)) byRunId.set(run.runId, run);
+  }
+
+  return Array.from(byRunId.values())
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, limit);
 }
 
 type StorageUploadResult = {
@@ -348,6 +364,81 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
   }>;
   const row = rows[0];
   if (!row) return null;
+  const { _files, _reasons, ...input } = row.input as ModelRun["input"] & {
+    _files?: ModelRun["files"];
+    _reasons?: string[];
+  };
+
+  return {
+    runId,
+    input,
+    concepts: row.concepts,
+    storage: inferStorageDiagnostics(row.concepts),
+    selectedConceptId: row.selected_concept_id ?? undefined,
+    status: row.status === "ready" ? "Ready" : row.status === "failed" ? "Failed" : undefined,
+    reasons: _reasons ?? [],
+    files: _files ?? {},
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+}
+
+async function listRunsFromSupabase(limit: number): Promise<ModelRun[]> {
+  const config = getStorageConfig();
+  const restKey = config.supabaseServiceRoleKey || config.supabaseKey;
+
+  if (!config.supabaseUrl || !restKey) return [];
+
+  const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history?select=run_id,input,concepts,selected_concept_id,status,created_at,updated_at&order=updated_at.desc&limit=${limit}`, {
+    headers: {
+      apikey: restKey,
+      Authorization: `Bearer ${restKey}`
+    }
+  });
+
+  if (!response.ok) return [];
+
+  const rows = (await response.json()) as Array<{
+    run_id: string | null;
+    input: ModelRun["input"];
+    concepts: ModelRun["concepts"];
+    selected_concept_id: string | null;
+    status: "saved" | "concept" | "ready" | "failed";
+    created_at: string;
+    updated_at: string;
+  }>;
+
+  return rows
+    .filter((row) => row.run_id)
+    .map((row) => runFromHistoryRow(row.run_id ?? "", row));
+}
+
+async function listRunsFromDisk(limit: number): Promise<ModelRun[]> {
+  try {
+    const entries = await readdir(runsDir, { withFileTypes: true });
+    const runs = await Promise.all(entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => loadRun(entry.name).catch(() => null)));
+    return runs
+      .filter((run): run is ModelRun => Boolean(run))
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+      .slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
+function runFromHistoryRow(
+  runId: string,
+  row: {
+    input: ModelRun["input"];
+    concepts: ModelRun["concepts"];
+    selected_concept_id: string | null;
+    status: "saved" | "concept" | "ready" | "failed";
+    created_at: string;
+    updated_at: string;
+  }
+): ModelRun {
   const { _files, _reasons, ...input } = row.input as ModelRun["input"] & {
     _files?: ModelRun["files"];
     _reasons?: string[];
