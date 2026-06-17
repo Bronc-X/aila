@@ -40,6 +40,15 @@ test("Lusie history loads server-side generated runs instead of localStorage onl
   assert.match(clientTypesSource, /stlPersisted\?: boolean/);
 });
 
+test("Lusie Supabase history list avoids loading heavy concept payloads before STL filtering", () => {
+  assert.match(storageSource, /status=eq\.ready&select=run_id,input,selected_concept_id,status,created_at,updated_at/);
+  assert.match(storageSource, /getSupabaseHistoryFiles\(row\.input\)/);
+  assert.match(storageSource, /files\.stl \|\| files\.stlSourceUrl \|\| files\.stlPersisted/);
+  assert.match(storageSource, /loadHistoryRowFromSupabase\(row/);
+  assert.match(storageSource, /stripEmbeddedConceptImages/);
+  assert.doesNotMatch(storageSource, /select=run_id,input,concepts,selected_concept_id,status,created_at,updated_at&order=updated_at\.desc/);
+});
+
 test("Lusie local generated runs persist in the project during development", () => {
   assert.match(storageSource, /process\.cwd\(\), "data", "lusie", "runs"/);
   assert.doesNotMatch(storageSource, /toni-lusie-runs/);

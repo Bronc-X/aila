@@ -409,31 +409,82 @@ async function listRunsFromSupabase(limit: number): Promise<{ configured: boolea
 
   if (!config.supabaseUrl || !restKey) return { configured: false, error: "supabase_not_configured", runs: [] };
 
-  const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history?select=run_id,input,concepts,selected_concept_id,status,created_at,updated_at&order=updated_at.desc&limit=${limit}`, {
+  const metadataResponse = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history?status=eq.ready&select=run_id,input,selected_concept_id,status,created_at,updated_at&order=updated_at.desc&limit=${limit}`, {
     headers: {
       apikey: restKey,
       Authorization: `Bearer ${restKey}`
     }
   });
 
-  if (!response.ok) return { configured: true, error: `supabase_${response.status}`, runs: [] };
+  if (!metadataResponse.ok) return { configured: true, error: await formatSupabaseListError(metadataResponse), runs: [] };
 
-  const rows = (await response.json()) as Array<{
-    run_id: string | null;
-    input: ModelRun["input"];
-    concepts: ModelRun["concepts"];
-    selected_concept_id: string | null;
-    status: "saved" | "concept" | "ready" | "failed";
-    created_at: string;
-    updated_at: string;
-  }>;
+  const metadataRows = (await metadataResponse.json()) as SupabaseHistorySummaryRow[];
+  const deliverableRows = metadataRows.filter((row) => {
+    const files = getSupabaseHistoryFiles(row.input);
+    return row.run_id && (files.stl || files.stlSourceUrl || files.stlPersisted);
+  });
+
+  const detailRows = await Promise.all(
+    deliverableRows.map(async (row) => loadHistoryRowFromSupabase(row, restKey, config.supabaseUrl))
+  );
 
   return {
     configured: true,
-    runs: rows
-      .filter((row) => row.run_id)
+    runs: detailRows
+      .filter((row): row is SupabaseHistoryRow => Boolean(row))
       .map((row) => runFromHistoryRow(row.run_id ?? "", row))
+      .filter((run) => run.status === "Ready")
   };
+}
+
+type SupabaseHistorySummaryRow = Omit<SupabaseHistoryRow, "concepts">;
+
+type SupabaseHistoryRow = {
+  run_id: string | null;
+  input: ModelRun["input"];
+  concepts: ModelRun["concepts"];
+  selected_concept_id: string | null;
+  status: "saved" | "concept" | "ready" | "failed";
+  created_at: string;
+  updated_at: string;
+};
+
+async function loadHistoryRowFromSupabase(summary: SupabaseHistorySummaryRow, restKey: string, supabaseUrl: string): Promise<SupabaseHistoryRow | null> {
+  const runId = summary.run_id;
+  if (!runId) return null;
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/toybox_history?run_id=eq.${encodeURIComponent(runId)}&select=run_id,input,concepts,selected_concept_id,status,created_at,updated_at&limit=1`, {
+    headers: {
+      apikey: restKey,
+      Authorization: `Bearer ${restKey}`
+    }
+  });
+
+  if (!response.ok) {
+    console.warn(`Lusie Supabase history detail failed for ${runId}: ${await formatSupabaseListError(response)}`);
+    return null;
+  }
+
+  const rows = (await response.json()) as SupabaseHistoryRow[];
+  const row = rows[0];
+  if (!row) return null;
+
+  return {
+    ...row,
+    concepts: stripEmbeddedConceptImages(row.concepts)
+  };
+}
+
+async function formatSupabaseListError(response: Response) {
+  const detail = await response.text().catch(() => "");
+  if (!detail) return `supabase_${response.status}`;
+
+  try {
+    const parsed = JSON.parse(detail) as { code?: string; message?: string };
+    return `supabase_${response.status}${parsed.code ? `_${parsed.code}` : ""}${parsed.message ? `: ${parsed.message}` : ""}`;
+  } catch {
+    return `supabase_${response.status}: ${detail.slice(0, 240)}`;
+  }
 }
 
 async function listRunsFromDisk(limit: number): Promise<ModelRun[]> {
@@ -482,6 +533,17 @@ function runFromHistoryRow(
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
+}
+
+function getSupabaseHistoryFiles(input: ModelRun["input"]) {
+  return ((input as ModelRun["input"] & { _files?: ModelRun["files"] })._files ?? {}) as ModelRun["files"];
+}
+
+function stripEmbeddedConceptImages(concepts: ModelRun["concepts"]) {
+  return concepts.map((concept) => {
+    const { imageDataUrl, ...persisted } = concept;
+    return persisted;
+  });
 }
 
 function toHistoryRunPayload(run: ModelRun): ModelRun {
