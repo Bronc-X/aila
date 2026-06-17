@@ -153,14 +153,19 @@ export default async function ContactPage() {
           aria-label="Open Bronc-X Lotus on GitHub"
         >
           <span className={styles.openSourceBadge}>
-            <Github size={16} />
-            Open Source Project
+            <Image
+              src="/brand/toni-lotus/toni-lotus-pdf-lockup-light.svg"
+              alt=""
+              width={164}
+              height={44}
+              aria-hidden="true"
+            />
           </span>
           <div>
-            <small>Lotus</small>
+            <small>Agent Operating Layer</small>
             <strong>{lotusRepo?.full_name ?? "Bronc-X/Lotus"}</strong>
             <p>
-              Lotus 是我维护的开源 AI Agent 规则项目：把工程协议、质量门禁和协作规则写一次，再部署到不同 IDE 与编码 Agent。
+              Lotus 是 Toni 的 Agent 工作系统：把工程协议、质量门禁和协作规则写一次，再沉淀成可复用的项目启动层。
             </p>
           </div>
           <span className={styles.starCount}>

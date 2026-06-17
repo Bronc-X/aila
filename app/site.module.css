@@ -290,7 +290,26 @@
 
 .openSourceBadge {
   margin-bottom: 1.6rem;
-  padding: 0.52rem 0.7rem;
+  padding: 0.42rem 0.6rem;
+}
+
+.openSourceBadge img {
+  display: block;
+  width: 10.25rem;
+  height: auto;
+}
+
+.lotusCardBrand {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(223, 167, 176, 0.42);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.lotusCardBrand img {
+  object-fit: contain;
+  padding: 1.05rem;
 }
 
 .openSourceCard small {
@@ -616,6 +635,11 @@
   background:
     radial-gradient(circle at 84% 14%, rgba(168, 240, 106, 0.38), transparent 10rem),
     rgba(255, 249, 234, 0.82);
+}
+
+.lotusCardBrand {
+  aspect-ratio: 16 / 5;
+  margin-bottom: 1rem;
 }
 
 .card small,

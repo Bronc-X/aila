@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowUpRight,
   BrainCircuit,
   FileSearch,
-  GitBranch as Github,
   HeartHandshake,
   Music2,
   MapPinned,
@@ -104,10 +104,17 @@ export default function WorkPage() {
             </span>
           </a>
           <a href="https://github.com/Bronc-X/Lotus" target="_blank" rel="noopener noreferrer" className={styles.workCard}>
+            <div className={styles.lotusCardBrand} aria-hidden="true">
+              <Image
+                src="/brand/toni-lotus/toni-lotus-pdf-lockup-light.svg"
+                alt=""
+                fill
+                sizes="420px"
+              />
+            </div>
             <small>Open source</small>
-            <Github size={24} />
-            <h3>Lotus</h3>
-            <p>Agent 工程规则工具包，把协作规则一次写好，再部署到不同工具。</p>
+            <h3>Lotus × Toni</h3>
+            <p>Toni 的 Agent Operating Layer，把协作规则、质量门禁和项目启动协议沉淀成可复用系统。</p>
             <span className={styles.resourceLink}>
               打开 GitHub <ArrowUpRight size={14} />
             </span>
