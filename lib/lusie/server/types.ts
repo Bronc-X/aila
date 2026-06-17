@@ -69,6 +69,7 @@ export interface ModelRun {
   files: {
     stl?: string;
     stlSourceUrl?: string;
+    stlPersisted?: boolean;
     threeMf?: string;
   };
   createdAt: string;

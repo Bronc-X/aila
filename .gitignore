@@ -53,3 +53,6 @@ public/*.png.jpeg
 ShipModel/
 ShipModel-main.zip
 aila-action-check/
+
+# local recovered/generated Lusie run artifacts
+/data/lusie/runs/

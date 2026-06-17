@@ -5,12 +5,15 @@ import { test } from "node:test";
 const toyboxSource = readFileSync(new URL("../app/lusie/_shipmodel/toybox/ToyBoxApp.tsx", import.meta.url), "utf8");
 const historySource = readFileSync(new URL("../app/lusie/_shipmodel/toybox/localHistory.ts", import.meta.url), "utf8");
 const apiSource = readFileSync(new URL("../app/lusie/_shipmodel/api.ts", import.meta.url), "utf8");
+const clientTypesSource = readFileSync(new URL("../app/lusie/_shipmodel/types.ts", import.meta.url), "utf8");
 const storageSource = readFileSync(new URL("../lib/lusie/server/storage.ts", import.meta.url), "utf8");
 const historyRouteSource = readFileSync(new URL("../app/api/lusie/history/route.ts", import.meta.url), "utf8");
 
 test("Lusie history preserves and reuses STL source URLs for 3D rendering", () => {
   assert.match(historySource, /stlSourceUrl\?: string/);
+  assert.match(historySource, /stlPersisted\?: boolean/);
   assert.match(historySource, /typeof files\.stlSourceUrl === "string"/);
+  assert.match(historySource, /files\.stlPersisted === true/);
   assert.match(toyboxSource, /withStlSource\(entry\.files\.stl, entry\.files\.stlSourceUrl\)/);
   assert.match(toyboxSource, /source=\$\{encodeURIComponent\(sourceUrl\)\}/);
 });
@@ -18,7 +21,7 @@ test("Lusie history preserves and reuses STL source URLs for 3D rendering", () =
 test("Lusie history attempts to recover missing STL source metadata from saved runs", () => {
   assert.match(toyboxSource, /historyRecoveryRunIds/);
   assert.match(toyboxSource, /await getRun\(entry\.runId\)/);
-  assert.match(toyboxSource, /restoredRun\.files\.stlSourceUrl/);
+  assert.match(toyboxSource, /hasRecoverableStl\(restoredRun\.files\)/);
 });
 
 test("Lusie history loads server-side generated runs instead of localStorage only", () => {
@@ -26,6 +29,18 @@ test("Lusie history loads server-side generated runs instead of localStorage onl
   assert.match(historyRouteSource, /listRuns/);
   assert.match(apiSource, /export async function getHistoryRuns/);
   assert.match(toyboxSource, /getHistoryRuns\(\)/);
-  assert.match(toyboxSource, /mergeHistoryEntries\(runs\.map\(historyEntryFromRun\), getHistoryEntries\(\)\)/);
-  assert.match(toyboxSource, /filterRecoverableLocalHistory/);
+  assert.match(toyboxSource, /const localEntries = getHistoryEntries\(\)/);
+  assert.match(toyboxSource, /mergeHistoryEntries\(runs\.map\(historyEntryFromRun\), localEntries\)/);
+  assert.match(toyboxSource, /filterDeliverableHistoryEntries/);
+  assert.match(toyboxSource, /hasRecoverableStl/);
+  assert.match(toyboxSource, /files\.stlSourceUrl \|\| files\.stlPersisted/);
+  assert.match(storageSource, /markPersistedStl/);
+  assert.match(storageSource, /stlStats\.size >= 256/);
+  assert.match(storageSource, /\/api\/lusie\/runs\/\$\{run\.runId\}\/download\/stl/);
+  assert.match(clientTypesSource, /stlPersisted\?: boolean/);
+});
+
+test("Lusie local generated runs persist in the project during development", () => {
+  assert.match(storageSource, /process\.cwd\(\), "data", "lusie", "runs"/);
+  assert.doesNotMatch(storageSource, /toni-lusie-runs/);
 });

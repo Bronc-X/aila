@@ -1,9 +1,8 @@
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
-import os from "node:os";
 import type { Concept, ModelRun, StorageDiagnostics } from "./types";
 
-export const runsDir = process.env.LUSIE_RUNS_DIR ?? path.join(os.tmpdir(), "toni-lusie-runs");
+export const runsDir = process.env.LUSIE_RUNS_DIR ?? path.join(/*turbopackIgnore: true*/ process.cwd(), "data", "lusie", "runs");
 
 function getStorageConfig() {
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.NEXT_PUBLIC_LUSIE_SUPABASE_URL ?? "").replace(/\/+$/, "");
@@ -122,20 +121,41 @@ export async function probeStorageUpload() {
   };
 }
 
-export async function listRuns(limit = 30): Promise<ModelRun[]> {
-  const byRunId = new Map<string, ModelRun>();
+export type RunListResult = {
+  runs: ModelRun[];
+  diagnostics: {
+    diskCount: number;
+    supabaseConfigured: boolean;
+    supabaseCount: number;
+    supabaseError?: string;
+  };
+};
 
-  for (const run of await listRunsFromSupabase(limit)) {
+export async function listRuns(limit = 30): Promise<RunListResult> {
+  const byRunId = new Map<string, ModelRun>();
+  const supabaseResult = await listRunsFromSupabase(limit);
+  const diskRuns = await listRunsFromDisk(limit);
+
+  for (const run of supabaseResult.runs) {
     byRunId.set(run.runId, run);
   }
 
-  for (const run of await listRunsFromDisk(limit)) {
+  for (const run of diskRuns) {
     if (!byRunId.has(run.runId)) byRunId.set(run.runId, run);
   }
 
-  return Array.from(byRunId.values())
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
-    .slice(0, limit);
+  return {
+    runs: Array.from(byRunId.values())
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+      .slice(0, limit)
+      .map(toHistoryRunPayload),
+    diagnostics: {
+      diskCount: diskRuns.length,
+      supabaseConfigured: supabaseResult.configured,
+      supabaseCount: supabaseResult.runs.length,
+      supabaseError: supabaseResult.error
+    }
+  };
 }
 
 type StorageUploadResult = {
@@ -383,11 +403,11 @@ async function loadRunFromSupabase(runId: string): Promise<ModelRun | null> {
   };
 }
 
-async function listRunsFromSupabase(limit: number): Promise<ModelRun[]> {
+async function listRunsFromSupabase(limit: number): Promise<{ configured: boolean; error?: string; runs: ModelRun[] }> {
   const config = getStorageConfig();
   const restKey = config.supabaseServiceRoleKey || config.supabaseKey;
 
-  if (!config.supabaseUrl || !restKey) return [];
+  if (!config.supabaseUrl || !restKey) return { configured: false, error: "supabase_not_configured", runs: [] };
 
   const response = await fetch(`${config.supabaseUrl}/rest/v1/toybox_history?select=run_id,input,concepts,selected_concept_id,status,created_at,updated_at&order=updated_at.desc&limit=${limit}`, {
     headers: {
@@ -396,7 +416,7 @@ async function listRunsFromSupabase(limit: number): Promise<ModelRun[]> {
     }
   });
 
-  if (!response.ok) return [];
+  if (!response.ok) return { configured: true, error: `supabase_${response.status}`, runs: [] };
 
   const rows = (await response.json()) as Array<{
     run_id: string | null;
@@ -408,9 +428,12 @@ async function listRunsFromSupabase(limit: number): Promise<ModelRun[]> {
     updated_at: string;
   }>;
 
-  return rows
-    .filter((row) => row.run_id)
-    .map((row) => runFromHistoryRow(row.run_id ?? "", row));
+  return {
+    configured: true,
+    runs: rows
+      .filter((row) => row.run_id)
+      .map((row) => runFromHistoryRow(row.run_id ?? "", row))
+  };
 }
 
 async function listRunsFromDisk(limit: number): Promise<ModelRun[]> {
@@ -418,7 +441,10 @@ async function listRunsFromDisk(limit: number): Promise<ModelRun[]> {
     const entries = await readdir(runsDir, { withFileTypes: true });
     const runs = await Promise.all(entries
       .filter((entry) => entry.isDirectory())
-      .map((entry) => loadRun(entry.name).catch(() => null)));
+      .map(async (entry) => {
+        const run = await loadRun(entry.name).catch(() => null);
+        return run ? markPersistedStl(run) : null;
+      }));
     return runs
       .filter((run): run is ModelRun => Boolean(run))
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
@@ -456,6 +482,47 @@ function runFromHistoryRow(
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
+}
+
+function toHistoryRunPayload(run: ModelRun): ModelRun {
+  return {
+    ...run,
+    files: {
+      ...run.files,
+      stl: run.status === "Ready" && run.files.stl ? `/api/lusie/runs/${run.runId}/download/stl` : run.files.stl,
+      stlPersisted: run.files.stlPersisted === true ? true : undefined
+    },
+    concepts: run.concepts.map((concept) => {
+      const { imageDataUrl, ...persisted } = concept;
+      return {
+        ...persisted,
+        prompt: "",
+        feedback: persisted.feedback ? persisted.feedback.slice(0, 220) : undefined
+      };
+    })
+  };
+}
+
+async function markPersistedStl(run: ModelRun): Promise<ModelRun> {
+  if (run.status !== "Ready" || !run.files.stl) return run;
+  if (run.files.stlSourceUrl || run.files.stlPersisted) return run;
+
+  const fileName = path.basename(run.files.stl);
+  try {
+    const stlStats = await stat(path.join(getRunDir(run.runId), fileName));
+    if (stlStats.size >= 256) {
+      return {
+        ...run,
+        files: {
+          ...run.files,
+          stlPersisted: true
+        }
+      };
+    }
+  } catch {
+  }
+
+  return run;
 }
 
 function inferStorageDiagnostics(concepts: Concept[]): StorageDiagnostics {

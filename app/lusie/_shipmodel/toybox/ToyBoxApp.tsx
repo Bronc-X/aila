@@ -81,7 +81,7 @@ const modelBuildTokens = [
 ];
 
 export function ToyBoxApp() {
-  const [route, setRoute] = useState<RouteState>(() => parseRoute(window.location.pathname));
+  const [route, setRoute] = useState<RouteState>({ name: "configure" });
   const [input, setInput] = useState<ModelRequest>(defaultInput);
   const [runId, setRunId] = useState<string | null>(null);
   const [concepts, setConcepts] = useState<Concept[]>([]);
@@ -96,8 +96,8 @@ export function ToyBoxApp() {
   const [toast, setToast] = useState<{ tone: ToastTone; message: string } | null>(null);
   const [alert, setAlert] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>("applied");
-  const [historyEntries, setHistoryEntries] = useState<LocalHistoryEntry[]>(() => getHistoryEntries());
-  const [membership, setMembershipState] = useState<MembershipSnapshot>(() => getMembership());
+  const [historyEntries, setHistoryEntries] = useState<LocalHistoryEntry[]>([]);
+  const [membership, setMembershipState] = useState<MembershipSnapshot>({ plan: "free", upgradedAt: null });
   const historyRecoveryRunIds = useRef<Set<string>>(new Set());
 
   const activeCategory = useMemo(() => categories.find((category) => category.id === input.category) ?? categories[0], [input.category]);
@@ -105,6 +105,12 @@ export function ToyBoxApp() {
   const readyRun = run?.status === "Ready" ? run : null;
   const stlDownloadHref = readyRun ? `/api/lusie/runs/${encodeURIComponent(readyRun.runId)}/download/stl` : "";
   const supabaseSyncState = getSupabaseSyncState();
+
+  useEffect(() => {
+    setRoute(parseRoute(window.location.pathname));
+    setHistoryEntries(filterDeliverableHistoryEntries(getHistoryEntries()));
+    setMembershipState(getMembership());
+  }, []);
 
   useEffect(() => {
     getHandshake()
@@ -117,10 +123,11 @@ export function ToyBoxApp() {
     getHistoryRuns()
       .then(({ runs }) => {
         if (cancelled) return;
-        setHistoryEntries(mergeHistoryEntries(runs.map(historyEntryFromRun), getHistoryEntries()));
+        const localEntries = getHistoryEntries();
+        setHistoryEntries(mergeHistoryEntries(runs.map(historyEntryFromRun), localEntries));
       })
       .catch(() => {
-        if (!cancelled) setHistoryEntries(filterRecoverableLocalHistory(getHistoryEntries()));
+        if (!cancelled) setHistoryEntries(filterDeliverableHistoryEntries(getHistoryEntries()));
       });
 
     return () => {
@@ -178,7 +185,7 @@ export function ToyBoxApp() {
 
   useEffect(() => {
     const recoverableEntries = historyEntries.filter((entry) => {
-      if (entry.status !== "ready" || !entry.runId || entry.files.stlSourceUrl) return false;
+      if (entry.status !== "ready" || !entry.runId || entry.files.stlSourceUrl || entry.files.stlPersisted) return false;
       return !historyRecoveryRunIds.current.has(entry.runId);
     });
     if (!recoverableEntries.length) return;
@@ -190,7 +197,7 @@ export function ToyBoxApp() {
       if (!entry.runId) return null;
       try {
         const { run: restoredRun } = await getRun(entry.runId);
-        if (!restoredRun.files.stlSourceUrl) return null;
+        if (!hasRecoverableStl(restoredRun.files)) return null;
         return saveHistory({
           input: restoredRun.input,
           runId: restoredRun.runId,
@@ -208,7 +215,7 @@ export function ToyBoxApp() {
         if (restored.length) {
           setHistoryEntries(mergeHistoryEntries(restored, getHistoryEntries()));
         } else {
-          setHistoryEntries(filterRecoverableLocalHistory(getHistoryEntries()));
+          setHistoryEntries(filterDeliverableHistoryEntries(getHistoryEntries()));
         }
       }
     });
@@ -1400,18 +1407,25 @@ function withStlSource(href: string, sourceUrl?: string) {
 
 function mergeHistoryEntries(primary: LocalHistoryEntry[], secondary: LocalHistoryEntry[]) {
   const byId = new Map<string, LocalHistoryEntry>();
-  for (const entry of [...primary, ...filterRecoverableLocalHistory(secondary)]) {
+  for (const entry of [...primary, ...filterDeliverableHistoryEntries(secondary)]) {
     const key = entry.runId ?? entry.id;
     if (!byId.has(key)) byId.set(key, entry);
   }
-  return Array.from(byId.values()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  return Array.from(byId.values())
+    .filter(isDeliverableHistoryEntry)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
-function filterRecoverableLocalHistory(entries: LocalHistoryEntry[]) {
-  return entries.filter((entry) => {
-    if (entry.status !== "ready") return true;
-    return Boolean(entry.files.stlSourceUrl);
-  });
+function filterDeliverableHistoryEntries(entries: LocalHistoryEntry[]) {
+  return entries.filter(isDeliverableHistoryEntry);
+}
+
+function isDeliverableHistoryEntry(entry: LocalHistoryEntry) {
+  return entry.status === "ready" && Boolean(entry.runId && hasRecoverableStl(entry.files));
+}
+
+function hasRecoverableStl(files: LocalHistoryEntry["files"]) {
+  return Boolean(files.stl && (files.stlSourceUrl || files.stlPersisted));
 }
 
 function StoragePage({
