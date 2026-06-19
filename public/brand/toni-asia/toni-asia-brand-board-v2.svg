@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1280" viewBox="0 0 1920 1280" role="img" aria-labelledby="title desc">
+  <title id="title">toni.asia modular brand board V2</title>
+  <desc id="desc">A revised toni.asia VI board with a Claude Code-inspired modular developer-tool feeling.</desc>
+  <defs>
+    <style>
+      .canvas{fill:#12110f}
+      .panel{fill:#1c1a17}
+      .paper{fill:#faf4e8}
+      .tile{fill:#df7652}
+      .tile2{fill:#f39a6b}
+      .ivory{fill:#faf4e8}
+      .muted{fill:#a99a8c}
+      .dark{fill:#12110f}
+      .hair{stroke:#faf4e8;stroke-opacity:.14;stroke-width:2}
+      .orangeLine{stroke:#df7652;stroke-width:8;stroke-linejoin:round}
+      .label{font:700 20px/1 "IBM Plex Mono","SFMono-Regular",Consolas,monospace;letter-spacing:3px;text-transform:uppercase}
+      .micro{font:600 16px/1 "IBM Plex Mono","SFMono-Regular",Consolas,monospace;letter-spacing:2px;text-transform:uppercase}
+      .headline{font:800 68px/1 "IBM Plex Mono","SFMono-Regular",Consolas,monospace;letter-spacing:-5px}
+      .word{font:800 104px/1 "IBM Plex Mono","SFMono-Regular",Consolas,monospace;letter-spacing:-7px}
+      .body{font:520 28px/1.32 Inter,ui-sans-serif,system-ui,sans-serif}
+    </style>
+  </defs>
+  <rect class="canvas" width="1920" height="1280"/>
+  <text class="micro ivory" x="64" y="58">TONI.ASIA / MODULAR IDENTITY V2</text>
+  <text class="micro muted" x="1568" y="58">LESS GOOGLE / MORE CODE</text>
+
+  <g transform="translate(64 96)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <g transform="translate(58 50) scale(.21)">
+      <path class="orangeLine" fill="none" d="M248 188h528l76 76v496l-76 76H248l-76-76V264l76-76Z"/>
+      <path fill="#12110f" d="M292 260h440l48 48v408l-48 48H292l-48-48V308l48-48Z"/>
+      <g transform="translate(304 316)">
+        <rect class="tile" x="0" y="0" width="112" height="68" rx="8"/>
+        <rect class="tile" x="132" y="0" width="112" height="68" rx="8"/>
+        <rect class="tile" x="264" y="0" width="112" height="68" rx="8"/>
+        <rect class="tile2" x="132" y="88" width="112" height="68" rx="8"/>
+        <rect class="tile" x="132" y="176" width="112" height="68" rx="8"/>
+        <rect class="tile" x="132" y="264" width="112" height="68" rx="8"/>
+        <rect class="tile2" x="132" y="352" width="112" height="68" rx="8"/>
+      </g>
+      <path class="ivory" d="M392 632h240v56H392z"/>
+    </g>
+    <text class="word tile" x="278" y="160">toni</text>
+    <text class="word ivory" x="278" y="254">.asia</text>
+  </g>
+
+  <g transform="translate(680 96)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="label ivory" x="36" y="56">DNA</text>
+    <rect class="tile" x="40" y="100" width="96" height="58" rx="7"/>
+    <rect class="tile" x="156" y="100" width="96" height="58" rx="7"/>
+    <rect class="tile" x="272" y="100" width="96" height="58" rx="7"/>
+    <rect class="tile2" x="156" y="178" width="96" height="58" rx="7"/>
+    <rect class="tile" x="156" y="256" width="96" height="38" rx="7"/>
+    <text class="body muted" x="40" y="282">segmented blocks / terminal contrast / negative-space T</text>
+  </g>
+
+  <g transform="translate(1296 96)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="label ivory" x="36" y="56">Command surface</text>
+    <rect class="dark" x="38" y="90" width="484" height="198" rx="14" stroke="#df7652" stroke-width="3"/>
+    <circle class="tile" cx="76" cy="126" r="9"/>
+    <circle class="tile2" cx="104" cy="126" r="9"/>
+    <circle class="ivory" cx="132" cy="126" r="9" opacity=".7"/>
+    <rect x="72" y="166" width="376" height="54" rx="8" fill="#faf4e8"/>
+    <text class="body dark" x="96" y="202">$ build toni.asia</text>
+    <text class="micro muted" x="72" y="260">developer-tool application</text>
+  </g>
+
+  <g transform="translate(64 476)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="headline ivory" x="40" y="124">not a</text>
+    <text class="headline tile" x="40" y="198">rainbow.</text>
+    <text class="body muted" x="44" y="254">Graphite and warm code-orange carry the brand.</text>
+    <text class="body muted" x="44" y="292">Color becomes utility, not the logo.</text>
+  </g>
+
+  <g transform="translate(680 476)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="label ivory" x="36" y="56">Palette</text>
+    <rect class="tile" x="42" y="100" width="112" height="162" rx="8"/>
+    <rect class="tile2" x="174" y="100" width="112" height="162" rx="8"/>
+    <rect class="ivory" x="306" y="100" width="112" height="162" rx="8"/>
+    <rect fill="#12110f" x="438" y="100" width="72" height="162" rx="8" stroke="#faf4e8" stroke-opacity=".18"/>
+    <text class="micro muted" x="42" y="300">#DF7652 / #F39A6B / #FAF4E8 / #12110F</text>
+  </g>
+
+  <g transform="translate(1296 476)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="label ivory" x="36" y="56">Type</text>
+    <text class="headline tile" x="40" y="148">IBM Plex Mono</text>
+    <text class="body muted" x="44" y="214">developer-native wordmark, block rhythm,</text>
+    <text class="body muted" x="44" y="252">fewer consumer-brand cues.</text>
+    <text class="micro ivory" x="44" y="278">Aa Bb Cc / 0123456789 / ./$_</text>
+  </g>
+
+  <g transform="translate(64 856)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <rect class="paper" x="62" y="58" width="436" height="218" rx="8"/>
+    <text class="label dark" x="98" y="116">TONI</text>
+    <text class="body dark" x="98" y="164">AI builder</text>
+    <text class="body dark" x="98" y="222">toni.asia</text>
+    <rect class="tile" x="390" y="104" width="68" height="42" rx="6"/>
+    <rect class="tile" x="390" y="160" width="68" height="42" rx="6"/>
+  </g>
+
+  <g transform="translate(680 856)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="label ivory" x="36" y="56">Icon states</text>
+    <rect class="dark" x="50" y="96" width="130" height="130" rx="28" stroke="#df7652" stroke-width="5"/>
+    <rect class="tile" x="76" y="124" width="78" height="28" rx="5"/>
+    <rect class="tile" x="101" y="164" width="28" height="62" rx="5"/>
+    <rect class="paper" x="218" y="96" width="130" height="130" rx="28"/>
+    <rect class="tile" x="244" y="124" width="78" height="28" rx="5"/>
+    <rect class="tile" x="269" y="164" width="28" height="62" rx="5"/>
+    <rect class="tile" x="386" y="96" width="130" height="130" rx="28"/>
+    <rect class="dark" x="412" y="124" width="78" height="28" rx="5"/>
+    <rect class="dark" x="437" y="164" width="28" height="62" rx="5"/>
+  </g>
+
+  <g transform="translate(1296 856)">
+    <rect class="panel" width="560" height="330" rx="10"/>
+    <text class="label ivory" x="36" y="56">Auxiliary color only</text>
+    <rect fill="#4285f4" x="48" y="112" width="72" height="72" rx="8"/>
+    <rect fill="#ea4335" x="146" y="112" width="72" height="72" rx="8"/>
+    <rect fill="#fbbc05" x="244" y="112" width="72" height="72" rx="8"/>
+    <rect fill="#34a853" x="342" y="112" width="72" height="72" rx="8"/>
+    <text class="body muted" x="48" y="252">Use these only for product tags.</text>
+    <text class="body muted" x="48" y="290">Never for the main wordmark.</text>
+  </g>
+</svg>

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1280" viewBox="0 0 1920 1280" role="img" aria-labelledby="title desc">
+  <title id="title">toni.asia brand identity board</title>
+  <desc id="desc">A 3 by 3 brand kit board for the toni.asia identity system.</desc>
+  <defs>
+    <style>
+      .canvas{fill:#151515}
+      .panel{fill:#faf9f6}
+      .paper{fill:#f3f1ed}
+      .ink{fill:#151515}
+      .muted{fill:#666}
+      .rule{stroke:#e5e1d8;stroke-width:2}
+      .fine{stroke:#151515;stroke-opacity:.18;stroke-width:2;fill:none}
+      .blue{fill:#4285f4}
+      .red{fill:#ea4335}
+      .yellow{fill:#fbbc05}
+      .green{fill:#34a853}
+      .amber{fill:#d97706}
+      .label{font:600 22px/1 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:3px;text-transform:uppercase}
+      .micro{font:500 18px/1 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:2px;text-transform:uppercase}
+      .headline{font:720 78px/1 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-1px}
+      .word{font:740 118px/1 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-2px}
+      .body{font:520 31px/1.25 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    </style>
+  </defs>
+  <rect class="canvas" width="1920" height="1280"/>
+  <text class="micro" x="72" y="60" fill="#faf9f6">TONI.ASIA / IDENTITY SYSTEM / V1</text>
+  <text class="micro" x="1646" y="60" fill="#faf9f6">BUILD IN MOTION</text>
+
+  <g id="panel-1" transform="translate(72 100)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <g transform="translate(60 58) scale(.19)">
+      <rect fill="#faf9f6" width="1024" height="1024" rx="220"/>
+      <circle class="ink" cx="512" cy="512" r="340"/>
+      <path class="blue" d="M512 124a388 388 0 0 1 301 143l-97 84a260 260 0 0 0-204-96V124Z"/>
+      <path class="red" d="M813 267a388 388 0 0 1 84 245H769a260 260 0 0 0-53-161l97-84Z"/>
+      <path class="yellow" d="M897 512a388 388 0 0 1-130 289l-83-98a260 260 0 0 0 85-191h128Z"/>
+      <path class="green" d="M767 801a388 388 0 0 1-255 99V772a260 260 0 0 0 172-69l83 98Z"/>
+      <path class="amber" d="M512 900a388 388 0 0 1 0-776v131a260 260 0 0 0 0 517v128Z"/>
+      <path fill="#faf9f6" d="M320 336h384v116H570v286H454V452H320V336Z"/>
+      <circle fill="#faf9f6" cx="512" cy="512" r="76"/>
+      <path class="ink" d="M494 460h108v42h-66v156h-42V460Z"/>
+    </g>
+    <text class="word blue" x="270" y="178">t</text>
+    <text class="word red" x="326" y="178">o</text>
+    <text class="word yellow" x="404" y="178">n</text>
+    <text class="word green" x="486" y="178">i</text>
+    <text class="label ink" x="275" y="238">toni.asia</text>
+    <text class="micro muted" x="275" y="272">personal AI builder studio</text>
+  </g>
+
+  <g id="panel-2" transform="translate(680 100)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <text class="label ink" x="40" y="60">Construction</text>
+    <circle class="fine" cx="280" cy="178" r="124"/>
+    <circle class="fine" cx="280" cy="178" r="78"/>
+    <path class="fine" d="M156 178h248M280 54v248M192 90l176 176M368 90 192 266"/>
+    <path class="ink" d="M187 110h186v58h-65v122h-56V168h-65v-58Z"/>
+    <circle cx="280" cy="178" r="33" fill="#faf9f6" stroke="#151515" stroke-width="18"/>
+    <text class="micro muted" x="40" y="286">route + time zone + hidden T</text>
+  </g>
+
+  <g id="panel-3" transform="translate(1288 100)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <rect x="44" y="52" width="472" height="226" rx="22" fill="#151515"/>
+    <rect x="74" y="84" width="170" height="16" rx="8" fill="#faf9f6" opacity=".26"/>
+    <rect x="74" y="128" width="360" height="74" rx="37" fill="#faf9f6"/>
+    <text class="body ink" x="108" y="176">toni.asia/now</text>
+    <circle class="blue" cx="458" cy="165" r="13"/>
+    <circle class="red" cx="484" cy="165" r="13"/>
+    <circle class="yellow" cx="458" cy="193" r="13"/>
+    <circle class="green" cx="484" cy="193" r="13"/>
+    <text class="micro" x="74" y="246" fill="#faf9f6">digital header</text>
+  </g>
+
+  <g id="panel-4" transform="translate(72 478)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <text class="headline ink" x="42" y="122">Build in</text>
+    <text class="headline amber" x="42" y="206">motion.</text>
+    <text class="body muted" x="42" y="266">A personal lab for useful AI products, shipped from Asia outward.</text>
+  </g>
+
+  <g id="panel-5" transform="translate(680 478)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <text class="label ink" x="40" y="60">Color</text>
+    <rect class="ink" x="42" y="102" width="86" height="160" rx="16"/>
+    <rect fill="#faf9f6" stroke="#e5e1d8" stroke-width="2" x="144" y="102" width="86" height="160" rx="16"/>
+    <rect class="amber" x="246" y="102" width="86" height="160" rx="16"/>
+    <rect class="blue" x="348" y="102" width="86" height="160" rx="16"/>
+    <rect class="red" x="450" y="102" width="86" height="160" rx="16"/>
+    <circle class="yellow" cx="102" cy="292" r="16"/>
+    <circle class="green" cx="148" cy="292" r="16"/>
+    <text class="micro muted" x="198" y="300">disciplined multi-color accents</text>
+  </g>
+
+  <g id="panel-6" transform="translate(1288 478)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <text class="label ink" x="40" y="60">Typography</text>
+    <text class="headline ink" x="40" y="150">Inter / System</text>
+    <text class="body muted" x="44" y="210">quiet engineering UI, friendly lowercase wordmark, no ornamental serif.</text>
+    <text class="micro ink" x="44" y="272">Aa Bb Cc 0123456789</text>
+  </g>
+
+  <g id="panel-7" transform="translate(72 856)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <rect class="paper" x="74" y="74" width="412" height="210" rx="20"/>
+    <text class="label ink" x="110" y="130">TONI</text>
+    <text class="body muted" x="110" y="179">AI builder / product operator</text>
+    <text class="body ink" x="110" y="238">toni.asia</text>
+    <circle class="blue" cx="414" cy="126" r="14"/>
+    <circle class="red" cx="442" cy="126" r="14"/>
+    <circle class="yellow" cx="414" cy="154" r="14"/>
+    <circle class="green" cx="442" cy="154" r="14"/>
+  </g>
+
+  <g id="panel-8" transform="translate(680 856)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <rect x="42" y="42" width="476" height="246" rx="22" fill="#151515"/>
+    <path d="M42 226c116-76 218-85 306-27 54 36 106 41 170 15v74H42v-62Z" fill="#d97706"/>
+    <path d="M42 178c92-56 180-64 264-24 80 38 146 38 212 0v134H42V178Z" fill="#34a853" opacity=".78"/>
+    <circle cx="434" cy="106" r="52" fill="#fbbc05"/>
+    <text class="micro" x="72" y="92" fill="#faf9f6">Asia outward</text>
+  </g>
+
+  <g id="panel-9" transform="translate(1288 856)">
+    <rect class="panel" width="560" height="330" rx="18"/>
+    <text class="label ink" x="40" y="60">System detail</text>
+    <rect class="paper" x="42" y="96" width="222" height="62" rx="31"/>
+    <text class="body ink" x="74" y="137">/ship</text>
+    <rect class="paper" x="286" y="96" width="222" height="62" rx="31"/>
+    <text class="body ink" x="318" y="137">/now</text>
+    <rect class="paper" x="42" y="188" width="466" height="62" rx="31"/>
+    <text class="body ink" x="74" y="229">what will you build today?</text>
+  </g>
+</svg>

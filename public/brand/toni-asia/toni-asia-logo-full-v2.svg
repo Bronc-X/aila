@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="520" viewBox="0 0 1720 520" role="img" aria-labelledby="title desc">
+  <title id="title">toni.asia modular logo V2</title>
+  <desc id="desc">A dark developer-tool style toni.asia logo with an orange modular mark and terminal wordmark.</desc>
+  <defs>
+    <style>
+      .bg{fill:#12110f}
+      .panel{fill:#1c1a17}
+      .tile{fill:#df7652}
+      .tile2{fill:#f39a6b}
+      .ivory{fill:#faf4e8}
+      .muted{fill:#a99a8c}
+      .line{stroke:#df7652;stroke-width:11;stroke-linejoin:round}
+      .word{font:800 126px/1 "IBM Plex Mono","SFMono-Regular",Consolas,monospace;letter-spacing:-7px}
+      .sub{font:600 28px/1 "IBM Plex Mono","SFMono-Regular",Consolas,monospace;letter-spacing:5px;text-transform:uppercase}
+    </style>
+  </defs>
+  <rect class="bg" width="1720" height="520" rx="46"/>
+  <g transform="translate(92 80) scale(.36)">
+    <path class="line" fill="none" d="M248 188h528l76 76v496l-76 76H248l-76-76V264l76-76Z"/>
+    <path class="panel" d="M292 260h440l48 48v408l-48 48H292l-48-48V308l48-48Z"/>
+    <g transform="translate(304 316)">
+      <rect class="tile" x="0" y="0" width="112" height="68" rx="8"/>
+      <rect class="tile" x="132" y="0" width="112" height="68" rx="8"/>
+      <rect class="tile" x="264" y="0" width="112" height="68" rx="8"/>
+      <rect class="tile2" x="132" y="88" width="112" height="68" rx="8"/>
+      <rect class="tile" x="132" y="176" width="112" height="68" rx="8"/>
+      <rect class="tile" x="132" y="264" width="112" height="68" rx="8"/>
+      <rect class="tile2" x="132" y="352" width="112" height="68" rx="8"/>
+    </g>
+    <path class="ivory" d="M392 632h240v56H392z"/>
+  </g>
+  <g transform="translate(476 156)">
+    <text class="word tile" x="0" y="112">toni</text>
+    <text class="word ivory" x="352" y="112">.asia</text>
+    <text class="sub muted" x="6" y="182">AI builder / Asia time / command line craft</text>
+    <rect class="tile" x="6" y="226" width="176" height="10" rx="5"/>
+    <rect class="ivory" x="202" y="226" width="68" height="10" rx="5" opacity=".72"/>
+  </g>
+</svg>
