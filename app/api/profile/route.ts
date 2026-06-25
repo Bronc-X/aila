@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { getSessionFromRequest } from "@/lib/auth";
-import { supabase } from "@/lib/supabase";
+import { createSupabaseAdminClient } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
     } = body;
 
     // 独立插入到 user_profiles 表
-    const { data, error } = await supabase
+    const supabase = createSupabaseAdminClient();
+    const { error } = await supabase
       .from('user_profiles')
       .insert([{
         name,
@@ -38,9 +39,7 @@ export async function POST(req: NextRequest) {
         pain_points,
         pain_point_labels,
         ai_experience
-      }])
-      .select()
-      .single();
+      }]);
 
     if (error) {
       console.error('Supabase insert user_profiles error:', JSON.stringify(error, null, 2));
@@ -51,10 +50,10 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: true, data },
+      { success: true },
       { status: 200 }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Profile API error:', err);
     return NextResponse.json(
       { error: 'INTERNAL_SERVER_ERROR', message: '服务器内部错误' },

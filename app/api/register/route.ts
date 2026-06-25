@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { supabase } from "@/lib/supabase";
+import { createSupabaseAdminClient } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
@@ -83,7 +83,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data, error } = await supabase
+    const supabase = createSupabaseAdminClient();
+    const { error } = await supabase
       .from("registrations")
       .insert([
         {
@@ -92,9 +93,7 @@ export async function POST(request: NextRequest) {
           company: company || null,
           invite_code: inviteCode || null,
         },
-      ])
-      .select()
-      .single();
+      ]);
 
     if (error) {
       console.error("Registration insert error:", error);
@@ -111,10 +110,6 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: "报名信息已提交，顾问会尽快和你确认名额与价格。",
-        registrationId:
-          data && typeof data === "object" && "id" in data && typeof data.id === "string"
-            ? data.id
-            : null,
       },
       { status: 200 }
     );
