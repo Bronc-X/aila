@@ -17,9 +17,9 @@ import {
 import styles from "./prep.module.css";
 
 export const metadata: Metadata = {
-  title: "第 0 课预习包 | AI 产品经理转岗陪跑",
+  title: "T0 课预习包 | Agent Coding 项目陪跑",
   description:
-    "AI 产品经理转岗陪跑第 0 课预习资料：视频、工具安装、项目想法卡片、Agent coding 与 Low-code 基础概念。",
+    "T0 课预习资料：视频、工具安装、项目想法卡片、Agent coding、Low-code、抽象边界与规格化表达。",
 };
 
 const videos = [
@@ -65,39 +65,49 @@ const tools = [
   ["Node.js LTS", "运行网页项目、安装前端依赖", "https://nodejs.org/en/download"],
   ["Git", "版本管理、连接 GitHub、保存项目记录", "https://git-scm.com/"],
   ["VS Code", "代码编辑器", "https://code.visualstudio.com/"],
-  ["Cursor", "AI 代码编辑器，可替代 VS Code", "https://cursor.com/"],
-  ["Codex App", "OpenAI 的 Agent coding 工具", "https://openai.com/codex/get-started/"],
-  ["Codex 官方文档", "Codex Web / IDE / CLI 说明", "https://developers.openai.com/codex"],
-  ["Codex CLI", "终端版 Codex", "https://developers.openai.com/codex/cli"],
-  ["Claude Code Quickstart", "Claude Code 官方快速开始", "https://code.claude.com/docs/en/quickstart"],
-  ["Claude Code Setup", "平台、安装和版本管理", "https://code.claude.com/docs/en/setup"],
+  ["Codex 桌面版 App", "本机项目、线程、自动化和 Git 工作台", "https://developers.openai.com/codex/app"],
+  ["Codex 官方文档", "Codex App / IDE / CLI 总入口", "https://developers.openai.com/codex"],
+  ["Codex CLI", "终端版 Codex 安装与使用", "https://developers.openai.com/codex/cli"],
+  ["Claude 桌面版 App", "Claude 桌面应用下载入口", "https://claude.ai/download"],
+  ["Claude Code 官方文档", "Claude Code 概览、接口和工作方式", "https://docs.anthropic.com/en/docs/claude-code/overview"],
+  ["Claude Code CLI", "终端版 Claude Code 安装与命令", "https://docs.anthropic.com/en/docs/claude-code/quickstart"],
 ];
 
 const concepts = [
   {
     icon: Code2,
-    title: "Agent coding",
-    body: "不是“让 AI 帮我写代码”，而是让 AI 像协作者一样读文件、改代码、跑命令、看报错、继续修复。",
+    title: "Agent coding：把任务变成可执行回路",
+    body: "把目标、上下文、工具、日志和验收条件交给 Agent，让它完成读文件、改代码、跑命令、看报错、继续修复的闭环。",
   },
   {
     icon: Layers3,
-    title: "Low-code + Agent coding",
-    body: "Low-code 先跑通业务流程，Agent coding 再补定制交互、接口接入、复杂逻辑和可展示能力。",
+    title: "编排：先排路径，再排工具",
+    body: "一次项目交付通常会串起 Low-code、脚本、浏览器、模型、数据源和测试。编排的核心是定义顺序、输入输出和失败后的下一步。",
   },
   {
     icon: ShieldCheck,
     title: "抽象泄露",
-    body: "工具会隐藏复杂性，但权限、成本、延迟、幻觉、失败重试这些问题不会消失，需要产品经理主动设计边界。",
+    body: "高层工具会隐藏底层复杂度，权限、成本、延迟、幻觉、状态漂移和失败重试仍会从边界处冒出来。好设计要保留观察点和回退路径。",
   },
   {
     icon: Compass,
-    title: "封装和多态",
-    body: "把复杂 AI 能力封成简单按钮，同时让同一个能力能替换不同模型、流程或供应商。",
+    title: "封装：按 Parnas 思路隐藏决策",
+    body: "模块边界按“容易变化的设计决策”划分。外部只看接口、契约和禁区，内部实现可以替换、重写或降级。",
+  },
+  {
+    icon: MessageSquareText,
+    title: "多态：只认契约",
+    body: "搜索器、生成器、验证器都可以有多个实现。只要输入、输出、失败状态和质量门禁一致，上层流程就能替换底层供应商或模型。",
+  },
+  {
+    icon: FileText,
+    title: "规格：写出让代码生成代码的代码",
+    body: "把需求写成输入、输出、约束、验收、反例和文件边界。规格越像可执行代码，Agent 生成代码时越少靠猜。",
   },
 ];
 
 const classPlan = [
-  ["课程定位", "10 分钟", "明确目标：做出 AI 项目，并能用于转岗表达"],
+  ["课程定位", "10 分钟", "明确目标：做出可运行、可验证、可复盘的项目"],
   ["环境检查", "20 分钟", "确认 Node、Git、Codex、Claude Code 可用"],
   ["项目快评", "30 分钟", "每人讲项目想法，现场收敛第一版范围"],
   ["Agent coding 演示", "20 分钟", "演示如何把一句需求变成项目文件和最小原型"],
@@ -124,11 +134,11 @@ export default function AiPmPrepPage() {
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>
             <GraduationCap size={17} />
-            AI PM Career Sprint · Lesson 0
+            Internal Builder Sprint · T0
           </p>
-          <h1>第 0 课预习包：AI 产品经理转岗陪跑</h1>
+          <h1>T0 课预习包</h1>
           <p className={styles.lede}>
-            用 Low-code 和 Agent coding，从 0 到 1 做出一个可运行、可复盘、可讲述的 AI 项目。
+            用 Low-code 和 Agent coding，把一个想法压成可运行、可验证、可复盘的项目产物。
           </p>
           <div className={styles.actions}>
             <a href="#checklist" className={styles.primaryButton}>
@@ -145,7 +155,7 @@ export default function AiPmPrepPage() {
           <ul>
             <li>看 1-2 个基础视频</li>
             <li>安装 Node.js、Git、Codex、Claude Code</li>
-            <li>准备 5 句话项目想法卡片</li>
+            <li>准备 5 句话项目卡片</li>
             <li>提交环境自检结果</li>
           </ul>
         </aside>
@@ -160,7 +170,7 @@ export default function AiPmPrepPage() {
           <h2>课前最重要的 4 件事</h2>
         </div>
         <div className={styles.checkGrid}>
-          {["看 1-2 个基础视频，先建立共同语言", "安装 Node.js、Git、Codex、Claude Code", "准备一个自己的 AI 项目想法", "提交环境自检结果"].map((item) => (
+          {["看 1-2 个基础视频，先建立共同语言", "安装 Node.js、Git、Codex、Claude Code", "准备一个自己的项目想法", "提交环境自检结果"].map((item) => (
             <article className={styles.checkCard} key={item}>
               <CheckCircle2 size={20} />
               <p>{item}</p>
@@ -174,7 +184,7 @@ npm -v
 git --version
 codex --version
 claude --version`}</pre>
-          <span>如果 Codex 或 Claude Code CLI 暂时不可用，也可以先提交 App / 登录成功截图。</span>
+          <span>如果 Codex 或 Claude Code CLI 暂时不可用，可以先提交 App / 登录成功截图。</span>
         </div>
       </section>
 
@@ -237,7 +247,7 @@ claude --version`}</pre>
             <MessageSquareText size={16} />
             Core Concepts
           </p>
-          <h2>需要先理解的 4 个概念</h2>
+          <h2>需要先理解的 6 个概念</h2>
         </div>
         <div className={styles.conceptGrid}>
           {concepts.map((item) => {
@@ -259,7 +269,7 @@ claude --version`}</pre>
             <FileText size={16} />
             Assignment
           </p>
-          <h2>课前作业：项目想法卡片</h2>
+          <h2>课前作业：项目卡片</h2>
         </div>
         <div className={styles.assignmentGrid}>
           <div className={styles.templateBox}>
@@ -267,17 +277,17 @@ claude --version`}</pre>
             <pre>{`我想做的项目是：
 目标用户是：
 用户现在的痛点是：
-我准备用 AI 帮用户完成：
+我准备用系统帮用户完成：
 第一个可展示版本长这样：`}</pre>
           </div>
           <div className={styles.templateBox}>
             <h3>好的项目方向通常满足</h3>
             <ul>
-              <li>有明确用户，不是“所有人”</li>
-              <li>有真实场景，不是只做 ChatGPT 套壳</li>
+              <li>用户边界明确，避免泛化到所有人</li>
+              <li>有真实场景，避免停留在聊天壳层</li>
               <li>2-4 周内能做出第一版</li>
               <li>有可展示结果：网页、报告、看板、工作流、自动化助手</li>
-              <li>面试时能讲出产品判断和技术取舍</li>
+              <li>能讲出问题定义、模块边界、约束条件和验证证据</li>
             </ul>
           </div>
         </div>
@@ -303,9 +313,9 @@ claude --version`}</pre>
       </section>
 
       <section className={styles.finalBand}>
-        <h2>从第一天开始积累面试表达</h2>
+        <h2>从第一天开始积累项目证据</h2>
         <p>
-          AI PM 的竞争力不是“会用 AI”，而是能把问题定义清楚、把 Agent 驾驭起来、把结果验证出来，并且讲得让面试官相信。
+          训练重点是问题定义、上下文组织、模块边界、工具编排、约束表达和验证证据。每一次失败、修复和取舍都要留下可复盘记录。
         </p>
       </section>
     </main>
