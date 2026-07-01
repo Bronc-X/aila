@@ -11,6 +11,8 @@ import {
   Laptop,
   Layers3,
   MessageSquareText,
+  MonitorDown,
+  Route,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
@@ -73,6 +75,49 @@ const tools = [
   ["Claude Code CLI", "终端版 Claude Code 安装与命令", "https://docs.anthropic.com/en/docs/claude-code/quickstart"],
 ];
 
+const ccSwitchDownloads = [
+  [
+    "Windows 安装包",
+    "Windows 10+ / x64，常规安装用 .msi",
+    "https://github.com/farion1231/cc-switch/releases/download/v3.16.4/CC-Switch-v3.16.4-Windows.msi",
+  ],
+  [
+    "Windows 免安装包",
+    "解压后运行 CC-Switch.exe",
+    "https://github.com/farion1231/cc-switch/releases/download/v3.16.4/CC-Switch-v3.16.4-Windows-Portable.zip",
+  ],
+  [
+    "macOS 安装包",
+    "macOS 12+，推荐 .dmg",
+    "https://github.com/farion1231/cc-switch/releases/download/v3.16.4/CC-Switch-v3.16.4-macOS.dmg",
+  ],
+  [
+    "macOS 压缩包",
+    "备用下载，解压后拖入 Applications",
+    "https://github.com/farion1231/cc-switch/releases/download/v3.16.4/CC-Switch-v3.16.4-macOS.zip",
+  ],
+];
+
+const apiConfigSteps = [
+  ["安装", "先装 Node.js、Codex CLI、Claude Code CLI，再安装 CC Switch。"],
+  ["建 Provider", "在 CC Switch 里选择 Codex 或 Claude Code，点击 Add Provider，填入 Base URL、API Key 和模型名。"],
+  ["导入 config.toml", "Codex 的配置会落到 ~/.codex/config.toml；重点检查 model_provider、base_url、wire_api、env_key。"],
+  ["配置 Claude Code", "Claude Code 走网关时检查 ANTHROPIC_BASE_URL 与 ANTHROPIC_AUTH_TOKEN / ANTHROPIC_API_KEY。"],
+  ["启用与验证", "在 CC Switch 首页 Enable provider；分别运行 codex /model、claude /status 做连通性检查。"],
+];
+
+const configRefs = [
+  ["CC Switch 官网", "https://ccswitch.io/en/"],
+  ["CC Switch GitHub Releases", "https://github.com/farion1231/cc-switch/releases"],
+  ["CC Switch 安装文档", "https://ccswitch.io/en/docs?section=getting-started&item=installation"],
+  ["Codex config.toml 官方参考", "https://developers.openai.com/codex/config-reference"],
+  ["Claude Code Settings 官方参考", "https://code.claude.com/docs/en/settings"],
+  ["Claude Code LLM Gateway 官方说明", "https://code.claude.com/docs/en/llm-gateway"],
+  ["AIHubMix Codex + CC Switch 图文", "https://docs.aihubmix.com/en/api/Codex-CLI"],
+  ["New API CC Switch 图文", "https://www.newapi.ai/en/docs/apps/cc-switch"],
+  ["SiliconFlow CC Switch 图文", "https://docs.siliconflow.cn/en/usercases/use-siliconcloud-in-ccswitch"],
+];
+
 const concepts = [
   {
     icon: Code2,
@@ -126,6 +171,7 @@ export default function AiPmPrepPage() {
         <div className={styles.navLinks}>
           <a href="#videos">视频</a>
           <a href="#tools">工具</a>
+          <a href="#api-config">API</a>
           <a href="#assignment">作业</a>
         </div>
       </nav>
@@ -238,6 +284,98 @@ claude --version`}</pre>
         <div className={styles.commandBlock}>
           <p>Windows 安装 Claude Code 可先尝试</p>
           <pre>irm https://claude.ai/install.ps1 | iex</pre>
+        </div>
+      </section>
+
+      <section className={styles.section} id="api-config">
+        <div className={styles.sectionHeader}>
+          <p className={styles.kicker}>
+            <Route size={16} />
+            Provider Config
+          </p>
+          <h2>Claude Code 和 Codex 的 API 配置</h2>
+        </div>
+        <div className={styles.configLead}>
+          <div>
+            <h3>推荐路径：用 CC Switch 统一管理 provider</h3>
+            <p>
+              CC Switch 是跨平台桌面工具，可以集中管理 Claude Code、Codex、Gemini CLI 等工具的 provider、MCP 和系统提示词配置。
+              课程里建议把 API key 放在本机工具或环境变量里，项目仓库只保存可共享的规则、文档和示例。
+            </p>
+          </div>
+          <a href="https://ccswitch.io/en/" target="_blank" rel="noopener noreferrer">
+            打开 CC Switch 官网 <ArrowUpRight size={16} />
+          </a>
+        </div>
+        <div className={styles.downloadGrid}>
+          {ccSwitchDownloads.map(([name, note, href]) => (
+            <a className={styles.downloadCard} href={href} target="_blank" rel="noopener noreferrer" key={name}>
+              <MonitorDown size={20} />
+              <strong>{name}</strong>
+              <span>{note}</span>
+              <small>下载 <ArrowUpRight size={13} /></small>
+            </a>
+          ))}
+        </div>
+        <div className={styles.configGrid}>
+          <article className={styles.configPanel}>
+            <h3>流程步骤</h3>
+            <ol>
+              {apiConfigSteps.map(([title, body]) => (
+                <li key={title}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </li>
+              ))}
+            </ol>
+          </article>
+          <article className={styles.configPanel}>
+            <h3>Codex config.toml 检查点</h3>
+            <pre>{`# ~/.codex/config.toml
+model_provider = "your_provider"
+
+[model_providers.your_provider]
+name = "Your Provider"
+base_url = "https://your-provider.example/v1"
+wire_api = "responses"
+env_key = "YOUR_PROVIDER_API_KEY"`}</pre>
+            <p>第三方 provider 建议用环境变量承载 key，避免把真实密钥写进 config 截图、文档或 Git 仓库。</p>
+          </article>
+          <article className={styles.configPanel}>
+            <h3>Claude Code 网关检查点</h3>
+            <pre>{`# PowerShell
+$env:ANTHROPIC_BASE_URL="https://your-gateway.example"
+$env:ANTHROPIC_AUTH_TOKEN="sk-..."
+
+# macOS / Linux
+export ANTHROPIC_BASE_URL="https://your-gateway.example"
+export ANTHROPIC_AUTH_TOKEN="sk-..."`}</pre>
+            <p>直接 Anthropic API key 可用 ANTHROPIC_API_KEY；走网关或代理时通常用 ANTHROPIC_BASE_URL 加 Bearer token。</p>
+          </article>
+        </div>
+        <div className={styles.screenshotRail} aria-label="CC Switch 配置流程截图式步骤">
+          {[
+            ["01", "选择工具", "顶部选择 Codex 或 Claude Code"],
+            ["02", "Add Provider", "选择 preset 或手动填 Base URL"],
+            ["03", "填 Key", "API Key 只在本机保存"],
+            ["04", "Enable", "回首页启用 provider 后重启 CLI"],
+          ].map(([number, title, body]) => (
+            <article className={styles.mockShot} key={number}>
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+        <div className={styles.referenceList}>
+          <h3>可参考的官方 / 社区图文</h3>
+          <div>
+            {configRefs.map(([label, href]) => (
+              <a href={href} target="_blank" rel="noopener noreferrer" key={href}>
+                {label} <ArrowUpRight size={13} />
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

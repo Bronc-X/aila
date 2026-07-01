@@ -40,7 +40,10 @@
 .primaryButton,
 .secondaryButton,
 .videoCard small,
+.downloadCard small,
 .toolRow,
+.configLead a,
+.referenceList a,
 .kicker {
   display: inline-flex;
   align-items: center;
@@ -240,6 +243,11 @@
 .templateBox,
 .commandBlock,
 .pathNote,
+.configLead,
+.downloadCard,
+.configPanel,
+.mockShot,
+.referenceList,
 .scheduleRow {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -277,7 +285,8 @@
 }
 
 .commandBlock pre,
-.templateBox pre {
+.templateBox pre,
+.configPanel pre {
   margin: 0;
   overflow-x: auto;
   border-radius: 8px;
@@ -379,6 +388,192 @@
   color: var(--muted);
 }
 
+.configLead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.configLead h3,
+.configLead p,
+.configPanel h3,
+.configPanel p,
+.referenceList h3 {
+  margin: 0;
+}
+
+.configLead p,
+.configPanel p {
+  margin-top: 0.55rem;
+  color: var(--muted);
+}
+
+.configLead a {
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.72rem 0.9rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.downloadGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.downloadCard {
+  min-height: 11rem;
+  padding: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.downloadCard:hover,
+.downloadCard:focus-visible {
+  border-color: var(--green-dark);
+  background: #fff;
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.downloadCard svg {
+  color: var(--green-dark);
+}
+
+.downloadCard strong,
+.downloadCard span {
+  display: block;
+}
+
+.downloadCard strong {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+}
+
+.downloadCard span {
+  margin-top: 0.45rem;
+  color: var(--muted);
+}
+
+.downloadCard small {
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  color: var(--green-dark);
+  font-weight: 900;
+}
+
+.configGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.configPanel {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.configPanel ol {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.configPanel li strong,
+.configPanel li span {
+  display: block;
+}
+
+.configPanel li span {
+  margin-top: 0.2rem;
+  color: var(--muted);
+}
+
+.configPanel pre {
+  margin-top: 0.9rem;
+  font-size: 0.78rem;
+}
+
+.screenshotRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.mockShot {
+  min-height: 10rem;
+  padding: 1rem;
+  background:
+    linear-gradient(90deg, rgba(25, 29, 24, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(25, 29, 24, 0.035) 1px, transparent 1px),
+    rgba(255, 253, 245, 0.82);
+  background-size: 18px 18px;
+}
+
+.mockShot span {
+  display: grid;
+  width: 2.1rem;
+  height: 2.1rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.mockShot h3 {
+  margin: 1rem 0 0.4rem;
+}
+
+.mockShot p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.referenceList {
+  margin-top: 0.8rem;
+  padding: 1rem;
+}
+
+.referenceList div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.referenceList a {
+  gap: 0.32rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.48rem 0.7rem;
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.referenceList a:hover,
+.referenceList a:focus-visible {
+  border-color: var(--green-dark);
+  outline: none;
+}
+
 .conceptGrid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -437,6 +632,9 @@
   .checkGrid,
   .videoGrid,
   .conceptGrid,
+  .downloadGrid,
+  .configGrid,
+  .screenshotRail,
   .assignmentGrid {
     grid-template-columns: 1fr 1fr;
   }
@@ -462,6 +660,9 @@
   .checkGrid,
   .videoGrid,
   .conceptGrid,
+  .downloadGrid,
+  .configGrid,
+  .screenshotRail,
   .assignmentGrid {
     grid-template-columns: 1fr;
   }
@@ -481,8 +682,15 @@
   }
 
   .toolRow,
+  .configLead,
   .scheduleRow {
     grid-template-columns: 1fr;
     gap: 0.35rem;
+  }
+
+  .configLead a {
+    justify-content: center;
+    width: 100%;
+    white-space: normal;
   }
 }
