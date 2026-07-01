@@ -16,7 +16,8 @@ await run(process.execPath, [
   path.join("scripts", "sync-shipmodel.test.mjs"),
   path.join("scripts", "lusie-download-page.test.mjs"),
   path.join("scripts", "lusie-history-stl-source.test.mjs"),
-  path.join("scripts", "now-page.test.mjs")
+  path.join("scripts", "now-page.test.mjs"),
+  path.join("scripts", "ai-pm-prep-page.test.mjs")
 ]);
 await run(process.execPath, [nextBin, "build"]);
 
@@ -36,6 +37,9 @@ try {
   await expectOk("/lusie/showcase/competitions");
   await expectOk("/lusie/ai");
   await expectOk("/lusie/ai/configure");
+  await expectText("/ai-pm-prep", "T0 课预习包");
+  await expectText("/ai-pm-prep", "CC Switch");
+  await expectText("/ai-pm-prep", "Claude Code 和 Codex 的 API 配置");
   await expectHandshake();
   await expectValidationGuard();
   console.log("Lusie baseline passed.");
