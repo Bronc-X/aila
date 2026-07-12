@@ -11,3 +11,4 @@
 
 ○ Compiling / ...
  GET / 200 in 4.9s (next.js: 4.6s, application-code: 322ms)
+ GET /aila 200 in 544ms (next.js: 481ms, application-code: 63ms)
