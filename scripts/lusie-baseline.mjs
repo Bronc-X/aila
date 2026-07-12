@@ -17,7 +17,9 @@ await run(process.execPath, [
   path.join("scripts", "lusie-download-page.test.mjs"),
   path.join("scripts", "lusie-history-stl-source.test.mjs"),
   path.join("scripts", "now-page.test.mjs"),
-  path.join("scripts", "ai-pm-prep-page.test.mjs")
+  path.join("scripts", "ai-pm-prep-page.test.mjs"),
+  path.join("scripts", "toni-universe.test.mjs"),
+  path.join("scripts", "tools-showcase.test.mjs")
 ]);
 await run(process.execPath, [nextBin, "build"]);
 
@@ -40,6 +42,18 @@ try {
   await expectText("/ai-pm-prep", "T0 课预习包");
   await expectText("/ai-pm-prep", "CC Switch");
   await expectText("/ai-pm-prep", "Claude Code 和 Codex 的 API 配置");
+  await expectText("/", "欢迎来到");
+  await expectText("/spatial", "航模项目");
+  await expectText("/toni-universe", "Forward Deployed Engineering");
+  await expectText("/toni-universe/fde", "面向生产结果的驻场工程交付");
+  await expectText("/toni-universe/deploy", "与该节点直接相连的交付关系");
+  await expectOk("/tools/research");
+  await expectOk("/tools/admin");
+  await expectOk("/tools/operations");
+  await expectOk("/tools/activity-plan");
+  await expectOk("/tools/auto-red-book");
+  await expectOk("/aila");
+  await expectOk("/work/training-system");
   await expectHandshake();
   await expectValidationGuard();
   console.log("Lusie baseline passed.");

@@ -89,9 +89,9 @@ const modules = [
     subtitle: "PROPOSAL",
     desc: "把活动信息、品牌物料和预算人数整理成方案页、宣传文案和海报提示词",
     tools: ["活动方案", "宣传文案", "海报提示词", "PPTX 导出"],
-    href: "https://github.com/xiahui001/Activity-plan.git",
+    href: "/tools/activity-plan",
     gradient: "from-amber-500/10 to-yellow-500/5",
-    external: true,
+    badge: "CASE STUDY",
   },
   {
     id: "auto-red-book",
@@ -100,9 +100,9 @@ const modules = [
     subtitle: "XHS MATRIX",
     desc: "围绕 5 个账号生成候选图文草稿，保留人工挑选、审核和发布确认",
     tools: ["矩阵草稿", "热点参考", "质量检查", "客服线索"],
-    href: "https://github.com/xiahui001/auto-red-book.git",
+    href: "/tools/auto-red-book",
     gradient: "from-fuchsia-500/10 to-rose-500/5",
-    external: true,
+    badge: "CASE STUDY",
   },
 ];
 
@@ -144,6 +144,7 @@ function ToolCard({
   const isDimmed = hoveredId !== null && hoveredId !== mod.id;
   const isActive = hoveredId === mod.id;
   const isExternal = mod.href.startsWith("http");
+  const badge = "badge" in mod ? mod.badge : isExternal ? "GitHub" : null;
 
   const card = (
     <motion.div
@@ -205,9 +206,9 @@ function ToolCard({
           >
             {mod.subtitle}
           </motion.span>
-          {isExternal && (
+          {badge && (
             <span className="text-[9px] uppercase tracking-[0.18em] text-[#D97706]">
-              GitHub
+              {badge}
             </span>
           )}
         </div>

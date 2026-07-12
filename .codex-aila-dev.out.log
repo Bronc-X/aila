@@ -1,0 +1,13 @@
+
+> aila@0.1.0 dev
+> next dev -H 127.0.0.1 -p 3420
+
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://127.0.0.1:3420
+- Network:       http://127.0.0.1:3420
+✓ Ready in 334ms
+- Experiments (use with caution):
+  ✓ scrollRestoration
+
+○ Compiling / ...
+ GET / 200 in 4.9s (next.js: 4.6s, application-code: 322ms)
