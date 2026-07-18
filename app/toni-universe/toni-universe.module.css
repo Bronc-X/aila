@@ -128,6 +128,26 @@
   font-size: 12px;
 }
 
+.navLinks .caseShortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--teal);
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.caseShortcut svg {
+  flex: 0 0 auto;
+  transition: transform 180ms ease;
+}
+
+.caseShortcut:hover svg,
+.caseShortcut:focus-visible svg {
+  transform: translate(1px, -1px);
+}
+
 .nav a:hover,
 .nav a:focus-visible {
   color: #ffffff;

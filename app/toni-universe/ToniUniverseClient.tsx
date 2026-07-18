@@ -290,6 +290,15 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
           <small>欢迎来到 Toni 的主页</small>
         </div>
         <div className={styles.navLinks}>
+          <a
+            href="/work/fde-case-library.html?case=immigration&section=31"
+            className={styles.caseShortcut}
+            aria-label="移民 FDE 进场资料包（30 件）"
+            title="移民 FDE 进场资料包（30 件）"
+          >
+            移民 FDE
+            <ArrowUpRight size={11} aria-hidden="true" />
+          </a>
           <Link href="/work">作品</Link>
           <Link href="/tools">工具</Link>
           <Link href="/work/training-system">陪跑</Link>
