@@ -34,11 +34,6 @@ export default function ToniNowPage() {
               Portfolio updated {profile.updatedAt}
             </p>
             <h1>{profile.headline}</h1>
-            <div className={styles.introList}>
-              {profile.intro.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
-            </div>
             <div className={styles.actions}>
               <a href="#contact" className={styles.primaryButton}>
                 私聊一个业务现场 <MessageCircle size={18} />
@@ -75,7 +70,7 @@ export default function ToniNowPage() {
             <CalendarDays size={16} />
             Recent Work
           </p>
-          <h2>Processing</h2>
+          <h2>本周进展</h2>
         </div>
         <div className={styles.updateRail}>
           {profile.weeklyUpdates.map((item) => (
@@ -94,7 +89,7 @@ export default function ToniNowPage() {
             <GitBranch size={16} />
             Project Map
           </p>
-          <h2>Building program</h2>
+          <h2>自有项目</h2>
         </div>
         <div className={styles.projectGrid}>
           {profile.projects.map((project) => (
@@ -123,7 +118,7 @@ export default function ToniNowPage() {
             <Sparkles size={16} />
             Client Cases
           </p>
-          <h2>Supplement</h2>
+          <h2>客户与陪跑案例</h2>
         </div>
         <div className={styles.caseGrid}>
           {profile.companionCases.map((item) => (
@@ -148,7 +143,7 @@ export default function ToniNowPage() {
             <CheckCircle2 size={16} />
             Credentials
           </p>
-          <h2>Certificate</h2>
+          <h2>认证</h2>
         </div>
         <div className={styles.credentialGrid}>
           {profile.credentials.map((credential) => (
@@ -170,7 +165,7 @@ export default function ToniNowPage() {
             <CheckCircle2 size={16} />
             Service
           </p>
-          <h2>Superiority</h2>
+          <h2>服务方式</h2>
         </div>
         <div className={styles.serviceGrid}>
           {profile.services.map((service) => (
@@ -189,7 +184,6 @@ export default function ToniNowPage() {
             Contact
           </p>
           <h2>Contact</h2>
-          <p>一张表、一段聊天记录、一个客户流程、一个已经卡住的需求，都可以作为第一步。</p>
           <div className={styles.linkGrid}>
             {profile.links.map((link) => (
               <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} key={link.label}>

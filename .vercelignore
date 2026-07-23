@@ -3,7 +3,15 @@
 .playwright-mcp
 .tmp-*
 .vercel
+.codex-runtime
+.env*
 ShipModel
 ShipModel-main.zip
 aila-action-check
 node_modules
+/*.png
+/*.jpg
+/*.jpeg
+/*.md
+/docs
+/scripts/__pycache__

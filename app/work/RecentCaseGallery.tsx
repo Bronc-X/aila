@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   Bot,
   Boxes,
@@ -21,6 +22,7 @@ import styles from "../site.module.css";
 type RecentCase = {
   k: string;
   title: string;
+  href: string;
   label: string;
   summary: string;
   detail: string;
@@ -32,82 +34,90 @@ type RecentCase = {
 const recentCases: RecentCase[] = [
   {
     k: "01",
-    title: "Sparkooo",
-    label: "公益项目 / 宠物防走失小程序",
-    summary: "从“宠物走失后谁能马上联系到主人”反推入口，把扫码、联系和传播链路压短。",
-    detail: "这个项目的重点不是多做功能，而是让宠物牌、二维码、小程序入口和联系人动作接起来。公益项目适合先用最短链路验证传播，再补管理后台和运营机制。",
-    images: ["/cases/toni/1.png"],
-    scopes: ["小程序入口", "扫码联系", "公益传播"],
-    icon: HeartHandshake,
+    title: "得物生图模型",
+    href: "/work/dewu-image",
+    label: "企业生产案例",
+    summary: "商品上身图背景合成、批量处理、质检报告与 ZIP 交付。",
+    detail: "真实工作台把商品图、背景匹配、批量处理、人工复核和最终交付接在一起。",
+    images: ["/projects/dewu/home.png", "/projects/dewu/review.png", "/projects/dewu/result.png"],
+    scopes: ["批量合成", "质检复核", "ZIP 交付"],
+    icon: Images,
   },
   {
     k: "02",
-    title: "GROUD",
-    label: "中俄物流集散管理平台",
-    summary: "把跨境物流里容易靠人记、靠表传的订单、节点和角色关系放进系统。",
-    detail: "系统核心是把分散的节点信息收进同一条管理链路。陪跑重点放在业务对象拆分、权限边界、状态流转和可追踪操作记录，让后续交接不再只靠个人经验。",
-    images: ["/cases/toni/2.jpg"],
-    scopes: ["物流节点", "订单流转", "角色权限"],
-    icon: Boxes,
+    title: "招标智能体",
+    href: "/work/bid-agent",
+    label: "企业案例 / 投标工作台",
+    summary: "招标文件、评分规则、强制条款、企业资料和标书输出。",
+    detail: "真实投标工作台把文件、规则、项目知识库和方案材料放在同一处理界面。",
+    images: ["/now/bid-data-management-desktop.png"],
+    scopes: ["资料核对", "规则拆解", "标书协作"],
+    icon: PackageCheck,
   },
   {
     k: "03",
-    title: "免安装小龙虾",
-    label: "硬件 + 轻量 IDE + speaking coding",
-    summary: "从硬件原型迭代到轻量开发环境，让设备真正进入 AI coding 工作流。",
-    detail: "这一组是硬件项目持续迭代后的形态：免安装小龙虾、轻量 IDE、speaking coding。重点是把设备、开发界面和语音/Agent 操作合成一个低门槛工作流，而不是只停留在概念展示。",
-    images: ["/cases/toni/3.1.jpg", "/cases/toni/3.2.jpg"],
-    scopes: ["硬件形态", "轻量 IDE", "Speaking coding"],
+    title: "Kemo",
+    href: "/work/kemo",
+    label: "研究交付系统",
+    summary: "访谈录音、转写、术语复核、研究备忘录与公众号文章。",
+    detail: "Kemo 把访谈资料、转写结果、术语复核和研究交付串成一条可回看的工作流。",
+    images: ["/projects/kemo/key-visual.png"],
+    scopes: ["访谈转写", "术语复核", "研究交付"],
     icon: Cpu,
   },
   {
     k: "04",
-    title: "量化策略分析",
-    label: "信号分析 / 候选筛选 / 风险提示",
-    summary: "策略核心不外放，公开页面只展示信号解释、筛选逻辑和结果阅读方式。",
-    detail: "陪跑边界是把敏感策略藏住，把可展示的判断过程做清楚。页面只呈现信号分析、候选筛选、风险提示和结果解释，适合现场演示，不公开核心参数和交易建议。",
-    images: ["/cases/toni/4.1.jpg", "/cases/toni/4.2.jpg"],
-    scopes: ["信号分析", "策略解释", "风险提示"],
+    title: "深圳跨境询盘到报价 Agent",
+    href: "/work/fde-case-library.html#crossborder",
+    label: "已跑通企业案例",
+    summary: "企业真实询盘 → 结构化需求 → 检索与验证 → 报价与 CRM 回写。",
+    detail: "来自昨晚已跑通的企业实战案例库，展示从询盘进入到报价回写的完整链路。",
+    images: ["/projects/fde-cases/crossborder.png"],
+    scopes: ["询盘处理", "产品验证", "报价回写"],
     icon: ScanSearch,
   },
   {
     k: "05",
-    title: "全国门店管理系统",
-    label: "头部咨询顾问公司",
-    summary: "把门店填报、总部汇总和顾问复盘接成可检查的系统链路。",
-    detail: "这个案例服务多门店经营管理。关键在于让门店填报、顾问查看、总部汇总和后续复盘形成稳定闭环，而不是让数据停留在一次性表格里。",
-    images: ["/cases/toni/5.1.png", "/cases/toni/5.2.jpg"],
-    scopes: ["门店管理", "数据回收", "顾问复盘"],
+    title: "深圳移民公司 AI 中控",
+    href: "/work/fde-case-library.html#immigration",
+    label: "已跑通企业案例",
+    summary: "内容生产 → 企业微信询盘 → 顾问预评估 → 签约办案 → 老板中控。",
+    detail: "来自昨晚已跑通的企业实战案例库，展示企业微信、案件状态和老板经营中控。",
+    images: ["/projects/fde-cases/immigration.png"],
+    scopes: ["企微入口", "案件状态", "经营中控"],
     icon: PackageCheck,
   },
   {
     k: "06",
-    title: "电商贸易 RPA",
-    label: "自动化执行工具",
-    summary: "从重复操作里拆出稳定步骤，让脚本、浏览器和人工复核各归其位。",
-    detail: "陪跑重点不是一口气自动化所有动作，而是先拆出可以稳定执行的步骤，再保留必要的人工复核位置。这样 RPA 不会变成黑箱，也更容易被业务长期使用。",
-    images: ["/cases/toni/6.jpg"],
-    scopes: ["RPA", "流程拆解", "人工复核"],
+    title: "ViolinMaster",
+    href: "/work/violinmaster",
+    label: "音乐教授模型工作台",
+    summary: "练习录音、曲谱理解、教师反馈与练习诊断。",
+    detail: "每次建议都回到录音、曲谱和具体练习段落，形成可复核的反馈路径。",
+    images: ["/now/violinmaster-desktop.png"],
+    scopes: ["练习录音", "曲谱理解", "诊断反馈"],
     icon: Bot,
   },
   {
     k: "07",
-    title: "LLM + Obsidian",
-    label: "个人知识库 1 天速通版",
-    summary: "一天内搭起输入、索引、检索和输出路径，先跑通，再优化。",
-    detail: "这个项目追求的是快速打通个人知识流，而不是一上来做复杂知识工程。先让输入、标签、检索和 LLM 输出跑起来，再按真实使用习惯优化结构。",
-    images: ["/cases/toni/7.1.jpg", "/cases/toni/7.2.jpg"],
-    scopes: ["知识库", "LLM 检索", "1 天速通"],
+    title: "小红书自动化工具",
+    href: "/work/xhs-automation",
+    label: "内容生产与审核",
+    summary: "选题、素材、笔记草稿、质量检查与发布确认。",
+    detail: "候选稿可以批量，结论不能批量；项目保留素材、审核和发布确认。",
+    images: ["/now/auto-red-book-github.png", "/tools-showcase/xhs-matrix-editorial-hero.webp"],
+    scopes: ["选题建档", "质量检查", "发布确认"],
     icon: ScanSearch,
   },
   {
     k: "08",
-    title: "私有项目档案",
-    label: "企业内部使用 / 截图展示",
-    summary: "私有交付不公开源码，能展示的是截图、流程和关键判断。",
-    detail: "这类案例的价值在于判断方式：如何从现场流程里找出最短可用版本，如何决定哪些部分做系统、哪些部分保留人工，以及如何让交付不止停在演示。",
-    images: ["/cases/toni/8.jpg"],
-    scopes: ["私有交付", "流程截图", "方法复盘"],
+    title: "图生视频平台",
+    href: "/work/video-platform",
+    label: "产品一致性与分镜生产链",
+    summary: "四视图上传、分镜、一致性约束、视频生成与后期交付。",
+    detail: "项目把一致性、分镜和后期检查写进工作台，而不是只展示一段生成结果。",
+    images: ["/projects/video-platform/home.png", "/projects/video-platform/storyboard.png"],
+    scopes: ["四视图", "Harness 约束", "视频交付"],
     icon: PackageCheck,
   },
 ];
@@ -191,6 +201,9 @@ export default function RecentCaseGallery() {
               <button type="button" className={styles.caseLink} onClick={() => openCase(caseIndex)}>
                 查看原图{item.images.length > 1 ? "集" : ""} <Maximize2 size={14} />
               </button>
+              <Link href={item.href} className={styles.caseLink}>
+                打开项目页 <Maximize2 size={14} />
+              </Link>
             </div>
           </article>
         ))}
@@ -246,6 +259,9 @@ export default function RecentCaseGallery() {
                   </button>
                 ))}
               </div>
+              <Link href={activeCase.href} className={styles.archiveModalLink}>
+                打开项目页 <Maximize2 size={14} />
+              </Link>
             </aside>
           </div>
         </div>

@@ -52,11 +52,11 @@ export function getStorageConfigState() {
 }
 
 export function getRunDir(runId: string) {
-  return path.join(runsDir, runId);
+  return path.join(/* turbopackIgnore: true */ runsDir, runId);
 }
 
 export function getRunFile(runId: string) {
-  return path.join(getRunDir(runId), "run.json");
+  return path.join(/* turbopackIgnore: true */ getRunDir(runId), "run.json");
 }
 
 export async function ensureRunDir(runId: string) {
@@ -72,7 +72,7 @@ export async function saveRun(run: ModelRun) {
 
 export async function loadRun(runId: string): Promise<ModelRun> {
   try {
-    const raw = await readFile(getRunFile(runId), "utf8");
+    const raw = await readFile(/* turbopackIgnore: true */ getRunFile(runId), "utf8");
     return JSON.parse(raw) as ModelRun;
   } catch (error) {
     const run = await loadRunFromSupabase(runId);
@@ -489,7 +489,7 @@ async function formatSupabaseListError(response: Response) {
 
 async function listRunsFromDisk(limit: number): Promise<ModelRun[]> {
   try {
-    const entries = await readdir(runsDir, { withFileTypes: true });
+    const entries = await readdir(/* turbopackIgnore: true */ runsDir, { withFileTypes: true });
     const runs = await Promise.all(entries
       .filter((entry) => entry.isDirectory())
       .map(async (entry) => {
@@ -571,7 +571,7 @@ async function markPersistedStl(run: ModelRun): Promise<ModelRun> {
 
   const fileName = path.basename(run.files.stl);
   try {
-    const stlStats = await stat(path.join(getRunDir(run.runId), fileName));
+    const stlStats = await stat(/* turbopackIgnore: true */ path.join(/* turbopackIgnore: true */ getRunDir(run.runId), fileName));
     if (stlStats.size >= 256) {
       return {
         ...run,

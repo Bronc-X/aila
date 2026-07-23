@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import styles from "../../site.module.css";
+import LotusBrandPage from "../LotusBrandPage";
 import { getWorkItem, workItems } from "../work-data";
 
 type WorkDetailPageProps = {
@@ -29,6 +30,16 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   const item = getWorkItem(slug);
 
   if (!item) notFound();
+  if (item.slug === "lotus") return <LotusBrandPage />;
+
+  const media = item.media ?? (item.image
+    ? [{
+        type: "image" as const,
+        src: item.image,
+        alt: item.title,
+        caption: `${item.title} 项目画面`,
+      }]
+    : []);
 
   return (
     <main className={styles.page}>
@@ -37,7 +48,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <div className={styles.links}>
           <Link href="/work">作品</Link>
           <Link href="/tools">工具</Link>
-          <Link href="/work/training-system">陪跑</Link>
+          <Link href="/work">案例</Link>
           <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
@@ -50,7 +61,6 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
           </Link>
           <p className={styles.eyebrow}>{item.sub}</p>
           <h1>{item.title}</h1>
-          <p className={styles.lede}>{item.summary}</p>
         </div>
         <aside className={styles.heroPanel}>
           <strong>{item.k}</strong>
@@ -58,10 +68,66 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         </aside>
       </section>
 
-      {item.image && (
+      {media.length > 0 && (
+        <section className={`${styles.section} ${styles.workMediaSection}`}>
+          <div className={styles.workMediaHeader}>
+            <div>
+              <small>PROJECT EVIDENCE</small>
+              <h2>项目画面与运行证据</h2>
+            </div>
+          </div>
+          <div
+            className={[
+              styles.workMediaGrid,
+              media.length === 1 ? styles.workMediaSingle : "",
+              media.length === 2 ? styles.workMediaPair : "",
+              media.length === 3 ? styles.workMediaTriple : "",
+            ].filter(Boolean).join(" ")}
+          >
+            {media.map((asset, index) => (
+              <figure
+                className={`${styles.workMediaItem} ${index === 0 ? styles.workMediaLead : ""}`}
+                key={`${asset.type}-${asset.src}`}
+              >
+                <div className={styles.workMediaViewport} data-media-kind={asset.type}>
+                  {asset.type === "video" ? (
+                    <video
+                      src={asset.src}
+                      poster={asset.poster}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls
+                      preload="metadata"
+                      aria-label={asset.alt}
+                    />
+                  ) : (
+                    <Image
+                      src={asset.src}
+                      alt={asset.alt}
+                      fill
+                      sizes={index === 0 ? "(max-width: 900px) 100vw, 58vw" : "(max-width: 900px) 100vw, 40vw"}
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  )}
+                </div>
+                <figcaption>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <p>{asset.caption}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {item.evidenceStatus === "pending" && (
         <section className={styles.section}>
-          <div className={styles.videoFrame}>
-            <Image src={item.image} alt={item.title} fill sizes="100vw" />
+          <div className={styles.workEvidenceNotice}>
+            <small>MEDIA STATUS</small>
+            <h2>待补真实媒体</h2>
+            <p>当前只保留项目位置与已确认范围；截图、录屏或可公开结果补齐后，再进入已完成案例。</p>
           </div>
         </section>
       )}
@@ -113,9 +179,15 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <h2>有类似现场问题，先拿一个流程来拆。</h2>
         <div className={styles.actions}>
           {item.nextHref && item.nextLabel && (
-            <Link href={item.nextHref} className={styles.button}>
-              {item.nextLabel}
-            </Link>
+            item.nextHref.startsWith("http") ? (
+              <a href={item.nextHref} target="_blank" rel="noopener noreferrer" className={styles.button}>
+                {item.nextLabel}
+              </a>
+            ) : (
+              <Link href={item.nextHref} className={styles.button}>
+                {item.nextLabel}
+              </Link>
+            )
           )}
           <Link href="/contact" className={styles.ghost}>
             发我场景 <ArrowUpRight size={15} />

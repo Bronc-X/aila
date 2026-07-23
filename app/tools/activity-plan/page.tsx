@@ -30,8 +30,8 @@ export default function ActivityPlanPage() {
     <PortfolioCaseMotion variant="proposal">
       <main className={styles.casePage}>
         <nav className={styles.topbar} aria-label="海报方案助手导航">
-          <Link className={styles.backLink} href="/tools">
-            <ArrowLeft size={14} /> 返回工具总览
+          <Link className={styles.backLink} href="/aila">
+            <ArrowLeft size={14} /> 返回 AILA 资产层
           </Link>
           <span className={styles.topMeta}>TONI / ENTERPRISE FDE ASSET 07</span>
           <a
@@ -74,7 +74,6 @@ export default function ActivityPlanPage() {
               preload
               sizes="(max-width: 1100px) 92vw, 54vw"
             />
-            <figcaption className={styles.visualCaption}>Proposal desk / generated for this case study</figcaption>
           </figure>
         </section>
 
@@ -82,14 +81,9 @@ export default function ActivityPlanPage() {
           <div className={styles.sectionGrid}>
             <aside className={styles.sectionRail}>
               <span className={styles.sectionIndex}>01 / DELIVERY LOGIC</span>
-              <p>从输入到交付，所有环节都留下可复核的中间结果。</p>
             </aside>
             <div>
               <h2 className={styles.sectionTitle}>不是再写一份方案，而是先把交付顺序排清楚。</h2>
-              <p className={styles.leadCopy}>
-                企业活动最容易失控的地方，不是缺一句漂亮标题，而是信息散在聊天、表格和旧文件里。这个工具先收口事实，再组织输出，避免海报做完才发现预算、流程或品牌要求没有对齐。
-              </p>
-              <blockquote className={styles.statement}>先收口输入，再决定结构；先确认边界，再开始出图。</blockquote>
               <div className={styles.processList}>
                 {process.map(([index, title, copy]) => (
                   <article className={styles.processItem} key={index}>
@@ -108,9 +102,6 @@ export default function ActivityPlanPage() {
             <div className={styles.evidenceCopy}>
               <span className={styles.eyebrow}>Asset library</span>
               <h2>先读品牌资产，再谈海报方向。</h2>
-              <p>
-                页面直接复用 Toni Asia 品牌板、商业海报工坊和既有海报样张。它们不是装饰，而是用来约束色彩、构图和信息密度的真实输入。
-              </p>
               <ul className={styles.assetList}>
                 <li><strong>品牌板</strong><span>标志、色彩、版式边界</span></li>
                 <li><strong>历史海报</strong><span>保留有效构图，淘汰无效套路</span></li>
@@ -135,7 +126,6 @@ export default function ActivityPlanPage() {
               <span className={styles.eyebrow}>Production evidence</span>
               <h2>用真实页面和成片说明完成度。</h2>
             </div>
-            <p>主画面来自商业海报工坊实页，右侧保留四套不同场景的实际海报资产。</p>
           </div>
           <div className={styles.galleryStack}>
             <figure className={styles.imageFrame} data-case-parallax>
@@ -165,7 +155,6 @@ export default function ActivityPlanPage() {
           <div className={styles.sectionGrid}>
             <aside className={styles.sectionRail}>
               <span className={styles.sectionIndex}>04 / OUTPUTS</span>
-              <p>每份输出有自己的用途，不把相同内容换个文件名重复交付。</p>
             </aside>
             <div>
               <h2 className={styles.sectionTitle}>一份活动输入，拆成四种真正能接着用的结果。</h2>

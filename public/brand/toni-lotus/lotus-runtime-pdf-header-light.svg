@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="205" viewBox="0 0 820 205" role="img" aria-labelledby="title">
+  <title id="title">Lotus Runtime PDF header</title>
+  <rect width="820" height="205" fill="#F6F6F4"/>
+  
+    <svg x="34" y="44" width="370" height="97" viewBox="0 0 1600 420" preserveAspectRatio="xMinYMid meet"><g transform="translate(0 0) scale(1)" fill="#0A0B0D"><polygon points="70,80 116,80 126,90 126,288 70,288"/><polygon points="70,288 304,288 304,332 96,332 70,306"/><polygon points="394,80 546,80 546,126 394,126"/><polygon points="544,126 590,126 590,286 544,286"/><polygon points="394,286 546,286 546,332 394,332"/><polygon points="350,126 396,126 396,286 350,286"/><polygon points="350,126 394,80 394,126"/><polygon points="546,80 590,126 546,126"/><polygon points="590,286 546,332 546,286"/><polygon points="350,286 394,332 394,286"/><polygon points="650,80 760,80 785,105 810,80 900,80 900,130 650,130"/><polygon points="774,105 822,105 822,332 774,332"/><polygon points="960,80 1008,80 1008,274 1034,300 1034,332 1010,332 960,282"/><polygon points="1162,80 1210,80 1210,282 1160,332 1136,332 1136,300 1162,274"/><polygon points="1034,300 1136,300 1136,332 1034,332"/><polygon points="1322,80 1515,80 1515,126 1342,126 1320,148 1320,165 1350,188 1470,188 1515,233 1515,282 1465,332 1280,332 1280,286 1450,286 1468,266 1468,253 1445,234 1325,234 1280,190 1280,130"/></g><rect x="450" y="186" width="40" height="40" fill="#7BCA71"/></svg>
+    <line x1="34" y1="176" x2="786" y2="176" stroke="#7BCA71" stroke-width="2" opacity="1"/>
+    <text x="786" y="66" fill="#8F99A3" font-family="Consolas, Menlo, monospace" font-size="13px" font-weight="700" text-anchor="end" letter-spacing="1">AGENT OPERATING LAYER</text>
+    <text x="786" y="103" fill="#8F99A3" font-family="Consolas, Menlo, monospace" font-size="11px" font-weight="600" text-anchor="end" letter-spacing="1">RULES / SKILLS / RUNTIME</text>
+  
+</svg>

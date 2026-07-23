@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Box, Database, Eye, Plane, Sparkles } from "lucide-react";
+import LegacyPageMotionShell from "../components/LegacyPageMotionShell";
 import styles from "../site.module.css";
 
 const entryCards = [
@@ -23,85 +24,79 @@ const entryCards = [
 
 export default function LusiePage() {
   return (
-    <main className={styles.page}>
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.brand}>
-          <span>T</span>
-          Toni
-        </Link>
-        <div className={styles.links}>
-          <Link href="/work">作品</Link>
-          <Link href="/tools">工具</Link>
-          <Link href="/work/training-system">陪跑</Link>
-          <Link href="/contact">关于 / 联系</Link>
-        </div>
-      </nav>
-
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>
-            <Plane size={16} />
-            Lusie AI / 航模项目
-          </p>
-          <h1>航模项目先分两条路。</h1>
-          <p className={styles.lede}>
-            一个给用户看项目，一个给用户试 AI 生成。这样从 Toni 主页进来，不会直接掉进复杂工作台。
-          </p>
-          <div className={styles.actions}>
-            <Link href="/lusie/showcase" className={styles.button}>
-              看展示页
-              <ArrowRight size={17} />
-            </Link>
-            <Link href="/lusie/ai" className={styles.ghost}>
-              进 AI 工作台
-              <Sparkles size={17} />
-            </Link>
+    <LegacyPageMotionShell>
+      <main className={styles.page}>
+        <nav className={styles.nav}>
+          <Link href="/" className={styles.brand}>
+            <span>T</span>
+            Toni
+          </Link>
+          <div className={styles.links}>
+            <Link href="/work">作品</Link>
+            <Link href="/tools">工具</Link>
+            <Link href="/aila">FDE</Link>
+            <Link href="/contact">关于 / 联系</Link>
           </div>
-        </div>
-        <aside className={styles.heroPanel}>
-          <strong>LUSIE</strong>
-          <span>第一步先把入口理顺；下一步再把原 Vite 工作台迁成 Toni.asia 站内功能。</span>
-        </aside>
-      </section>
+        </nav>
 
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2>两个入口，各做一件事。</h2>
-          <p>静态展示负责介绍和承接，AI 工作台负责生成和交付。后续会共用同一套 Supabase 存储。</p>
-        </div>
-        <div className={styles.lusieChoiceGrid}>
-          {entryCards.map((entry) => {
-            const Icon = entry.icon;
-            return (
-              <Link href={entry.href} className={styles.lusieChoiceCard} key={entry.href}>
-                <div>
-                  <span>{entry.label}</span>
-                  <Icon size={30} />
-                </div>
-                <h3>{entry.title}</h3>
-                <p>{entry.copy}</p>
-                <strong>
-                  {entry.action}
-                  <ArrowRight size={18} />
-                </strong>
+        <section className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>
+              <Plane size={16} />
+              Lusie AI / 航模项目
+            </p>
+            <h1>航模项目分成展示与生成两条路径。</h1>
+            <div className={styles.actions}>
+              <Link href="/lusie/showcase" className={styles.button}>
+                看展示页
+                <ArrowRight size={17} />
               </Link>
-            );
-          })}
-        </div>
-      </section>
+              <Link href="/lusie/ai" className={styles.ghost}>
+                进 AI 工作台
+                <Sparkles size={17} />
+              </Link>
+            </div>
+          </div>
+        </section>
 
-      <section className={styles.lusieStatusBand}>
-        <div>
-          <Box size={24} />
-          <strong>AI 生成</strong>
-          <span>OpenAI 图片生成 + Tripo 3D 建模，迁入 Next API 后接入。</span>
-        </div>
-        <div>
-          <Database size={24} />
-          <strong>存储</strong>
-          <span>Supabase 用来保存历史记录；模型文件建议再接对象存储。</span>
-        </div>
-      </section>
-    </main>
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>两个入口，各自承担清楚的任务。</h2>
+          </div>
+          <div className={styles.lusieChoiceGrid}>
+            {entryCards.map((entry) => {
+              const Icon = entry.icon;
+              return (
+                <Link href={entry.href} className={styles.lusieChoiceCard} key={entry.href}>
+                  <div>
+                    <span>{entry.label}</span>
+                    <Icon size={30} />
+                  </div>
+                  <h3>{entry.title}</h3>
+                  <p>{entry.copy}</p>
+                  <strong>
+                    {entry.action}
+                    <ArrowRight size={18} />
+                  </strong>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className={styles.lusieStatusBand}>
+          <div>
+            <Box size={24} />
+            <strong>生成链路</strong>
+            <span>概念图到 STL 贯穿同一流程。</span>
+          </div>
+          <div>
+            <Database size={24} />
+            <strong>项目记录</strong>
+            <span>保存历史、版本与模型来源，便于回溯。</span>
+          </div>
+        </section>
+      </main>
+    </LegacyPageMotionShell>
   );
 }

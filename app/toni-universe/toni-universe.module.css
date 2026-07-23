@@ -55,12 +55,12 @@
   position: fixed;
   z-index: 30;
   inset: 0 0 auto;
-  height: 64px;
+  height: 72px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 24px;
-  padding: 0 28px;
+  gap: 28px;
+  padding: 0 32px;
   border-bottom: 1px solid rgba(176, 201, 201, 0.1);
   background: linear-gradient(180deg, rgba(2, 8, 11, 0.95), rgba(2, 8, 11, 0.54));
   backdrop-filter: blur(14px);
@@ -79,7 +79,7 @@
   justify-self: start;
   gap: 8px;
   width: max-content;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.03em;
 }
@@ -107,25 +107,45 @@
 }
 
 .navTitle span {
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
 }
 
 .navTitle small {
   color: var(--quiet);
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.2em;
 }
 
 .navLinks {
   display: flex;
   justify-self: end;
-  gap: 22px;
+  gap: 28px;
 }
 
 .navLinks a {
-  font-size: 12px;
+  font-size: 15px;
+}
+
+.navLinks .caseShortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--teal);
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.caseShortcut svg {
+  flex: 0 0 auto;
+  transition: transform 180ms ease;
+}
+
+.caseShortcut:hover svg,
+.caseShortcut:focus-visible svg {
+  transform: translate(1px, -1px);
 }
 
 .nav a:hover,
@@ -266,7 +286,8 @@
 }
 
 .taigaSignalVisual,
-.lusieSignalVisual {
+.lusieSignalVisual,
+.lotusSignalVisual {
   position: relative;
   display: grid;
   width: 44px;
@@ -320,6 +341,32 @@
 
 .lusieSignalVisual {
   overflow: visible;
+}
+
+.lotusPersonalSignal {
+  grid-template-columns: 72px minmax(0, 1fr) 14px;
+}
+
+.lotusPersonalSignal::before {
+  background: linear-gradient(90deg, rgba(123, 202, 113, 0.18), transparent 82%);
+}
+
+.lotusSignalVisual {
+  width: 72px;
+  overflow: visible;
+}
+
+.lotusWordmark {
+  width: 72px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(123, 202, 113, 0.2));
+  transition: filter 180ms ease, transform 260ms ease;
+}
+
+.personalSignal:hover .lotusWordmark,
+.personalSignal:focus-visible .lotusWordmark {
+  filter: drop-shadow(0 0 15px rgba(123, 202, 113, 0.48));
+  transform: translate3d(1px, -1px, 0) scale(1.04);
 }
 
 .lusieOrbit {
@@ -424,9 +471,9 @@
   z-index: 8;
   top: 92px;
   left: clamp(18px, 2.2vw, 34px);
-  width: min(332px, calc(100vw - 36px));
+  width: min(380px, calc(100vw - 36px));
   overflow: hidden;
-  padding: 18px 18px 15px;
+  padding: 22px 22px 18px;
   border-color: rgba(176, 201, 201, 0.13);
   border-left-color: rgba(183, 121, 76, 0.5);
   background:
@@ -452,10 +499,127 @@
   width: 92px;
 }
 
+.quickNav {
+  position: absolute;
+  z-index: 8;
+  top: 50%;
+  left: clamp(18px, 2.2vw, 34px);
+  width: 272px;
+  max-height: none;
+  overflow: visible;
+  transform: translateY(-34%);
+  border-left: 1px solid rgba(176, 201, 201, 0.18);
+  background: linear-gradient(90deg, rgba(5, 13, 16, 0.46), rgba(5, 13, 16, 0));
+  scrollbar-width: thin;
+}
+
+.quickNavHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 0 8px 12px;
+  border-bottom: 1px solid rgba(176, 201, 201, 0.14);
+}
+
+.quickNavHeader small,
+.quickNavHeader span {
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.quickNavHeader small {
+  color: var(--gold);
+}
+
+.quickNavHeader span {
+  color: var(--quiet);
+}
+
+.quickNavList {
+  display: grid;
+}
+
+.quickNavList button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr);
+  gap: 5px 10px;
+  align-items: baseline;
+  min-height: 56px;
+  padding: 11px 14px 11px 16px;
+  border: 0;
+  border-bottom: 1px solid rgba(176, 201, 201, 0.1);
+  color: var(--muted);
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  transition: color 180ms ease, background 180ms ease, padding 220ms ease;
+}
+
+.quickNavList button::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: transparent;
+  content: "";
+  transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+.quickNavList button > span {
+  grid-row: span 2;
+  color: var(--quiet);
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+}
+
+.quickNavList button strong {
+  overflow: hidden;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quickNavList button small {
+  overflow: hidden;
+  color: #71807c;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quickNavList button:hover,
+.quickNavList button:focus-visible,
+.quickNavList .quickNavActive {
+  padding-left: 16px;
+  color: #ffffff;
+  outline: none;
+  background: linear-gradient(90deg, rgba(105, 169, 159, 0.13), transparent 86%);
+}
+
+.quickNavList button:hover::before,
+.quickNavList button:focus-visible::before,
+.quickNavList .quickNavActive::before {
+  background: linear-gradient(180deg, var(--copper), var(--teal));
+  box-shadow: 0 0 10px rgba(105, 169, 159, 0.36);
+}
+
+.quickNavList .quickNavActive > span {
+  color: var(--gold);
+}
+
 .eyebrow {
   margin: 0;
   color: var(--gold);
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.19em;
 }
@@ -463,19 +627,21 @@
 .introPanel h1 {
   margin: 9px 0 0;
   color: #ffffff;
-  font-size: clamp(27px, 2.45vw, 32px);
+  font-size: clamp(40px, 3.1vw, 48px);
   font-weight: 680;
-  line-height: 1.05;
+  line-height: 1.02;
   letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
 .introCopy {
   margin: 7px 0 0;
-  color: #899a96;
-  font-size: 9px;
+  max-width: 31ch;
+  color: #b4c1bd;
+  font-size: 15px;
   line-height: 1.55;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.01em;
+  text-wrap: pretty;
 }
 
 .liveSignal {
@@ -499,14 +665,14 @@
 
 .liveSignal span {
   color: var(--quiet);
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.12em;
 }
 
 .liveSignal strong {
   overflow: hidden;
   color: #ffffff;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 580;
   text-align: right;
   text-overflow: ellipsis;
@@ -541,11 +707,20 @@
   outline: 0;
   color: #ffffff;
   background: transparent;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .searchWrap input::placeholder {
   color: #62736f;
+}
+
+.searchResult {
+  margin: 8px 0 0;
+  color: var(--teal);
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
 }
 
 .searchWrap button {
@@ -596,7 +771,7 @@
 
 .filters button span {
   overflow: hidden;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 560;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -604,7 +779,7 @@
 
 .filters button small {
   flex: 0 0 auto;
-  font-size: 6px;
+  font-size: 8px;
   letter-spacing: 0.04em;
 }
 
@@ -627,7 +802,7 @@
   gap: 12px;
   margin-top: 9px;
   color: var(--quiet);
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 0.09em;
 }
 
@@ -639,7 +814,7 @@
 
 .graphStatus strong {
   color: #ffffff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 580;
   letter-spacing: 0;
 }
@@ -675,19 +850,19 @@
 }
 
 .nodeLabel small {
-  max-width: 158px;
+  max-width: 204px;
   overflow: hidden;
   color: #8c94ac;
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 0.11em;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .nodeLabel strong {
-  max-width: 174px;
+  max-width: 224px;
   overflow: hidden;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 590;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -707,7 +882,7 @@
 }
 
 .nodeLabel[data-layer="core"] strong {
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: -0.02em;
 }
 
@@ -719,8 +894,37 @@
   color: var(--teal);
 }
 
+.nodeLabel[data-layer="commercial"] i {
+  color: #c7aa78;
+}
+
 .nodeLabel[data-layer="proof"] i {
   color: var(--gold);
+}
+
+.nodeLabel[data-node-id="lotus"] {
+  gap: 7px;
+  padding: 2px 0;
+  background: transparent;
+  filter: drop-shadow(0 0 11px rgba(123, 202, 113, 0.34));
+}
+
+.nodeLabel[data-node-id="lotus"] i {
+  width: 6px;
+  height: 6px;
+  color: #7bca71;
+  background: #f6f6f4;
+}
+
+.nodeLabel[data-node-id="lotus"] small {
+  color: #aeeaa6;
+}
+
+.nodeLabel .nodeLabelLotusMark {
+  display: block;
+  width: 108px;
+  height: 28px;
+  background: url("/brand/toni-lotus/lotus-runtime-wordmark-paper.svg") center / contain no-repeat;
 }
 
 .nodeLabel:hover,
@@ -742,7 +946,7 @@
   z-index: 12;
   top: 92px;
   right: clamp(18px, 2.2vw, 34px);
-  width: min(350px, calc(100vw - 36px));
+  width: min(410px, calc(100vw - 36px));
   max-height: calc(100svh - 210px);
   overflow: auto;
   padding: 22px;
@@ -777,7 +981,7 @@
   gap: 8px;
   padding-right: 36px;
   color: var(--steel);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -786,37 +990,51 @@
   padding-left: 8px;
   border-left: 1px solid var(--line-bright);
   color: var(--quiet);
-  font-size: 7px;
+  font-size: 8px;
   letter-spacing: 0.1em;
+}
+
+.inviteStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 7px;
+  letter-spacing: 0.08em;
 }
 
 .detailEnglish {
   margin: 24px 0 5px;
   color: var(--quiet);
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.16em;
 }
 
 .detailPanel h2 {
   margin: 0;
   color: #ffffff;
-  font-size: 31px;
+  max-width: 100%;
+  font-size: 36px;
   font-weight: 680;
   line-height: 1.04;
   letter-spacing: -0.045em;
+  text-wrap: pretty;
+  line-break: strict;
+  overflow-wrap: normal;
 }
 
 .detailSummary {
   margin: 15px 0 0;
   color: #e7e6f2;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.62;
 }
 
 .detailBody {
   margin: 12px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.75;
 }
 
@@ -939,12 +1157,12 @@
 
 .stageIntro small {
   color: var(--gold);
-  font-size: 7px;
+  font-size: 8px;
   letter-spacing: 0.13em;
 }
 
 .stageIntro strong {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 650;
 }
 
@@ -975,13 +1193,13 @@
 }
 
 .stageButtons button small {
-  font-size: 7px;
+  font-size: 8px;
   letter-spacing: 0.06em;
 }
 
 .stageButtons button span {
   overflow: hidden;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1110,14 +1328,14 @@
   align-items: center;
   gap: 8px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   text-decoration: none;
 }
 
 .nodePageNav span {
   color: var(--quiet);
   font-family: var(--font-geist-mono), Consolas, monospace;
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1135,8 +1353,9 @@
 .nodeArchiveHeader {
   position: relative;
   display: grid;
-  justify-items: start;
-  max-width: 820px;
+  justify-items: stretch;
+  width: 100%;
+  max-width: none;
   padding-bottom: 34px;
   border-bottom: 1px solid var(--line);
 }
@@ -1179,12 +1398,17 @@
 }
 
 .nodeArchiveHeader h1 {
+  width: 100%;
+  max-width: 100%;
   margin: 0;
   color: var(--text);
-  font-size: clamp(42px, 7vw, 88px);
+  font-size: clamp(40px, 6vw, 76px);
   font-weight: 720;
-  line-height: 0.95;
+  line-height: 0.98;
   letter-spacing: -0.06em;
+  text-wrap: pretty;
+  line-break: strict;
+  overflow-wrap: normal;
 }
 
 .nodeArchiveHeader > small {
@@ -1195,10 +1419,11 @@
 }
 
 .nodeArchiveHeader > strong {
-  max-width: 760px;
+  width: 100%;
+  max-width: 900px;
   margin-top: 28px;
   color: #d8dfdc;
-  font-size: clamp(20px, 2.5vw, 30px);
+  font-size: clamp(19px, 2.25vw, 28px);
   font-weight: 520;
   line-height: 1.42;
   letter-spacing: -0.025em;
@@ -1338,15 +1563,15 @@
   }
 
   .introPanel {
-    width: 318px;
+    width: 350px;
   }
 
   .introPanel h1 {
-    font-size: 29px;
+    font-size: 36px;
   }
 
   .detailPanel {
-    width: 310px;
+    width: 360px;
   }
 
   .stageRail {
@@ -1436,6 +1661,10 @@
     background: rgba(5, 15, 18, 0.96);
   }
 
+  .lotusPersonalSignal {
+    grid-column: 1 / -1;
+  }
+
   .personalSignal::before {
     inset: 0;
   }
@@ -1451,17 +1680,67 @@
   .introPanel {
     top: 70px;
     left: 12px;
-    width: min(294px, calc(100vw - 24px));
-    padding: 15px;
+    width: min(330px, calc(100vw - 24px));
+    padding: 18px;
     background: linear-gradient(135deg, rgba(5, 16, 19, 0.88), rgba(3, 10, 13, 0.58));
   }
 
+  .quickNav {
+    top: 350px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: none;
+    overflow: hidden;
+    transform: none;
+    border: 1px solid rgba(176, 201, 201, 0.14);
+    background: rgba(5, 13, 16, 0.64);
+    backdrop-filter: blur(12px);
+  }
+
+  .quickNavHeader {
+    padding: 7px 10px;
+  }
+
+  .quickNavList {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .quickNavList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .quickNavList button {
+    flex: 0 0 132px;
+    min-height: 64px;
+    border-right: 1px solid rgba(176, 201, 201, 0.1);
+    border-bottom: 0;
+    padding: 8px 9px;
+  }
+
+  .quickNavList button:hover,
+  .quickNavList button:focus-visible,
+  .quickNavList .quickNavActive {
+    padding-left: 9px;
+  }
+
+  .quickNavList button::before {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: 1px;
+  }
+
   .introPanel h1 {
-    font-size: 27px;
+    font-size: 32px;
   }
 
   .introCopy {
-    font-size: 8px;
+    font-size: 13px;
   }
 
   .liveSignal {
@@ -1483,7 +1762,7 @@
   }
 
   .detailPanel h2 {
-    font-size: 25px;
+    font-size: 29px;
   }
 
   .sceneControls {
@@ -1535,12 +1814,16 @@
   }
 
   .nodeLabel strong {
-    max-width: 104px;
-    font-size: 9px;
+    max-width: 132px;
+    font-size: 11px;
   }
 
   .nodeLabel[data-layer="core"] strong {
-    font-size: 12px;
+    font-size: 14px;
+  }
+
+  .nodeArchiveHeader h1 {
+    font-size: clamp(38px, 10vw, 66px);
   }
 
   .mobileIndex {
@@ -1631,6 +1914,10 @@
 }
 
 @media (max-width: 560px) {
+  .nav {
+    gap: 10px;
+  }
+
   .navLinks {
     gap: 9px;
   }
@@ -1643,6 +1930,10 @@
     grid-template-columns: 42px minmax(0, 1fr) 12px;
     gap: 7px;
     padding-inline: 8px;
+  }
+
+  .lotusPersonalSignal {
+    grid-template-columns: 84px minmax(0, 1fr) 12px;
   }
 
   .taigaSignalVisual,
@@ -1663,13 +1954,25 @@
     width: calc(100vw - 24px);
   }
 
+  .quickNav {
+    top: 318px;
+  }
+
+  .quickNavList button {
+    flex-basis: 108px;
+  }
+
   .eyebrow {
     margin-bottom: 9px;
     font-size: 7px;
   }
 
   .introPanel h1 {
-    font-size: 28px;
+    font-size: 31px;
+  }
+
+  .introCopy {
+    font-size: 12px;
   }
 
   .searchWrap {
@@ -1696,6 +1999,429 @@
   .stageButtons button i {
     right: 6px;
     left: 6px;
+  }
+}
+
+@media (min-width: 2400px) and (min-height: 1400px) {
+  .nav {
+    height: 104px;
+    gap: 36px;
+    padding: 0 40px;
+  }
+
+  .backLink,
+  .navLinks a {
+    font-size: 30px;
+  }
+
+  .backLink {
+    gap: 12px;
+  }
+
+  .backLink svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navTitle {
+    gap: 5px;
+  }
+
+  .navTitle span {
+    font-size: 30px;
+  }
+
+  .navTitle small {
+    font-size: 18px;
+  }
+
+  .navLinks {
+    flex-wrap: nowrap;
+    gap: 38px;
+  }
+
+  .navLinks .caseShortcut {
+    gap: 8px;
+  }
+
+  .navLinks a {
+    white-space: nowrap;
+  }
+
+  .caseShortcut svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .personalOrbit {
+    top: 136px;
+    right: 40px;
+    width: 560px;
+  }
+
+  .personalOrbitHeader {
+    padding-bottom: 14px;
+  }
+
+  .personalOrbitHeader small {
+    font-size: 16px;
+  }
+
+  .personalSignal {
+    grid-template-columns: 112px minmax(0, 1fr) 32px;
+    gap: 14px;
+    min-height: 124px;
+    padding: 10px 4px;
+  }
+
+  .taigaSignalVisual,
+  .lusieSignalVisual {
+    width: 104px;
+    height: 104px;
+  }
+
+  .taigaSprite {
+    transform: translate3d(0, 2px, 0) scale(1.55);
+  }
+
+  .aeromodelEmblem {
+    width: 96px;
+    height: 96px;
+  }
+
+  .lotusPersonalSignal {
+    grid-template-columns: 180px minmax(0, 1fr) 32px;
+  }
+
+  .lotusSignalVisual {
+    width: 180px;
+  }
+
+  .lotusWordmark {
+    width: 180px;
+  }
+
+  .personalSignalCopy small {
+    font-size: 16px;
+  }
+
+  .personalSignalCopy strong {
+    font-size: 26px;
+  }
+
+  .personalSignalCopy em {
+    font-size: 18px;
+  }
+
+  .personalSignalArrow {
+    width: 26px;
+    height: 26px;
+  }
+
+  .introPanel {
+    top: 136px;
+    left: 40px;
+    width: min(780px, calc(100vw - 80px));
+    padding: 34px 34px 30px;
+  }
+
+  .introPanel h1 {
+    margin-top: 12px;
+    font-size: clamp(64px, 1.9vw, 80px);
+  }
+
+  .introCopy {
+    margin-top: 10px;
+    font-size: 22px;
+    line-height: 1.52;
+  }
+
+  .liveSignal {
+    grid-template-columns: 10px auto 1fr;
+    gap: 12px;
+    min-height: 52px;
+    margin-top: 20px;
+    padding-top: 14px;
+  }
+
+  .liveSignal i {
+    width: 7px;
+    height: 7px;
+  }
+
+  .liveSignal span {
+    font-size: 16px;
+  }
+
+  .liveSignal strong {
+    font-size: 24px;
+  }
+
+  .searchWrap {
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 0 14px;
+  }
+
+  .searchWrap > svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .searchWrap input {
+    height: 56px;
+    font-size: 21px;
+  }
+
+  .searchWrap button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .searchWrap button svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .searchResult {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  .filters {
+    gap: 18px;
+    margin-top: 12px;
+  }
+
+  .filters button {
+    gap: 6px;
+    padding: 13px 0 12px;
+  }
+
+  .filters button span {
+    font-size: 19px;
+  }
+
+  .filters button small {
+    font-size: 13px;
+  }
+
+  .graphStatus {
+    gap: 18px;
+    margin-top: 14px;
+    font-size: 14px;
+  }
+
+  .graphStatus strong {
+    font-size: 21px;
+  }
+
+  .quickNav {
+    top: clamp(640px, 42svh, 1260px);
+    left: 40px;
+    width: 540px;
+    max-height: none;
+    overflow: visible;
+    transform: none;
+  }
+
+  .quickNavHeader {
+    gap: 14px;
+    padding: 0 0 14px 22px;
+  }
+
+  .quickNavHeader small,
+  .quickNavHeader span {
+    font-size: 16px;
+  }
+
+  .quickNavList button {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px 16px;
+    min-height: 78px;
+    padding: 12px 20px 12px 24px;
+  }
+
+  .quickNavList button > span {
+    font-size: 17px;
+  }
+
+  .quickNavList button strong {
+    font-size: 22px;
+  }
+
+  .quickNavList button small {
+    font-size: 13px;
+  }
+
+  .nodeLabel {
+    gap: 14px;
+    padding: 9px 12px 9px 8px;
+  }
+
+  .nodeLabel i {
+    width: 8px;
+    height: 8px;
+  }
+
+  .nodeLabel small {
+    max-width: 420px;
+    font-size: 16px;
+  }
+
+  .nodeLabel strong {
+    max-width: 460px;
+    font-size: 24px;
+  }
+
+  .nodeLabel[data-layer="core"] i {
+    width: 11px;
+    height: 11px;
+  }
+
+  .nodeLabel[data-layer="core"] strong {
+    font-size: 32px;
+  }
+
+  .nodeLabel .nodeLabelLotusMark {
+    width: 210px;
+    height: 54px;
+  }
+
+  .detailPanel {
+    top: 136px;
+    right: 40px;
+    width: min(820px, calc(100vw - 80px));
+    max-height: calc(100svh - 280px);
+    padding: 38px;
+  }
+
+  .closeDetail {
+    top: 22px;
+    right: 22px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .closeDetail svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .detailIndex {
+    gap: 12px;
+    padding-right: 62px;
+    font-size: 17px;
+  }
+
+  .detailIndex small {
+    padding-left: 12px;
+    font-size: 14px;
+  }
+
+  .inviteStatus {
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .detailEnglish {
+    margin-top: 34px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .detailPanel h2 {
+    font-size: 64px;
+  }
+
+  .detailSummary {
+    margin-top: 18px;
+    font-size: 25px;
+  }
+
+  .tags {
+    gap: 9px;
+    margin-top: 20px;
+  }
+
+  .tags span {
+    padding: 7px 9px;
+    font-size: 16px;
+  }
+
+  .openLink {
+    gap: 14px;
+    margin-top: 24px;
+    padding: 14px 0;
+    font-size: 20px;
+  }
+
+  .openLink svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .detailNote {
+    margin-top: 18px;
+    font-size: 15px;
+  }
+
+  .sceneControls {
+    bottom: 160px;
+    left: 40px;
+    gap: 18px;
+  }
+
+  .resetButton {
+    gap: 10px;
+    min-height: 56px;
+    padding: 0 18px;
+    font-size: 18px;
+  }
+
+  .resetButton svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .stageRail {
+    bottom: 28px;
+    width: min(2600px, calc(100vw - 120px));
+    min-height: 132px;
+    grid-template-columns: 360px 1fr;
+  }
+
+  .stageIntro {
+    gap: 7px;
+    padding: 0 28px;
+  }
+
+  .stageIntro small {
+    font-size: 15px;
+  }
+
+  .stageIntro strong {
+    font-size: 22px;
+  }
+
+  .stageButtons button {
+    gap: 10px;
+    padding: 0 18px;
+  }
+
+  .stageButtons button small {
+    font-size: 14px;
+  }
+
+  .stageButtons button span {
+    font-size: 21px;
+  }
+
+  .stageButtons button i {
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
   }
 }
 

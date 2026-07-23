@@ -101,6 +101,7 @@ interface FAQItem {
 }
 
 const NavigateContext = createContext<(to: string) => void>(() => undefined);
+const showcaseBasePath = "/lusie/showcase";
 
 const legacyUrls = {
   login: "/index/common/login.html",
@@ -443,8 +444,9 @@ export function App() {
       return;
     }
 
-    if (`${window.location.pathname}${window.location.search}` !== to) {
-      window.history.pushState(null, "", to);
+    const browserPath = getShowcaseBrowserPath(to);
+    if (`${window.location.pathname}${window.location.search}` !== browserPath) {
+      window.history.pushState(null, "", browserPath);
     }
     setRoute(readRoute());
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -467,7 +469,18 @@ export function App() {
 }
 
 function readRoute(): RouteState {
-  return { pathname: window.location.pathname, search: window.location.search };
+  const browserPath = window.location.pathname;
+  const pathname =
+    browserPath === showcaseBasePath
+      ? "/"
+      : browserPath.startsWith(`${showcaseBasePath}/`)
+        ? browserPath.slice(showcaseBasePath.length)
+        : browserPath;
+  return { pathname: pathname || "/", search: window.location.search };
+}
+
+function getShowcaseBrowserPath(to: string) {
+  return to === "/" ? showcaseBasePath : `${showcaseBasePath}${to}`;
 }
 
 function normalizeLegacyRoute(route: RouteState) {
@@ -545,12 +558,13 @@ function AppLink({
 }) {
   const navigate = useContext(NavigateContext);
   const isExternal = to.startsWith("http") || to.startsWith("/index/") || to.startsWith("/user/") || to.startsWith("/merchants/");
+  const href = isExternal ? to : getShowcaseBrowserPath(to);
 
   return (
     <a
       aria-current={ariaCurrent}
       className={className}
-      href={to}
+      href={href}
       onClick={(event) => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
         event.preventDefault();

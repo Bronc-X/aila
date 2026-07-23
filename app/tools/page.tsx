@@ -12,7 +12,6 @@ import {
   Headphones,
   Presentation,
   LogOut,
-  Search,
   Home,
 } from "lucide-react";
 import Link from "next/link";
@@ -27,70 +26,63 @@ const modules = [
     icon: Target,
     title: "获客中心",
     subtitle: "MARKETING",
-    desc: "海报、短视频脚本、分发文案和素材处理，集中成一条内容出品线",
     tools: ["批量海报", "短视频", "文案矩阵", "素材编辑"],
     href: "/tools/acquisition",
-    gradient: "from-lime-500/10 to-emerald-500/5",
+    gradient: "from-[#b9824b]/12 to-[#d7c2a2]/10",
   },
   {
     id: "sales",
     icon: MessageSquare,
     title: "销售助手",
     subtitle: "SALES",
-    desc: "整理对话重点、客户异议、回访节奏和下一步动作",
     tools: ["实时对话", "话术提示", "智能回访", "灵感追问"],
     href: "/tools/sales",
-    gradient: "from-blue-500/10 to-indigo-500/5",
+    gradient: "from-[#5e8f91]/12 to-[#b6d0c9]/10",
   },
   {
     id: "research",
     icon: FlaskConical,
     title: "验证工坊",
     subtitle: "RESEARCH",
-    desc: "把想法、原型假设、市场线索和企业资料放在一起验证",
     tools: ["多角色评审", "原型验证", "市场线索", "资产盘点"],
     href: "/tools/research",
-    gradient: "from-purple-500/10 to-violet-500/5",
+    gradient: "from-[#7a7890]/12 to-[#c7c5d4]/10",
   },
   {
     id: "operations",
     icon: BarChart3,
     title: "老板仪表盘",
     subtitle: "DASHBOARD",
-    desc: "把日报、回访进度和成交变化整理成经营视图",
     tools: ["经营看板", "经营报告", "回访追踪", "成交分析"],
     href: "/tools/operations",
-    gradient: "from-emerald-500/10 to-green-500/5",
+    gradient: "from-[#708e79]/12 to-[#c3d2c1]/10",
   },
   {
     id: "admin",
     icon: Building2,
     title: "行政效率",
     subtitle: "ADMIN",
-    desc: "合同、纪要、排班和流程诊断，先接住高频行政任务",
     tools: ["合同助手", "会议纪要", "排班优化", "流程诊断"],
     href: "/tools/admin",
-    gradient: "from-sky-500/10 to-cyan-500/5",
+    gradient: "from-[#64869b]/12 to-[#c5d5dc]/10",
   },
   {
     id: "service",
     icon: Headphones,
     title: "智能客服",
     subtitle: "SERVICE",
-    desc: "常见问答、回访话术、舆情波动和客户反馈集中处理",
     tools: ["智能客服", "回访话术", "舆情监控", "客户之声"],
     href: "/tools/service",
-    gradient: "from-rose-500/10 to-pink-500/5",
+    gradient: "from-[#9a7267]/12 to-[#dbc0b8]/10",
   },
   {
     id: "activity-plan",
     icon: ClipboardList,
     title: "海报方案助手",
     subtitle: "PROPOSAL",
-    desc: "把活动信息、品牌物料和预算人数整理成方案页、宣传文案和海报提示词",
     tools: ["活动方案", "宣传文案", "海报提示词", "PPTX 导出"],
     href: "/tools/activity-plan",
-    gradient: "from-amber-500/10 to-yellow-500/5",
+    gradient: "from-[#ae8555]/12 to-[#e2cfac]/10",
     badge: "CASE STUDY",
   },
   {
@@ -98,10 +90,9 @@ const modules = [
     icon: FileImage,
     title: "小红书自动二创",
     subtitle: "XHS MATRIX",
-    desc: "围绕 5 个账号生成候选图文草稿，保留人工挑选、审核和发布确认",
     tools: ["矩阵草稿", "热点参考", "质量检查", "客服线索"],
     href: "/tools/auto-red-book",
-    gradient: "from-fuchsia-500/10 to-rose-500/5",
+    gradient: "from-[#8f6e72]/12 to-[#dbc1c2]/10",
     badge: "CASE STUDY",
   },
 ];
@@ -222,10 +213,6 @@ function ToolCard({
         >
           {mod.title}
         </motion.h3>
-        <p className="text-xs text-[#9E9B96] leading-relaxed mb-8">
-          {mod.desc}
-        </p>
-
         <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#E5E1D8] group-hover:border-[#22d665]/30 transition-colors">
           {mod.tools.map((tool, ti) => (
             <motion.span
@@ -306,7 +293,7 @@ export default function ToolsPage() {
               A
             </div>
             <span className="font-bold tracking-wide text-[#9E9B96] uppercase text-xs">
-              AILA · Tool Console
+              AILA · System Index
             </span>
           </Link>
 
@@ -321,7 +308,7 @@ export default function ToolsPage() {
               href="/slides"
               className="hover:text-[#2D2A26] transition-colors flex items-center gap-2"
             >
-              <Presentation size={14} /> Deck
+              <Presentation size={14} /> 宣讲会
             </Link>
             <button
               onClick={handleLogout}
@@ -343,30 +330,18 @@ export default function ToolsPage() {
         >
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-[#22d665]/40 bg-[#22d665]/10 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-[#2D2A26] mb-5">
-              <span className="text-[#22d665] text-lg leading-none">8</span>
-              Tool Modules · upgraded from 6
+              <span className="text-[#b9824b] text-lg leading-none">08</span>
+              System Modules
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal leading-tight mb-4 uppercase">
-              8 大
+            <h1 className="text-5xl md:text-7xl font-black text-[#2D2A26] tracking-normal leading-tight mb-4">
+              AILA
               <br />
-              <span className="text-[#6B6660]">工具模块.</span>
+              <span className="text-[#6B6660]">系统.</span>
             </h1>
-            <p className="text-lg text-[#9E9B96] tracking-normal max-w-2xl font-medium">
-              当前已升级为八大模块：新增海报方案助手和小红书自动二创，内容项目入口现在单独展示。
-            </p>
           </div>
-
-          <div className="w-full md:w-80 relative group">
-            <Search
-              size={18}
-              className="absolute left-0 top-1/2 -translate-y-1/2 text-[#9E9B96] group-focus-within:text-[#2D2A26] transition-colors"
-            />
-            <input
-              type="text"
-              placeholder="GLOBAL SEARCH"
-              className="w-full bg-transparent border-0 border-b-2 border-[#E5E1D8] group-focus-within:border-[#22d665] transition-colors pl-8 pb-3 text-lg text-[#2D2A26] placeholder-[#9E9B96] focus:ring-0 focus:outline-none font-mono tracking-wide uppercase"
-            />
-          </div>
+          <p className="max-w-xs text-right text-sm leading-7 text-[#6B6660]">
+            获客、销售、验证、经营、行政、客服与案例展示。
+          </p>
         </motion.div>
 
         {/* 3D 交互卡片网格 */}

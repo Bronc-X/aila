@@ -19,7 +19,9 @@ import { useEffect, useState } from "react";
 import styles from "../site.module.css";
 import { deliveryCases, productLabs } from "./work-data";
 
-const archiveItems = [...deliveryCases, ...productLabs];
+const archiveItems = [...deliveryCases, ...productLabs].filter(
+  (item) => item.visibility !== "archive" && item.evidenceStatus !== "pending"
+);
 
 const archiveIcons: Record<string, LucideIcon> = {
   "survey-decision-system": ClipboardList,

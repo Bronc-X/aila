@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 
+import LusieSurfaceMotion from "../LusieSurfaceMotion";
+
 const ShipModelShowcase = dynamic(
   () => import("../_shipmodel/lusie/LusieApp").then((module) => module.App),
   {
@@ -12,8 +14,10 @@ const ShipModelShowcase = dynamic(
 
 export function LusieShowcaseClient() {
   return (
-    <div className="lusie-showcase-scope">
-      <ShipModelShowcase />
-    </div>
+    <LusieSurfaceMotion variant="showcase">
+      <div className="lusie-showcase-scope">
+        <ShipModelShowcase />
+      </div>
+    </LusieSurfaceMotion>
   );
 }

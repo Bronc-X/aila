@@ -11,5 +11,12 @@ export function getUniverseNodeHref(nodeId: string) {
 }
 
 export function getUniverseNodeDestination(nodeId: string) {
-  return universeNodeMap.get(nodeId)?.href ?? getUniverseNodeHref(nodeId);
+  const node = universeNodeMap.get(nodeId);
+  if (!node) return getUniverseNodeHref(nodeId);
+  if (node.href) return node.href;
+
+  if (node.layer === "core") return "/aila";
+  if (node.layer === "commercial") return "/toni-universe/commercial-models";
+
+  return getUniverseNodeHref(nodeId);
 }

@@ -78,14 +78,26 @@ const layerPalettes: Record<UniverseLayer, string[]> = {
   core: ["#ead8ad", "#c49a5f", "#86b7b1", "#6f8794", "#a96e43"],
   delivery: ["#d9c795", "#b77b48", "#6da49b", "#718b99", "#8f9878"],
   capability: ["#c7d8d4", "#68a99d", "#6e93a5", "#83958d", "#b69a66"],
+  commercial: ["#d8c5a5", "#9c8467", "#6f968d", "#7d8994", "#b38b61"],
   proof: ["#d8c49b", "#b97950", "#9c865f", "#6f8e98", "#7b9b8d"],
 };
+
+const lotusRuntimePalette = ["#f6f6f4", "#7bca71", "#b6e9ae", "#3e7c48", "#94c88f"];
 
 const clusterConfigs: Record<UniverseLayer, ClusterConfig> = {
   core: { count: 1520, radius: 6.35, pointSize: 0.13, beaconCount: 28 },
   delivery: { count: 280, radius: 2.35, pointSize: 0.14, beaconCount: 8 },
   capability: { count: 135, radius: 1.55, pointSize: 0.105, beaconCount: 5 },
+  commercial: { count: 170, radius: 1.82, pointSize: 0.11, beaconCount: 6 },
   proof: { count: 92, radius: 1.22, pointSize: 0.095, beaconCount: 4 },
+};
+
+const relationAnchorRadius: Record<UniverseLayer, number> = {
+  core: 0.74,
+  delivery: 0.22,
+  capability: 0.2,
+  commercial: 0.22,
+  proof: 0.2,
 };
 
 const relationColors: Record<UniverseRelationType, string> = {
@@ -109,26 +121,27 @@ const defaultSpineOpacity: Record<UniverseRelationType, number> = {
   compounds: 0.18,
 };
 
-const overviewLabelIds = new Set(["discover", "deploy", "compound"]);
+const overviewLabelIds = new Set(["diagnose", "transform", "deliver", "source-buyout", "quarterly-delivery", "lotus"]);
 
 const visualPositions: Record<string, [number, number, number]> = {
   fde: [0, 0, 0],
-  discover: [-1.6, 13.2, -2.8],
-  design: [2.4, 9.2, 2.9],
-  build: [-1.7, 3.8, 2.2],
-  deploy: [2.1, -2.6, -2.1],
-  operate: [-1.8, -8.8, 3.1],
-  compound: [1.4, -13.2, -3.2],
-  "field-mapping": [-5.1, 13.8, 2.6],
-  "data-integration": [-5.6, 7.6, -4.8],
-  "solution-architecture": [5.4, 10.9, -2.4],
-  "rapid-product": [4.8, 5.7, 4.8],
-  "workflow-engineering": [-5.7, 2.5, -4.7],
-  "model-runtime": [5.5, 1.8, -4.2],
-  "deployment-governance": [5.8, -3.8, 4.6],
-  "adoption-operations": [-5.4, -7.1, -4.6],
-  "operating-metrics": [5.1, -9.2, 4.8],
-  "knowledge-compounding": [-4.8, -13.8, 3.6],
+  diagnose: [-2.1, 12.8, -2.8],
+  analyze: [2.5, 7.8, 2.9],
+  transform: [-1.8, 2.8, 2.2],
+  quote: [2.3, -3.5, -2.1],
+  deliver: [-1.6, -9.6, 3.1],
+  "intelligent-qa": [-5.3, 13.6, 2.6],
+  "intelligent-service": [-5.7, 8.1, -4.8],
+  crm: [5.5, 11.3, -2.4],
+  "bi-dashboard": [5, 6.1, 4.8],
+  "tax-optimization": [-5.8, 2.2, -4.7],
+  "intelligent-bidding": [5.7, 1.5, -4.2],
+  "competitive-intelligence": [5.9, -4.2, 4.6],
+  aigc: [-5.5, -7.6, -4.6],
+  "team-agent": [5.2, -10.2, 4.8],
+  "industry-solutions": [-4.9, -13.9, 3.6],
+  "source-buyout": [-2.8, -15.8, -3.8],
+  "quarterly-delivery": [3.6, -15.6, 3.8],
   "survey-decision-system": [-8.8, 15.2, -4.4],
   "ecommerce-product-radar": [-9.1, 8.1, 5.1],
   "commercial-poster-workshop": [-8.4, 2.6, -6.3],
@@ -136,13 +149,22 @@ const visualPositions: Record<string, [number, number, number]> = {
   lusie: [8.7, -0.5, -5.4],
   lotus: [8.1, -10.8, 5.8],
   cosic: [7.6, -5.3, 7.2],
-  "training-system": [-8.1, -6.9, -5.8],
   antios: [-8.5, -12.1, 5.4],
   quantmax: [-8.8, -16.2, -5.9],
+  "dewu-image": [18.4, 12.4, 1.6],
+  "bid-agent": [19.1, 1.4, -3.5],
+  kemo: [-19.2, 12.1, 3.4],
+  "weld-vision": [-19.4, -1.2, -4.2],
+  "fde-case-cross-border": [20.8, 8.5, 4.4],
+  "fde-case-immigration": [20.2, -7.8, -3.8],
 };
 
 function getVisualPosition(node: UniverseNode) {
   return visualPositions[node.id] ?? node.position;
+}
+
+function getNodePalette(node: UniverseNode) {
+  return node.id === "lotus" ? lotusRuntimePalette : layerPalettes[node.layer];
 }
 
 function seeded(index: number) {
@@ -280,8 +302,8 @@ function createParticleCluster(node: UniverseNode, texture: THREE.Texture, densi
   const particleCount = Math.max(48, Math.round(config.count * densityScale));
   const positions = new Float32Array(particleCount * 3);
   const colors = new Float32Array(particleCount * 3);
-  const palette = layerPalettes[node.layer];
-  const centerLight = new THREE.Color(node.layer === "core" ? "#c9ad74" : "#d4dfdb");
+  const palette = getNodePalette(node);
+  const centerLight = new THREE.Color(node.id === "lotus" ? "#f6f6f4" : node.layer === "core" ? "#c9ad74" : "#d4dfdb");
 
   for (let index = 0; index < particleCount; index += 1) {
     const shellChance = seeded(seed + index * 9 + 1);
@@ -290,7 +312,8 @@ function createParticleCluster(node: UniverseNode, texture: THREE.Texture, densi
       shellChance > 0.86 ? radius * (0.84 + radialSeed * 0.72) : radius * Math.pow(radialSeed, 2.25);
     const theta = seeded(seed + index * 9 + 3) * Math.PI * 2;
     const phi = Math.acos(2 * seeded(seed + index * 9 + 4) - 1);
-    const verticalCompression = node.layer === "proof" ? 0.72 : node.layer === "capability" ? 0.82 : 0.94;
+    const verticalCompression =
+      node.layer === "proof" ? 0.72 : node.layer === "capability" ? 0.82 : node.layer === "commercial" ? 0.88 : 0.94;
 
     positions[index * 3] = Math.sin(phi) * Math.cos(theta) * particleRadius;
     positions[index * 3 + 1] = Math.cos(phi) * particleRadius * verticalCompression;
@@ -325,8 +348,10 @@ function createParticleCluster(node: UniverseNode, texture: THREE.Texture, densi
 }
 
 function createClusterFibers(node: UniverseNode, radius: number, seed: number) {
-  const fiberCount = node.layer === "core" ? 96 : node.layer === "delivery" ? 22 : node.layer === "capability" ? 8 : 5;
-  const positions = new Float32Array(fiberCount * 6);
+  const fiberCount =
+    node.layer === "core" ? 96 : node.layer === "delivery" ? 22 : node.layer === "commercial" ? 12 : node.layer === "capability" ? 8 : 5;
+  const segmentsPerFiber = node.layer === "core" ? 12 : node.layer === "delivery" ? 8 : 5;
+  const points: THREE.Vector3[] = [];
 
   for (let index = 0; index < fiberCount; index += 1) {
     const emitterRadius = node.layer === "core" ? 0.5 : 0.14;
@@ -341,16 +366,39 @@ function createClusterFibers(node: UniverseNode, radius: number, seed: number) {
       Math.PI - 0.05
     );
 
-    positions[index * 6] = Math.sin(startPhi) * Math.cos(startTheta) * startRadius;
-    positions[index * 6 + 1] = Math.cos(startPhi) * startRadius * 0.86;
-    positions[index * 6 + 2] = Math.sin(startPhi) * Math.sin(startTheta) * startRadius * 0.88;
-    positions[index * 6 + 3] = Math.sin(endPhi) * Math.cos(endTheta) * endRadius;
-    positions[index * 6 + 4] = Math.cos(endPhi) * endRadius * 0.86;
-    positions[index * 6 + 5] = Math.sin(endPhi) * Math.sin(endTheta) * endRadius * 0.88;
+    const start = new THREE.Vector3(
+      Math.sin(startPhi) * Math.cos(startTheta) * startRadius,
+      Math.cos(startPhi) * startRadius * 0.86,
+      Math.sin(startPhi) * Math.sin(startTheta) * startRadius * 0.88
+    );
+    const end = new THREE.Vector3(
+      Math.sin(endPhi) * Math.cos(endTheta) * endRadius,
+      Math.cos(endPhi) * endRadius * 0.86,
+      Math.sin(endPhi) * Math.sin(endTheta) * endRadius * 0.88
+    );
+    const radial = end.clone().normalize();
+    const tangent = new THREE.Vector3(-radial.y, radial.x, 0);
+    if (tangent.lengthSq() < 0.0001) tangent.set(1, 0, 0);
+
+    const bendDirection = seeded(seed + index * 12 + 7) > 0.5 ? 1 : -1;
+    const bendStrength =
+      endRadius *
+      (node.layer === "core" ? 0.26 : 0.12) *
+      (0.68 + seeded(seed + index * 12 + 8) * 0.72);
+    const midpoint = start
+      .clone()
+      .lerp(end, 0.52)
+      .add(tangent.normalize().multiplyScalar(bendStrength * bendDirection));
+    midpoint.z += (seeded(seed + index * 12 + 9) - 0.5) * endRadius * (node.layer === "core" ? 0.32 : 0.14);
+
+    const curve = new THREE.QuadraticBezierCurve3(start, midpoint, end);
+    const fiberPoints = curve.getPoints(segmentsPerFiber);
+    for (let pointIndex = 0; pointIndex < fiberPoints.length - 1; pointIndex += 1) {
+      points.push(fiberPoints[pointIndex], fiberPoints[pointIndex + 1]);
+    }
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
   const material = new THREE.LineBasicMaterial({
     color: layerPalettes[node.layer][2],
     transparent: true,
@@ -398,16 +446,25 @@ function createNodeLabel(
   button.type = "button";
   button.className = styles.nodeLabel;
   button.dataset.layer = node.layer;
+  button.dataset.nodeId = node.id;
   button.setAttribute("aria-label", `${node.title}, ${node.english}`);
 
   const signal = document.createElement("i");
   signal.setAttribute("aria-hidden", "true");
   const copy = document.createElement("span");
   const english = document.createElement("small");
-  english.textContent = node.english;
-  const title = document.createElement("strong");
-  title.textContent = node.title;
-  copy.append(english, title);
+  if (node.id === "lotus") {
+    const wordmark = document.createElement("span");
+    wordmark.className = styles.nodeLabelLotusMark;
+    wordmark.setAttribute("aria-hidden", "true");
+    english.textContent = node.english;
+    copy.append(wordmark, english);
+  } else {
+    english.textContent = node.english;
+    const title = document.createElement("strong");
+    title.textContent = node.title;
+    copy.append(english, title);
+  }
   button.append(signal, copy);
 
   button.addEventListener("click", (event) => {
@@ -426,8 +483,11 @@ function createRelationCurve(relation: UniverseRelation) {
   const target = universeNodeMap.get(relation.target);
   if (!source || !target) throw new Error(`Invalid Universe relation: ${relation.source} -> ${relation.target}`);
 
-  const start = new THREE.Vector3(...getVisualPosition(source));
-  const end = new THREE.Vector3(...getVisualPosition(target));
+  const sourceCenter = new THREE.Vector3(...getVisualPosition(source));
+  const targetCenter = new THREE.Vector3(...getVisualPosition(target));
+  const anchorDirection = targetCenter.clone().sub(sourceCenter).normalize();
+  const start = sourceCenter.clone().addScaledVector(anchorDirection, relationAnchorRadius[source.layer]);
+  const end = targetCenter.clone().addScaledVector(anchorDirection, -relationAnchorRadius[target.layer]);
   const midpoint = start.clone().add(end).multiplyScalar(0.5);
   const direction = end.clone().sub(start);
   const normal = new THREE.Vector3(-direction.y, direction.x, 0);
@@ -479,6 +539,7 @@ export default function FdeUniverseScene({
   const focusTweenRef = useRef<gsap.core.Timeline | null>(null);
   const [readyVersion, setReadyVersion] = useState(0);
   const visibleSet = useMemo(() => new Set(visibleNodeIds), [visibleNodeIds]);
+  const hasActiveVisibilityFilter = visibleNodeIds.length < universe.nodes.length;
 
   useEffect(() => {
     callbacksRef.current = { onSelect, onHover, onError };
@@ -646,12 +707,14 @@ export default function FdeUniverseScene({
       scene.add(root);
 
       const relationRuntimes: RelationRuntime[] = universe.relations.map((relation, index) => {
+        const isCoreRelation = relation.source === "fde" || relation.target === "fde";
         const curve = createRelationCurve(relation);
         const geometry = createBundledRelationGeometry(curve, relation);
-        const baseOpacity = defaultRelationOpacity[relation.type];
-        const baseSpineOpacity = defaultSpineOpacity[relation.type];
+        const relationColor = isCoreRelation ? relationColors.flow : relationColors[relation.type];
+        const baseOpacity = defaultRelationOpacity[relation.type] * (isCoreRelation ? 1.9 : 1);
+        const baseSpineOpacity = defaultSpineOpacity[relation.type] * (isCoreRelation ? 2.1 : 1);
         const spineMaterial = new THREE.LineBasicMaterial({
-          color: relationColors[relation.type],
+          color: relationColor,
           transparent: true,
           opacity: baseSpineOpacity,
           blending: THREE.AdditiveBlending,
@@ -662,12 +725,12 @@ export default function FdeUniverseScene({
           new THREE.BufferGeometry().setFromPoints(curve.getPoints(relation.type === "flow" ? 72 : 48)),
           spineMaterial
         );
-        spine.renderOrder = relation.type === "flow" ? 4 : 2;
+        spine.renderOrder = isCoreRelation ? 5 : relation.type === "flow" ? 4 : 2;
         spine.frustumCulled = false;
         root.add(spine);
 
         const lineMaterial = new THREE.LineBasicMaterial({
-          color: relationColors[relation.type],
+          color: relationColor,
           transparent: true,
           opacity: baseOpacity * 0.56,
           blending: THREE.AdditiveBlending,
@@ -675,21 +738,21 @@ export default function FdeUniverseScene({
           toneMapped: false,
         });
         const line = new THREE.LineSegments(geometry, lineMaterial);
-        line.renderOrder = relation.type === "flow" ? 3 : 1;
+        line.renderOrder = isCoreRelation ? 4 : relation.type === "flow" ? 3 : 1;
         line.frustumCulled = false;
         root.add(line);
 
         const sparkMaterial = new THREE.SpriteMaterial({
           map: starTexture,
-          color: relationColors[relation.type],
+          color: relationColor,
           transparent: true,
-          opacity: relation.type === "flow" ? 0.95 : 0.58,
+          opacity: isCoreRelation ? 0.82 : relation.type === "flow" ? 0.95 : 0.58,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
           toneMapped: false,
         });
         const spark = new THREE.Sprite(sparkMaterial);
-        const sparkScale = relation.type === "flow" ? 0.86 : 0.52;
+        const sparkScale = isCoreRelation ? 0.68 : relation.type === "flow" ? 0.86 : 0.52;
         spark.scale.setScalar(sparkScale);
         root.add(spark);
 
@@ -716,38 +779,43 @@ export default function FdeUniverseScene({
         group.userData.nodeId = node.id;
         root.add(group);
 
+        const isLotusRuntime = node.id === "lotus";
         const cluster = createParticleCluster(node, starTexture, densityScale);
         group.add(cluster.points);
         const visualMaterials: VisualMaterial[] = [
           { material: cluster.material, baseOpacity: cluster.material.opacity },
         ];
 
-        const palette = layerPalettes[node.layer];
+        const palette = getNodePalette(node);
         const haloMaterial = new THREE.SpriteMaterial({
           map: starTexture,
           color: palette[1],
           transparent: true,
-          opacity: node.layer === "core" ? 0.1 : node.layer === "delivery" ? 0.14 : 0.08,
+          opacity: isLotusRuntime ? 0.2 : node.layer === "core" ? 0.1 : node.layer === "delivery" ? 0.14 : node.layer === "commercial" ? 0.11 : 0.08,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
           toneMapped: true,
         });
         const halo = new THREE.Sprite(haloMaterial);
-        const haloScale = cluster.radius * (node.layer === "core" ? 2.8 : 3.5);
+        const haloScale = cluster.radius * (isLotusRuntime ? 4.2 : node.layer === "core" ? 2.8 : 3.5);
         halo.scale.set(haloScale, haloScale, 1);
         group.add(halo);
         visualMaterials.push({ material: haloMaterial, baseOpacity: haloMaterial.opacity });
 
         const coreMaterial = new THREE.MeshBasicMaterial({
-          color: node.layer === "core" ? "#c8a76c" : palette[0],
+          color: isLotusRuntime ? "#7bca71" : node.layer === "core" ? "#c8a76c" : palette[0],
           transparent: true,
-          opacity: node.layer === "core" ? 0.5 : 0.72,
+          opacity: isLotusRuntime ? 0.9 : node.layer === "core" ? 0.5 : 0.72,
           blending: node.layer === "core" ? THREE.NormalBlending : THREE.AdditiveBlending,
           depthWrite: false,
           toneMapped: true,
         });
         const coreGeometry =
-          node.layer === "core" ? new THREE.IcosahedronGeometry(0.72, 3) : new THREE.SphereGeometry(0.18, 18, 14);
+          isLotusRuntime
+            ? new THREE.BoxGeometry(0.42, 0.42, 0.42)
+            : node.layer === "core"
+              ? new THREE.IcosahedronGeometry(0.72, 3)
+              : new THREE.SphereGeometry(0.18, 18, 14);
         const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
         group.add(coreMesh);
         visualMaterials.push({ material: coreMaterial, baseOpacity: coreMaterial.opacity });
@@ -798,7 +866,7 @@ export default function FdeUniverseScene({
           (nodeId) => callbacksRef.current.onHover(nodeId)
         );
         const label = new CSS2DObject(labelElement);
-        label.position.set(0, cluster.radius * (node.layer === "core" ? 1.16 : 1.28), 0);
+        label.position.set(0, node.layer === "core" ? 1.45 : cluster.radius * 1.28, node.layer === "core" ? 0.45 : 0);
         group.add(label);
 
         nodeRuntimes.set(node.id, {
@@ -1004,7 +1072,11 @@ export default function FdeUniverseScene({
       const hovered = nodeId === hoveredId;
       const showLabel =
         isVisible &&
-        (selected || hovered || (nodeRuntime.node.layer === "core" && selectedId === "fde") || (selectedId === "fde" && overviewLabelIds.has(nodeId)));
+        (hasActiveVisibilityFilter ||
+          selected ||
+          hovered ||
+          (nodeRuntime.node.layer === "core" && selectedId === "fde") ||
+          (selectedId === "fde" && overviewLabelIds.has(nodeId)));
 
       nodeRuntime.hitArea.layers.set(isVisible ? 0 : 31);
       for (const visual of nodeRuntime.visualMaterials) {
@@ -1059,7 +1131,7 @@ export default function FdeUniverseScene({
       });
       relationRuntime.spark.layers.set(isVisible && (isActive || relationRuntime.relation.type === "flow") ? 0 : 31);
     }
-  }, [hoveredId, readyVersion, selectedId, visibleSet]);
+  }, [hasActiveVisibilityFilter, hoveredId, readyVersion, selectedId, visibleSet]);
 
   useEffect(() => {
     const runtime = runtimeRef.current;
@@ -1087,7 +1159,9 @@ export default function FdeUniverseScene({
             ? 14
             : focusedNodeRuntime.node.layer === "capability"
               ? 10.5
-              : 9;
+              : focusedNodeRuntime.node.layer === "commercial"
+                ? 11.5
+                : 9;
       destination = target.clone().add(viewDirection.clone().multiplyScalar(distance));
       destination.y += focusedNodeRuntime.node.layer === "core" ? 1.4 : 0.55;
     }

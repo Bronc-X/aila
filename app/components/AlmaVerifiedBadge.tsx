@@ -25,7 +25,7 @@ export default function AlmaVerifiedBadge({ className, compact = false, dark = f
         alt="Toni verified on Alma"
         width={2172}
         height={724}
-        priority={!compact}
+        {...(compact ? { loading: "eager" as const } : { preload: true })}
         sizes={compact ? "(max-width: 640px) 72vw, 260px" : "(max-width: 640px) 88vw, 430px"}
       />
     </a>

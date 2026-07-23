@@ -318,10 +318,10 @@ export default function AdminPage() {
             <Presentation size={14} /> 课件学习
           </Link>
         </div>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-24 lg:px-32 flex gap-6 sm:gap-12 overflow-x-auto overscroll-x-contain -mb-px mt-2">
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
+              className={`flex shrink-0 items-center gap-2 px-2 pb-5 text-base font-bold whitespace-nowrap border-b-4 transition-all ${
                 activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}><tab.icon size={14} /> {tab.label}</button>
           ))}
@@ -537,32 +537,34 @@ export default function AdminPage() {
                 </button>
               </div>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-              <div className="border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
-                <div className="flex items-center justify-between mb-6">
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="min-w-0">
+              <div className="min-w-0 border border-[#E5E1D8] bg-[#FAF9F6] hover:border-[#A3A3A3] transition-colors p-6 rounded-xl">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
                   <h2 className="text-lg font-bold text-[#2D2A26]">诊断报告 · 点击标记已优化</h2>
                   <button onClick={addProcessStep} className="text-xs text-[#6B6660] hover:text-[#2D2A26] flex items-center gap-1 transition-colors">
                     <Plus size={12} /> 新增步骤
                   </button>
                 </div>
-                <div className="space-y-3">
-                  {processSteps.map((item, i) => (
-                    <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                      className={`grid grid-cols-[120px_60px_80px_1fr_40px] gap-4 items-center p-3 border transition-colors group ${
-                        item.optimized ? "border-green-500/20 bg-green-500/5" : "border-[#E5E1D8] bg-white"
-                      }`}>
-                      <EditableCell value={item.step} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, step: v } : s))} className="text-sm text-[#2D2A26] font-medium" placeholder="步骤" />
-                      <EditableCell value={item.time} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, time: v } : s))} className="text-xs text-red-400 font-mono" placeholder="耗时" />
-                      <button onClick={() => toggleOptimized(item.id)}
-                        className={`text-xs px-2 py-0.5 rounded-full transition-colors ${item.optimized ? "bg-green-500/20 text-green-400" : "bg-[#F3F1ED] text-[#9E9B96] hover:bg-green-500/10 hover:text-green-400"}`}>
-                        {item.optimized ? "✅ 已优化" : item.auto}
-                      </button>
-                      <EditableCell value={item.tool} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, tool: v } : s))} className="text-xs text-[#9E9B96]" placeholder="推荐工具" />
-                      <button onClick={() => deleteProcessStep(item.id)} className="opacity-0 group-hover:opacity-100 text-[#A3A3A3] hover:text-red-400 transition-all p-1">
-                        <X size={14} />
-                      </button>
-                    </motion.div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <div className="min-w-[420px] space-y-3">
+                    {processSteps.map((item, i) => (
+                      <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+                        className={`grid grid-cols-[120px_60px_80px_1fr_40px] gap-4 items-center p-3 border transition-colors group ${
+                          item.optimized ? "border-green-500/20 bg-green-500/5" : "border-[#E5E1D8] bg-white"
+                        }`}>
+                        <EditableCell value={item.step} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, step: v } : s))} className="text-sm text-[#2D2A26] font-medium" placeholder="步骤" />
+                        <EditableCell value={item.time} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, time: v } : s))} className="text-xs text-red-400 font-mono" placeholder="耗时" />
+                        <button onClick={() => toggleOptimized(item.id)}
+                          className={`text-xs px-2 py-0.5 rounded-full transition-colors ${item.optimized ? "bg-green-500/20 text-green-400" : "bg-[#F3F1ED] text-[#9E9B96] hover:bg-green-500/10 hover:text-green-400"}`}>
+                          {item.optimized ? "✅ 已优化" : item.auto}
+                        </button>
+                        <EditableCell value={item.tool} onSave={v => setProcessSteps(prev => prev.map(s => s.id === item.id ? { ...s, tool: v } : s))} className="text-xs text-[#9E9B96]" placeholder="推荐工具" />
+                        <button onClick={() => deleteProcessStep(item.id)} className="opacity-0 group-hover:opacity-100 text-[#A3A3A3] hover:text-red-400 transition-all p-1">
+                          <X size={14} />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
                 <div className="p-8 border border-[#E5E1D8] bg-[#FAF9F6] mt-6">
                   <p className="text-sm text-[#2D2A26] font-bold mb-1">预计优化效果</p>

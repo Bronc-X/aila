@@ -1,7 +1,7 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import { ArrowLeft, ArrowUpRight, LocateFixed, Search, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, LocateFixed, LockKeyhole, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,15 +24,35 @@ type ToniUniverseClientProps = {
 const layerOptions: Array<{ id: LayerFilter; label: string; english: string }> = [
   { id: "all", label: "全局", english: "ALL" },
   { id: "delivery", label: "交付链", english: "DELIVERY" },
-  { id: "capability", label: "能力", english: "CAPABILITY" },
-  { id: "proof", label: "交付证据", english: "PROOF" },
+  { id: "capability", label: "业务板块", english: "BUSINESS" },
+  { id: "commercial", label: "合作模式", english: "COMMERCIAL" },
+  { id: "proof", label: "项目", english: "PROOF" },
+];
+
+type QuickNavItem = {
+  label: string;
+  english: string;
+  nodeId: string;
+  filter?: LayerFilter;
+};
+
+const quickNavItems: QuickNavItem[] = [
+  { label: "核心业务", english: "FDE CORE", nodeId: "fde" },
+  { label: "交付流程", english: "DELIVERY SPINE", nodeId: "diagnose", filter: "delivery" },
+  { label: "十大模块", english: "TEN CAPABILITIES", nodeId: "intelligent-qa", filter: "capability" },
+  { label: "商业模式", english: "COMMERCIAL MODELS", nodeId: "source-buyout", filter: "commercial" },
+  { label: "AILA 系统", english: "PLATFORM ASSET", nodeId: "aila-platform", filter: "proof" },
+  { label: "企业案例", english: "FIELD PROOF", nodeId: "fde-case-cross-border", filter: "proof" },
+  { label: "自有项目", english: "OWNED PROJECTS", nodeId: "lotus", filter: "proof" },
+  { label: "品牌方法", english: "LOTUS RUNTIME", nodeId: "lotus", filter: "proof" },
 ];
 
 const layerLabels: Record<UniverseLayer, string> = {
   core: "核心业务",
   delivery: "FDE 交付链",
-  capability: "支撑能力",
-  proof: "交付证据",
+  capability: "业务板块",
+  commercial: "商业模式",
+  proof: "项目证据",
 };
 
 const statusLabels = {
@@ -44,19 +64,26 @@ const statusLabels = {
 
 const deliveryStageCount = universe.nodes.filter((node) => node.layer === "delivery").length;
 const capabilityCount = universe.nodes.filter((node) => node.layer === "capability").length;
+const commercialCount = universe.nodes.filter((node) => node.layer === "commercial").length;
 const proofCount = universe.nodes.filter((node) => node.layer === "proof").length;
 
 function nodeMatchesView(node: UniverseNode, layerFilter: LayerFilter, query: string) {
   if (node.layer === "core") return true;
   if (layerFilter !== "all" && node.layer !== layerFilter) return false;
 
-  const normalizedQuery = query.trim().toLowerCase();
-  if (!normalizedQuery) return true;
-
-  return [node.title, node.english, node.summary, node.detail, ...node.tags]
-    .join(" ")
+  const keywords = query
+    .trim()
     .toLowerCase()
-    .includes(normalizedQuery);
+    .split(/[\s,，、/|]+/)
+    .filter(Boolean);
+  if (keywords.length === 0) return true;
+
+  const searchableText = [node.id, node.title, node.english, node.summary, node.detail, ...node.tags].join(" ").toLowerCase();
+  return keywords.every((keyword) => searchableText.includes(keyword));
+}
+
+function requiresInviteAccess(destination: string) {
+  return destination === "/tools" || destination.startsWith("/tools/");
 }
 
 export default function ToniUniverseClient({ homeMode = false }: ToniUniverseClientProps) {
@@ -66,6 +93,7 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
   const detailPanelRef = useRef<HTMLElement | null>(null);
   const transitionVeilRef = useRef<HTMLDivElement | null>(null);
   const navigationTweenRef = useRef<gsap.core.Timeline | null>(null);
+  const navigationTimerRef = useRef<number | null>(null);
   const personalSignalTweensRef = useRef(new Map<HTMLElement, gsap.core.Timeline>());
   const navigatingRef = useRef(false);
   const router = useRouter();
@@ -80,6 +108,7 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
 
   const selectedNode = universeNodeMap.get(selectedId) ?? universe.nodes[0];
   const selectedDestination = getUniverseNodeDestination(selectedNode.id);
+  const selectedRequiresInviteAccess = requiresInviteAccess(selectedDestination);
   const hoveredNode = hoveredId ? universeNodeMap.get(hoveredId) : null;
 
   const visibleNodeIds = useMemo(
@@ -88,9 +117,10 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
   );
 
   const filteredNodes = useMemo(
-    () => universe.nodes.filter((node) => visibleNodeIds.includes(node.id) && node.layer !== "core"),
+    () => universe.nodes.filter((node) => visibleNodeIds.includes(node.id)),
     [visibleNodeIds]
   );
+  const searchResultCount = query.trim() ? filteredNodes.length : 0;
 
   useGSAP(
     () => {
@@ -147,9 +177,37 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
     { scope: pageRef }
   );
 
+  useGSAP(
+    () => {
+      const items = gsap.utils.toArray<HTMLElement>("[data-quick-nav]", pageRef.current);
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reducedMotion) {
+        gsap.set(items, { autoAlpha: 1 });
+        return;
+      }
+
+      gsap.fromTo(
+        items,
+        { autoAlpha: 0, x: -12 },
+        {
+          autoAlpha: 1,
+          x: 0,
+          duration: 0.46,
+          stagger: 0.055,
+          ease: "power3.out",
+          clearProps: "opacity,visibility,transform",
+        }
+      );
+    },
+    { scope: pageRef }
+  );
+
   useEffect(
     () => () => {
       navigationTweenRef.current?.kill();
+      if (navigationTimerRef.current !== null) {
+        window.clearTimeout(navigationTimerRef.current);
+      }
       personalSignalTweensRef.current.forEach((timeline) => timeline.kill());
       personalSignalTweensRef.current.clear();
     },
@@ -209,16 +267,27 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
     if (!nodeMatchesView(selectedNode, layerFilter, nextQuery)) returnSelectionToOverview();
   }
 
+  function focusNode(nodeId: string) {
+    setSelectedId(nodeId);
+    setFocusNodeId(nodeId);
+    setFocusVersion((version) => version + 1);
+    setDetailsOpen(true);
+  }
+
   function selectNode(nodeId: string) {
     if (selectedId === nodeId && focusNodeId === nodeId) {
       openNodeDestination(nodeId);
       return;
     }
 
-    setSelectedId(nodeId);
-    setFocusNodeId(nodeId);
-    setFocusVersion((version) => version + 1);
-    setDetailsOpen(true);
+    focusNode(nodeId);
+  }
+
+  function focusQuickNav(item: QuickNavItem) {
+    setQuery("");
+    setHoveredId(null);
+    if (item.filter) setLayerFilter(item.filter);
+    focusNode(item.nodeId);
   }
 
   function openNodeDestination(nodeId: string) {
@@ -226,7 +295,14 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
     navigatingRef.current = true;
 
     const destination = getUniverseNodeDestination(nodeId);
-    const navigate = () => {
+    let didNavigate = false;
+    const navigateOnce = () => {
+      if (didNavigate) return;
+      didNavigate = true;
+      if (navigationTimerRef.current !== null) {
+        window.clearTimeout(navigationTimerRef.current);
+        navigationTimerRef.current = null;
+      }
       if (destination.startsWith("http")) {
         window.location.assign(destination);
         return;
@@ -235,13 +311,13 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
     };
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion || !stageRef.current || !transitionVeilRef.current) {
-      navigate();
+      navigateOnce();
       return;
     }
 
     navigationTweenRef.current?.kill();
     navigationTweenRef.current = gsap
-      .timeline({ onComplete: navigate })
+      .timeline({ onComplete: navigateOnce })
       .set(transitionVeilRef.current, { opacity: 0, pointerEvents: "auto" })
       .to(
         stageRef.current,
@@ -263,6 +339,11 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
         },
         0.08
       );
+    navigationTimerRef.current = window.setTimeout(() => {
+      navigationTweenRef.current?.kill();
+      navigationTweenRef.current = null;
+      navigateOnce();
+    }, 800);
   }
 
   function resetView() {
@@ -287,12 +368,21 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
         )}
         <div className={styles.navTitle}>
           <span>TONI // FDE DELIVERY GALAXY</span>
-          <small>欢迎来到 Toni 的主页</small>
         </div>
         <div className={styles.navLinks}>
+          <a
+            href="/work/fde-case-library.html?case=immigration&section=31"
+            className={styles.caseShortcut}
+            aria-label="移民 FDE 进场资料包（30 件）"
+            title="移民 FDE 进场资料包（30 件）"
+          >
+            移民 FDE
+            <ArrowUpRight size={11} aria-hidden="true" />
+          </a>
+          <Link href="/fde/materials">宣传物料</Link>
           <Link href="/work">作品</Link>
-          <Link href="/tools">工具</Link>
-          <Link href="/work/training-system">陪跑</Link>
+          <Link href="/tools">AILA 系统</Link>
+          <Link href="/work">案例</Link>
           <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
@@ -331,9 +421,10 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
           aria-hidden={detailsOpen}
           inert={detailsOpen}
         >
-          <p className={styles.eyebrow}>自己的作品 · 工具模块 · 陪跑方案 · 关于联系</p>
-          <h1>Toni 的主页</h1>
-          <p className={styles.introCopy}>发来业务现场，先判断哪里值得动。</p>
+          <h1>企业 FDE 图谱</h1>
+          <p className={styles.introCopy}>
+            我们承诺，每一次服务，都会为您的企业留下成果，并为后续每一次服务积累可复用的基础。下一次，不从零开始。
+          </p>
 
           <div className={styles.liveSignal} aria-live="polite">
             <i aria-hidden="true" />
@@ -341,23 +432,28 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
             <strong>{hoveredNode?.title ?? selectedNode.title}</strong>
           </div>
 
-          <div className={styles.searchWrap}>
+            <div className={styles.searchWrap}>
             <Search size={14} aria-hidden="true" />
             <input
               type="search"
               value={query}
               onChange={(event) => updateQuery(event.target.value)}
-              placeholder="搜索能力、阶段或交付证据"
+              placeholder="搜索板块、流程、模式或项目"
               aria-label="查找 FDE 宇宙节点"
             />
             {query ? (
               <button type="button" onClick={() => updateQuery("")} aria-label="清除搜索">
                 <X size={14} />
               </button>
+              ) : null}
+            </div>
+            {query.trim() ? (
+              <p className={styles.searchResult} role="status">
+                {searchResultCount > 0 ? `关键词命中 ${searchResultCount} 个节点` : "没有匹配节点"}
+              </p>
             ) : null}
-          </div>
 
-          <div className={styles.filters} role="group" aria-label="FDE galaxy layer filters">
+            <div className={styles.filters} role="group" aria-label="FDE galaxy layer filters">
             {layerOptions.map((option, index) => (
               <button
                 key={option.id}
@@ -380,14 +476,44 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
             </span>
             <span>
               <strong>{capabilityCount.toString().padStart(2, "0")}</strong>
-              核心能力
+              业务模块
+            </span>
+            <span>
+              <strong>{commercialCount.toString().padStart(2, "0")}</strong>
+              商业模式
             </span>
             <span>
               <strong>{proofCount.toString().padStart(2, "0")}</strong>
-              验证案例
+              项目
             </span>
           </div>
         </header>
+
+        <aside className={styles.quickNav} aria-label="图谱重点定位">
+          <div className={styles.quickNavHeader}>
+            <small>QUICK LOCATE</small>
+            <span>重点 08</span>
+          </div>
+          <div className={styles.quickNavList}>
+            {quickNavItems.map((item, index) => {
+              const active = selectedId === item.nodeId && focusNodeId === item.nodeId;
+              return (
+                <button
+                  key={`${item.label}-${item.nodeId}`}
+                  type="button"
+                  className={active ? styles.quickNavActive : ""}
+                  data-quick-nav
+                  onClick={() => focusQuickNav(item)}
+                  aria-current={active ? "location" : undefined}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{item.label}</strong>
+                  <small>{item.english}</small>
+                </button>
+              );
+            })}
+          </div>
+        </aside>
 
         {detailsOpen ? (
           <aside className={styles.detailPanel} ref={detailPanelRef}>
@@ -397,6 +523,12 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
             <div className={styles.detailIndex}>
               <span>{layerLabels[selectedNode.layer]}</span>
               <small>{statusLabels[selectedNode.status]}</small>
+              {selectedRequiresInviteAccess ? (
+                <span className={styles.inviteStatus}>
+                  <LockKeyhole size={9} aria-hidden="true" />
+                  邀请码访问
+                </span>
+              ) : null}
             </div>
             <p className={styles.detailEnglish}>{selectedNode.english}</p>
             <h2>{selectedNode.title}</h2>
@@ -415,13 +547,16 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
                 </a>
               ) : (
                 <Link className={styles.openLink} href={selectedDestination}>
-                  进入对应页面 <ArrowUpRight size={15} />
+                  {selectedRequiresInviteAccess ? "进入受邀工具" : "进入对应页面"} <ArrowUpRight size={15} />
                 </Link>
               )}
               <Link className={styles.openLink} href={getUniverseNodeHref(selectedNode.id)}>
-                查看星系说明 <ArrowUpRight size={15} />
+                节点档案 <ArrowUpRight size={15} />
               </Link>
             </div>
+            {selectedRequiresInviteAccess ? (
+              <p className={styles.detailNote}>该工具保留邀请制，验证后返回当前页面。</p>
+            ) : null}
           </aside>
         ) : null}
 
@@ -430,13 +565,12 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
             <LocateFixed size={14} />
             <span>返回全局</span>
           </button>
-          <p>拖动旋转 · 滚轮缩放 · 首次聚焦 · 再次进入</p>
         </div>
 
         <section className={styles.stageRail} aria-label="FDE delivery chain">
           <div className={styles.stageIntro}>
             <small>DELIVERY SPINE</small>
-            <strong>问题诊断 → 生产运行 → 资产复用</strong>
+            <strong>免费诊断 → 业务流解析 → 报价组队 → 三周交付 → 迭代飞轮</strong>
           </div>
           <div className={styles.stageButtons}>
             {universe.paths[0].nodeIds.map((nodeId, index) => {
@@ -509,6 +643,32 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
             <span className={styles.personalSignalCopy}>
               <small>LUSIE</small>
               <strong>航模项目</strong>
+            </span>
+            <ArrowUpRight className={styles.personalSignalArrow} data-personal-arrow size={14} aria-hidden="true" />
+          </Link>
+
+          <Link
+            href="/work/lotus"
+            className={`${styles.personalSignal} ${styles.lotusPersonalSignal}`}
+            aria-label="进入 LOTUS Runtime"
+            data-personal-signal
+            onPointerEnter={(event) => animatePersonalSignal(event.currentTarget)}
+            onPointerLeave={(event) => settlePersonalSignal(event.currentTarget)}
+            onFocus={(event) => animatePersonalSignal(event.currentTarget)}
+            onBlur={(event) => settlePersonalSignal(event.currentTarget)}
+          >
+            <span className={styles.lotusSignalVisual} data-personal-visual aria-hidden="true">
+              <Image
+                className={styles.lotusWordmark}
+                src="/brand/toni-lotus/lotus-runtime-wordmark-paper.svg"
+                alt=""
+                width={1600}
+                height={420}
+              />
+            </span>
+            <span className={styles.personalSignalCopy}>
+              <small>AGENT OPERATING LAYER</small>
+              <strong>LOTUS Runtime</strong>
             </span>
             <ArrowUpRight className={styles.personalSignalArrow} data-personal-arrow size={14} aria-hidden="true" />
           </Link>

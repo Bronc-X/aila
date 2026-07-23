@@ -29,7 +29,6 @@ const directLinks = [
 
 type QrChannel = {
   label: string;
-  detail: string;
   src: string;
   alt: string;
 };
@@ -37,19 +36,16 @@ type QrChannel = {
 const qrChannels: QrChannel[] = [
   {
     label: "微信",
-    detail: "WeChat direct",
     src: "/wechat-qr.jpg",
     alt: "Toni WeChat QR code",
   },
   {
     label: "WhatsApp",
-    detail: "WhatsApp direct",
     src: "/whatsapp-qr.png",
     alt: "Toni WhatsApp QR code",
   },
   {
     label: "Telegram",
-    detail: "Telegram direct",
     src: "/telegram-qr.png",
     alt: "Toni Telegram QR code",
   },
@@ -95,7 +91,7 @@ export default async function ContactPage() {
         <div className={styles.links}>
           <Link href="/work">作品</Link>
           <Link href="/tools">工具</Link>
-          <Link href="/work/training-system">陪跑</Link>
+          <Link href="/aila">FDE</Link>
           <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>
@@ -107,9 +103,6 @@ export default async function ContactPage() {
             Toni / AI workflow companion
           </p>
           <h1>把你卡住的业务现场发给我。</h1>
-          <p>
-            我做 AI 工具陪跑、Agent 工作流和企业系统原型。合作从一个真实场景开始：谁使用，输入什么，输出给谁，错了怎么复核。
-          </p>
         </div>
 
         <aside className={styles.qrPanel} aria-label="Contact QR codes">
@@ -120,7 +113,6 @@ export default async function ContactPage() {
                   <Image src={channel.src} alt={channel.alt} fill sizes="12rem" priority />
                 </div>
                 <strong>{channel.label}</strong>
-                <span>{channel.detail}</span>
               </div>
             ))}
           </div>
@@ -130,7 +122,6 @@ export default async function ContactPage() {
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2>先把问题拆小，再把工具跑起来。</h2>
-          <p>我不会先写一份漂亮方案。先找一条能验证价值的最短链路，再决定要不要扩成系统。</p>
         </div>
         <div className={styles.grid}>
           {principles.map(([title, text]) => (
@@ -154,19 +145,17 @@ export default async function ContactPage() {
         >
           <span className={styles.openSourceBadge}>
             <Image
-              src="/brand/toni-lotus/toni-lotus-pdf-lockup-light.svg"
+              src="/brand/toni-lotus/lotus-runtime-wordmark-ink.svg"
               alt=""
               width={164}
-              height={44}
+              height={41}
               aria-hidden="true"
             />
           </span>
           <div>
             <small>Agent Operating Layer</small>
             <strong>{lotusRepo?.full_name ?? "Bronc-X/Lotus"}</strong>
-            <p>
-              Lotus 是 Toni 的 Agent 工作系统：把工程协议、质量门禁和协作规则写一次，再沉淀成可复用的项目启动层。
-            </p>
+            <p>把工程协议、质量门禁和协作规则沉淀成可复用的项目启动层。</p>
           </div>
           <span className={styles.starCount}>
             <Star size={18} fill="currentColor" />

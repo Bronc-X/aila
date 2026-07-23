@@ -1,0 +1,36 @@
+.root {
+  position: relative;
+  min-height: 100dvh;
+  overflow: clip;
+}
+
+.root[data-variant="workbench"] {
+  background: #f4f1e8;
+}
+
+.root[data-variant="showcase"] {
+  background: #050806;
+}
+
+.surface {
+  min-height: 100dvh;
+}
+
+.veil {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(90deg, rgba(168, 240, 106, 0.18), transparent 22%),
+    #050806;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil {
+    display: none;
+  }
+}

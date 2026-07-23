@@ -32,8 +32,8 @@ export default function AutoRedBookPage() {
     <PortfolioCaseMotion variant="matrix">
       <main className={styles.casePage}>
         <nav className={styles.topbar} aria-label="小红书自动二创导航">
-          <Link className={styles.backLink} href="/tools">
-            <ArrowLeft size={14} /> 返回工具总览
+          <Link className={styles.backLink} href="/aila">
+            <ArrowLeft size={14} /> 返回 AILA 资产层
           </Link>
           <span className={styles.topMeta}>TONI / CONTENT OPERATIONS ASSET 08</span>
           <a
@@ -74,7 +74,6 @@ export default function AutoRedBookPage() {
               preload
               sizes="(max-width: 1100px) 92vw, 54vw"
             />
-            <figcaption className={styles.visualCaption}>Editorial review wall / generated for this case study</figcaption>
           </figure>
         </section>
 
@@ -82,13 +81,9 @@ export default function AutoRedBookPage() {
           <div className={styles.sectionGrid}>
             <aside className={styles.sectionRail}>
               <span className={styles.sectionIndex}>01 / EDITORIAL STANCE</span>
-              <p>“吃透 AI、打透 AI”不是口号，而是一套选题标准。</p>
             </aside>
             <div>
               <h2 className={styles.sectionTitle}>先把问题查深，再决定如何表达。</h2>
-              <p className={styles.leadCopy}>
-                内容不追逐泛泛热度。真正值得做的主题，必须来自业务现场、工程约束或可验证的风险，并且能找到截图、记录、请求结果或项目过程作为支撑。
-              </p>
               <div className={styles.topicGrid}>
                 <article className={styles.topicCard}>
                   <span>FDE / FIELD NOTE</span>
@@ -116,7 +111,6 @@ export default function AutoRedBookPage() {
               <span className={styles.eyebrow}>Five account roles</span>
               <h2>每个账号承担不同的内容任务。</h2>
             </div>
-            <p>事实可以共享，角度、结构、素材和读者问题不能复制。</p>
           </div>
           <div className={styles.laneGrid}>
             {lanes.map(([index, title, copy]) => (
@@ -142,9 +136,7 @@ export default function AutoRedBookPage() {
             <div className={styles.evidenceCopy}>
               <span className={styles.eyebrow}>Repository evidence</span>
               <h2>展示页面必须能回到真实项目。</h2>
-              <p>
-                作品页保留 GitHub 项目截图和源码入口，用来说明这不是一张概念图。页面讲清楚的是系统角色、工作流和边界，仓库负责提供进一步的实现证据。
-              </p>
+              <p>保留源码、截图与审核记录，便于追溯实现证据。</p>
               <ul className={styles.assetList}>
                 <li><strong>知识内容</strong><span>FDE、模型验真、Harness</span></li>
                 <li><strong>视觉资产</strong><span>项目截图、案例图片、品牌素材</span></li>
@@ -159,7 +151,6 @@ export default function AutoRedBookPage() {
           <div className={styles.sectionGrid}>
             <aside className={styles.sectionRail}>
               <span className={styles.sectionIndex}>04 / WORKFLOW</span>
-              <p>从选题证据到发布确认，每一步都能回看。</p>
             </aside>
             <div>
               <h2 className={styles.sectionTitle}>内容生产线的价值，是减少失真，不是增加产量。</h2>

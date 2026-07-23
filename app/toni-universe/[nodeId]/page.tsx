@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import UniverseNodeClient from "../UniverseNodeClient";
-import { universe, universeNodeMap } from "../universe-data";
+import {
+  getUniverseNodeDestination,
+  getUniverseNodeHref,
+  universe,
+  universeNodeMap,
+} from "../universe-data";
 
 type NodePageProps = {
   params: Promise<{ nodeId: string }>;
@@ -30,6 +35,10 @@ export default async function UniverseNodePage({ params }: NodePageProps) {
   const { nodeId } = await params;
   const node = universeNodeMap.get(nodeId);
   if (!node) notFound();
+
+  const canonicalHref = getUniverseNodeHref(node.id);
+  const destination = getUniverseNodeDestination(node.id);
+  if (destination !== canonicalHref) redirect(destination);
 
   const relatedNodes = universe.relations
     .map((relation) => {

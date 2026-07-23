@@ -143,12 +143,13 @@ body {
 
 @media (max-width: 640px) {
   .alma-verified-badge {
-    width: min(7.4rem, calc(100vw - 1.5rem));
+    width: min(5.25rem, calc(100vw - 1.5rem));
+    opacity: 0.72;
   }
 
   .alma-verified-corner {
-    left: max(0.75rem, env(safe-area-inset-left));
-    bottom: max(3rem, env(safe-area-inset-bottom));
+    left: max(0.5rem, env(safe-area-inset-left));
+    bottom: max(0.25rem, env(safe-area-inset-bottom));
   }
 }
 

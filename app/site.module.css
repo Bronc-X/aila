@@ -132,14 +132,15 @@
 }
 
 .hero h1 {
-  max-width: 62rem;
+  max-width: 100%;
   margin: 0;
   color: var(--cream);
-  font-size: clamp(3.2rem, 6vw, 6.5rem);
+  font-size: clamp(3.2rem, 5.2vw, 5.4rem);
   font-weight: 900;
-  line-height: 0.94;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
+  line-height: 0.98;
+  text-wrap: pretty;
+  line-break: strict;
+  overflow-wrap: normal;
 }
 
 .contactHero {
@@ -254,10 +255,10 @@
   overflow: hidden;
   border: 1px solid rgba(5, 8, 6, 0.18);
   border-radius: 8px;
-  padding: clamp(1rem, 3vw, 1.4rem);
-  background:
-    linear-gradient(135deg, rgba(168, 240, 106, 0.42), transparent 32%),
-    linear-gradient(135deg, #fff9ea 0%, #f3f1ed 100%);
+    padding: clamp(1rem, 3vw, 1.4rem);
+    background:
+      linear-gradient(135deg, rgba(123, 202, 113, 0.26), transparent 32%),
+      linear-gradient(135deg, #ffffff 0%, #f6f6f4 100%);
   color: var(--ink);
   text-decoration: none;
 }
@@ -300,12 +301,12 @@
 }
 
 .lotusCardBrand {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(223, 167, 176, 0.42);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
-}
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(123, 202, 113, 0.48);
+    border-radius: 8px;
+    background: #0a0b0d;
+  }
 
 .lotusCardBrand img {
   object-fit: contain;
@@ -927,6 +928,181 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.workMediaSection {
+  padding-top: 3.2rem;
+}
+
+.workMediaHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.38fr);
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 1.2rem;
+}
+
+.workMediaHeader small {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.workMediaHeader h2 {
+  max-width: 54rem;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.6rem, 5vw, 5.4rem);
+  font-weight: 900;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.workMediaHeader p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  font-weight: 720;
+  line-height: 1.68;
+}
+
+.workMediaGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.workMediaItem {
+  grid-column: span 6;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 249, 234, 0.82);
+}
+
+.workMediaPair .workMediaLead {
+  grid-column: span 7;
+}
+
+.workMediaPair .workMediaItem:not(.workMediaLead) {
+  grid-column: span 5;
+}
+
+.workMediaTriple .workMediaLead {
+  grid-column: 1 / -1;
+}
+
+.workMediaSingle .workMediaLead {
+  grid-column: 1 / -1;
+}
+
+.workMediaViewport {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 249, 234, 0.12);
+  background:
+    linear-gradient(90deg, rgba(255, 249, 234, 0.045) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 249, 234, 0.04) 1px, transparent 1px),
+    #050806;
+  background-size: 32px 32px;
+}
+
+.workMediaViewport img {
+  object-fit: contain;
+}
+
+.workMediaViewport video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #050806;
+}
+
+.workMediaViewport[data-media-kind="video"]::before {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  left: 0.75rem;
+  border: 1px solid rgba(255, 249, 234, 0.18);
+  border-radius: 999px;
+  padding: 0.35rem 0.5rem;
+  background: rgba(5, 8, 6, 0.72);
+  color: var(--cream);
+  content: "RUNNING FOOTAGE";
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+.workMediaItem figcaption {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: start;
+  min-height: 6rem;
+  padding: 0.9rem;
+}
+
+.workMediaItem figcaption span {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.workMediaItem figcaption p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 0.9rem;
+  font-weight: 720;
+  line-height: 1.55;
+}
+
+.workEvidenceNotice {
+  display: grid;
+  gap: 0.65rem;
+  width: min(44rem, 100%);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 1.15rem 1.2rem;
+  background:
+    linear-gradient(135deg, rgba(168, 240, 106, 0.18), transparent 58%),
+    rgba(255, 249, 234, 0.82);
+}
+
+.workEvidenceNotice small {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.workEvidenceNotice h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.workEvidenceNotice p {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 680;
+  line-height: 1.65;
+}
+
+.workGrid > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .caseLink {
@@ -1750,6 +1926,7 @@
   .hero,
   .contactHero,
   .sectionHeader,
+  .workMediaHeader,
   .caseGrid,
   .companionCaseGrid,
   .caseModal,
@@ -1775,9 +1952,10 @@
     max-width: 100%;
     font-size: clamp(1.95rem, 8.7vw, 2.45rem);
     line-height: 1.06;
-    line-break: anywhere;
-    text-wrap: wrap;
-    word-break: break-all;
+    line-break: strict;
+    text-wrap: pretty;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .heroPanel,
@@ -1798,16 +1976,18 @@
   .caseCard p,
   .galleryBody p,
   .archiveRow p {
-    overflow-wrap: anywhere;
-    word-break: break-all;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .sectionHeader h2 {
     max-width: 100%;
     font-size: clamp(2rem, 8.9vw, 2.5rem);
     line-height: 1.04;
-    line-break: anywhere;
-    text-wrap: wrap;
+    line-break: strict;
+    text-wrap: pretty;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .heroPanel {
@@ -1815,6 +1995,7 @@
   }
 
   .grid,
+  .workMediaGrid,
   .lusieChoiceGrid,
   .lusieStatusBand,
   .lusieWorkbenchGrid,
@@ -1827,6 +2008,23 @@
   .contactGrid,
   .mapList {
     grid-template-columns: 1fr;
+  }
+
+  .workMediaItem,
+  .workMediaPair .workMediaLead,
+  .workMediaPair .workMediaItem:not(.workMediaLead),
+  .workMediaTriple .workMediaLead,
+  .workMediaSingle .workMediaLead {
+    grid-column: 1;
+  }
+
+  .workGrid > :last-child:nth-child(odd) {
+    grid-column: 1;
+  }
+
+  .workMediaHeader h2 {
+    font-size: clamp(2rem, 8.9vw, 2.5rem);
+    line-height: 1.04;
   }
 
   .openSourceCard::before {

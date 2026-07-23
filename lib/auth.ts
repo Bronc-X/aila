@@ -118,16 +118,28 @@ export function sessionHasScope(session: SessionPayload | null, scope: SessionSc
   return Boolean(session?.scopes.includes(scope));
 }
 
+const publicToolShowcasePaths = new Set([
+  "/tools/activity-plan",
+  "/tools/auto-red-book",
+]);
+
 export function getRequiredScopeForPath(pathname: string): SessionScope | null {
+  const normalizedPathname =
+    pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+
+  if (publicToolShowcasePaths.has(normalizedPathname)) {
+    return null;
+  }
+
   if (
-    pathname.startsWith("/tools") ||
-    pathname.startsWith("/api/ai") ||
-    pathname === "/api/profile"
+    normalizedPathname.startsWith("/tools") ||
+    normalizedPathname.startsWith("/api/ai") ||
+    normalizedPathname === "/api/profile"
   ) {
     return "tools";
   }
 
-  if (pathname.startsWith("/slides")) {
+  if (normalizedPathname.startsWith("/slides")) {
     return "slides";
   }
 

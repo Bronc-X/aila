@@ -26,8 +26,9 @@ type UniverseNodeClientProps = {
 const layerLabels: Record<UniverseLayer, string> = {
   core: "核心业务",
   delivery: "FDE 交付阶段",
-  capability: "交付能力",
-  proof: "验证案例",
+  capability: "业务板块",
+  commercial: "商业模式",
+  proof: "项目证据",
 };
 
 const statusLabels: Record<UniverseStatus, string> = {
@@ -136,7 +137,7 @@ export default function UniverseNodeClient({ node, relatedNodes }: UniverseNodeC
           <ArrowLeft size={15} />
           返回首页图谱
         </Link>
-        <span>FDE NODE ARCHIVE / {node.id}</span>
+        <span>FDE NODE / {node.id}</span>
       </nav>
 
       <article className={styles.nodeArchive}>
@@ -153,12 +154,8 @@ export default function UniverseNodeClient({ node, relatedNodes }: UniverseNodeC
 
         <div className={styles.nodeArchiveGrid} data-node-reveal>
           <section>
-            <small>节点说明</small>
+            <small>范围</small>
             <p>{node.detail}</p>
-          </section>
-          <section>
-            <small>关于 / 联系</small>
-            <p>发来业务现场，先判断哪里值得动。</p>
           </section>
         </div>
 
@@ -184,15 +181,14 @@ export default function UniverseNodeClient({ node, relatedNodes }: UniverseNodeC
             )
           ) : (
             <Link href="/contact" onClick={(event) => navigateWithTransition(event, "/contact")}>
-              关于 / 联系 <ArrowUpRight size={15} />
+              联系 <ArrowUpRight size={15} />
             </Link>
           )}
         </div>
 
         <section className={styles.relatedNodes} data-node-reveal>
           <div>
-            <small>CONNECTED NODES</small>
-            <h2>与该节点直接相连的交付关系</h2>
+            <h2>直接关系</h2>
           </div>
           <div className={styles.relatedNodeGrid}>
             {relatedNodes.map(({ relation, node: relatedNode }) => {

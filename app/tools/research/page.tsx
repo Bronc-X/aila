@@ -228,10 +228,10 @@ export default function ResearchPage() {
             <Presentation size={14} /> 课件学习
           </Link>
         </div>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-24 lg:px-32 flex gap-6 sm:gap-12 overflow-x-auto overscroll-x-contain -mb-px mt-2">
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
+              className={`flex shrink-0 items-center gap-2 px-2 pb-5 text-base font-bold whitespace-nowrap border-b-4 transition-all ${
                 activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}><tab.icon size={14} /> {tab.label}</button>
           ))}
@@ -406,12 +406,12 @@ export default function ResearchPage() {
                 <Plus size={14} /> 新增资产
               </button>
             </div>
-            <div className="border border-[#E5E1D8] bg-[#FAF9F6]">
-              <div className="grid grid-cols-[140px_100px_110px_70px_1fr_40px] gap-px px-5 py-3 border-b border-[#E5E1D8] text-[10px] text-[#6B6660] font-semibold uppercase tracking-wider">
+            <div className="overflow-x-auto border border-[#E5E1D8] bg-[#FAF9F6]">
+              <div className="grid min-w-[620px] grid-cols-[140px_100px_110px_70px_1fr_40px] gap-px px-5 py-3 border-b border-[#E5E1D8] text-[10px] text-[#6B6660] font-semibold uppercase tracking-wider">
                 <span>资产类别</span><span>数量</span><span>归档状态</span><span>风险</span><span>描述</span><span></span>
               </div>
               {assets.map((asset) => (
-                <div key={asset.id} className="grid grid-cols-[140px_100px_110px_70px_1fr_40px] gap-px px-5 py-3 border-b border-[#0a0a0a] hover:bg-[#FAF9F6] transition-colors items-center group">
+                <div key={asset.id} className="grid min-w-[620px] grid-cols-[140px_100px_110px_70px_1fr_40px] gap-px px-5 py-3 border-b border-[#0a0a0a] hover:bg-[#FAF9F6] transition-colors items-center group">
                   <EditableCell value={asset.category} onSave={v => updateAsset(asset.id, "category", v)} className="text-sm text-[#2D2A26] font-medium" placeholder="资产类别" />
                   <EditableCell value={asset.count} onSave={v => updateAsset(asset.id, "count", v)} className="text-sm text-[#9E9B96]" placeholder="数量" />
                   <StatusDropdown value={asset.status} options={ASSET_STATUS_OPTIONS} onChange={v => updateAsset(asset.id, "status", v)} />

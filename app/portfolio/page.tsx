@@ -104,7 +104,7 @@ function PortfolioContent() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="space-y-6 max-w-3xl">
           <p className="text-xs font-mono text-neutral-500 tracking-[0.3em] uppercase">AI Workflow × Product Prototyping</p>
           <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.95]">Toni Studio.</h1>
-          <p className="text-base text-neutral-400 font-mono max-w-2xl mx-auto leading-relaxed">旧作品集保留了企业工具、iOS 产品实验和量化界面探索。它展示的是跨领域问题如何被拆成可运行原型。</p>
+          <p className="text-base text-neutral-400 font-mono max-w-2xl mx-auto leading-relaxed">企业工具、iOS 产品与量化界面原型。</p>
         </motion.div>
       </section>
 
@@ -186,7 +186,6 @@ function PortfolioContent() {
         </div>
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-48 h-48 p-2 bg-white rounded-2xl shadow-2xl overflow-hidden"><img src="/wechat-qr.jpg" alt="WeChat QR" className="w-full h-full object-cover rounded-xl" /></div>
-          <p className="text-xs text-neutral-500 uppercase tracking-widest font-mono">微信名片直连 (WeChat Direct)</p>
         </div>
       </section>
     </div>

@@ -118,7 +118,7 @@ const gates: Gate[] = [
     href: "/tools",
     title: "工具",
     english: "TOOLS",
-    eyebrow: "八大工具",
+    eyebrow: "AILA 系统",
     copy: "AILA 工具矩阵和两个新增内容工具",
     x: 486,
     y: -18,
@@ -133,11 +133,11 @@ const gates: Gate[] = [
   },
   {
     id: "plan",
-    href: "/work/training-system",
-    title: "方案",
-    english: "PLAN",
-    eyebrow: "陪跑方案",
-    copy: "闭门训练、企业陪跑和落地路线图",
+    href: "/aila",
+    title: "FDE",
+    english: "FDE",
+    eyebrow: "企业交付",
+    copy: "诊断、交付、复用和增长飞轮",
     x: -540,
     y: 94,
     z: -150,
@@ -172,7 +172,7 @@ const gates: Gate[] = [
 const proofStats: ProofStat[] = [
   { value: "看案例", label: "自己的作品", shortLabel: "作品档案", detail: "Cosic、智能招标、Lotus、AntiAnxiety 和公开产品档案。" },
   { value: "试工具", label: "工具模块", shortLabel: "8 个模块", detail: "AILA 工具矩阵和新增内容工具统一进入 /tools。" },
-  { value: "做方案", label: "陪跑方案", shortLabel: "训练陪跑", detail: "闭门训练、企业陪跑和落地路线图。" },
+  { value: "做方案", label: "企业 FDE", shortLabel: "交付方案", detail: "诊断、交付、复用和增长飞轮。" },
   { value: "聊合作", label: "关于联系", shortLabel: "发来场景", detail: "发来业务现场，先判断哪里值得动。" },
 ];
 
@@ -1381,7 +1381,7 @@ export default function ToniSpatialHero() {
         <div className={styles.links}>
           <Link href="/work">作品</Link>
           <Link href="/tools">工具</Link>
-          <Link href="/work/training-system">陪跑</Link>
+          <Link href="/aila">FDE</Link>
           <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>

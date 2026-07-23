@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Lotus Runtime app icon</title>
+  <rect width="512" height="512" fill="#0A0B0D"/>
+  
+      <rect x="0" y="0" width="512" height="512" fill="#0A0B0D"/>
+      <g transform="translate(96 96) scale(1)">
+        <path d="M 60,20 260,20 300,60 300,260 260,300 60,300 20,260 20,60 Z M 92,72 228,72 248,92 248,228 228,248 92,248 72,228 72,92 Z" fill="#F6F6F4" fill-rule="evenodd"/>
+        <rect x="138" y="138" width="44" height="44" fill="#7BCA71"/>
+      </g>
+    
+</svg>

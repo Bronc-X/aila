@@ -224,10 +224,10 @@ const generateReply = async (id: string) => {
             <Presentation size={14} /> 课件学习
           </Link>
         </div>
-        <div className="max-w-5xl mx-auto px-12 md:px-24 lg:px-32 flex gap-12 -mb-px mt-2">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-24 lg:px-32 flex gap-6 sm:gap-12 overflow-x-auto overscroll-x-contain -mb-px mt-2">
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-2 pb-5 text-base font-bold border-b-4 transition-all ${
+              className={`flex shrink-0 items-center gap-2 px-2 pb-5 text-base font-bold whitespace-nowrap border-b-4 transition-all ${
                 activeTab === tab.id ? "border-[#22d665] text-[#2D2A26]" : "border-transparent text-[#6B6660] hover:text-[#9E9B96]"
               }`}><tab.icon size={14} /> {tab.label}</button>
           ))}

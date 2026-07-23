@@ -21,12 +21,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Toni | AI 工具陪跑与企业流程原型",
-  description: "把业务卡点拆成可演示、可复核、可交给团队试用的 AI 工具、工作流和企业系统原型。",
-  keywords: ["Toni", "AI 工具陪跑", "企业流程原型", "Agent 工作流", "企业培训"],
+  title: "Toni | 企业 FDE 交付与项目作品集",
+  description: "围绕企业真实业务，展示从数据管道、知识资产、工作流到可运行系统的 FDE 项目交付与作品案例。",
+  keywords: ["Toni", "企业 FDE", "FDE 项目交付", "数据管道", "企业知识资产", "Agent 工程", "项目作品集"],
   openGraph: {
-    title: "Toni | AI 工具陪跑与企业流程原型",
-    description: "从真实业务现场出发，把问题做成可运行、可验证、可训练的系统。",
+    title: "Toni | 企业 FDE 交付与项目作品集",
+    description: "从业务现场、数据处理和系统约束出发，展示可检查的企业 FDE 交付过程与项目成果。",
     type: "website",
   },
 };
@@ -52,4 +52,3 @@ export default function RootLayout({
     </html>
   );
 }
-

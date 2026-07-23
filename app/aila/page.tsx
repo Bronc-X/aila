@@ -1,175 +1,295 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Boxes } from "lucide-react";
-import styles from "../site.module.css";
+import { ArrowDown, ArrowUpRight, RotateCcw } from "lucide-react";
 
-const modules = [
-  {
-    title: "获客中心",
-    sub: "MARKETING",
-    text: "把海报、短视频脚本、分发文案和素材处理收进同一条内容出品线。",
-    tags: ["批量海报", "短视频", "文案矩阵", "素材编辑"],
-    href: "/tools/acquisition",
-  },
-  {
-    title: "销售助手",
-    sub: "SALES",
-    text: "记录对话重点、客户异议、回访节奏和下一步动作，让销售跟进不断档。",
-    tags: ["实时对话", "话术提示", "智能回访", "灵感追问"],
-    href: "/tools/sales",
-  },
-  {
-    title: "验证工坊",
-    sub: "RESEARCH",
-    text: "把想法、原型假设、市场线索和企业资料放在同一张工作台上验证。",
-    tags: ["多角色评审", "原型验证", "市场线索", "资产盘点"],
-    href: "/tools/research",
-  },
-  {
-    title: "老板仪表盘",
-    sub: "DASHBOARD",
-    text: "把日报、回访进度和成交变化整理成能快速扫读的经营视图。",
-    tags: ["经营看板", "经营报告", "回访追踪", "成交分析"],
-    href: "/tools/operations",
-  },
-  {
-    title: "图生 3D 等待态",
-    sub: "ACTION",
-    text: "用于漫长模型生成过程的进度展示，包含 3D 打印循环视频、WebM/MP4 兜底和羽化边缘。",
-    tags: ["生成等待", "3D 打印", "循环视频", "Vercel 探针"],
-    href: "/aila/print-loading-animation",
-  },
-  {
-    title: "行政效率",
-    sub: "ADMIN",
-    text: "合同、纪要、排班和流程诊断，先接住每天都在消耗人的行政任务。",
-    tags: ["合同助手", "会议纪要", "排班优化", "流程诊断"],
-    href: "/tools/admin",
-  },
-  {
-    title: "智能客服",
-    sub: "SERVICE",
-    text: "把常见问答、回访话术、舆情波动和客户反馈集中到可复盘面板。",
-    tags: ["智能客服", "回访话术", "舆情监控", "客户之声"],
-    href: "/tools/service",
-  },
-  {
-    title: "海报方案助手",
-    sub: "PROPOSAL",
-    text: "把活动信息、预算人数和品牌资料整理成方案页、宣传文案、海报提示词和 PPTX 初稿。",
-    tags: ["活动方案", "宣传文案", "海报提示词", "PPTX 导出"],
-    href: "https://github.com/xiahui001/Activity-plan.git",
-  },
-  {
-    title: "小红书自动二创",
-    sub: "XHS MATRIX",
-    text: "围绕 5 个账号生成候选图文草稿，保留人工筛选、审核和发布确认，不做黑箱自动发布。",
-    tags: ["矩阵草稿", "热点参考", "质量检查", "客服线索"],
-    href: "https://github.com/xiahui001/auto-red-book.git",
-  },
-];
+import FdePageMotion from "./FdePageMotion";
+import {
+  businessBoundaries,
+  continuousService,
+  commercialModels,
+  enterpriseFlywheel,
+  evidenceAssets,
+  fdeModules,
+  acceptanceMetrics,
+  operatingFoundation,
+  reuseFlywheel,
+} from "./fde-content";
+import styles from "./fde.module.css";
 
-const consoleRows = [
-  ["Marketing", "poster / copy / video brief"],
-  ["Sales", "dialogue / follow-up / script"],
-  ["Research", "idea / prototype / trend"],
-  ["Dashboard", "daily / weekly / deal view"],
-  ["Service", "knowledge / feedback / sentiment"],
-  ["Proposal", "activity / poster / deck"],
-  ["XHS", "draft / review / lead"],
-];
+export const metadata: Metadata = {
+  title: "企业 FDE 服务与交付 | Toni",
+  description: "十大企业 FDE 服务模块、三周交付节奏、两套合作模式，以及数据、Harness、评测和增长飞轮。",
+  openGraph: {
+    title: "企业 FDE 服务与交付 | Toni",
+    description: "进现场，接数据，改流程，交付生产系统。",
+    images: ["https://www.toni.asia/fde/fde-enterprise-operating-system-v1.png"],
+  },
+};
 
-const cooperationSteps = [
-  ["01", "诊断", "看材料、岗位、数据入口和真实阻力，先找最值得动的一处。"],
-  ["02", "原型", "做一个能点击、能演示、能被业务方挑刺的版本。"],
-  ["03", "落地", "把模块接进具体岗位，明确谁使用、谁复核、谁负责。"],
-  ["04", "训练", "把使用节奏、异常处理和复盘方法交给团队。"],
-];
+function Flywheel({ title, items }: { title: string; items: readonly string[] }) {
+  return (
+    <article className={styles.flywheel} data-fde-item>
+      <h3>{title}</h3>
+      <ol>
+        {items.map((item, index) => (
+          <li key={item}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{item}</strong>
+            {index < items.length - 1 ? (
+              <ArrowDown size={14} aria-hidden="true" />
+            ) : (
+              <RotateCcw size={14} aria-hidden="true" />
+            )}
+          </li>
+        ))}
+      </ol>
+    </article>
+  );
+}
 
 export default function AilaPage() {
   return (
-    <main className={styles.page}>
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.brand}><span>T</span>Toni</Link>
-        <div className={styles.links}>
-          <Link href="/work">作品</Link>
-          <Link href="/tools">工具</Link>
-          <Link href="/work/training-system">陪跑</Link>
-          <Link href="/contact">关于 / 联系</Link>
-        </div>
-      </nav>
+    <FdePageMotion>
+      <main className={styles.page} data-case-motion-root>
+        <nav className={styles.nav} aria-label="企业 FDE 页面导航">
+          <Link href="/" className={styles.brand}>
+            Toni
+          </Link>
+          <div>
+            <a href="#modules">十大模块</a>
+            <a href="#delivery">交付节奏</a>
+            <a href="#commercial">合作方式</a>
+            <Link href="/contact">联系</Link>
+          </div>
+        </nav>
 
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}><Boxes size={16} /> AILA enterprise console</p>
-          <h1>AILA 已升级为 8 大工具模块。</h1>
-          <p className={styles.lede}>
-            新增海报方案助手和小红书自动二创。现在内容项目也被放进可演示、可复核的工具矩阵。
-          </p>
-        </div>
-        <aside className={styles.consoleFrame}>
-          <div className={styles.consoleRows}>
-            {consoleRows.map(([name, value]) => (
-              <div key={name}>
-                <span>{name}</span>
-                <span>{value}</span>
+        <header className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <h1 data-fde-hero>企业 FDE</h1>
+            <p data-fde-hero>诊断 → 业务流解析 → 报价组队 → 三周交付 → 迭代飞轮</p>
+            <div className={styles.heroActions} data-fde-hero>
+              <Link href="/contact">
+                预约免费诊断 <ArrowUpRight size={16} />
+              </Link>
+              <a href="#modules">查看十大模块</a>
+            </div>
+            <dl className={styles.heroFacts} data-fde-hero>
+              <div>
+                <dt>10</dt>
+                <dd>业务模块</dd>
               </div>
+              <div>
+                <dt>03</dt>
+                <dd>交付周</dd>
+              </div>
+              <div>
+                <dt>02</dt>
+                <dd>合作方式</dd>
+              </div>
+            </dl>
+          </div>
+
+          <figure className={styles.heroVisual} data-fde-hero>
+            <Image
+              src="/fde/fde-enterprise-operating-system-v1.png"
+              alt="企业数据从多平台进入采入、清洗、解析、治理和复用流程的 FDE 主视觉"
+              fill
+              priority
+              sizes="(max-width: 900px) 100vw, 58vw"
+            />
+            <figcaption>
+              <strong>采入 / 清洗 / 解析 / 复核 / 看板 / 复用</strong>
+            </figcaption>
+          </figure>
+        </header>
+
+        <section className={styles.section} id="modules" data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>十大业务模块</h2>
+          </header>
+          <div className={styles.moduleGrid}>
+            {fdeModules.map((module) => (
+              <article
+                className={`${styles.moduleCard} ${module.featured ? styles.moduleFeatured : ""}`}
+                key={module.id}
+                data-fde-item
+              >
+                <div className={styles.moduleTopline}>
+                  <small>{module.index}</small>
+                  {module.method ? <code>{module.method}</code> : null}
+                </div>
+                <h3>{module.title}</h3>
+                <p>{module.statement}</p>
+                <ul>
+                  {module.deliverables.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
             ))}
           </div>
-        </aside>
-      </section>
+        </section>
 
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2>八个模块，对应企业最常见的业务卡点。</h2>
-          <p>总览页负责说明结构，工具页负责让你继续下钻。先看得懂，再决定哪里值得接入真实系统。</p>
-        </div>
-        <div className={styles.moduleGrid}>
-          {modules.map((module, index) => (
-            <article className={styles.moduleCard} key={module.title}>
-              <small>{String(index + 1).padStart(2, "0")} · {module.sub}</small>
-              <h3>{module.title}</h3>
-              <p>{module.text}</p>
-              <div className={styles.inlineMetrics}>
-                {module.tags.map((tag) => <span key={tag}>{tag}</span>)}
-              </div>
-              {module.href.startsWith("http") ? (
-                <a href={module.href} target="_blank" rel="noopener noreferrer" className={styles.resourceLink}>
-                  查看 GitHub <ArrowUpRight size={14} />
-                </a>
-              ) : (
-                <Link href={module.href} className={styles.resourceLink}>
-                  进入工作台 <ArrowUpRight size={14} />
-                </Link>
-              )}
-            </article>
-          ))}
-        </div>
-      </section>
+        <section className={`${styles.section} ${styles.foundationSection}`} data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>统一交付底座</h2>
+          </header>
+          <div className={styles.foundationList}>
+            {operatingFoundation.map(([code, title, line], index) => (
+              <article key={code} data-fde-item>
+                <small>{String(index + 1).padStart(2, "0")}</small>
+                <code>{code}</code>
+                <h3>{title}</h3>
+                <p>{line}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      <section className={styles.darkBand} id="cooperation">
-        <h2>企业合作流程，收进 AILA。</h2>
-        <p>真正接进一家公司，不能从功能清单开始。先诊断一条业务链，再进入原型、落地和训练。</p>
-      </section>
+        <section className={`${styles.section} ${styles.deliverySection}`} id="delivery" data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>交付流程索引</h2>
+          </header>
+          <div className={styles.deliveryIndexGrid}>
+            {[
+              ["01", "免费诊断", "/toni-universe/diagnose"],
+              ["02", "业务流解析", "/toni-universe/analyze"],
+              ["03", "报价组队", "/toni-universe/quote"],
+              ["04", "三周交付", "/toni-universe/transform"],
+              ["05", "迭代飞轮", "/toni-universe/deliver"],
+            ].map(([index, title, href]) => (
+              <Link href={href} key={href} data-fde-item>
+                <small>{index}</small>
+                <strong>{title}</strong>
+                <ArrowUpRight size={16} />
+              </Link>
+            ))}
+          </div>
+        </section>
 
-      <section className={styles.section}>
-        <div className={styles.offerGrid}>
-          {cooperationSteps.map(([k, title, text]) => (
-            <article className={styles.offer} key={title}>
-              <small>{k}</small>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        <section className={`${styles.section} ${styles.acceptanceSection}`} id="acceptance" data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>非业务 KPI</h2>
+          </header>
+          <div className={styles.acceptanceGrid}>
+            {acceptanceMetrics.map(([title, line], index) => (
+              <article key={title} data-fde-item>
+                <small>{String(index + 1).padStart(2, "0")}</small>
+                <h3>{title}</h3>
+                <p>{line}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      <section className={styles.cta}>
-        <h2>想做企业内部 AI 工具，先选一条业务链来验证。</h2>
-        <div className={styles.actions}>
-          <Link href="/tools" className={styles.button}>进入工具演示</Link>
-          <Link href="/contact" className={styles.ghost}>发我场景 <ArrowUpRight size={15} /></Link>
-        </div>
-      </section>
-    </main>
+        <section className={styles.section} id="commercial" data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>两种合作方式</h2>
+          </header>
+          <div className={styles.commercialGrid}>
+            {commercialModels.map((model) => (
+              <article key={model.index} data-fde-item>
+                <header>
+                  <small>方案 {model.index}</small>
+                  <h3>{model.title}</h3>
+                  <p>{model.fit}</p>
+                </header>
+                <ol>
+                  {model.points.map((point, index) => (
+                    <li key={point}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      {point}
+                    </li>
+                  ))}
+                </ol>
+                <strong>{model.after}</strong>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.flywheelSection}`} data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>增长与复用</h2>
+          </header>
+          <div className={styles.flywheelGrid}>
+            <Flywheel title="企业增长飞轮" items={enterpriseFlywheel} />
+            <Flywheel title="FDE 中枢复用" items={reuseFlywheel} />
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.continuousSection}`} data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>持续优化</h2>
+          </header>
+          <div className={styles.continuousGrid}>
+            {continuousService.map(([title, line], index) => (
+              <article key={title} data-fde-item>
+                <small>{String(index + 1).padStart(2, "0")}</small>
+                <h3>{title}</h3>
+                <p>{line}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.section} data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>项目画面</h2>
+          </header>
+          <div className={styles.evidenceGrid}>
+            {evidenceAssets.map((asset) => (
+              <figure key={asset.src} data-fde-item>
+                <div>
+                  <Image src={asset.src} alt={asset.title} fill sizes="(max-width: 760px) 100vw, 50vw" />
+                </div>
+                <figcaption>
+                  <strong>{asset.title}</strong>
+                  <span>{asset.line}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.boundarySection}`} data-fde-section>
+          <header className={styles.sectionHeading} data-fde-heading>
+            <h2>商务边界</h2>
+          </header>
+          <div className={styles.boundaryList}>
+            {businessBoundaries.map(([title, line], index) => (
+              <article key={title} data-fde-item>
+                <small>{String(index + 1).padStart(2, "0")}</small>
+                <h3>{title}</h3>
+                <p>{line}</p>
+              </article>
+            ))}
+          </div>
+          <div className={styles.documentLinks} data-fde-item>
+            <a href="/fde/downloads/fde-enterprise-service-guide-2026-07-15.pdf" download>
+              下载对外方案 <ArrowUpRight size={16} />
+            </a>
+            <a href="/fde/downloads/fde-sales-deck-12p-2026-07-15.pptx" download>
+              下载销售 Deck <ArrowUpRight size={16} />
+            </a>
+            <a href="/fde/downloads/fde-one-page-flyer-2026-07-15.pdf" download>
+              下载一页式宣传单 <ArrowUpRight size={16} />
+            </a>
+            <Link href="/">
+              返回 FDE 图谱 <ArrowUpRight size={16} />
+            </Link>
+          </div>
+        </section>
+
+        <footer className={styles.footer} data-fde-section>
+          <span data-fde-heading>企业 FDE</span>
+          <h2 data-fde-item>提交一个真实业务现场。</h2>
+          <Link href="/contact" data-fde-item>
+            开始免费诊断 <ArrowUpRight size={18} />
+          </Link>
+        </footer>
+      </main>
+    </FdePageMotion>
   );
 }

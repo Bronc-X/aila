@@ -34,7 +34,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ runI
 
 async function readStlBytes(runId: string, fileName: string, sourceUrl?: string) {
   try {
-    return await readFile(path.join(getRunDir(runId), fileName));
+    return await readFile(/* turbopackIgnore: true */ path.join(/* turbopackIgnore: true */ getRunDir(runId), fileName));
   } catch (error) {
     if (!sourceUrl) throw error;
   }

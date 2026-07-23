@@ -42,17 +42,18 @@ try {
   await expectText("/ai-pm-prep", "T0 课预习包");
   await expectText("/ai-pm-prep", "CC Switch");
   await expectText("/ai-pm-prep", "Claude Code 和 Codex 的 API 配置");
-  await expectText("/", "欢迎来到");
+  await expectText("/", "企业 FDE 图谱");
   await expectText("/spatial", "航模项目");
   await expectText("/toni-universe", "Forward Deployed Engineering");
-  await expectText("/toni-universe/fde", "面向生产结果的驻场工程交付");
-  await expectText("/toni-universe/deploy", "与该节点直接相连的交付关系");
-  await expectOk("/tools/research");
-  await expectOk("/tools/admin");
-  await expectOk("/tools/operations");
-  await expectOk("/tools/activity-plan");
-  await expectOk("/tools/auto-red-book");
-  await expectOk("/aila");
+  await expectRouteRedirect("/toni-universe/fde", "/aila");
+  await expectRouteRedirect("/toni-universe/transform", "/aila#delivery");
+  await expectLoginRedirect("/tools/research");
+  await expectLoginRedirect("/tools/admin");
+  await expectLoginRedirect("/tools/operations");
+  await expectPublicText("/tools/activity-plan", "把活动方案做成一套能交付的出品包");
+  await expectPublicText("/tools/auto-red-book", "中转站 API 对接的到底是真模型还是伪装模型");
+  await expectText("/aila", "源码一次性交付");
+  await expectText("/lusie", "生成链路");
   await expectOk("/work/training-system");
   await expectHandshake();
   await expectValidationGuard();
@@ -99,6 +100,38 @@ async function expectOk(routePath) {
   const response = await fetch(`${baseUrl}${routePath}`, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`${routePath} returned ${response.status}`);
+  }
+}
+
+async function expectPublicText(routePath, expected) {
+  const response = await fetch(`${baseUrl}${routePath}`, {
+    cache: "no-store",
+    redirect: "manual",
+  });
+  const body = await response.text();
+  if (response.status !== 200 || !body.includes(expected)) {
+    throw new Error(`${routePath} is not a public page containing: ${expected}`);
+  }
+}
+
+async function expectLoginRedirect(routePath) {
+  const response = await fetch(`${baseUrl}${routePath}`, {
+    cache: "no-store",
+    redirect: "manual",
+  });
+  const expectedLocation = `/login?next=${encodeURIComponent(routePath)}`;
+  if (response.status !== 307 || response.headers.get("location") !== expectedLocation) {
+    throw new Error(`${routePath} did not preserve the expected login redirect`);
+  }
+}
+
+async function expectRouteRedirect(routePath, expectedLocation) {
+  const response = await fetch(`${baseUrl}${routePath}`, {
+    cache: "no-store",
+    redirect: "manual",
+  });
+  if (response.status !== 307 || response.headers.get("location") !== expectedLocation) {
+    throw new Error(`${routePath} did not redirect to ${expectedLocation}`);
   }
 }
 

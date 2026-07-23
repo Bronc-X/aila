@@ -160,7 +160,7 @@ export default function OperationsPage() {
     { id: "tracking" as const, label: "回访追踪", icon: CalendarDays },
   ];
 
-  // ── AI 大屏推演 ──────────────────────────────
+  // ── 经营大盘演示数据 ─────────────────────────
   const handleGenerateDashboard = async () => {
     setDbGenerating(true);
     try {
@@ -168,22 +168,22 @@ export default function OperationsPage() {
         messages: [
           { 
             role: "system", 
-            content: `你是一个顶尖的商业数据分析师(BI)系统。请根据用户设定的基础条件，推演并模拟出一组极其逼真、符合该行业特征的运营数据大屏。
+            content: `你负责为作品集中的经营仪表盘生成一组明确用于演示的样例数据。数据只用于展示界面和分析流程，不代表任何真实企业，也不得伪装成真实经营结果。请根据用户提供的行业、团队规模、预算和目标，生成内部一致、量级合理、便于复核的样例数据。
 请返回格式如下的极严格 JSON：
 {
   "kpis": [
-    { "label": "指标名(例如本月成交额)", "value": "带真实货币符号或单位的数值", "change": "带符号的百分比", "trend": "up 或 down", "detail": ["细分维度1的名称和数据", "细分维度2..."] },
-    // 另外再生成三个KPI，禁止照搬本提示，数值必须依据行业、规模真实推演，具备随机波动性
+    { "label": "指标名(例如本月成交额)", "value": "带货币符号或单位的样例数值", "change": "带符号的百分比", "trend": "up 或 down", "detail": ["细分维度1的名称和数据", "细分维度2..."] },
+    // 另外生成三个 KPI，使用合理的样例数值，并保持同一份数据内部口径一致
   ],
   "pipeline": [
     { "stage": "阶段名称(例如线索曝光)", "count": 整数人数, "amount": "带单位的预计金额" },
-    // 生成真实的漏斗阶段（4-5个），必须符合漏斗层层显著递减的逻辑
+    // 生成 4-5 个样例漏斗阶段，保持层层递减的业务逻辑
   ],
   "insights": [
     { "type": "warning 或 insight 或 action", "title": "简短结论", "text": "洞察说明", "detail": "具体的分析原因..." }
   ],
   "deals": [
-    // 生成5条类似 { "client": "某某真实感行业公司名", "amount": "合理金额", "status": "signed 或 approval 或 following", "date": "XX-XX" }
+    // 生成 5 条类似 { "client": "示例行业公司名", "amount": "合理金额", "status": "signed 或 approval 或 following", "date": "XX-XX" }
   ]
 }
 不要有任何多余的文本、解释或包裹的Markdown标识。` 
@@ -196,9 +196,9 @@ export default function OperationsPage() {
 本月目标设定：营收【${dbConfig.target}${dbConfig.unit}】
 当期核心经营重心：【${dbConfig.priority}】
 
-请基于以上初始客观资源和设定，推演并合理分配各层漏斗及财务各项KPI，各数据必须符合逻辑及行业常识，不要太假。不要生成markdown代码块！` },
+请基于以上条件生成一组用于界面演示的样例数据。要求各项数据口径一致、逻辑连贯，并避免任何暗示真实性的表达。不要生成 markdown 代码块。` },
         ],
-        temperature: 0.8,
+        temperature: 0.4,
       });
       const content = data.choices?.[0]?.message?.content || "";
       const parsed = JSON.parse(content.replace(/```json\n?|\n?```/g, '').trim());
@@ -316,7 +316,7 @@ export default function OperationsPage() {
         {activeSubTab === "dashboard" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             {!dbData ? (
-              <div className="max-w-2xl mx-auto border border-[#E5E1D8] bg-white rounded-xl shadow-sm p-8 space-y-6 mt-10">
+              <div className="max-w-2xl mx-auto border border-[#E5E1D8] bg-white rounded-xl shadow-sm p-5 sm:p-8 space-y-6 mt-10">
                 <div className="text-center mb-8">
                   <div className="w-12 h-12 bg-[#22d665]/10 text-[#22d665] rounded-full flex items-center justify-center mx-auto mb-3">
                     <Sparkles size={24} />
@@ -326,52 +326,52 @@ export default function OperationsPage() {
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="min-w-0">
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">所在行业</label>
                       <input type="text" value={dbConfig.industry} onChange={e => setDbConfig({...dbConfig, industry: e.target.value})}
                         className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">目标客户画像</label>
                       <input type="text" value={dbConfig.customerProfile} onChange={e => setDbConfig({...dbConfig, customerProfile: e.target.value})}
                         className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="min-w-0">
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">本月营销预算</label>
-                      <div className="flex gap-2">
+                      <div className="flex min-w-0 gap-2">
                         <input type="number" value={dbConfig.marketingBudget} onChange={e => setDbConfig({...dbConfig, marketingBudget: e.target.value})}
-                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
-                        <span className="w-12 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">{dbConfig.unit}</span>
+                          className="min-w-0 flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
+                        <span className="w-12 shrink-0 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">{dbConfig.unit}</span>
                       </div>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">销售团队规模</label>
-                      <div className="flex gap-2">
+                      <div className="flex min-w-0 gap-2">
                         <input type="number" value={dbConfig.teamSize} onChange={e => setDbConfig({...dbConfig, teamSize: e.target.value})}
-                          className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
-                        <span className="w-12 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">人</span>
+                          className="min-w-0 flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
+                        <span className="w-12 shrink-0 flex items-center justify-center bg-[#F3F1ED] border border-[#E5E1D8] rounded-lg text-sm text-[#6B6660]">人</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="min-w-0">
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">月度营收总目标</label>
-                      <div className="flex gap-2">
+                      <div className="flex min-w-0 gap-2">
                          <input type="number" value={dbConfig.target} onChange={e => setDbConfig({...dbConfig, target: e.target.value})}
-                           className="flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
+                           className="min-w-0 flex-1 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg" />
                          <select value={dbConfig.unit} onChange={e => setDbConfig({...dbConfig, unit: e.target.value})}
-                           className="w-24 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg">
+                           className="w-24 shrink-0 bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg">
                            <option value="万">万</option>
                            <option value="千万">千万</option>
                          </select>
                       </div>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <label className="block text-sm font-bold text-[#6B6660] mb-2 uppercase">当期核心经营重心</label>
                       <select value={dbConfig.priority} onChange={e => setDbConfig({...dbConfig, priority: e.target.value})}
                         className="w-full bg-[#FAF9F6] border border-[#E5E1D8] p-3 text-[#2D2A26] outline-none focus:border-[#22d665] rounded-lg">
@@ -668,15 +668,15 @@ export default function OperationsPage() {
             {viewMode === "table" ? (
               <>
                 {/* 表格视图 */}
-                <div className="border border-[#E5E1D8] bg-[#FAF9F6]">
-                  <div className="grid grid-cols-[1fr_110px_80px_90px_90px_60px] gap-px px-5 py-3 border-b border-[#E5E1D8] text-xs text-[#6B6660] font-semibold uppercase tracking-wider">
+                <div className="overflow-x-auto border border-[#E5E1D8] bg-[#FAF9F6]">
+                  <div className="grid min-w-[680px] grid-cols-[1fr_110px_80px_90px_90px_60px] gap-px px-5 py-3 border-b border-[#E5E1D8] text-xs text-[#6B6660] font-semibold uppercase tracking-wider">
                     <span>客户名称</span><span>状态</span><span>优先级</span><span>计划日期</span><span>负责人</span><span></span>
                   </div>
                   <AnimatePresence>
                     {trackingRows.map((row) => (
                       <motion.div key={row.id}
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, height: 0 }}
-                        className="grid grid-cols-[1fr_110px_80px_90px_90px_60px] gap-px px-5 py-3 border-b border-[#0a0a0a] hover:bg-[#FAF9F6] transition-colors items-center group">
+                        className="grid min-w-[680px] grid-cols-[1fr_110px_80px_90px_90px_60px] gap-px px-5 py-3 border-b border-[#0a0a0a] hover:bg-[#FAF9F6] transition-colors items-center group">
                         <EditableCell value={row.name} onSave={(v) => updateRow(row.id, "name", v)} className="text-sm text-[#2D2A26] font-medium" placeholder="客户名称" />
                         <StatusDropdown value={row.status} options={TASK_STATUS_OPTIONS} onChange={(v) => updateRow(row.id, "status", v)} />
                         <StatusDropdown value={row.priority} options={PRIORITY_OPTIONS} onChange={(v) => updateRow(row.id, "priority", v)} />
