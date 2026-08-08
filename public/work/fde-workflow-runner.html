@@ -1424,6 +1424,7 @@
       detailTab: "input",
       events: [],
       runId: null,
+      serverRun: null,
       startedAt: null,
       stoppedAt: null,
       elapsedTimer: null,
@@ -1497,6 +1498,7 @@
     }
 
     function applyServerRun(serverRun) {
+      runtime.serverRun = serverRun;
       runtime.status = serverRun.status;
       runtime.steps = serverRun.steps.map(step => ({
         ...step,
@@ -1533,7 +1535,7 @@
       }
       return requestRun("/api/workflows/runs/" + encodeURIComponent(runtime.runId) + "/action", {
         method: "POST",
-        body: JSON.stringify({ action })
+        body: JSON.stringify({ action, previousRun: runtime.serverRun })
       });
     }
 
@@ -1753,6 +1755,7 @@
       runtime.detailTab = "input";
       runtime.events = [];
       runtime.runId = null;
+      runtime.serverRun = null;
       runtime.startedAt = null;
       runtime.stoppedAt = null;
       runtime.injectFailure = false;

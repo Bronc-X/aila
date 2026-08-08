@@ -25,8 +25,8 @@ export async function POST(
     }
 
     const run = body.action === "advance"
-      ? await advanceWorkflowRun(runId)
-      : await applyWorkflowAction(runId, body.action);
+      ? await advanceWorkflowRun(runId, body.previousRun)
+      : await applyWorkflowAction(runId, body.action, body.previousRun);
 
     return Response.json({ run });
   } catch {

@@ -144,14 +144,30 @@ function runPath(runId: string) {
   return join(runDirectory(runId), "run.json");
 }
 
+function isReadOnlyFilesystemError(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+  const code = "code" in error ? error.code : null;
+  return code === "EROFS";
+}
+
 async function saveRun(run: WorkflowRun) {
-  await mkdir(runDirectory(run.runId), { recursive: true });
-  await writeFile(runPath(run.runId), `${JSON.stringify(run, null, 2)}\n`, "utf8");
+  try {
+    await mkdir(runDirectory(run.runId), { recursive: true });
+    await writeFile(runPath(run.runId), `${JSON.stringify(run, null, 2)}\n`, "utf8");
+  } catch (error) {
+    if (process.env.VERCEL === "1" || isReadOnlyFilesystemError(error)) return;
+    throw error;
+  }
 }
 
 async function writeArtifact(run: WorkflowRun, name: string, data: unknown) {
-  await mkdir(runDirectory(run.runId), { recursive: true });
-  await writeFile(join(runDirectory(run.runId), name), `${JSON.stringify(data, null, 2)}\n`, "utf8");
+  try {
+    await mkdir(runDirectory(run.runId), { recursive: true });
+    await writeFile(join(runDirectory(run.runId), name), `${JSON.stringify(data, null, 2)}\n`, "utf8");
+  } catch (error) {
+    if (process.env.VERCEL === "1" || isReadOnlyFilesystemError(error)) return;
+    throw error;
+  }
 }
 
 function addEvent(
@@ -442,7 +458,55 @@ export async function createWorkflowRun(
 
 export async function loadWorkflowRun(runId: string) {
   const content = await readFile(runPath(runId), "utf8");
-  return JSON.parse(content) as WorkflowRun;
+  const run: unknown = JSON.parse(content);
+  if (!isWorkflowRun(run, runId)) {
+    throw new Error("Invalid workflow run");
+  }
+  return run;
+}
+
+function isWorkflowRun(value: unknown, expectedRunId?: string): value is WorkflowRun {
+  if (!value || typeof value !== "object") return false;
+
+  const run = value as Partial<WorkflowRun>;
+  if (
+    typeof run.runId !== "string" ||
+    (expectedRunId && run.runId !== expectedRunId) ||
+    typeof run.workflowKey !== "string" ||
+    !isWorkflowKey(run.workflowKey) ||
+    !["idle", "running", "waiting_review", "completed", "error", "cancelled", "retrying"].includes(run.status ?? "") ||
+    typeof run.statusNote !== "string" ||
+    !Array.isArray(run.steps) ||
+    !Array.isArray(run.events) ||
+    !Array.isArray(run.artifacts) ||
+    typeof run.artifactCount !== "number" ||
+    typeof run.startedAt !== "string" ||
+    (run.stoppedAt !== null && typeof run.stoppedAt !== "string") ||
+    typeof run.injectFailure !== "boolean" ||
+    typeof run.failureConsumed !== "boolean"
+  ) {
+    return false;
+  }
+
+  return run.steps.every((step) => {
+    if (!step || typeof step !== "object") return false;
+    const candidate = step as Partial<WorkflowStep>;
+    return (
+      typeof candidate.id === "string" &&
+      ["pending", "running", "waiting", "completed", "error", "cancelled", "retrying"].includes(candidate.status ?? "")
+    );
+  });
+}
+
+async function resolveWorkflowRun(runId: string, previousRun?: unknown) {
+  if (previousRun !== undefined) {
+    if (!isWorkflowRun(previousRun, runId)) {
+      throw new Error("Invalid previous workflow run");
+    }
+    return previousRun;
+  }
+
+  return loadWorkflowRun(runId);
 }
 
 async function runCrossborderStep(run: WorkflowRun, index: number) {
@@ -619,8 +683,8 @@ async function executeStep(run: WorkflowRun, index: number) {
   completeStep(run, index, output);
 }
 
-export async function advanceWorkflowRun(runId: string) {
-  const run = await loadWorkflowRun(runId);
+export async function advanceWorkflowRun(runId: string, previousRun?: unknown) {
+  const run = await resolveWorkflowRun(runId, previousRun);
 
   if (!["running", "retrying"].includes(run.status)) {
     return run;
@@ -680,9 +744,10 @@ export async function advanceWorkflowRun(runId: string) {
 
 export async function applyWorkflowAction(
   runId: string,
-  action: "approve" | "reject" | "cancel" | "retry"
+  action: "approve" | "reject" | "cancel" | "retry",
+  previousRun?: unknown
 ) {
-  const run = await loadWorkflowRun(runId);
+  const run = await resolveWorkflowRun(runId, previousRun);
   const activeStep = run.steps[run.activeIndex];
 
   if (action === "cancel" && ["running", "waiting_review", "retrying"].includes(run.status)) {
