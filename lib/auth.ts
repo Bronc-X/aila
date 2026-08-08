@@ -143,6 +143,10 @@ export function getRequiredScopeForPath(pathname: string): SessionScope | null {
     return "slides";
   }
 
+  if (normalizedPathname.startsWith("/ai-learning")) {
+    return "slides";
+  }
+
   return null;
 }
 

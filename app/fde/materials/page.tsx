@@ -171,6 +171,10 @@ export default function FdeMaterialsPage() {
             <span>传播物料</span>
           </h1>
           <strong>进现场，接数据，改流程，交付生产系统。</strong>
+          <Link href="/ai-learning" className={styles.readerLink}>
+            AI LEARNING
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </Link>
 
           <nav className={styles.editionNav} aria-label="物料版本">
             {editions.map((edition) => (

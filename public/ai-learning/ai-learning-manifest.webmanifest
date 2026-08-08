@@ -1,0 +1,11 @@
+{
+  "name": "AI Material Collection",
+  "short_name": "AI Reader",
+  "start_url": "./ai-learning-collection.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#102a43",
+  "lang": "zh-CN",
+  "dir": "ltr"
+}

@@ -153,7 +153,7 @@ export default function LoginPage() {
         nextPath,
       });
 
-      if (nextPath.startsWith("/slides")) {
+      if (nextPath.startsWith("/slides") || nextPath.startsWith("/ai-learning")) {
         router.push(nextPath);
         return;
       }

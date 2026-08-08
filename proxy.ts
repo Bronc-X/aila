@@ -35,5 +35,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/tools/:path*", "/slides/:path*", "/api/ai/:path*", "/api/profile"],
+  matcher: [
+    "/tools/:path*",
+    "/slides/:path*",
+    "/ai-learning/:path*",
+    "/api/ai/:path*",
+    "/api/profile",
+  ],
 };

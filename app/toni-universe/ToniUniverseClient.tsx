@@ -370,6 +370,7 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
           <span>TONI // FDE DELIVERY GALAXY</span>
         </div>
         <div className={styles.navLinks}>
+          <Link href="/ai-learning">AI LEARNING</Link>
           <a
             href="/work/fde-case-library.html?case=immigration&section=31"
             className={styles.caseShortcut}
