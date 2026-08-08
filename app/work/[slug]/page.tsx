@@ -4,11 +4,26 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import styles from "../../site.module.css";
 import LotusBrandPage from "../LotusBrandPage";
+import type { CaseEvidence } from "../work-data";
 import { getWorkItem, workItems } from "../work-data";
 
 type WorkDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+function evidenceLevelLabel(level: CaseEvidence["level"]) {
+  if (level === "real_delivery") return "真实交付";
+  if (level === "real_product") return "真实运行产品";
+  if (level === "verified_prototype") return "真实运行原型";
+  if (level === "reference_build") return "参考实现";
+  return "待补证据";
+}
+
+function permissionLabel(permission: CaseEvidence["clientPermission"]) {
+  if (permission === "confirmed") return "公开授权已确认";
+  if (permission === "internal_only") return "对外匿名展示";
+  return "公开授权待确认";
+}
 
 export function generateStaticParams() {
   return workItems.map((item) => ({ slug: item.slug }));
@@ -40,6 +55,11 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         caption: `${item.title} 项目画面`,
       }]
     : []);
+  const primaryHref = item.nativeRoute ?? item.nextHref;
+  const primaryLabel = item.nativeRoute ? "打开原生路由" : item.nextLabel;
+  const isExternalPrimaryHref = !item.nativeRoute && item.nextHref
+    ? item.nextHref.startsWith("http")
+    : false;
 
   return (
     <main className={styles.page}>
@@ -132,6 +152,30 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         </section>
       )}
 
+      {item.evidence && (
+        <section className={styles.section}>
+          <div className={styles.workEvidenceNotice}>
+            <small>CASE EVIDENCE / {evidenceLevelLabel(item.evidence.level)}</small>
+            <h2>{item.evidence.sourceProject}</h2>
+            <p>{item.evidence.note}</p>
+            <div className={styles.metricTags}>
+              <span>
+                <small>交付物</small>
+                <strong>{item.evidence.deliverables.join(" / ") || "待补"}</strong>
+              </span>
+              <span>
+                <small>公开边界</small>
+                <strong>{permissionLabel(item.evidence.clientPermission)}</strong>
+              </span>
+              <span>
+                <small>指标来源</small>
+                <strong>{item.evidence.metricsSource.replaceAll("_", " ")}</strong>
+              </span>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className={styles.section}>
         <div className={styles.timelineGrid}>
           <article className={styles.timelineItem}>
@@ -178,14 +222,14 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       <section className={styles.cta}>
         <h2>有类似现场问题，先拿一个流程来拆。</h2>
         <div className={styles.actions}>
-          {item.nextHref && item.nextLabel && (
-            item.nextHref.startsWith("http") ? (
-              <a href={item.nextHref} target="_blank" rel="noopener noreferrer" className={styles.button}>
-                {item.nextLabel}
+          {primaryHref && primaryLabel && (
+            isExternalPrimaryHref ? (
+              <a href={primaryHref} target="_blank" rel="noopener noreferrer" className={styles.button}>
+                {primaryLabel}
               </a>
             ) : (
-              <Link href={item.nextHref} className={styles.button}>
-                {item.nextLabel}
+              <Link href={primaryHref} className={styles.button}>
+                {primaryLabel}
               </Link>
             )
           )}

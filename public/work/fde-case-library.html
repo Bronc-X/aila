@@ -9,14 +9,14 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #07090a;
-      --panel: #111619;
+      --bg: #06120f;
+      --panel: #0a1b16;
       --ink: #f4f1e8;
-      --muted: #a6afb4;
-      --line: #3a454b;
-      --line-strong: #6b777d;
-      --acid: #d7ff4f;
-      --cyan: #5de1ff;
+      --muted: #9fb4ac;
+      --line: #28443a;
+      --line-strong: #477264;
+      --acid: #ff5da8;
+      --cyan: #a7ffcc;
       --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
       --serif: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
       --sans: Aptos, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -424,9 +424,9 @@
 <body>
   <section class="picker" id="picker" aria-labelledby="pickerTitle">
     <div class="picker-inner">
-      <p class="picker-kicker">FDE FIELD LIBRARY / TWO COMPLETE CASES</p>
-      <h1 id="pickerTitle">选择一个企业现场，进入完整系统。</h1>
-      <p class="picker-lead">两个案例共享 FDE、RAG、Harness、工具、记忆和 Eval 的底层方法，但业务对象、风险和交付路径不同。</p>
+      <p class="picker-kicker">FDE LIVE WORKFLOW LIBRARY / TWO RUNNABLE FLOWS</p>
+      <h1 id="pickerTitle">选择一个企业现场，亲手跑完整流程。</h1>
+      <p class="picker-lead">不是方案讲解，也不是录屏。启动后可看到节点实时推进、输入输出、日志、异常重试和人工审批。</p>
       <div class="case-options">
         <button class="case-option crossborder" type="button" data-open-case="crossborder">
           <span class="case-option-preview" aria-hidden="true">
@@ -434,7 +434,7 @@
           </span>
           <span class="case-no">CASE 01 / CROSS-BORDER COMMERCE</span>
           <strong>深圳跨境询盘到报价 Agent</strong>
-          <span>从一封 B2B 询盘进入 CRM、检索产品证据、查库存定价、人工审批并完成报价。</span>
+          <span>实时执行：接收询盘、解析需求、检索认证、计算价格、人工审批、生成回复并回写 CRM。</span>
         </button>
         <button class="case-option immigration" type="button" data-open-case="immigration">
           <span class="case-option-preview" aria-hidden="true">
@@ -442,7 +442,7 @@
           </span>
           <span class="case-no">CASE 02 / IMMIGRATION SERVICES</span>
           <strong>深圳移民公司 AI 中控</strong>
-          <span>从主动内容获客和公司个微工作号询盘，进入顾问预评估、签约办案、渠道门户、客户查询与老板看板。</span>
+          <span>实时执行：接收企微线索、检查材料、资格预评估、分配顾问、人工确认并更新老板看板。</span>
         </button>
       </div>
     </div>
@@ -472,7 +472,7 @@
       <div class="case-tabs" role="tablist" aria-label="切换案例">
         <button class="case-tab" type="button" data-case="crossborder" role="tab">跨境询盘</button>
         <button class="case-tab" type="button" data-case="immigration" role="tab">移民中控</button>
-        <button class="reel-button" id="caseReelButton" type="button">页面实录</button>
+        <button class="reel-button" id="caseReelButton" type="button">案例视频</button>
       </div>
     </header>
     <div class="frame-shell">
@@ -524,7 +524,6 @@
     const accessPassword = document.getElementById("accessPassword");
     const accessError = document.getElementById("accessError");
     const accessCancel = document.getElementById("accessCancel");
-    const decoder = new TextDecoder();
     const caseAccessPassword = "2026";
     const caseAccessStorageKey = "fde-case-library-access";
     const caseSectionTargets = {
@@ -535,12 +534,6 @@
     let activeCase = null;
     let pendingSectionId = null;
     let pendingAccess = null;
-
-    function decodeCase(key) {
-      const source = document.getElementById("case-" + key).textContent.trim();
-      const bytes = Uint8Array.from(atob(source), character => character.charCodeAt(0));
-      return decoder.decode(bytes);
-    }
 
     function getCaseAccessStorageKey(key) {
       return caseAccessStorageKey + ":" + key;
@@ -583,7 +576,8 @@
       });
       if (activeCase !== key) {
         loading.hidden = false;
-        caseFrame.srcdoc = decodeCase(key);
+        caseFrame.removeAttribute("srcdoc");
+        caseFrame.src = "/work/fde-workflow-runner.html?case=" + encodeURIComponent(key);
         activeCase = key;
       }
       if (updateHash) history.replaceState(null, "", "#" + key);

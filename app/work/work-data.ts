@@ -11,6 +11,24 @@ export type WorkMedia = {
   poster?: string;
 };
 
+export type EvidenceLevel =
+  | "real_delivery"
+  | "real_product"
+  | "verified_prototype"
+  | "reference_build"
+  | "pending_evidence";
+
+export type CaseEvidence = {
+  level: EvidenceLevel;
+  sourceProject: string;
+  evidenceAssets: string[];
+  liveRoute?: string;
+  deliverables: string[];
+  clientPermission: "confirmed" | "pending" | "internal_only";
+  metricsSource: "run_log" | "delivery_record" | "client_confirmed" | "unverified";
+  note: string;
+};
+
 export type WorkItem = {
   slug: string;
   k: string;
@@ -26,8 +44,10 @@ export type WorkItem = {
   outcome: string[];
   nextHref?: string;
   nextLabel?: string;
+  nativeRoute?: string;
   visibility?: "public" | "archive";
   evidenceStatus?: "verified" | "pending";
+  evidence?: CaseEvidence;
 };
 
 export const deliveryCases: WorkItem[] = [
@@ -36,7 +56,7 @@ export const deliveryCases: WorkItem[] = [
     k: "01",
     title: "咨询行业问卷统计与智能决策系统",
     sub: "企业交付案例",
-    summary: "把问卷回收、统计口径、增长洞察和报告生成收进一条可复用流程。",
+    summary: "把问卷、统计和报告生成放到一条流程里。",
     image: "/cases/media__1775491662965.jpg",
     metrics: [
       { label: "周期", value: "5 天交付" },
@@ -54,6 +74,15 @@ export const deliveryCases: WorkItem[] = [
       "后续每次运行约 10 分钟，报告产出稳定。",
       "适合继续扩展成咨询公司的轻量决策后台。",
     ],
+    evidence: {
+      level: "real_delivery",
+      sourceProject: "咨询行业问卷统计与智能决策交付",
+      evidenceAssets: ["/cases/media__1775491662965.jpg"],
+      deliverables: ["问卷字段口径", "统计与洞察流程", "报告生成结构"],
+      clientPermission: "internal_only",
+      metricsSource: "delivery_record",
+      note: "真实交付项目。对外使用匿名项目描述；效率指标需在正式方案阶段补充原始记录。",
+    },
     nextHref: "/contact",
     nextLabel: "聊类似流程",
   },
@@ -62,7 +91,7 @@ export const deliveryCases: WorkItem[] = [
     k: "02",
     title: "电商爆品极速筛查雷达",
     sub: "企业交付案例",
-    summary: "面向短视频选品，把人工刷内容压缩成可批量复核的候选池。",
+    summary: "把人工刷内容整理成一个可复核的候选池。",
     image: "/cases/media__1775491662974.png",
     metrics: [
       { label: "速度", value: "24h 到 5 分钟" },
@@ -80,6 +109,15 @@ export const deliveryCases: WorkItem[] = [
       "选品动作从个人经验变成团队可复盘流程。",
       "后续可接入素材生产和投放测试。",
     ],
+    evidence: {
+      level: "real_delivery",
+      sourceProject: "电商选品筛查流程交付",
+      evidenceAssets: ["/cases/media__1775491662974.png"],
+      deliverables: ["候选商品池", "筛选规则", "人工复核入口"],
+      clientPermission: "internal_only",
+      metricsSource: "unverified",
+      note: "真实交付项目。页面保留项目资产；涉及效率口径时需与项目原始运行记录核对。",
+    },
     nextHref: "/tools",
     nextLabel: "进入 AILA 系统",
   },
@@ -88,7 +126,7 @@ export const deliveryCases: WorkItem[] = [
     k: "03",
     title: "商用级电商自动化海报工坊",
     sub: "企业交付案例",
-    summary: "围绕商品图、模特图和投放尺寸搭建素材生产流程，让日常测试有稳定来源。",
+    summary: "商品图、模特图和投放尺寸，放进同一套出图流程。",
     image: "/cases/media__1775491663001.png",
     metrics: [
       { label: "替代", value: "棚拍/模特费" },
@@ -106,6 +144,15 @@ export const deliveryCases: WorkItem[] = [
       "减少棚拍和模特成本，提升 A/B 测试频率。",
       "可继续接入短视频脚本与多平台文案。",
     ],
+    evidence: {
+      level: "real_delivery",
+      sourceProject: "商业级电商自动化海报工坊交付",
+      evidenceAssets: ["/cases/media__1775491663001.png", "/tools-showcase/commercial-poster-workshop.webp"],
+      deliverables: ["批量物料生产", "风格参数", "投放尺寸版本"],
+      clientPermission: "pending",
+      metricsSource: "unverified",
+      note: "真实交付项目。客户公开授权与成本、产出指标来源仍待补齐。",
+    },
     nextHref: "/tools",
     nextLabel: "进入 AILA 系统",
   },
@@ -157,6 +204,7 @@ export const productLabs: WorkItem[] = [
     ],
     nextHref: "/tools",
     nextLabel: "进入 AILA 系统",
+    nativeRoute: "/tools",
   },
   {
     slug: "antios",
@@ -318,6 +366,7 @@ export const productLabs: WorkItem[] = [
     ],
     nextHref: "/lusie",
     nextLabel: "进入 Lusie",
+    nativeRoute: "/lusie",
   },
   {
     slug: "lotus",
@@ -496,7 +545,7 @@ export const productLabs: WorkItem[] = [
     k: "13",
     title: "得物生图模型",
     sub: "企业生产案例",
-    summary: "商品上身图背景合成、批量处理、质检报告与 ZIP 交付。",
+    summary: "商品图合成、批量处理、质检和 ZIP 交付，放在一个工作台里。",
     image: "/projects/dewu/home.png",
     media: [
       {
@@ -534,6 +583,15 @@ export const productLabs: WorkItem[] = [
       "保留工作台截图和处理结果作为项目证据。",
       "后续可继续接入更多商品规格与质检规则。",
     ],
+    evidence: {
+      level: "real_product",
+      sourceProject: "得物生图模型生产工作台",
+      evidenceAssets: ["/projects/dewu/home.png", "/projects/dewu/review.png", "/projects/dewu/result.png"],
+      deliverables: ["批处理工作台", "质检复核", "ZIP 交付"],
+      clientPermission: "pending",
+      metricsSource: "unverified",
+      note: "真实运行系统项目。公开客户名称、正式运行数据与授权范围需单独确认。",
+    },
     nextHref: "/contact",
     nextLabel: "聊类似生产流程",
   },
@@ -650,6 +708,7 @@ export const productLabs: WorkItem[] = [
     ],
     nextHref: "/tools/auto-red-book",
     nextLabel: "查看内容案例",
+    nativeRoute: "/tools/auto-red-book",
   },
   {
     slug: "video-platform",
@@ -696,7 +755,7 @@ export const productLabs: WorkItem[] = [
     k: "18",
     title: "企业微信专家 Agent",
     sub: "企业微信入口 / Agent-ready 交付",
-    summary: "九项诊断、证据附录、行动清单与交付报告。",
+    summary: "把九项诊断、证据和行动清单整理成一份交付包。",
     image: "/projects/expert-agent/console.png",
     media: [
       {
@@ -735,6 +794,19 @@ export const productLabs: WorkItem[] = [
       "诊断、行动与报告导出形成完整交付链。",
       "对外名称统一为企业微信专家 Agent。",
     ],
+    evidence: {
+      level: "real_product",
+      sourceProject: "企业微信专家 Agent 诊断交付",
+      evidenceAssets: [
+        "/projects/expert-agent/diagnostic.png",
+        "/projects/expert-agent/console.png",
+        "/projects/expert-agent/mobile.png",
+      ],
+      deliverables: ["九项诊断", "行动清单", "Markdown / JSON 报告"],
+      clientPermission: "internal_only",
+      metricsSource: "run_log",
+      note: "真实运行产品。对外展示采用产品与交付能力描述，不公开客户数据。",
+    },
     nextHref: "/contact",
     nextLabel: "聊专家 Agent",
   },
@@ -743,7 +815,7 @@ export const productLabs: WorkItem[] = [
     k: "19",
     title: "焊缝视觉识别",
     sub: "3D 检测工作台原型",
-    summary: "3D 形貌采集、几何计量、规则判定与人工复核。",
+    summary: "看 3D 形貌、几何指标、判定结果和人工复核。",
     image: "/projects/weld-vision/workstation-ng.png",
     media: [
       {
@@ -776,8 +848,19 @@ export const productLabs: WorkItem[] = [
       "页面明确标注样例数据，不替代现场传感器验收。",
       "下一步接入真实 3D 采集与企业规则集。",
     ],
+    evidence: {
+      level: "verified_prototype",
+      sourceProject: "焊缝视觉识别 3D 检测工作台",
+      evidenceAssets: ["/projects/weld-vision/workstation-ng.png", "/projects/weld-vision/workstation-pass.png"],
+      liveRoute: "/work/weld-vision/demo",
+      deliverables: ["3D 样例检测", "几何计量", "规则判定与复核"],
+      clientPermission: "internal_only",
+      metricsSource: "run_log",
+      note: "真实运行原型。当前使用可复现样例，不宣称已接入现场传感器或量产线。",
+    },
     nextHref: "/work/weld-vision/demo",
     nextLabel: "打开检测工作台",
+    nativeRoute: "/work/weld-vision/demo",
   },
   {
     slug: "mophro",
@@ -794,6 +877,15 @@ export const productLabs: WorkItem[] = [
     context: "mophro 先保留项目位置，等待项目资料、截图、录屏和交付范围确认。",
     approach: ["收到资料后补主题、负责范围和真实媒体。"],
     outcome: ["资料补齐前不归入已完成案例。"],
+    evidence: {
+      level: "pending_evidence",
+      sourceProject: "mophro 近期陪跑项目",
+      evidenceAssets: [],
+      deliverables: [],
+      clientPermission: "pending",
+      metricsSource: "unverified",
+      note: "尚未补齐项目范围、截图、录屏和可公开证据，不作为对外真实案例。",
+    },
     nextHref: "/contact",
     nextLabel: "补充 mophro 资料",
   },

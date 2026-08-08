@@ -383,7 +383,7 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
           <Link href="/fde/materials">宣传物料</Link>
           <Link href="/work">作品</Link>
           <Link href="/tools">AILA 系统</Link>
-          <Link href="/work">案例</Link>
+          <Link href="/case-library">案例库</Link>
           <Link href="/contact">关于 / 联系</Link>
         </div>
       </nav>

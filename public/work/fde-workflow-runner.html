@@ -1,0 +1,1912 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:,">
+  <title>FDE 实时工作流执行台</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #06120f;
+      --bg-grid: rgba(168, 255, 205, .035);
+      --panel: #0a1b16;
+      --panel-strong: #10271f;
+      --panel-soft: #0c211a;
+      --ink: #f7f2ef;
+      --muted: #9fb4ac;
+      --quiet: #647b72;
+      --line: #28443a;
+      --line-strong: #477264;
+      --pink: #ff5da8;
+      --pink-soft: rgba(255, 93, 168, .14);
+      --mint: #a7ffcc;
+      --mint-soft: rgba(167, 255, 204, .12);
+      --amber: #ffc866;
+      --red: #ff766f;
+      --blue: #74d7ff;
+      --display: "Bahnschrift SemiCondensed", "Arial Narrow", sans-serif;
+      --serif: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+      --body: "Aptos", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(var(--bg-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px),
+        var(--bg);
+      background-size: 32px 32px;
+      font-family: var(--body);
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(255, 93, 168, .35);
+      outline-offset: 3px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    .command-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      min-height: 74px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line-strong);
+      background: rgba(6, 18, 15, .96);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .25);
+      backdrop-filter: blur(18px);
+    }
+
+    .identity {
+      display: flex;
+      min-width: 0;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .identity-mark {
+      display: grid;
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid var(--pink);
+      color: var(--pink);
+      background: var(--pink-soft);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .identity-copy {
+      min-width: 0;
+    }
+
+    .identity-copy strong {
+      display: block;
+      overflow: hidden;
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.15;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .identity-copy span {
+      display: block;
+      margin-top: 4px;
+      overflow: hidden;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .command-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .failure-switch {
+      display: inline-flex;
+      min-height: 42px;
+      gap: 9px;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--panel);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .failure-switch input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--pink);
+    }
+
+    .failure-switch:has(input:checked) {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(255, 118, 111, .08);
+    }
+
+    .failure-switch:has(input:disabled) {
+      cursor: not-allowed;
+      opacity: .45;
+    }
+
+    .command-button {
+      min-width: 108px;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      color: var(--ink);
+      background: var(--panel-strong);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .command-button:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    .command-button.primary {
+      border-color: var(--pink);
+      color: #210612;
+      background: var(--pink);
+    }
+
+    .command-button.primary:hover {
+      color: #210612;
+      background: #ff86bd;
+    }
+
+    .command-button.danger:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .command-button.retry {
+      border-color: var(--amber);
+      color: #1e1403;
+      background: var(--amber);
+    }
+
+    .command-button.retry:hover {
+      color: #1e1403;
+      background: #ffd98d;
+    }
+
+    .overview {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.45fr) repeat(4, minmax(120px, .55fr));
+      border-bottom: 1px solid var(--line);
+      background: rgba(10, 27, 22, .78);
+    }
+
+    .overview-main,
+    .metric {
+      min-width: 0;
+      min-height: 116px;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .overview-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .overview-main p {
+      margin: 0;
+      color: var(--pink);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .overview-main h1 {
+      margin: 12px 0 0;
+      font-family: var(--display);
+      font-size: clamp(27px, 3vw, 42px);
+      font-stretch: condensed;
+      font-weight: 700;
+      line-height: .98;
+    }
+
+    .overview-main span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .metric:last-child {
+      border-right: 0;
+    }
+
+    .metric small {
+      display: block;
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 12px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      min-height: 30px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .metric.status strong {
+      color: var(--pink);
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .metric.status[data-status="completed"] strong {
+      color: var(--mint);
+    }
+
+    .metric.status[data-status="error"] strong,
+    .metric.status[data-status="cancelled"] strong {
+      color: var(--red);
+    }
+
+    .metric.status[data-status="waiting_review"] strong {
+      color: var(--amber);
+    }
+
+    .progress-band {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 50px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      background: #071712;
+    }
+
+    .progress-band span,
+    .progress-band strong {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .progress-band span {
+      color: var(--muted);
+    }
+
+    .progress-band strong {
+      min-width: 42px;
+      color: var(--pink);
+      text-align: right;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #03100c;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background:
+        linear-gradient(90deg, var(--pink) 0 72%, var(--mint) 72% 100%);
+      transition: width 90ms linear;
+    }
+
+    .runner-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, 290px) minmax(420px, 1fr) minmax(280px, 340px);
+      min-height: calc(100vh - 240px);
+    }
+
+    .steps-panel,
+    .detail-panel,
+    .events-panel {
+      min-width: 0;
+    }
+
+    .steps-panel {
+      border-right: 1px solid var(--line);
+      background: rgba(8, 24, 19, .88);
+    }
+
+    .panel-head {
+      display: flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-head strong {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .panel-head span {
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .steps-list {
+      position: relative;
+      display: grid;
+      margin: 0;
+      padding: 10px 0 20px;
+      list-style: none;
+    }
+
+    .steps-list::before {
+      position: absolute;
+      top: 31px;
+      bottom: 42px;
+      left: 29px;
+      width: 1px;
+      content: "";
+      background: var(--line-strong);
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-button {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 9px;
+      align-items: start;
+      min-height: 72px;
+      padding: 10px 12px 10px 11px;
+      border: 0;
+      border-left: 3px solid transparent;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .step-button:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .025);
+    }
+
+    .step-button.selected {
+      border-left-color: var(--pink);
+      color: var(--ink);
+      background: var(--pink-soft);
+    }
+
+    .step-node {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--quiet);
+      background: var(--bg);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .step-button[data-status="running"] .step-node,
+    .step-button[data-status="retrying"] .step-node {
+      border-color: var(--pink);
+      color: var(--pink);
+      box-shadow: 0 0 0 5px var(--pink-soft);
+      animation: node-pulse 1s ease-in-out infinite;
+    }
+
+    .step-button[data-status="waiting"] .step-node {
+      border-color: var(--amber);
+      color: var(--amber);
+      box-shadow: 0 0 0 5px rgba(255, 200, 102, .12);
+    }
+
+    .step-button[data-status="completed"] .step-node {
+      border-color: var(--mint);
+      color: #04150e;
+      background: var(--mint);
+    }
+
+    .step-button[data-status="error"] .step-node,
+    .step-button[data-status="cancelled"] .step-node {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(255, 118, 111, .1);
+    }
+
+    @keyframes node-pulse {
+      0%,
+      100% { box-shadow: 0 0 0 4px rgba(255, 93, 168, .1); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 93, 168, .18); }
+    }
+
+    .step-copy {
+      min-width: 0;
+    }
+
+    .step-copy strong {
+      display: block;
+      color: currentColor;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .step-copy span {
+      display: block;
+      margin-top: 5px;
+      overflow: hidden;
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 9px;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .step-time {
+      padding-top: 2px;
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 9px;
+      white-space: nowrap;
+    }
+
+    .detail-panel {
+      background: rgba(6, 18, 15, .62);
+    }
+
+    .live-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      min-height: 126px;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(110deg, rgba(255, 93, 168, .08), transparent 42%),
+        var(--panel);
+    }
+
+    .live-copy {
+      min-width: 0;
+      padding: 20px;
+    }
+
+    .live-copy span {
+      color: var(--pink);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .live-copy h2 {
+      margin: 10px 0 0;
+      font-family: var(--serif);
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.05;
+    }
+
+    .live-copy p {
+      max-width: 700px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .live-signal {
+      display: grid;
+      min-width: 136px;
+      place-items: center;
+      border-left: 1px solid var(--line);
+      background: rgba(3, 16, 12, .45);
+    }
+
+    .signal-ring {
+      position: relative;
+      display: grid;
+      width: 78px;
+      height: 78px;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--pink);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .signal-ring::before,
+    .signal-ring::after {
+      position: absolute;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      content: "";
+      opacity: 0;
+    }
+
+    .live-stage[data-status="running"] .signal-ring::before,
+    .live-stage[data-status="retrying"] .signal-ring::before {
+      inset: -1px;
+      animation: signal 1.6s ease-out infinite;
+    }
+
+    .live-stage[data-status="running"] .signal-ring::after,
+    .live-stage[data-status="retrying"] .signal-ring::after {
+      inset: -1px;
+      animation: signal 1.6s .65s ease-out infinite;
+    }
+
+    .live-stage[data-status="waiting_review"] .signal-ring {
+      color: var(--amber);
+    }
+
+    .live-stage[data-status="completed"] .signal-ring {
+      color: var(--mint);
+    }
+
+    .live-stage[data-status="error"] .signal-ring,
+    .live-stage[data-status="cancelled"] .signal-ring {
+      color: var(--red);
+    }
+
+    @keyframes signal {
+      0% { inset: -1px; opacity: .8; }
+      100% { inset: -22px; opacity: 0; }
+    }
+
+    .review-gate {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--amber);
+      background: rgba(255, 200, 102, .085);
+    }
+
+    .review-gate strong {
+      display: block;
+      color: var(--amber);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .review-gate p {
+      margin: 7px 0 0;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .review-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .review-button {
+      min-height: 40px;
+      padding: 0 13px;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      color: var(--ink);
+      background: var(--panel);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .review-button.approve {
+      border-color: var(--mint);
+      color: #07130e;
+      background: var(--mint);
+    }
+
+    .review-button:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    .review-button.approve:hover {
+      border-color: var(--mint);
+      color: #07130e;
+      background: #c7ffdd;
+    }
+
+    .detail-tabs {
+      display: flex;
+      min-height: 47px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-soft);
+    }
+
+    .detail-tab {
+      min-width: 92px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 2px solid transparent;
+      color: var(--quiet);
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .detail-tab:hover {
+      color: var(--ink);
+    }
+
+    .detail-tab.active {
+      border-bottom-color: var(--pink);
+      color: var(--pink);
+      background: var(--pink-soft);
+    }
+
+    .detail-view {
+      min-height: 334px;
+      padding: 18px 20px 26px;
+    }
+
+    .detail-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .detail-meta div {
+      min-width: 0;
+      padding: 11px;
+      background: var(--panel);
+    }
+
+    .detail-meta small {
+      display: block;
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 8px;
+      text-transform: uppercase;
+    }
+
+    .detail-meta strong {
+      display: block;
+      overflow: hidden;
+      margin-top: 6px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .data-block {
+      min-height: 230px;
+      margin: 0;
+      overflow: auto;
+      border-left: 2px solid var(--pink);
+      padding: 15px 16px;
+      color: #d9efe6;
+      background: #03100c;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .events-panel {
+      border-left: 1px solid var(--line);
+      background: rgba(5, 18, 14, .9);
+    }
+
+    .event-stream {
+      max-height: calc(100vh - 288px);
+      overflow: auto;
+      padding: 10px 14px 26px;
+    }
+
+    .event-empty {
+      padding: 24px 4px;
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .event {
+      position: relative;
+      padding: 11px 0 12px 17px;
+      border-bottom: 1px solid rgba(40, 68, 58, .72);
+    }
+
+    .event::before {
+      position: absolute;
+      top: 16px;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      content: "";
+      background: var(--pink);
+      box-shadow: 0 0 0 4px var(--pink-soft);
+    }
+
+    .event[data-type="success"]::before {
+      background: var(--mint);
+      box-shadow: 0 0 0 4px var(--mint-soft);
+    }
+
+    .event[data-type="warning"]::before {
+      background: var(--amber);
+      box-shadow: 0 0 0 4px rgba(255, 200, 102, .12);
+    }
+
+    .event[data-type="error"]::before {
+      background: var(--red);
+      box-shadow: 0 0 0 4px rgba(255, 118, 111, .12);
+    }
+
+    .event time {
+      display: block;
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 8px;
+    }
+
+    .event strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .event p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .result-band {
+      border-top: 1px solid var(--mint);
+      background:
+        linear-gradient(120deg, rgba(167, 255, 204, .08), transparent 42%),
+        var(--panel);
+    }
+
+    .result-head {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result-head span {
+      color: var(--mint);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .result-head h2 {
+      margin: 6px 0 0;
+      font-family: var(--serif);
+      font-size: 27px;
+    }
+
+    .result-id {
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, .72fr) minmax(380px, 1.28fr);
+    }
+
+    .result-facts {
+      display: grid;
+      align-content: start;
+      border-right: 1px solid var(--line);
+    }
+
+    .result-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 14px;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result-row span {
+      color: var(--quiet);
+      font-family: var(--mono);
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+
+    .result-row strong {
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .document-preview {
+      margin: 0;
+      min-height: 280px;
+      padding: 22px;
+      overflow: auto;
+      color: #d9efe6;
+      background: #04130f;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media (max-width: 1120px) {
+      .overview {
+        grid-template-columns: minmax(280px, 1.6fr) repeat(2, minmax(130px, .7fr));
+      }
+
+      .overview-main {
+        grid-row: span 2;
+      }
+
+      .metric:nth-child(3) {
+        border-right: 0;
+      }
+
+      .metric:nth-child(4),
+      .metric:nth-child(5) {
+        border-top: 1px solid var(--line);
+      }
+
+      .runner-grid {
+        grid-template-columns: 260px minmax(420px, 1fr);
+      }
+
+      .events-panel {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+
+      .event-stream {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-height: none;
+        gap: 0 16px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .command-bar {
+        position: static;
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+
+      .command-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .failure-switch,
+      .command-button {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .overview {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .overview-main {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        border-right: 0;
+      }
+
+      .metric {
+        min-height: 98px;
+      }
+
+      .metric:nth-child(3) {
+        border-right: 0;
+      }
+
+      .metric:nth-child(4) {
+        border-top: 1px solid var(--line);
+      }
+
+      .metric:nth-child(5) {
+        border-top: 1px solid var(--line);
+        border-right: 0;
+      }
+
+      .progress-band {
+        grid-template-columns: 74px minmax(0, 1fr) 38px;
+        padding: 0 12px;
+      }
+
+      .runner-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps-panel {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .steps-list {
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      .steps-list::before {
+        display: none;
+      }
+
+      .step-item {
+        flex: 0 0 210px;
+      }
+
+      .step-button {
+        min-height: 90px;
+        border: 1px solid var(--line);
+        border-left-width: 1px;
+      }
+
+      .step-button.selected {
+        border-color: var(--pink);
+      }
+
+      .live-stage {
+        grid-template-columns: 1fr 96px;
+      }
+
+      .live-signal {
+        min-width: 0;
+      }
+
+      .signal-ring {
+        width: 60px;
+        height: 60px;
+      }
+
+      .review-gate {
+        grid-template-columns: 1fr;
+      }
+
+      .review-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .review-button {
+        width: 100%;
+      }
+
+      .detail-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-view {
+        min-height: 0;
+        padding: 14px 12px 20px;
+      }
+
+      .data-block {
+        min-height: 210px;
+      }
+
+      .event-stream {
+        display: block;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-facts {
+        border-right: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="command-bar">
+      <div class="identity">
+        <div class="identity-mark" aria-hidden="true">FDE</div>
+        <div class="identity-copy">
+          <strong id="workflowName">实时工作流执行台</strong>
+          <span id="workflowCode">LIVE WORKFLOW / READY</span>
+        </div>
+      </div>
+      <div class="command-actions">
+        <label class="failure-switch" title="在指定系统步骤注入一次可重试故障">
+          <input id="failureToggle" type="checkbox">
+          故障注入
+        </label>
+        <button class="command-button primary" id="startButton" data-testid="workflow-start" type="button">▶ 开始运行</button>
+        <button class="command-button danger" id="cancelButton" data-testid="workflow-cancel" type="button" hidden>■ 取消运行</button>
+        <button class="command-button retry" id="retryButton" data-testid="workflow-retry" type="button" hidden>↻ 重试当前步</button>
+        <button class="command-button" id="restartButton" data-testid="workflow-restart" type="button" hidden>↻ 重新运行</button>
+      </div>
+    </header>
+
+    <section class="overview">
+      <div class="overview-main">
+        <div>
+          <p>Customer-facing live execution</p>
+          <h1 id="workflowTitle">从业务输入到可用结果</h1>
+        </div>
+        <span id="workflowSummary">点击开始后，服务端会读取脱敏样例、执行规则、写入运行档案并生成本地产物。</span>
+      </div>
+      <div class="metric status" id="statusMetric" data-status="idle">
+        <small>运行状态</small>
+        <strong id="statusLabel" data-testid="workflow-status">待命</strong>
+        <span id="statusNote">等待启动</span>
+      </div>
+      <div class="metric">
+        <small>当前节点</small>
+        <strong id="currentStepValue">0 / 8</strong>
+        <span id="currentStepName">尚未开始</span>
+      </div>
+      <div class="metric">
+        <small>累计耗时</small>
+        <strong id="elapsedValue">00:00.0</strong>
+        <span>服务端运行档案</span>
+      </div>
+      <div class="metric">
+        <small>业务产物</small>
+        <strong id="artifactCount">0</strong>
+        <span id="artifactLabel">等待生成</span>
+      </div>
+    </section>
+
+    <div class="progress-band">
+      <span>总体进度</span>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <strong id="progressValue" data-testid="workflow-progress">0%</strong>
+    </div>
+
+    <main class="runner-grid">
+      <aside class="steps-panel" aria-label="工作流步骤">
+        <div class="panel-head">
+          <strong>Execution path</strong>
+          <span id="stepCounter">8 steps</span>
+        </div>
+        <ol class="steps-list" id="stepList"></ol>
+      </aside>
+
+      <section class="detail-panel">
+        <div class="live-stage" id="liveStage" data-status="idle">
+          <div class="live-copy">
+            <span id="liveKicker">System idle</span>
+            <h2 id="liveTitle">准备接收业务输入</h2>
+            <p id="liveDescription">开始后，每个节点会展示输入、输出、日志和真实耗时。</p>
+          </div>
+          <div class="live-signal" aria-hidden="true">
+            <div class="signal-ring" id="signalLabel">READY</div>
+          </div>
+        </div>
+
+        <div class="review-gate" id="reviewGate" data-testid="workflow-review-gate" hidden>
+          <div>
+            <strong>Human review checkpoint</strong>
+            <p id="reviewMessage">关键业务动作等待人工审批。</p>
+          </div>
+          <div class="review-actions">
+            <button class="review-button" id="rejectButton" data-testid="workflow-reject" type="button">退回修订</button>
+            <button class="review-button approve" id="approveButton" data-testid="workflow-approve" type="button">批准并继续</button>
+          </div>
+        </div>
+
+        <div class="detail-tabs" role="tablist" aria-label="步骤详情">
+          <button class="detail-tab active" type="button" data-detail-tab="input" role="tab" aria-selected="true">INPUT</button>
+          <button class="detail-tab" type="button" data-detail-tab="output" role="tab" aria-selected="false">OUTPUT</button>
+          <button class="detail-tab" type="button" data-detail-tab="logs" role="tab" aria-selected="false">LOGS</button>
+        </div>
+        <div class="detail-view">
+          <div class="detail-meta">
+            <div>
+              <small>执行角色</small>
+              <strong id="detailActor">workflow.orchestrator</strong>
+            </div>
+            <div>
+              <small>节点状态</small>
+              <strong id="detailStatus">PENDING</strong>
+            </div>
+            <div>
+              <small>节点耗时</small>
+              <strong id="detailDuration">--</strong>
+            </div>
+          </div>
+          <pre class="data-block" id="detailData">等待工作流启动...</pre>
+        </div>
+      </section>
+
+      <aside class="events-panel" aria-label="实时事件">
+        <div class="panel-head">
+          <strong>Live event stream</strong>
+          <span id="eventCount">0 events</span>
+        </div>
+        <div class="event-stream" id="eventStream">
+          <div class="event-empty">RUN_ID 尚未创建。<br>启动后将记录节点事件、系统响应和人工决策。</div>
+        </div>
+      </aside>
+    </main>
+
+    <section class="result-band" id="resultBand" data-testid="workflow-result" hidden>
+      <div class="result-head">
+        <div>
+          <span>Business output ready</span>
+          <h2 id="resultTitle">业务结果已生成</h2>
+        </div>
+        <div class="result-id" id="resultId">RUN-000000</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-facts" id="resultFacts"></div>
+        <pre class="document-preview" id="documentPreview"></pre>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const workflows = {
+      crossborder: {
+        code: "CBQ-01 / SALES OPS",
+        name: "跨境询盘到报价 · 实时工作流",
+        title: "把一封海外询盘跑成可发送报价",
+        summary: "邮件解析、缺失项校验、产品与认证检索、定价、人工审批、客户回复与 CRM 回写。",
+        plan: [
+          {
+            id: "mail-intake",
+            name: "接收并归档询盘",
+            description: "读取脱敏询盘样例并创建运行输入快照。",
+            actor: "connector.mailbox"
+          },
+          {
+            id: "requirement-extract",
+            name: "提取采购需求",
+            description: "从询盘字段生成结构化采购需求与缺失项列表。",
+            actor: "workflow.requirements"
+          },
+          {
+            id: "catalog-match",
+            name: "匹配产品与认证",
+            description: "读取本地产品目录，验证规格、认证和可报价状态。",
+            actor: "connector.catalog"
+          },
+          {
+            id: "quote-draft",
+            name: "生成报价草案",
+            description: "按已核验产品、数量与物流条件计算报价并生成草案。",
+            actor: "workflow.pricing"
+          },
+          {
+            id: "sales-review",
+            name: "销售负责人审批",
+            description: "报价金额、折扣和交期需由销售负责人确认。",
+            actor: "human.sales-owner"
+          },
+          {
+            id: "crm-draft",
+            name: "写入 CRM 草案",
+            description: "将已审批的询盘和报价写入本地 CRM 草案记录。",
+            actor: "connector.crm"
+          }
+        ]
+      },
+      immigration: {
+        code: "IMS-02 / CASE OPS",
+        name: "移民服务线索到建案 · 实时工作流",
+        title: "把一条企业微信线索跑成顾问建案",
+        summary: "线索接收、客户画像、材料缺口、资格预评估、顾问分配、人工确认、时间线与老板看板。",
+        plan: [
+          {
+            id: "lead-intake",
+            name: "接收咨询线索",
+            description: "读取脱敏企业微信线索并归档输入材料。",
+            actor: "connector.wecom"
+          },
+          {
+            id: "consent-check",
+            name: "核验授权状态",
+            description: "确认信息采集与后续评估已具备授权条件。",
+            actor: "workflow.compliance"
+          },
+          {
+            id: "eligibility-draft",
+            name: "生成预评估草案",
+            description: "根据目标地、家庭结构和材料完整度生成顾问预评估草案。",
+            actor: "workflow.assessment"
+          },
+          {
+            id: "advisor-review",
+            name: "顾问审批预评估",
+            description: "顾问确认事实、缺失材料与可对外表达边界。",
+            actor: "human.senior-advisor"
+          },
+          {
+            id: "case-draft",
+            name: "生成建案草案",
+            description: "将已审批预评估写入本地建案草稿，保留材料缺口。",
+            actor: "connector.case-management"
+          }
+        ]
+      }
+    };
+
+    const query = new URLSearchParams(location.search);
+    const workflowKey = workflows[query.get("case")] ? query.get("case") : "crossborder";
+    const workflow = workflows[workflowKey];
+    const statusLabels = {
+      idle: "待命",
+      running: "运行中",
+      waiting_review: "等待人工审批",
+      completed: "已完成",
+      error: "执行异常",
+      cancelled: "已取消",
+      retrying: "重试中"
+    };
+    const stepStatusLabels = {
+      pending: "PENDING",
+      running: "RUNNING",
+      waiting: "WAITING_REVIEW",
+      completed: "COMPLETED",
+      error: "ERROR",
+      cancelled: "CANCELLED",
+      retrying: "RETRYING"
+    };
+
+    const elements = {
+      workflowName: document.getElementById("workflowName"),
+      workflowCode: document.getElementById("workflowCode"),
+      workflowTitle: document.getElementById("workflowTitle"),
+      workflowSummary: document.getElementById("workflowSummary"),
+      failureToggle: document.getElementById("failureToggle"),
+      startButton: document.getElementById("startButton"),
+      cancelButton: document.getElementById("cancelButton"),
+      retryButton: document.getElementById("retryButton"),
+      restartButton: document.getElementById("restartButton"),
+      statusMetric: document.getElementById("statusMetric"),
+      statusLabel: document.getElementById("statusLabel"),
+      statusNote: document.getElementById("statusNote"),
+      currentStepValue: document.getElementById("currentStepValue"),
+      currentStepName: document.getElementById("currentStepName"),
+      elapsedValue: document.getElementById("elapsedValue"),
+      artifactCount: document.getElementById("artifactCount"),
+      artifactLabel: document.getElementById("artifactLabel"),
+      progressFill: document.getElementById("progressFill"),
+      progressValue: document.getElementById("progressValue"),
+      stepCounter: document.getElementById("stepCounter"),
+      stepList: document.getElementById("stepList"),
+      liveStage: document.getElementById("liveStage"),
+      liveKicker: document.getElementById("liveKicker"),
+      liveTitle: document.getElementById("liveTitle"),
+      liveDescription: document.getElementById("liveDescription"),
+      signalLabel: document.getElementById("signalLabel"),
+      reviewGate: document.getElementById("reviewGate"),
+      reviewMessage: document.getElementById("reviewMessage"),
+      rejectButton: document.getElementById("rejectButton"),
+      approveButton: document.getElementById("approveButton"),
+      detailActor: document.getElementById("detailActor"),
+      detailStatus: document.getElementById("detailStatus"),
+      detailDuration: document.getElementById("detailDuration"),
+      detailData: document.getElementById("detailData"),
+      eventCount: document.getElementById("eventCount"),
+      eventStream: document.getElementById("eventStream"),
+      resultBand: document.getElementById("resultBand"),
+      resultTitle: document.getElementById("resultTitle"),
+      resultId: document.getElementById("resultId"),
+      resultFacts: document.getElementById("resultFacts"),
+      documentPreview: document.getElementById("documentPreview")
+    };
+
+    const runtime = {
+      status: "idle",
+      steps: [],
+      activeIndex: -1,
+      selectedIndex: 0,
+      detailTab: "input",
+      events: [],
+      runId: null,
+      startedAt: null,
+      stoppedAt: null,
+      elapsedTimer: null,
+      token: 0,
+      injectFailure: false,
+      failureConsumed: false,
+      artifacts: [],
+      artifactCount: 0,
+      finalResult: null
+    };
+
+    function createPlannedSteps() {
+      return workflow.plan.map(step => ({
+        ...step,
+        input: { status: "SERVICE_RUN_NOT_STARTED" },
+        output: {},
+        status: "pending",
+        progress: 0,
+        startedAt: null,
+        finishedAt: null,
+        actualDuration: 0,
+        runtimeLogs: [],
+        error: null,
+        attempts: 0
+      }));
+    }
+
+    function formatClock(date) {
+      return new Intl.DateTimeFormat("zh-CN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(date);
+    }
+
+    function formatDuration(milliseconds) {
+      if (!milliseconds) return "--";
+      if (milliseconds < 1000) return milliseconds + " ms";
+      return (milliseconds / 1000).toFixed(1) + " s";
+    }
+
+    function formatElapsed(milliseconds) {
+      const totalTenths = Math.floor(milliseconds / 100);
+      const minutes = Math.floor(totalTenths / 600);
+      const seconds = Math.floor((totalTenths % 600) / 10);
+      const tenths = totalTenths % 10;
+      return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0") + "." + tenths;
+    }
+
+    function elapsedMilliseconds() {
+      if (!runtime.startedAt) return 0;
+      const end = runtime.stoppedAt || Date.now();
+      return Math.max(0, end - runtime.startedAt);
+    }
+
+    async function requestRun(path, options) {
+      const response = await fetch(path, {
+        headers: { "Content-Type": "application/json" },
+        ...options
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.run) {
+        throw new Error(payload.error || "服务端运行接口不可用");
+      }
+      return payload.run;
+    }
+
+    function hydrateServerTime(value) {
+      return value ? new Date(value) : null;
+    }
+
+    function applyServerRun(serverRun) {
+      runtime.status = serverRun.status;
+      runtime.steps = serverRun.steps.map(step => ({
+        ...step,
+        startedAt: hydrateServerTime(step.startedAt),
+        finishedAt: hydrateServerTime(step.finishedAt),
+        runtimeLogs: (step.runtimeLogs || []).map(log => ({
+          ...log,
+          time: new Date(log.time)
+        }))
+      }));
+      runtime.activeIndex = serverRun.activeIndex;
+      runtime.selectedIndex = Math.max(0, serverRun.activeIndex);
+      runtime.events = (serverRun.events || []).map(event => ({
+        ...event,
+        time: new Date(event.time)
+      }));
+      runtime.runId = serverRun.runId;
+      runtime.startedAt = hydrateServerTime(serverRun.startedAt)?.getTime() || null;
+      runtime.stoppedAt = hydrateServerTime(serverRun.stoppedAt)?.getTime() || null;
+      runtime.failureConsumed = Boolean(serverRun.failureConsumed);
+      runtime.artifacts = serverRun.artifacts || [];
+      runtime.artifactCount = serverRun.artifactCount || 0;
+      runtime.finalResult = serverRun.finalResult || null;
+      elements.stepCounter.textContent = runtime.steps.length + " steps";
+      setStatus(serverRun.status, serverRun.statusNote);
+      renderEvents();
+      renderTabs();
+      renderAll();
+    }
+
+    async function runServerAction(action) {
+      if (!runtime.runId) {
+        throw new Error("运行实例尚未创建");
+      }
+      return requestRun("/api/workflows/runs/" + encodeURIComponent(runtime.runId) + "/action", {
+        method: "POST",
+        body: JSON.stringify({ action })
+      });
+    }
+
+    function overallProgress() {
+      if (!runtime.steps.length) return 0;
+      let progressUnits = 0;
+      runtime.steps.forEach(step => {
+        if (step.status === "completed") {
+          progressUnits += 1;
+        } else if (["running", "retrying", "waiting"].includes(step.status)) {
+          progressUnits += step.progress / 100;
+        }
+      });
+      return Math.min(100, Math.round(progressUnits / runtime.steps.length * 100));
+    }
+
+    function setStatus(status, note) {
+      runtime.status = status;
+      elements.statusMetric.dataset.status = status;
+      elements.statusLabel.textContent = statusLabels[status];
+      elements.statusNote.textContent = note || "";
+      elements.liveStage.dataset.status = status;
+      elements.startButton.hidden = status !== "idle";
+      elements.cancelButton.hidden = !["running", "waiting_review", "retrying"].includes(status);
+      elements.retryButton.hidden = status !== "error";
+      elements.restartButton.hidden = !["completed", "cancelled"].includes(status);
+      elements.failureToggle.disabled = !["idle", "completed", "cancelled"].includes(status);
+
+      const signalMap = {
+        idle: "READY",
+        running: "LIVE",
+        waiting_review: "HOLD",
+        completed: "DONE",
+        error: "ERROR",
+        cancelled: "STOP",
+        retrying: "RETRY"
+      };
+      elements.signalLabel.textContent = signalMap[status];
+    }
+
+    function renderHeader() {
+      const activeStep = runtime.steps[runtime.activeIndex];
+      const progress = overallProgress();
+      const completed = runtime.steps.filter(step => step.status === "completed").length;
+
+      elements.progressFill.style.width = progress + "%";
+      elements.progressValue.textContent = progress + "%";
+      elements.currentStepValue.textContent = runtime.activeIndex >= 0
+        ? (runtime.activeIndex + 1) + " / " + runtime.steps.length
+        : "0 / " + runtime.steps.length;
+      elements.currentStepName.textContent = activeStep ? activeStep.name : "尚未开始";
+      elements.elapsedValue.textContent = formatElapsed(elapsedMilliseconds());
+      elements.artifactCount.textContent = String(runtime.status === "completed" ? runtime.artifactCount : completed);
+      elements.artifactLabel.textContent = runtime.status === "completed"
+        ? runtime.artifacts.join(" + ")
+        : "已完成 " + completed + " 个节点";
+
+      if (activeStep) {
+        elements.liveKicker.textContent = stepStatusLabels[activeStep.status] + " / " + activeStep.actor;
+        elements.liveTitle.textContent = activeStep.name;
+        elements.liveDescription.textContent = activeStep.error || activeStep.description;
+      } else {
+        elements.liveKicker.textContent = "System idle";
+        elements.liveTitle.textContent = "准备接收业务输入";
+        elements.liveDescription.textContent = "开始后，每个节点会展示输入、输出、日志和真实耗时。";
+      }
+    }
+
+    function renderSteps() {
+      elements.stepList.replaceChildren();
+      runtime.steps.forEach((step, index) => {
+        const item = document.createElement("li");
+        item.className = "step-item";
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "step-button" + (runtime.selectedIndex === index ? " selected" : "");
+        button.dataset.status = step.status;
+        button.dataset.stepId = step.id;
+        button.setAttribute("aria-label", "查看步骤 " + (index + 1) + "：" + step.name);
+
+        const node = document.createElement("span");
+        node.className = "step-node";
+        node.textContent = step.status === "completed" ? "✓" : String(index + 1).padStart(2, "0");
+
+        const copy = document.createElement("span");
+        copy.className = "step-copy";
+        const name = document.createElement("strong");
+        name.textContent = step.name;
+        const actor = document.createElement("span");
+        actor.textContent = step.actor;
+        copy.append(name, actor);
+
+        const duration = document.createElement("span");
+        duration.className = "step-time";
+        duration.textContent = ["running", "retrying"].includes(step.status)
+          ? Math.round(step.progress) + "%"
+          : formatDuration(step.actualDuration);
+
+        button.append(node, copy, duration);
+        button.addEventListener("click", () => {
+          runtime.selectedIndex = index;
+          renderSteps();
+          renderDetail();
+        });
+        item.append(button);
+        elements.stepList.append(item);
+      });
+    }
+
+    function renderDetail() {
+      const step = runtime.steps[runtime.selectedIndex] || runtime.steps[0];
+      if (!step) return;
+
+      elements.detailActor.textContent = step.actor;
+      elements.detailStatus.textContent = stepStatusLabels[step.status];
+      elements.detailDuration.textContent = formatDuration(step.actualDuration);
+
+      let value;
+      if (runtime.detailTab === "input") {
+        value = step.input;
+      } else if (runtime.detailTab === "output") {
+        value = step.error
+          ? { error: step.error, retryable: true, attempt: step.attempts }
+          : step.status === "completed"
+            ? step.output
+            : step.status === "waiting"
+              ? { status: "WAITING_FOR_HUMAN_DECISION", preview: step.output }
+              : { status: "WAITING_FOR_EXECUTION" };
+      } else {
+        value = step.runtimeLogs.length
+          ? step.runtimeLogs.map(log => "[" + formatClock(log.time) + "] " + log.message).join("\n")
+          : "暂无运行日志";
+      }
+
+      elements.detailData.textContent = typeof value === "string"
+        ? value
+        : JSON.stringify(value, null, 2);
+    }
+
+    function renderEvents() {
+      elements.eventCount.textContent = runtime.events.length + " events";
+      elements.eventStream.replaceChildren();
+
+      if (!runtime.events.length) {
+        const empty = document.createElement("div");
+        empty.className = "event-empty";
+        empty.innerHTML = "RUN_ID 尚未创建。<br>启动后将记录节点事件、系统响应和人工决策。";
+        elements.eventStream.append(empty);
+        return;
+      }
+
+      runtime.events.slice().reverse().forEach(event => {
+        const item = document.createElement("article");
+        item.className = "event";
+        item.dataset.type = event.type;
+
+        const time = document.createElement("time");
+        time.textContent = formatClock(event.time) + " / EVENT-" + String(event.id).padStart(3, "0");
+        const title = document.createElement("strong");
+        title.textContent = event.title;
+        const detail = document.createElement("p");
+        detail.textContent = event.detail;
+
+        item.append(time, title, detail);
+        elements.eventStream.append(item);
+      });
+    }
+
+    function renderReviewGate() {
+      const activeStep = runtime.steps[runtime.activeIndex];
+      const waiting = runtime.status === "waiting_review" && activeStep?.status === "waiting";
+      elements.reviewGate.hidden = !waiting;
+      if (waiting) {
+        elements.reviewMessage.textContent = activeStep.description;
+      }
+    }
+
+    function renderResult() {
+      const visible = runtime.status === "completed";
+      elements.resultBand.hidden = !visible;
+      if (!visible) return;
+
+      const finalResult = runtime.finalResult;
+      if (!finalResult) return;
+      elements.resultTitle.textContent = finalResult.title;
+      elements.resultId.textContent = runtime.runId;
+      elements.resultFacts.replaceChildren();
+      finalResult.facts.forEach(([label, value]) => {
+        const row = document.createElement("div");
+        row.className = "result-row";
+        const labelNode = document.createElement("span");
+        labelNode.textContent = label;
+        const valueNode = document.createElement("strong");
+        valueNode.textContent = value;
+        row.append(labelNode, valueNode);
+        elements.resultFacts.append(row);
+      });
+      elements.documentPreview.textContent = finalResult.document;
+    }
+
+    function renderAll() {
+      renderHeader();
+      renderSteps();
+      renderDetail();
+      renderReviewGate();
+      renderResult();
+    }
+
+    function resetRuntime() {
+      runtime.token += 1;
+      window.clearInterval(runtime.elapsedTimer);
+      runtime.status = "idle";
+      runtime.steps = createPlannedSteps();
+      runtime.activeIndex = -1;
+      runtime.selectedIndex = 0;
+      runtime.detailTab = "input";
+      runtime.events = [];
+      runtime.runId = null;
+      runtime.startedAt = null;
+      runtime.stoppedAt = null;
+      runtime.injectFailure = false;
+      runtime.failureConsumed = false;
+      runtime.artifacts = [];
+      runtime.artifactCount = 0;
+      runtime.finalResult = null;
+      elements.resultBand.hidden = true;
+      setStatus("idle", "等待启动");
+      renderEvents();
+      renderTabs();
+      renderAll();
+    }
+
+    function renderTabs() {
+      document.querySelectorAll("[data-detail-tab]").forEach(button => {
+        const active = button.dataset.detailTab === runtime.detailTab;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", String(active));
+      });
+    }
+
+    function startElapsedTimer() {
+      window.clearInterval(runtime.elapsedTimer);
+      runtime.elapsedTimer = window.setInterval(() => {
+        elements.elapsedValue.textContent = formatElapsed(elapsedMilliseconds());
+      }, 100);
+    }
+
+    async function runFrom() {
+      const token = runtime.token;
+      runtime.stoppedAt = null;
+      startElapsedTimer();
+
+      while (runtime.token === token && ["running", "retrying"].includes(runtime.status)) {
+        const serverRun = await runServerAction("advance");
+        if (runtime.token !== token) return;
+        applyServerRun(serverRun);
+
+        if (runtime.status === "waiting_review" || runtime.status === "error") {
+          window.clearInterval(runtime.elapsedTimer);
+          return;
+        }
+
+        if (runtime.status === "completed") {
+          window.clearInterval(runtime.elapsedTimer);
+          window.setTimeout(() => {
+            elements.resultBand.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 180);
+          return;
+        }
+
+        await new Promise(resolve => window.requestAnimationFrame(() => resolve()));
+      }
+    }
+
+    async function startWorkflow() {
+      resetRuntime();
+      runtime.injectFailure = elements.failureToggle.checked;
+      runtime.token += 1;
+      setStatus("running", "正在创建服务端运行实例");
+      renderAll();
+
+      try {
+        const serverRun = await requestRun("/api/workflows/runs", {
+          method: "POST",
+          body: JSON.stringify({
+            workflowKey,
+            injectFailure: runtime.injectFailure
+          })
+        });
+        applyServerRun(serverRun);
+        await runFrom();
+      } catch (error) {
+        window.clearInterval(runtime.elapsedTimer);
+        setStatus("error", error instanceof Error ? error.message : "服务端运行启动失败");
+        renderAll();
+      }
+    }
+
+    async function cancelWorkflow() {
+      if (!["running", "waiting_review", "retrying"].includes(runtime.status)) return;
+      runtime.token += 1;
+      try {
+        applyServerRun(await runServerAction("cancel"));
+      } catch (error) {
+        setStatus("error", error instanceof Error ? error.message : "取消运行失败");
+        renderAll();
+      }
+    }
+
+    async function retryWorkflow() {
+      if (runtime.status !== "error") return;
+      runtime.token += 1;
+      try {
+        applyServerRun(await runServerAction("retry"));
+        await runFrom();
+      } catch (error) {
+        setStatus("error", error instanceof Error ? error.message : "重试运行失败");
+        renderAll();
+      }
+    }
+
+    async function approveReview() {
+      if (runtime.status !== "waiting_review") return;
+      runtime.token += 1;
+      try {
+        applyServerRun(await runServerAction("approve"));
+        await runFrom();
+      } catch (error) {
+        setStatus("error", error instanceof Error ? error.message : "审批提交失败");
+        renderAll();
+      }
+    }
+
+    async function rejectReview() {
+      if (runtime.status !== "waiting_review") return;
+      runtime.token += 1;
+      try {
+        applyServerRun(await runServerAction("reject"));
+      } catch (error) {
+        setStatus("error", error instanceof Error ? error.message : "审批退回失败");
+        renderAll();
+      }
+    }
+
+    function initialize() {
+      document.title = workflow.name;
+      elements.workflowName.textContent = workflow.name;
+      elements.workflowCode.textContent = workflow.code + " / LIVE WORKFLOW";
+      elements.workflowTitle.textContent = workflow.title;
+      elements.workflowSummary.textContent = workflow.summary;
+      elements.stepCounter.textContent = workflow.plan.length + " steps";
+      elements.reviewMessage.textContent = "";
+
+      document.querySelectorAll("[data-detail-tab]").forEach(button => {
+        button.addEventListener("click", () => {
+          runtime.detailTab = button.dataset.detailTab;
+          renderTabs();
+          renderDetail();
+        });
+      });
+
+      elements.startButton.addEventListener("click", startWorkflow);
+      elements.cancelButton.addEventListener("click", cancelWorkflow);
+      elements.retryButton.addEventListener("click", retryWorkflow);
+      elements.restartButton.addEventListener("click", startWorkflow);
+      elements.approveButton.addEventListener("click", approveReview);
+      elements.rejectButton.addEventListener("click", rejectReview);
+
+      resetRuntime();
+    }
+
+    initialize();
+  </script>
+</body>
+</html>
