@@ -11,6 +11,9 @@
   --steel: #7895a3;
   --teal: #69a99f;
   --gold: #c4a46b;
+  --side-inset: clamp(18px, 2.2vw, 34px);
+  --intro-panel-width: clamp(304px, 22vw, 344px);
+  --quick-nav-width: clamp(220px, 17vw, 248px);
   min-height: 100vh;
   overflow-x: clip;
   color: var(--text);
@@ -56,14 +59,22 @@
   z-index: 30;
   inset: 0 0 auto;
   height: 72px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  gap: 28px;
+  justify-content: space-between;
+  gap: 32px;
   padding: 0 32px;
   border-bottom: 1px solid rgba(176, 201, 201, 0.1);
   background: linear-gradient(180deg, rgba(2, 8, 11, 0.95), rgba(2, 8, 11, 0.54));
   backdrop-filter: blur(14px);
+}
+
+.navBrand {
+  display: inline-flex;
+  min-width: 0;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 16px;
 }
 
 .backLink,
@@ -76,19 +87,20 @@
 .backLink {
   display: inline-flex;
   align-items: center;
-  justify-self: start;
   gap: 8px;
   width: max-content;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .navTitle {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  text-align: center;
+  display: block;
+  min-width: 0;
+  padding-left: 16px;
+  border-left: 1px solid rgba(176, 201, 201, 0.16);
+  text-align: left;
 }
 
 .navTitle span,
@@ -107,9 +119,10 @@
 }
 
 .navTitle span {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
 }
 
 .navTitle small {
@@ -120,12 +133,25 @@
 
 .navLinks {
   display: flex;
-  justify-self: end;
-  gap: 28px;
+  min-width: 0;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+}
+
+.navLinks::-webkit-scrollbar {
+  display: none;
 }
 
 .navLinks a {
-  font-size: 15px;
+  flex: 0 0 auto;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .navLinks .caseShortcut {
@@ -490,8 +516,8 @@
   position: absolute;
   z-index: 8;
   top: 92px;
-  left: clamp(18px, 2.2vw, 34px);
-  width: min(380px, calc(100vw - 36px));
+  left: var(--side-inset);
+  width: var(--intro-panel-width);
   overflow: hidden;
   padding: 22px 22px 18px;
   border-color: rgba(176, 201, 201, 0.13);
@@ -501,6 +527,105 @@
     radial-gradient(circle at 0 0, rgba(183, 121, 76, 0.08), transparent 42%);
   box-shadow: 0 22px 74px rgba(0, 0, 0, 0.3);
   transition: opacity 360ms ease, transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.introPanel[hidden],
+.quickNav[hidden] {
+  display: none;
+}
+
+.leftRailToggle {
+  position: absolute;
+  z-index: 13;
+  top: 100px;
+  left: calc(var(--side-inset) + var(--intro-panel-width) - 34px);
+  display: grid;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  color: var(--quiet);
+  background: transparent;
+  place-items: center;
+  cursor: pointer;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+.leftRailToggle[data-collapsed="true"] {
+  top: 92px;
+  left: 0;
+  width: 28px;
+  height: 48px;
+  border: 0;
+  border-right: 1px solid rgba(176, 201, 201, 0.2);
+  background: linear-gradient(90deg, rgba(183, 121, 76, 0.08), rgba(5, 15, 18, 0.78));
+  box-shadow: inset 2px 0 0 rgba(183, 121, 76, 0.58);
+  backdrop-filter: blur(12px);
+}
+
+.leftRailToggle:hover,
+.leftRailToggle:focus-visible {
+  color: #ffffff;
+  background: rgba(105, 169, 159, 0.1);
+}
+
+.leftRailToggle:focus-visible,
+.leftRailHint:focus-visible {
+  outline: 2px solid rgba(196, 164, 107, 0.9);
+  outline-offset: 3px;
+}
+
+.leftRailToggle[data-collapsed="true"]:hover,
+.leftRailToggle[data-collapsed="true"]:focus-visible {
+  border-right-color: rgba(105, 169, 159, 0.46);
+  background: linear-gradient(90deg, rgba(183, 121, 76, 0.14), rgba(15, 26, 34, 0.9));
+  box-shadow: inset 2px 0 0 rgba(183, 121, 76, 0.72);
+}
+
+.leftRailHint {
+  position: absolute;
+  z-index: 14;
+  top: 92px;
+  left: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(183, 121, 76, 0.42);
+  border-left: 0;
+  color: var(--text);
+  background: linear-gradient(90deg, rgba(9, 21, 24, 0.94), rgba(5, 15, 18, 0.72));
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.leftRailHint small {
+  color: var(--gold);
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.leftRailHint strong {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.leftRailHint svg {
+  flex: 0 0 auto;
+  color: var(--gold);
+}
+
+.leftRailHint:hover,
+.leftRailHint:focus-visible {
+  border-color: rgba(105, 169, 159, 0.62);
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(15, 34, 37, 0.98), rgba(5, 15, 18, 0.84));
 }
 
 .introPanel::before,
@@ -522,15 +647,30 @@
 .quickNav {
   position: absolute;
   z-index: 8;
-  top: 50%;
-  left: clamp(18px, 2.2vw, 34px);
-  width: 272px;
-  max-height: none;
-  overflow: visible;
-  transform: translateY(-34%);
+  top: 456px;
+  left: var(--side-inset);
+  width: var(--quick-nav-width);
+  max-height: calc(100svh - 616px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  transform: none;
   border-left: 1px solid rgba(176, 201, 201, 0.18);
   background: linear-gradient(90deg, rgba(5, 13, 16, 0.46), rgba(5, 13, 16, 0));
+  scrollbar-color: rgba(105, 169, 159, 0.36) transparent;
   scrollbar-width: thin;
+}
+
+.quickNav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.quickNav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.quickNav::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(105, 169, 159, 0.36);
 }
 
 .quickNavHeader {
@@ -566,10 +706,10 @@
   position: relative;
   display: grid;
   grid-template-columns: 25px minmax(0, 1fr);
-  gap: 5px 10px;
+  gap: 2px 10px;
   align-items: baseline;
-  min-height: 56px;
-  padding: 11px 14px 11px 16px;
+  min-height: 46px;
+  padding: 6px 12px;
   border: 0;
   border-bottom: 1px solid rgba(176, 201, 201, 0.1);
   color: var(--muted);
@@ -600,7 +740,7 @@
 .quickNavList button strong {
   overflow: hidden;
   color: inherit;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -647,7 +787,7 @@
 .introPanel h1 {
   margin: 9px 0 0;
   color: #ffffff;
-  font-size: clamp(40px, 3.1vw, 48px);
+  font-size: 40px;
   font-weight: 680;
   line-height: 1.02;
   letter-spacing: -0.04em;
@@ -1577,13 +1717,28 @@
 }
 
 @media (max-width: 1180px) {
+  .nav {
+    gap: 20px;
+    padding-inline: 20px;
+  }
+
+  .backLink,
+  .navLinks a {
+    font-size: 12px;
+  }
+
+  .navTitle span {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .navLinks {
+    gap: 18px;
+  }
+
   .personalOrbit {
     right: 18px;
     width: 214px;
-  }
-
-  .introPanel {
-    width: 350px;
   }
 
   .introPanel h1 {
@@ -1642,8 +1797,12 @@
 
   .nav {
     height: 56px;
-    grid-template-columns: 1fr auto;
+    gap: 10px;
     padding: 0 14px;
+  }
+
+  .navBrand {
+    flex: 0 0 auto;
   }
 
   .navTitle {
@@ -1651,7 +1810,25 @@
   }
 
   .navLinks {
+    width: auto;
+    flex: 1 1 auto;
+    margin-left: 0;
     gap: 14px;
+  }
+
+  .leftRailToggle {
+    top: 70px;
+    left: calc(12px + min(330px, calc(100vw - 24px)) - 34px);
+  }
+
+  .leftRailToggle[data-collapsed="true"] {
+    top: 70px;
+    left: 0;
+  }
+
+  .leftRailHint {
+    top: 70px;
+    left: 36px;
   }
 
   .personalOrbit,
@@ -1939,7 +2116,7 @@
   }
 
   .navLinks {
-    gap: 9px;
+    gap: 12px;
   }
 
   .navLinks a {
@@ -2022,57 +2199,7 @@
   }
 }
 
-@media (min-width: 2400px) and (min-height: 1400px) {
-  .nav {
-    height: 104px;
-    gap: 36px;
-    padding: 0 40px;
-  }
-
-  .backLink,
-  .navLinks a {
-    font-size: 30px;
-  }
-
-  .backLink {
-    gap: 12px;
-  }
-
-  .backLink svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .navTitle {
-    gap: 5px;
-  }
-
-  .navTitle span {
-    font-size: 30px;
-  }
-
-  .navTitle small {
-    font-size: 18px;
-  }
-
-  .navLinks {
-    flex-wrap: nowrap;
-    gap: 38px;
-  }
-
-  .navLinks .caseShortcut {
-    gap: 8px;
-  }
-
-  .navLinks a {
-    white-space: nowrap;
-  }
-
-  .caseShortcut svg {
-    width: 22px;
-    height: 22px;
-  }
-
+@media (min-width: 4800px) and (min-height: 2700px) and (min-resolution: 1dppx) {
   .personalOrbit {
     top: 136px;
     right: 40px;
@@ -2136,143 +2263,6 @@
   .personalSignalArrow {
     width: 26px;
     height: 26px;
-  }
-
-  .introPanel {
-    top: 136px;
-    left: 40px;
-    width: min(780px, calc(100vw - 80px));
-    padding: 34px 34px 30px;
-  }
-
-  .introPanel h1 {
-    margin-top: 12px;
-    font-size: clamp(64px, 1.9vw, 80px);
-  }
-
-  .introCopy {
-    margin-top: 10px;
-    font-size: 22px;
-    line-height: 1.52;
-  }
-
-  .liveSignal {
-    grid-template-columns: 10px auto 1fr;
-    gap: 12px;
-    min-height: 52px;
-    margin-top: 20px;
-    padding-top: 14px;
-  }
-
-  .liveSignal i {
-    width: 7px;
-    height: 7px;
-  }
-
-  .liveSignal span {
-    font-size: 16px;
-  }
-
-  .liveSignal strong {
-    font-size: 24px;
-  }
-
-  .searchWrap {
-    grid-template-columns: auto 1fr auto;
-    gap: 12px;
-    margin-top: 12px;
-    padding: 0 14px;
-  }
-
-  .searchWrap > svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .searchWrap input {
-    height: 56px;
-    font-size: 21px;
-  }
-
-  .searchWrap button {
-    width: 42px;
-    height: 42px;
-  }
-
-  .searchWrap button svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .searchResult {
-    margin-top: 8px;
-    font-size: 14px;
-  }
-
-  .filters {
-    gap: 18px;
-    margin-top: 12px;
-  }
-
-  .filters button {
-    gap: 6px;
-    padding: 13px 0 12px;
-  }
-
-  .filters button span {
-    font-size: 19px;
-  }
-
-  .filters button small {
-    font-size: 13px;
-  }
-
-  .graphStatus {
-    gap: 18px;
-    margin-top: 14px;
-    font-size: 14px;
-  }
-
-  .graphStatus strong {
-    font-size: 21px;
-  }
-
-  .quickNav {
-    top: clamp(640px, 42svh, 1260px);
-    left: 40px;
-    width: 540px;
-    max-height: none;
-    overflow: visible;
-    transform: none;
-  }
-
-  .quickNavHeader {
-    gap: 14px;
-    padding: 0 0 14px 22px;
-  }
-
-  .quickNavHeader small,
-  .quickNavHeader span {
-    font-size: 16px;
-  }
-
-  .quickNavList button {
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 8px 16px;
-    min-height: 78px;
-    padding: 12px 20px 12px 24px;
-  }
-
-  .quickNavList button > span {
-    font-size: 17px;
-  }
-
-  .quickNavList button strong {
-    font-size: 22px;
-  }
-
-  .quickNavList button small {
-    font-size: 13px;
   }
 
   .nodeLabel {

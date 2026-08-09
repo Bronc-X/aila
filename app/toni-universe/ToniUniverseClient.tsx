@@ -1,7 +1,16 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import { ArrowLeft, ArrowUpRight, LocateFixed, LockKeyhole, Search, X } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  LocateFixed,
+  LockKeyhole,
+  Search,
+  X,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -66,6 +75,7 @@ const deliveryStageCount = universe.nodes.filter((node) => node.layer === "deliv
 const capabilityCount = universe.nodes.filter((node) => node.layer === "capability").length;
 const commercialCount = universe.nodes.filter((node) => node.layer === "commercial").length;
 const proofCount = universe.nodes.filter((node) => node.layer === "proof").length;
+const LEFT_RAIL_GUIDE_KEY = "aila-fde-left-rail-guide-seen";
 
 function nodeMatchesView(node: UniverseNode, layerFilter: LayerFilter, query: string) {
   if (node.layer === "core") return true;
@@ -105,6 +115,8 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
   const [query, setQuery] = useState("");
   const [sceneError, setSceneError] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [leftRailCollapsed, setLeftRailCollapsed] = useState(true);
+  const [leftRailHintVisible, setLeftRailHintVisible] = useState(false);
 
   const selectedNode = universeNodeMap.get(selectedId) ?? universe.nodes[0];
   const selectedDestination = getUniverseNodeDestination(selectedNode.id);
@@ -121,6 +133,15 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
     [visibleNodeIds]
   );
   const searchResultCount = query.trim() ? filteredNodes.length : 0;
+
+  useEffect(() => {
+    const hasUserProfile = Boolean(window.localStorage.getItem("aila-user-profile"));
+    const guideSeen = window.localStorage.getItem(LEFT_RAIL_GUIDE_KEY) === "true";
+    if (!hasUserProfile || guideSeen) return;
+
+    const frame = window.requestAnimationFrame(() => setLeftRailHintVisible(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useGSAP(
     () => {
@@ -353,21 +374,36 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
     setHoveredId(null);
   }
 
+  function toggleLeftRail() {
+    if (leftRailCollapsed) {
+      setLeftRailCollapsed(false);
+      if (leftRailHintVisible) {
+        window.localStorage.setItem(LEFT_RAIL_GUIDE_KEY, "true");
+        setLeftRailHintVisible(false);
+      }
+      return;
+    }
+
+    setLeftRailCollapsed(true);
+  }
+
   return (
     <main className={styles.page} ref={pageRef}>
       <nav className={styles.nav} aria-label="FDE Delivery Galaxy navigation">
-        {homeMode ? (
-          <Link href="/" className={styles.backLink} aria-current="page">
-            Toni
-          </Link>
-        ) : (
-          <Link href="/" className={styles.backLink}>
-            <ArrowLeft size={15} />
-            Toni
-          </Link>
-        )}
-        <div className={styles.navTitle}>
-          <span>TONI // FDE DELIVERY GALAXY</span>
+        <div className={styles.navBrand}>
+          {homeMode ? (
+            <Link href="/" className={styles.backLink} aria-current="page">
+              Toni
+            </Link>
+          ) : (
+            <Link href="/" className={styles.backLink}>
+              <ArrowLeft size={15} />
+              Toni
+            </Link>
+          )}
+          <div className={styles.navTitle}>
+            <span>TONI // FDE DELIVERY GALAXY</span>
+          </div>
         </div>
         <div className={styles.navLinks}>
           <Link href="/ai-learning">AI LEARNING</Link>
@@ -416,11 +452,41 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
         <div className={styles.vignette} aria-hidden="true" />
         <div className={styles.scanField} aria-hidden="true" />
 
+        <button
+          type="button"
+          className={styles.leftRailToggle}
+          data-collapsed={leftRailCollapsed}
+          onClick={toggleLeftRail}
+          aria-expanded={!leftRailCollapsed}
+          aria-controls="toni-universe-intro toni-universe-quick-nav"
+          aria-label={leftRailCollapsed ? "展开左侧图谱导航" : "折叠左侧图谱导航"}
+          title={leftRailCollapsed ? "展开左侧图谱导航" : "折叠左侧图谱导航"}
+        >
+          {leftRailCollapsed ? <ChevronRight size={15} aria-hidden="true" /> : <ChevronLeft size={15} aria-hidden="true" />}
+        </button>
+
+        {leftRailHintVisible && leftRailCollapsed ? (
+          <button
+            type="button"
+            className={styles.leftRailHint}
+            onClick={toggleLeftRail}
+            aria-expanded={false}
+            aria-controls="toni-universe-intro toni-universe-quick-nav"
+            aria-label="首次使用：展开左侧图谱导航"
+          >
+            <small>首次使用</small>
+            <strong>展开图谱导航</strong>
+            <ChevronRight size={14} aria-hidden="true" />
+          </button>
+        ) : null}
+
         <header
+          id="toni-universe-intro"
           className={styles.introPanel}
           ref={introPanelRef}
-          aria-hidden={detailsOpen}
-          inert={detailsOpen}
+          hidden={leftRailCollapsed}
+          aria-hidden={detailsOpen || leftRailCollapsed}
+          inert={detailsOpen || leftRailCollapsed}
         >
           <h1>企业 FDE 图谱</h1>
           <p className={styles.introCopy}>
@@ -490,7 +556,12 @@ export default function ToniUniverseClient({ homeMode = false }: ToniUniverseCli
           </div>
         </header>
 
-        <aside className={styles.quickNav} aria-label="图谱重点定位">
+        <aside
+          id="toni-universe-quick-nav"
+          className={styles.quickNav}
+          hidden={leftRailCollapsed}
+          aria-label="图谱重点定位"
+        >
           <div className={styles.quickNavHeader}>
             <small>QUICK LOCATE</small>
             <span>重点 08</span>

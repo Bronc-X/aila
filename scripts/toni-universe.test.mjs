@@ -20,7 +20,9 @@ const universeDataSource = readFileSync(new URL("../app/toni-universe/universe-d
 const workDataSource = readFileSync(new URL("../app/work/work-data.ts", import.meta.url), "utf8");
 const workDetailSource = readFileSync(new URL("../app/work/[slug]/page.tsx", import.meta.url), "utf8");
 const workIndexSource = readFileSync(new URL("../app/work/page.tsx", import.meta.url), "utf8");
+const recentCaseGallerySource = readFileSync(new URL("../app/work/RecentCaseGallery.tsx", import.meta.url), "utf8");
 const fdeCaseLibrarySource = readFileSync(new URL("../public/work/fde-case-library.html", import.meta.url), "utf8");
+const fdeWorkflowRunnerSource = readFileSync(new URL("../public/work/fde-workflow-runner.html", import.meta.url), "utf8");
 const weldDemoSource = readFileSync(new URL("../app/work/weld-vision/demo/WeldVisionDemo.tsx", import.meta.url), "utf8");
 const weldDemoStylesSource = readFileSync(new URL("../app/work/weld-vision/demo/demo.module.css", import.meta.url), "utf8");
 const ailaSource = readFileSync(new URL("../app/aila/page.tsx", import.meta.url), "utf8");
@@ -317,18 +319,62 @@ test("the formal FDE homepage preserves Toni's personal orbit entrances", () => 
   assert.ok(stylesSource.includes('.personalOrbit[data-muted="true"]'));
 });
 
-test("the homepage keeps the approved compact portfolio plate and stable personal emblems", () => {
+test("the homepage keeps the portfolio plate compact and collapsible", () => {
   const introPanelStyle = stylesSource.match(/\.introPanel\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
   const introHeadingStyle = stylesSource.match(/\.introPanel h1\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const quickNavStyle = stylesSource.match(/\.quickNav\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const toggleStyle = stylesSource.match(/\.leftRailToggle\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const collapsedToggleStyle =
+    stylesSource.match(/\.leftRailToggle\[data-collapsed="true"\]\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
   const aeromodelAsset = readFileSync(new URL("../public/toni-universe/aeromodel-emblem-v2.png", import.meta.url));
 
   assert.ok(clientSource.includes("<h1>企业 FDE 图谱</h1>"));
   assert.equal(clientSource.includes("ENTERPRISE FDE"), false);
   assert.equal(clientSource.includes("欢迎来到 Toni 的主页"), false);
   assert.equal(clientSource.includes("发来业务现场，先判断哪里值得动。"), false);
-  assert.match(introPanelStyle, /width:\s*min\(380px, calc\(100vw - 36px\)\)/);
-  assert.match(introHeadingStyle, /font-size:\s*clamp\(40px, 3\.1vw, 48px\)/);
-  assert.ok(stylesSource.includes("@media (min-width: 2400px) and (min-height: 1400px)"));
+  assert.ok(clientSource.includes("const [leftRailCollapsed, setLeftRailCollapsed] = useState(true);"));
+  assert.ok(clientSource.includes('const LEFT_RAIL_GUIDE_KEY = "aila-fde-left-rail-guide-seen";'));
+  assert.ok(clientSource.includes('localStorage.getItem("aila-user-profile")'));
+  assert.ok(clientSource.includes("leftRailHintVisible"));
+  assert.ok(clientSource.includes('localStorage.setItem(LEFT_RAIL_GUIDE_KEY, "true")'));
+  assert.ok(clientSource.includes("首次使用"));
+  assert.ok(clientSource.includes("展开图谱导航"));
+  assert.ok(clientSource.includes("aria-expanded={!leftRailCollapsed}"));
+  assert.ok(clientSource.includes("ChevronLeft"));
+  assert.ok(clientSource.includes("ChevronRight"));
+  assert.equal(clientSource.includes("PanelLeftClose"), false);
+  assert.equal(clientSource.includes("PanelLeftOpen"), false);
+  assert.equal(clientSource.match(/hidden=\{leftRailCollapsed\}/g)?.length, 2);
+  assert.match(toggleStyle, /left:\s*calc\(var\(--side-inset\) \+ var\(--intro-panel-width\) - 34px\)/);
+  assert.match(toggleStyle, /width:\s*26px/);
+  assert.match(toggleStyle, /height:\s*26px/);
+  assert.match(toggleStyle, /border:\s*0/);
+  assert.match(toggleStyle, /background:\s*transparent/);
+  assert.match(collapsedToggleStyle, /left:\s*0/);
+  assert.match(collapsedToggleStyle, /width:\s*28px/);
+  assert.match(collapsedToggleStyle, /height:\s*48px/);
+  assert.match(collapsedToggleStyle, /border:\s*0/);
+  assert.match(collapsedToggleStyle, /border-right:\s*1px solid rgba\(176, 201, 201, 0\.2\)/);
+  assert.match(collapsedToggleStyle, /box-shadow:\s*inset 2px 0 0 rgba\(183, 121, 76, 0\.58\)/);
+  assert.match(stylesSource, /\.leftRailHint\s*\{/);
+  assert.match(stylesSource, /--intro-panel-width:\s*clamp\(304px, 22vw, 344px\)/);
+  assert.match(stylesSource, /--quick-nav-width:\s*clamp\(220px, 17vw, 248px\)/);
+  assert.match(introPanelStyle, /width:\s*var\(--intro-panel-width\)/);
+  assert.match(quickNavStyle, /width:\s*var\(--quick-nav-width\)/);
+  assert.match(quickNavStyle, /top:\s*456px/);
+  assert.match(quickNavStyle, /max-height:\s*calc\(100svh - 616px\)/);
+  assert.match(quickNavStyle, /overflow-y:\s*auto/);
+  assert.match(quickNavStyle, /transform:\s*none/);
+  assert.match(quickNavStyle, /scrollbar-color:\s*rgba\(105, 169, 159, 0\.36\) transparent/);
+  assert.match(introHeadingStyle, /font-size:\s*40px/);
+  assert.equal(stylesSource.includes("width: min(780px, calc(100vw - 80px));"), false);
+  assert.equal(stylesSource.includes("width: 540px;"), false);
+  assert.equal(stylesSource.includes("@media (min-width: 2400px) and (min-height: 1400px)"), false);
+  assert.ok(
+    stylesSource.includes(
+      "@media (min-width: 4800px) and (min-height: 2700px) and (min-resolution: 1dppx)"
+    )
+  );
   assert.ok(clientSource.includes("每一次服务，都会为您的企业留下成果"));
   assert.equal(introPanelStyle.includes("clip-path"), false);
   assert.equal(stylesSource.includes("grid-template-columns: repeat(4, 1fr);"), false);
@@ -339,6 +385,49 @@ test("the homepage keeps the approved compact portfolio plate and stable persona
   assert.equal(aeromodelAsset.readUInt32BE(16), 640);
   assert.equal(aeromodelAsset.readUInt32BE(20), 640);
   assert.equal(aeromodelAsset[25], 6);
+});
+
+test("the homepage navigation stays on one compact row", () => {
+  const navStyle = stylesSource.match(/\.nav\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const navBrandStyle = stylesSource.match(/\.navBrand\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const navTitleBoxStyle = stylesSource.match(/\.navTitle\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const navTitleStyle = stylesSource.match(/\.navTitle span\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const navLinksStyle = stylesSource.match(/\.navLinks\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const compactNavStyles = stylesSource.slice(
+    stylesSource.indexOf("@media (max-width: 1180px)"),
+    stylesSource.indexOf("@media (max-width: 900px)")
+  );
+  const mobileNavStyles = stylesSource.slice(
+    stylesSource.indexOf("@media (max-width: 900px)"),
+    stylesSource.indexOf("@media (max-width: 560px)")
+  );
+  const mobileNavStyle = mobileNavStyles.match(/\.nav\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const mobileNavLinksStyle =
+    mobileNavStyles.match(/\.navLinks\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+  const narrowNavStyles = stylesSource.slice(stylesSource.indexOf("@media (max-width: 560px)"));
+  const narrowNavLinksStyle =
+    narrowNavStyles.match(/\.navLinks\s*\{(?<rules>[^}]*)\}/s)?.groups?.rules ?? "";
+
+  assert.ok(clientSource.includes('<div className={styles.navBrand}>'));
+  assert.match(navStyle, /display:\s*flex/);
+  assert.match(navStyle, /justify-content:\s*space-between/);
+  assert.match(navBrandStyle, /display:\s*inline-flex/);
+  assert.match(navBrandStyle, /gap:\s*16px/);
+  assert.match(navTitleBoxStyle, /border-left:\s*1px solid rgba\(176, 201, 201, 0\.16\)/);
+  assert.match(navTitleBoxStyle, /text-align:\s*left/);
+  assert.match(navTitleStyle, /font-size:\s*14px/);
+  assert.match(navTitleStyle, /white-space:\s*nowrap/);
+  assert.match(navLinksStyle, /flex-wrap:\s*nowrap/);
+  assert.match(navLinksStyle, /gap:\s*24px/);
+  assert.match(
+    stylesSource,
+    /\.navLinks a\s*\{\s*flex:\s*0 0 auto;\s*font-size:\s*13px;[^}]*white-space:\s*nowrap;/s
+  );
+  assert.equal(mobileNavStyle.includes("grid-template-columns:"), false);
+  assert.match(mobileNavLinksStyle, /flex:\s*1 1 auto/);
+  assert.match(mobileNavLinksStyle, /width:\s*auto/);
+  assert.match(compactNavStyles, /\.navLinks\s*\{[^}]*gap:\s*18px;/s);
+  assert.match(narrowNavLinksStyle, /gap:\s*12px/);
 });
 
 test("decorative galaxy fibers originate inside each galaxy core", () => {
@@ -490,6 +579,35 @@ test("project destinations use local media-led introductions before product or r
   assert.ok(workIndexSource.includes('href="/work/lusie"'));
   assert.ok(workIndexSource.includes('href="/work/antianxiety"'));
   assert.ok(workIndexSource.includes('href="/work/bid-agent"'));
+});
+
+test("FDE workflow cards distinguish local reproducible runs from client-system deployments", () => {
+  assert.ok(recentCaseGallerySource.includes("本地可复现执行"));
+  assert.ok(recentCaseGallerySource.includes("脱敏询盘"));
+  assert.ok(recentCaseGallerySource.includes("未连接客户邮箱、ERP、CRM 或对外发送"));
+  assert.ok(recentCaseGallerySource.includes("未连接客户企业微信、案件系统或对外发送"));
+  assert.equal(recentCaseGallerySource.includes("已跑通企业案例"), false);
+  assert.equal(recentCaseGallerySource.includes("企业真实询盘"), false);
+});
+
+test("FDE runner only previews the same step names and approvals used by the server workflow", () => {
+  for (const label of [
+    "接收并归档询盘",
+    "提取采购需求",
+    "匹配产品与认证",
+    "生成报价草案",
+    "销售负责人审批",
+    "写入 CRM 草案",
+    "接收咨询线索",
+    "生成预评估草案",
+    "顾问审批预评估",
+    "生成建案草案",
+  ]) {
+    assert.ok(fdeWorkflowRunnerSource.includes(label), `missing server-aligned runner label: ${label}`);
+  }
+
+  assert.ok(fdeWorkflowRunnerSource.includes("activeStep.description"));
+  assert.equal(fdeWorkflowRunnerSource.includes("workflow.reviewMessage"), false);
 });
 
 test("original subpages share the GSAP motion upgrade without restyling", () => {
