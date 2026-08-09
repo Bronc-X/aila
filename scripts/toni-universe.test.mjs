@@ -535,6 +535,7 @@ test("project destinations use local media-led introductions before product or r
     "/brand/toni-lotus/lotus-runtime-hero.png",
     "/now/cosic-01-home.png",
     "/now/antianxiety-01-dashboard.png",
+    "/projects/bid-agent/bid-agent-walkthrough.mp4",
     "/now/bid-data-management-desktop.png",
     "/projects/kemo/login.png",
     "/projects/expert-agent/diagnostic.png",
@@ -546,6 +547,11 @@ test("project destinations use local media-led introductions before product or r
     assert.ok(workDataSource.includes(asset), `missing project media: ${asset}`);
     assert.ok(existsSync(new URL(`../public${asset}`, import.meta.url)), `project media does not exist: ${asset}`);
   }
+
+  assert.match(
+    workDataSource,
+    /slug: "bid-agent"[\s\S]*?type: "video"[\s\S]*?src: "\/projects\/bid-agent\/bid-agent-walkthrough\.mp4"[\s\S]*?poster: "\/now\/bid-data-management-desktop\.png"/
+  );
 
   for (const asset of [
     "/projects/fde-cases/crossborder-walkthrough.webm",

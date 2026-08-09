@@ -515,6 +515,13 @@ export const productLabs: WorkItem[] = [
     image: "/now/bid-data-management-desktop.png",
     media: [
       {
+        type: "video",
+        src: "/projects/bid-agent/bid-agent-walkthrough.mp4",
+        poster: "/now/bid-data-management-desktop.png",
+        alt: "智能招标智能体标书制作流程录屏",
+        caption: "运行录屏：从招标文件解析、条款与评分点提取，到章节匹配和标书内容生成的连续操作过程。",
+      },
+      {
         type: "image",
         src: "/now/bid-data-management-desktop.png",
         alt: "智能招标智能体桌面工作台",
