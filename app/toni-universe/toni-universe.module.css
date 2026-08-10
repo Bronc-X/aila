@@ -128,6 +128,25 @@
   font-size: 15px;
 }
 
+.navLinks .platformShortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #d6e9e2;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-weight: 800;
+}
+
+.platformShortcut svg {
+  color: var(--teal);
+  transition: transform 180ms ease;
+}
+
+.platformShortcut:hover svg,
+.platformShortcut:focus-visible svg {
+  transform: translate(1px, -1px);
+}
+
 .navLinks .caseShortcut {
   display: inline-flex;
   align-items: center;
