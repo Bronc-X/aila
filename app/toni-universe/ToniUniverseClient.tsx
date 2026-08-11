@@ -66,7 +66,7 @@ const deliveryStageCount = universe.nodes.filter((node) => node.layer === "deliv
 const capabilityCount = universe.nodes.filter((node) => node.layer === "capability").length;
 const commercialCount = universe.nodes.filter((node) => node.layer === "commercial").length;
 const proofCount = universe.nodes.filter((node) => node.layer === "proof").length;
-const FDE_PLATFORM_URL = "https://int-champagne-zealand-antique.trycloudflare.com";
+const FDE_PLATFORM_URL = "https://ask-sorts-pointer-harder.trycloudflare.com";
 
 function nodeMatchesView(node: UniverseNode, layerFilter: LayerFilter, query: string) {
   if (node.layer === "core") return true;
