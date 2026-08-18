@@ -147,6 +147,10 @@ export function getRequiredScopeForPath(pathname: string): SessionScope | null {
     return "slides";
   }
 
+  if (normalizedPathname.startsWith("/api/learning")) {
+    return "slides";
+  }
+
   return null;
 }
 

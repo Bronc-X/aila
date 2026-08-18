@@ -39,6 +39,7 @@ export const config = {
     "/tools/:path*",
     "/slides/:path*",
     "/ai-learning/:path*",
+    "/api/learning/:path*",
     "/api/ai/:path*",
     "/api/profile",
   ],
